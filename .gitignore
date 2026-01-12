@@ -1,0 +1,35 @@
+# Dependencies
+node_modules
+
+# Build outputs
+build
+dist
+.svelte-kit
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# Lock files (optional - uncomment if you want to ignore)
+# bun.lockb
+# package-lock.json
+
+# Test coverage
+coverage

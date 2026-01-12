@@ -230,6 +230,7 @@ alpha-anywhere-community/
 │   └── app.html
 ├── static/
 │   └── thumbnails/                # Mock game images
+├── test-embed.html                # Iframe embed test harness
 ├── package.json
 ├── svelte.config.js
 ├── vite.config.ts
