@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getArcadeStore } from '../stores/arcade.svelte';
   import { ENGAGEMENT_CATEGORIES, type EngagementCategory } from '../types';
+  import { ToggleButton } from './ui';
 
   interface Props {
     disabled?: boolean;
@@ -28,15 +29,13 @@
 
 <nav class="filter-bar" class:disabled aria-label="Filter games by category">
   {#each filters as filter (filter.value)}
-    <button
-      class="filter-btn"
-      class:active={arcade.activeFilter === filter.value}
-      onclick={() => setFilter(filter.value)}
-      aria-pressed={arcade.activeFilter === filter.value}
+    <ToggleButton
+      active={arcade.activeFilter === filter.value}
       {disabled}
+      onclick={() => setFilter(filter.value)}
     >
       {filter.label}
-    </button>
+    </ToggleButton>
   {/each}
 </nav>
 
@@ -47,33 +46,8 @@
     flex-wrap: wrap;
   }
 
-  .filter-btn {
-    padding: var(--space-2) var(--space-3);
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    background: transparent;
-    border: 2px solid var(--color-border);
-    color: var(--color-text-muted);
-    transition: all var(--transition-fast);
-  }
-
-  .filter-btn:hover {
-    border-color: var(--color-text);
-    color: var(--color-text);
-  }
-
-  .filter-btn.active {
-    background: var(--color-text);
-    border-color: var(--color-text);
-    color: var(--color-surface);
-  }
-
   .filter-bar.disabled {
     opacity: 0.5;
     pointer-events: none;
-  }
-
-  .filter-btn:disabled {
-    cursor: not-allowed;
   }
 </style>

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import type { Game } from '../types';
+  import { Card } from './ui';
   import CategoryBadge from './CategoryBadge.svelte';
   import PlayerCount from './PlayerCount.svelte';
 
@@ -23,24 +24,9 @@
       launchUrl: game.launchUrl
     });
   }
-
-  function handleKeydown(event: KeyboardEvent) {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      handleClick();
-    }
-  }
 </script>
 
-<div
-  class="game-card card"
-  class:disabled
-  role="button"
-  tabindex={disabled ? -1 : 0}
-  onclick={handleClick}
-  onkeydown={handleKeydown}
-  aria-disabled={disabled}
->
+<Card interactive {disabled} onclick={handleClick}>
   <div class="thumbnail-container">
     <img
       src={game.thumbnailUrl}
@@ -67,28 +53,9 @@
       <PlayerCount count={game.currentPlayers} />
     </div>
   </div>
-</div>
+</Card>
 
 <style>
-  .game-card {
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    outline: none;
-    user-select: none;
-  }
-
-  .game-card:focus-visible {
-    outline: 3px solid var(--color-primary);
-    outline-offset: 2px;
-  }
-
-  .game-card.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-
   .thumbnail-container {
     position: relative;
     aspect-ratio: 16 / 9;
@@ -103,7 +70,7 @@
     transition: transform var(--transition-base);
   }
 
-  .game-card:hover .thumbnail {
+  :global(.card:hover) .thumbnail {
     transform: scale(1.05);
   }
 
@@ -118,8 +85,8 @@
     transition: opacity var(--transition-fast);
   }
 
-  .game-card:hover .thumbnail-overlay,
-  .game-card:focus-visible .thumbnail-overlay {
+  :global(.card:hover) .thumbnail-overlay,
+  :global(.card:focus-visible) .thumbnail-overlay {
     opacity: 1;
   }
 

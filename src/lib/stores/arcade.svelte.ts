@@ -1,6 +1,6 @@
 import { getContext, setContext } from 'svelte';
 import type { EngagementCategory, Game, GatingState, Theme } from '../types';
-import { MOCK_GAMES, MOCK_USER } from '../mock-data';
+import { MOCK_GAMES } from '../mock-data';
 
 const ARCADE_CONTEXT_KEY = 'arcade';
 

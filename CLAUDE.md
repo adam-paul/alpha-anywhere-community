@@ -21,7 +21,8 @@ A work-walled community portal for Alpha Anywhere homeschool students. Students 
 ### Minimize Code
 - The best code is no code. Fewer lines = fewer bugs.
 - Delete stale code immediately. No "commented out for later."
-- Avoid abstractions until the third use case.
+- For business logic: avoid abstractions until the third use case.
+- For UI components: abstract early (see UI Component System below).
 
 ### Explicit Over Implicit
 - Props over global state where practical.
@@ -37,6 +38,7 @@ A work-walled community portal for Alpha Anywhere homeschool students. Students 
 - Fix warnings immediately, not "later."
 - If a pattern feels wrong, stop and fix the architecture.
 - Refactor as you go, not in a separate "cleanup phase."
+- **After every refactor**: Check for dead code, unused imports, orphaned files. Delete immediately. This is critical.
 
 ---
 
@@ -74,6 +76,14 @@ A work-walled community portal for Alpha Anywhere homeschool students. Students 
 - CSS custom properties for theming (defined in `tokens.css`)
 - Scoped styles in components (no global CSS bleed)
 - Theme applied via `data-theme` attribute on root
+
+### UI Component System
+- **Abstract early**: Unlike business logic (wait for patterns), UI elements should be abstracted into reusable components from the start.
+- **Single source of styling**: Every button, input, card, badge, etc. should be a component. Changing border-radius on buttons = one change, not N changes.
+- **Variants over duplication**: Use props for size/color/state variants (`<Button size="sm" variant="primary">`), not separate components.
+- **Composition**: Build complex UI from simple primitives. A card is a container; card content is separate.
+- **No inline styles**: If you're tempted to add a one-off style, make a component or extend an existing one.
+- **Design tokens first**: Colors, spacing, typography, radii — all come from `tokens.css`. Components consume tokens, never raw values.
 
 ### Events
 - Components emit events, parents handle side effects

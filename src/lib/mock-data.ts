@@ -1,4 +1,4 @@
-import type { Game, GatingState, UserContext } from './types';
+import type { Game, UserContext } from './types';
 
 // Mock games across all engagement categories
 export const MOCK_GAMES: Game[] = [
@@ -118,20 +118,4 @@ export const MOCK_USER: UserContext = {
   id: 'user-001',
   displayName: 'Alex T.',
   avatarUrl: '/thumbnails/avatar-placeholder.svg'
-};
-
-// Mock gating state - unlocked
-export const MOCK_GATING_UNLOCKED: GatingState = {
-  mode: 'daily',
-  isUnlocked: true,
-  xpCurrent: 120,
-  xpRequired: 120
-};
-
-// Mock gating state - locked (in progress)
-export const MOCK_GATING_LOCKED: GatingState = {
-  mode: 'daily',
-  isUnlocked: false,
-  xpCurrent: 45,
-  xpRequired: 120
 };

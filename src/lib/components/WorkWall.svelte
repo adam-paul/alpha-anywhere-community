@@ -2,6 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import type { GatingState } from '../types';
   import { computeProgressPercent } from '../types';
+  import { Button, Icon } from './ui';
   import ProgressRing from './ProgressRing.svelte';
 
   interface Props {
@@ -26,10 +27,7 @@
     {#if isComplete}
       <!-- Completed state -->
       <div class="unlock-icon">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <rect x="3" y="11" width="18" height="11" rx="0" />
-          <path d="M7 11V7a5 5 0 0 1 9.9-1" />
-        </svg>
+        <Icon name="unlock" size={48} />
       </div>
 
       <h3 class="work-wall-title">Goal Complete!</h3>
@@ -54,16 +52,15 @@
         You crushed it! Time to play.
       </p>
 
-      <button class="btn btn-primary unlock-btn" onclick={handleDismiss}>
-        Enter Arcade
-      </button>
+      <div class="unlock-btn">
+        <Button variant="primary" size="lg" onclick={handleDismiss}>
+          Enter Arcade
+        </Button>
+      </div>
     {:else}
       <!-- In-progress state -->
       <div class="lock-icon">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <rect x="3" y="11" width="18" height="11" rx="0" />
-          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-        </svg>
+        <Icon name="lock" size={48} />
       </div>
 
       <h3 class="work-wall-title">Complete Your Goals</h3>
@@ -199,7 +196,9 @@
 
   .unlock-btn {
     width: 100%;
-    padding: var(--space-3) var(--space-6);
-    font-size: var(--font-size-base);
+  }
+
+  .unlock-btn :global(.btn) {
+    width: 100%;
   }
 </style>

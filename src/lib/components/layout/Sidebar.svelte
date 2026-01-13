@@ -1,0 +1,121 @@
+<script lang="ts">
+  import { page } from '$app/stores';
+  import { Icon, Avatar } from '../ui';
+  import type { UserContext } from '$lib/types';
+
+  interface NavItem {
+    href: string;
+    label: string;
+    icon: 'search' | 'chat' | 'gamepad';
+  }
+
+  interface Props {
+    user?: UserContext;
+  }
+
+  let { user }: Props = $props();
+
+  const navItems: NavItem[] = [
+    { href: '/explore', label: 'Explore', icon: 'search' },
+    { href: '/chat', label: 'Chat', icon: 'chat' },
+    { href: '/arcade', label: 'Arcade', icon: 'gamepad' }
+  ];
+
+  function isActive(href: string, pathname: string): boolean {
+    if (href === '/') return pathname === '/';
+    return pathname.startsWith(href);
+  }
+</script>
+
+<aside class="sidebar">
+  <nav class="sidebar-nav">
+    {#each navItems as item (item.href)}
+      <a
+        href={item.href}
+        class="nav-item"
+        class:active={isActive(item.href, $page.url.pathname)}
+        aria-current={isActive(item.href, $page.url.pathname) ? 'page' : undefined}
+      >
+        <Icon name={item.icon} size={20} />
+        <span class="nav-label">{item.label}</span>
+      </a>
+    {/each}
+  </nav>
+
+  {#if user}
+    <div class="sidebar-user">
+      <Avatar src={user.avatarUrl} alt={user.displayName} size="sm" fallback={user.displayName.charAt(0)} />
+      <div class="user-info">
+        <span class="user-name">{user.displayName}</span>
+      </div>
+    </div>
+  {/if}
+</aside>
+
+<style>
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    background: var(--color-surface);
+    border-right: var(--border-width) solid var(--color-border);
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-4);
+    gap: var(--space-1);
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: var(--radius);
+    transition: all var(--transition-fast);
+  }
+
+  .nav-item:hover {
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+
+  .nav-item.active {
+    color: var(--color-primary);
+    background: var(--color-bg);
+    font-weight: 600;
+  }
+
+  .nav-label {
+    font-size: var(--font-size-sm);
+  }
+
+  .sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border-top: var(--border-width) solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .user-name {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
