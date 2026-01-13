@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getWidgetContext } from '../stores/widget.svelte';
+  import { getArcadeStore } from '../stores/arcade.svelte';
   import { ENGAGEMENT_CATEGORIES, type EngagementCategory } from '../types';
 
   interface Props {
@@ -8,7 +8,7 @@
 
   let { disabled = false }: Props = $props();
 
-  const widgetState = getWidgetContext();
+  const arcade = getArcadeStore();
 
   type FilterOption = EngagementCategory | 'all';
 
@@ -22,7 +22,7 @@
 
   function setFilter(filter: FilterOption) {
     if (disabled) return;
-    widgetState.activeFilter = filter;
+    arcade.activeFilter = filter;
   }
 </script>
 
@@ -30,9 +30,9 @@
   {#each filters as filter (filter.value)}
     <button
       class="filter-btn"
-      class:active={widgetState.activeFilter === filter.value}
+      class:active={arcade.activeFilter === filter.value}
       onclick={() => setFilter(filter.value)}
-      aria-pressed={widgetState.activeFilter === filter.value}
+      aria-pressed={arcade.activeFilter === filter.value}
       {disabled}
     >
       {filter.label}

@@ -1,20 +1,21 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-  import { getWidgetContext } from '../stores/widget.svelte';
+  import { getArcadeStore } from '../stores/arcade.svelte';
   import GameCard from './GameCard.svelte';
 
-  const dispatch = createEventDispatcher<{
-    launch: { gameId: string; gameType: string; launchUrl: string }
-  }>();
+  interface Props {
+    disabled?: boolean;
+  }
 
-  const widgetState = getWidgetContext();
+  let { disabled = false }: Props = $props();
 
-  // Use getters for reactive access
-  const games = $derived(widgetState.getFilteredGames());
-  const config = $derived(widgetState.getConfig());
+  const arcade = getArcadeStore();
+
+  const games = $derived(arcade.filteredGames);
 
   function handleLaunch(event: CustomEvent<{ gameId: string; gameType: string; launchUrl: string }>) {
-    dispatch('launch', event.detail);
+    // For now, just log the launch. In the future, this would open the game.
+    console.log('Launching game:', event.detail);
+    // Could also: window.open(event.detail.launchUrl, '_blank');
   }
 </script>
 
@@ -22,7 +23,7 @@
   {#each games as game (game.id)}
     <GameCard
       {game}
-      disabled={!config.gatingState.isUnlocked}
+      {disabled}
       on:launch={handleLaunch}
     />
   {/each}

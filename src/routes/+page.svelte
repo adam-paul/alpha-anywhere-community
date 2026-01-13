@@ -1,56 +1,94 @@
 <script lang="ts">
-  import ArcadeWidget from '$lib/components/ArcadeWidget.svelte';
+  import { createArcadeStore } from '$lib/stores/arcade.svelte';
+  import { computeProgressPercent } from '$lib/types';
+  import GameGrid from '$lib/components/GameGrid.svelte';
+  import WorkWall from '$lib/components/WorkWall.svelte';
+  import FilterBar from '$lib/components/FilterBar.svelte';
   import DevTools from '$lib/components/DevTools.svelte';
-  import { DEFAULT_CONFIG, MOCK_GATING_LOCKED, MOCK_GATING_UNLOCKED } from '$lib/mock-data';
-  import type { WidgetConfig, Theme } from '$lib/types';
 
-  // Dev state
-  let isLocked = $state(false);
-  let xpCurrent = $state(67);
-  let theme: Theme = $state('cel-shaded');
+  // Create arcade store (provides context to child components)
+  const arcade = createArcadeStore();
 
-  // Computed config
-  let config = $derived<WidgetConfig>({
-    ...DEFAULT_CONFIG,
-    theme,
-    gatingState: {
-      mode: 'daily',
-      isUnlocked: !isLocked,
-      xpCurrent: isLocked ? xpCurrent : 120,
-      xpRequired: 120
+  // Track if user has dismissed the work wall after completing goals
+  let workWallDismissed = $state(false);
+
+  // Track previous lock state to detect toggles
+  let prevIsUnlocked = $state(arcade.gatingState.isUnlocked);
+
+  // Calculate if goals are complete
+  const progressPercent = $derived(computeProgressPercent(arcade.gatingState));
+  const isGoalComplete = $derived(progressPercent >= 100);
+
+  // Reset dismissed state if XP drops below 100%
+  $effect(() => {
+    if (!isGoalComplete) {
+      workWallDismissed = false;
     }
   });
 
-  // Handle widget events
-  function handleWidgetEvent(event: CustomEvent) {
-    console.log('Widget event:', event.detail);
+  // Reset dismissed state if lock state changes from unlocked → locked
+  $effect(() => {
+    const currentIsUnlocked = arcade.gatingState.isUnlocked;
+    if (prevIsUnlocked && !currentIsUnlocked) {
+      workWallDismissed = false;
+    }
+    prevIsUnlocked = currentIsUnlocked;
+  });
+
+  // Show work wall when: locked AND NOT (complete + dismissed)
+  const showWorkWall = $derived(
+    !arcade.gatingState.isUnlocked && !(isGoalComplete && workWallDismissed)
+  );
+
+  function handleWorkWallDismiss() {
+    workWallDismissed = true;
   }
+
+  // Dev tools bindings
+  let devIsLocked = $state(false);
+  let devXpCurrent = $state(67);
+
+  // Sync dev tools to arcade store
+  $effect(() => {
+    arcade.gatingState = {
+      mode: 'daily',
+      isUnlocked: !devIsLocked,
+      xpCurrent: devIsLocked ? devXpCurrent : 120,
+      xpRequired: 120
+    };
+  });
 </script>
 
 <svelte:head>
-  <title>Alpha Arcade - Demo</title>
+  <title>Alpha Arcade</title>
 </svelte:head>
 
-<main class="demo-page">
-  <header class="demo-header">
-    <h1>Alpha Arcade</h1>
-    <p class="subtitle">Prototype Demo</p>
-  </header>
+<main class="arcade-page" data-theme={arcade.theme}>
+  <div class="arcade-container">
+    <div class="arcade-header">
+      <h1 class="arcade-title">Arcade</h1>
+      <FilterBar disabled={showWorkWall} />
+    </div>
 
-  <div class="demo-content">
-    <ArcadeWidget {config} on:event={handleWidgetEvent} />
+    <div class="arcade-body" class:locked={showWorkWall}>
+      <GameGrid disabled={showWorkWall} />
+
+      {#if showWorkWall}
+        <WorkWall gatingState={arcade.gatingState} on:dismiss={handleWorkWallDismiss} />
+      {/if}
+    </div>
   </div>
 
   <DevTools
-    bind:isLocked
-    bind:xpCurrent
-    bind:theme
+    bind:isLocked={devIsLocked}
+    bind:xpCurrent={devXpCurrent}
+    bind:theme={arcade.theme}
     xpRequired={120}
   />
 </main>
 
 <style>
-  .demo-page {
+  .arcade-page {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -58,29 +96,40 @@
     background: var(--color-bg);
   }
 
-  .demo-header {
-    text-align: center;
-    margin-bottom: var(--space-8);
-  }
-
-  .demo-header h1 {
-    font-size: var(--font-size-3xl);
-    font-weight: 800;
-    color: var(--color-text);
-    margin-bottom: var(--space-2);
-  }
-
-  .subtitle {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .demo-content {
+  .arcade-container {
     flex: 1;
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .arcade-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-4) var(--space-6);
+    border-bottom: var(--border-width) solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  .arcade-title {
+    font-size: var(--font-size-xl);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .arcade-body {
+    position: relative;
+    padding: var(--space-6);
+    min-height: 500px;
+  }
+
+  .arcade-body.locked {
+    overflow: hidden;
   }
 </style>

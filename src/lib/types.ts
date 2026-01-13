@@ -37,19 +37,6 @@ export interface UserContext {
   avatarUrl?: string;
 }
 
-export interface WidgetConfig {
-  theme: Theme;
-  user?: UserContext;
-  gatingState: GatingState;
-  games: Game[];
-}
-
-// Event types for embed communication
-export type WidgetEvent =
-  | { type: 'launch'; gameId: string; gameType: GameType; launchUrl: string }
-  | { type: 'filter'; category: EngagementCategory | 'all' }
-  | { type: 'ready' };
-
 // Engagement category metadata
 export const ENGAGEMENT_CATEGORIES: Record<EngagementCategory, {
   label: string;

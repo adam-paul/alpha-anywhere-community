@@ -1,4 +1,4 @@
-import type { Game, GatingState, UserContext, WidgetConfig } from './types';
+import type { Game, GatingState, UserContext } from './types';
 
 // Mock games across all engagement categories
 export const MOCK_GAMES: Game[] = [
@@ -135,19 +135,3 @@ export const MOCK_GATING_LOCKED: GatingState = {
   xpCurrent: 45,
   xpRequired: 120
 };
-
-// Default widget config
-export const DEFAULT_CONFIG: WidgetConfig = {
-  theme: 'cel-shaded',
-  user: MOCK_USER,
-  gatingState: MOCK_GATING_UNLOCKED,
-  games: MOCK_GAMES
-};
-
-// Helper to create config with overrides
-export function createConfig(overrides: Partial<WidgetConfig> = {}): WidgetConfig {
-  return {
-    ...DEFAULT_CONFIG,
-    ...overrides
-  };
-}
