@@ -1,6 +1,7 @@
 <script lang="ts">
   import { createArcadeStore } from '$lib/stores/arcade.svelte';
   import { computeProgressPercent } from '$lib/types';
+  import { PageHeader } from '$lib/components/layout';
   import GameGrid from '$lib/components/GameGrid.svelte';
   import WorkWall from '$lib/components/WorkWall.svelte';
   import FilterBar from '$lib/components/FilterBar.svelte';
@@ -63,21 +64,18 @@
   <title>Arcade - Alpha Anywhere Community</title>
 </svelte:head>
 
-<div class="arcade-container">
-  <div class="arcade-widget">
-    <div class="arcade-header">
-      <h2 class="arcade-title">Arcade</h2>
-      <FilterBar disabled={showWorkWall} />
-    </div>
+<PageHeader title="Arcade">
+  {#snippet actions()}
+    <FilterBar disabled={showWorkWall} />
+  {/snippet}
+</PageHeader>
 
-    <div class="arcade-body" class:locked={showWorkWall}>
-      <GameGrid disabled={showWorkWall} />
+<div class="arcade-content" class:locked={showWorkWall}>
+  <GameGrid disabled={showWorkWall} />
 
-      {#if showWorkWall}
-        <WorkWall gatingState={arcade.gatingState} on:dismiss={handleWorkWallDismiss} />
-      {/if}
-    </div>
-  </div>
+  {#if showWorkWall}
+    <WorkWall gatingState={arcade.gatingState} on:dismiss={handleWorkWallDismiss} />
+  {/if}
 </div>
 
 <DevTools
@@ -88,42 +86,12 @@
 />
 
 <style>
-  .arcade-container {
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-  }
-
-  .arcade-widget {
-    background: var(--color-surface);
-    border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
-
-  .arcade-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--space-4) var(--space-6);
-    border-bottom: var(--border-width) solid var(--color-border);
-    background: var(--color-bg);
-  }
-
-  .arcade-title {
-    font-size: var(--font-size-xl);
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .arcade-body {
+  .arcade-content {
     position: relative;
-    padding: var(--space-6);
-    min-height: 500px;
+    min-height: 400px;
   }
 
-  .arcade-body.locked {
+  .arcade-content.locked {
     overflow: hidden;
   }
 </style>

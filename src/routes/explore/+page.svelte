@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { PageHeader } from '$lib/components/layout';
   import Placeholder from '$lib/components/Placeholder.svelte';
 </script>
 
@@ -6,8 +7,10 @@
   <title>Explore - Alpha Anywhere Community</title>
 </svelte:head>
 
+<PageHeader title="Explore" />
+
 <Placeholder
-  title="Explore Students"
+  title="Coming Soon"
   description="Discover other Alpha Anywhere students, see who shares your interests, and make new friends."
   icon="search"
 />

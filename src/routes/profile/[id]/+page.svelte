@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { page } from '$app/stores';
+  import { PageHeader } from '$lib/components/layout';
   import Placeholder from '$lib/components/Placeholder.svelte';
 </script>
 
@@ -7,8 +7,10 @@
   <title>Profile - Alpha Anywhere Community</title>
 </svelte:head>
 
+<PageHeader title="Profile" />
+
 <Placeholder
-  title="Student Profile"
+  title="Coming Soon"
   description="View student profiles, see their interests, and send friend requests."
   icon="user"
 />
