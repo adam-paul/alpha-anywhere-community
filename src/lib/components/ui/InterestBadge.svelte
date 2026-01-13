@@ -1,0 +1,16 @@
+<script lang="ts">
+  import { INTERESTS, type Interest } from '$lib/types';
+  import Badge from './Badge.svelte';
+
+  interface Props {
+    interest: Interest;
+  }
+
+  let { interest }: Props = $props();
+
+  const meta = $derived(INTERESTS[interest]);
+</script>
+
+<Badge color={meta.color} background="transparent">
+  {meta.label}
+</Badge>

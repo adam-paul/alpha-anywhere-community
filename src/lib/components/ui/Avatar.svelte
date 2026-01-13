@@ -57,22 +57,22 @@
     text-transform: uppercase;
   }
 
-  /* Sizes */
+  /* Sizes - use tokens from tokens.css */
   .size-sm {
-    width: 32px;
-    height: 32px;
+    width: var(--avatar-size-sm);
+    height: var(--avatar-size-sm);
     font-size: var(--font-size-xs);
   }
 
   .size-md {
-    width: 40px;
-    height: 40px;
+    width: var(--avatar-size-md);
+    height: var(--avatar-size-md);
     font-size: var(--font-size-sm);
   }
 
   .size-lg {
-    width: 56px;
-    height: 56px;
+    width: var(--avatar-size-lg);
+    height: var(--avatar-size-lg);
     font-size: var(--font-size-base);
   }
 </style>
