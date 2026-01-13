@@ -5,8 +5,9 @@
 
   interface Props {
     variant?: Variant;
-    color?: string;      // Custom color override
-    background?: string; // Custom background override
+    color?: string;       // Custom text color override
+    background?: string;  // Custom background override
+    borderColor?: string; // Custom border color (defaults to text color)
     children: Snippet;
   }
 
@@ -14,13 +15,14 @@
     variant = 'default',
     color,
     background,
+    borderColor,
     children
   }: Props = $props();
 
   // Allow custom colors to override variant colors
   const style = $derived(
-    color || background
-      ? `${color ? `--badge-color: ${color};` : ''} ${background ? `--badge-bg: ${background};` : ''}`
+    color || background || borderColor
+      ? `${color ? `--badge-color: ${color};` : ''} ${background ? `--badge-bg: ${background};` : ''} ${borderColor ? `--badge-border: ${borderColor};` : ''}`
       : undefined
   );
 </script>
@@ -35,7 +37,7 @@
     align-items: center;
     gap: var(--space-1);
     padding: var(--space-1) var(--space-2);
-    border: 2px solid var(--color-border);
+    border: 2px solid var(--badge-border, var(--badge-color, var(--color-text)));
     font-family: var(--font-display);
     font-size: var(--font-size-xs);
     font-weight: 700;
