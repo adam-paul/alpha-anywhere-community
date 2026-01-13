@@ -27,7 +27,8 @@
 <style>
   .app-shell {
     display: flex;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
   }
 
   .app-main {
@@ -35,6 +36,7 @@
     display: flex;
     flex-direction: column;
     min-width: 0;
+    height: 100vh;
   }
 
   .app-content {

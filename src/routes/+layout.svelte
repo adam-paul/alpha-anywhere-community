@@ -18,6 +18,7 @@
 
 <style>
   .app-root {
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
   }
 </style>
