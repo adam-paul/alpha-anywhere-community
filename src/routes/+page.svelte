@@ -60,22 +60,29 @@
 </script>
 
 <svelte:head>
-  <title>Alpha Arcade</title>
+  <title>Alpha Arcade - Demo</title>
 </svelte:head>
 
-<main class="arcade-page" data-theme={arcade.theme}>
-  <div class="arcade-container">
-    <div class="arcade-header">
-      <h1 class="arcade-title">Arcade</h1>
-      <FilterBar disabled={showWorkWall} />
-    </div>
+<main class="demo-page" data-theme={arcade.theme}>
+  <header class="demo-header">
+    <h1>Alpha Arcade</h1>
+    <p class="subtitle">Prototype Demo</p>
+  </header>
 
-    <div class="arcade-body" class:locked={showWorkWall}>
-      <GameGrid disabled={showWorkWall} />
+  <div class="demo-content">
+    <div class="arcade-widget">
+      <div class="arcade-header">
+        <h2 class="arcade-title">Arcade</h2>
+        <FilterBar disabled={showWorkWall} />
+      </div>
 
-      {#if showWorkWall}
-        <WorkWall gatingState={arcade.gatingState} on:dismiss={handleWorkWallDismiss} />
-      {/if}
+      <div class="arcade-body" class:locked={showWorkWall}>
+        <GameGrid disabled={showWorkWall} />
+
+        {#if showWorkWall}
+          <WorkWall gatingState={arcade.gatingState} on:dismiss={handleWorkWallDismiss} />
+        {/if}
+      </div>
     </div>
   </div>
 
@@ -88,7 +95,7 @@
 </main>
 
 <style>
-  .arcade-page {
+  .demo-page {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -96,11 +103,33 @@
     background: var(--color-bg);
   }
 
-  .arcade-container {
+  .demo-header {
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+
+  .demo-header h1 {
+    font-size: var(--font-size-3xl);
+    font-weight: 800;
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+  }
+
+  .subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .demo-content {
     flex: 1;
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
+  }
+
+  .arcade-widget {
     background: var(--color-surface);
     border: var(--border-width) solid var(--color-border);
     border-radius: var(--radius);
