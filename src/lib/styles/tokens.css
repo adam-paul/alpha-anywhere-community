@@ -72,8 +72,6 @@ body {
   background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Prevent layout shift from scrollbar appearing/disappearing */
-  overflow-y: scroll;
 }
 
 h1, h2, h3, h4, h5, h6 {

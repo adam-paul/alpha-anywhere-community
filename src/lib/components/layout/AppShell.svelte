@@ -44,5 +44,6 @@
     padding: var(--space-6);
     background: var(--color-bg);
     overflow-y: auto;
+    scrollbar-gutter: stable;
   }
 </style>
