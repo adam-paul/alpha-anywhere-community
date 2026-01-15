@@ -103,6 +103,7 @@
 
   .sidebar-user {
     display: flex;
+    justify-content: center;
     align-items: center;
     gap: var(--space-3);
     padding: var(--space-4);
