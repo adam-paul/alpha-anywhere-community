@@ -4,14 +4,21 @@
   import { AppShell } from '$lib/components/layout';
   import { createUserStore } from '$lib/stores/user.svelte';
 
-  let { children } = $props();
+  interface Props {
+    data: {
+      user: import('$lib/types').UserContext | null;
+    };
+    children: import('svelte').Snippet;
+  }
 
-  // Create user store (provides context to child components)
-  const userStore = createUserStore();
+  let { data, children }: Props = $props();
+
+  // Create user store with session from server (sets context for child components)
+  createUserStore(data.user);
 </script>
 
 <div class="app-root" data-theme="cel-shaded">
-  <AppShell user={userStore.user}>
+  <AppShell>
     {@render children()}
   </AppShell>
 </div>

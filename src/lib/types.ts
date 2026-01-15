@@ -33,8 +33,10 @@ export interface GatingState {
 
 export interface UserContext {
   id: string;
+  email: string;
   displayName: string;
   avatarUrl?: string;
+  timebackId?: string; // OneRoster sourcedId, populated after M2M lookup
 }
 
 // Engagement category metadata

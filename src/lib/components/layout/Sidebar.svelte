@@ -1,7 +1,9 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import { goto } from '$app/navigation';
   import { Icon, Avatar } from '../ui';
-  import type { UserContext } from '$lib/types';
+  import { SignInButton } from 'timeback/svelte';
+  import { getUserStore } from '$lib/stores/user.svelte';
 
   interface NavItem {
     href: string;
@@ -9,11 +11,7 @@
     icon: 'search' | 'chat' | 'gamepad';
   }
 
-  interface Props {
-    user?: UserContext;
-  }
-
-  let { user }: Props = $props();
+  const userStore = getUserStore();
 
   const navItems: NavItem[] = [
     { href: '/explore', label: 'Explore', icon: 'search' },
@@ -24,6 +22,10 @@
   function isActive(href: string, pathname: string): boolean {
     if (href === '/') return pathname === '/';
     return pathname.startsWith(href);
+  }
+
+  function handleSignOut() {
+    goto('/api/signout');
   }
 </script>
 
@@ -42,14 +44,17 @@
     {/each}
   </nav>
 
-  {#if user}
-    <div class="sidebar-user">
-      <Avatar src={user.avatarUrl} alt={user.displayName} size="sm" fallback={user.displayName.charAt(0)} />
+  <div class="sidebar-user">
+    {#if userStore.user}
+      <Avatar src={userStore.user.avatarUrl} alt={userStore.user.displayName} size="sm" fallback={userStore.user.displayName.charAt(0)} />
       <div class="user-info">
-        <span class="user-name">{user.displayName}</span>
+        <span class="user-name">{userStore.user.displayName}</span>
+        <button class="sign-out-link" onclick={handleSignOut}>Sign out</button>
       </div>
-    </div>
-  {/if}
+    {:else}
+      <SignInButton size="sm" />
+    {/if}
+  </div>
 </aside>
 
 <style>
@@ -117,5 +122,19 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .sign-out-link {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: color var(--transition-fast);
+  }
+
+  .sign-out-link:hover {
+    color: var(--color-text);
   }
 </style>

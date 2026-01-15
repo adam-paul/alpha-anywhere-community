@@ -1,19 +1,17 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import type { UserContext } from '$lib/types';
   import Sidebar from './Sidebar.svelte';
   import AppHeader from './AppHeader.svelte';
 
   interface Props {
-    user?: UserContext;
     children: Snippet;
   }
 
-  let { user, children }: Props = $props();
+  let { children }: Props = $props();
 </script>
 
 <div class="app-shell">
-  <Sidebar {user} />
+  <Sidebar />
 
   <div class="app-main">
     <AppHeader />
