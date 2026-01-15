@@ -93,7 +93,7 @@
     padding: 0 var(--space-4);
     background: var(--color-bg);
     border: var(--border-width) solid var(--color-border);
-    border-radius: 20px;
+    border-radius: var(--radius-chat);
     font-size: var(--font-size-sm);
     color: var(--color-text);
     outline: none;

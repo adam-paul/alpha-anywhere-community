@@ -166,7 +166,7 @@
     right: 0;
     width: 10px;
     height: 10px;
-    background: #22c55e;
+    background: var(--color-online);
     border: 2px solid var(--color-surface);
     border-radius: 50%;
   }

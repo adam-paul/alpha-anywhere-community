@@ -98,7 +98,7 @@
   .bubble {
     background: var(--color-surface);
     border: var(--border-width) solid var(--color-border);
-    border-radius: 16px;
+    border-radius: var(--radius-chat);
     padding: var(--space-3);
     max-width: 100%;
   }
@@ -118,7 +118,7 @@
 
   .image-attachment {
     margin-bottom: var(--space-2);
-    border-radius: 8px;
+    border-radius: var(--radius-chat-sm);
     overflow: hidden;
   }
 
