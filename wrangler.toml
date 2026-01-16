@@ -1,0 +1,10 @@
+name = "alpha-community"
+compatibility_date = "2025-01-13"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".svelte-kit/cloudflare"
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "alpha-community"
+database_id = "a4c3114d-00e1-472a-8c61-e73a0c96f5d5"
