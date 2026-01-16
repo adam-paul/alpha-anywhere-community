@@ -1,17 +1,13 @@
 /**
  * Root layout server load
  *
- * Passes session to all pages.
+ * Passes session to all pages via event.locals (populated in hooks.server.ts).
  */
-
-import { getSession } from '$lib/server/timeback';
 
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = () => {
-	const session = getSession();
-
+export const load: LayoutServerLoad = ({ locals }) => {
 	return {
-		user: session ?? null,
+		user: locals.user
 	};
 };

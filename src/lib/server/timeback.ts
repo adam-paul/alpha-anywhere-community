@@ -1,31 +1,14 @@
 /**
  * Timeback SDK server configuration
  *
- * Handles SSO authentication and provides session management.
+ * Handles SSO authentication with cookie-based sessions.
  * Uses Playcademy's production credentials (with permission).
  */
 
 import { createIdentityServer } from 'timeback';
 import { AWS_COGNITO_CLIENT_ID, AWS_COGNITO_CLIENT_SECRET } from '$env/static/private';
-import type { UserContext } from '../types';
-
-/**
- * Session store (in-memory for dev)
- * TODO: Replace with cookie-based sessions for production
- */
-let session: UserContext | undefined;
-
-export function getSession(): UserContext | undefined {
-	return session;
-}
-
-export function setSession(user: UserContext | undefined): void {
-	session = user;
-}
-
-export function clearSession(): void {
-	session = undefined;
-}
+import { createSessionCookieHeader, getSessionFromRequest } from './session';
+import type { UserContext } from '$lib/types';
 
 /**
  * Timeback Identity Server instance
@@ -42,17 +25,22 @@ export const timeback = createIdentityServer({
 		redirectUri: 'http://localhost:5174/api/auth/sso/callback/timeback',
 
 		buildState: ({ url }) => ({
-			returnTo: url.searchParams.get('returnTo') ?? '/',
+			returnTo: url.searchParams.get('returnTo') ?? '/'
 		}),
 
-		onCallbackSuccess: ({ user, state, redirect }) => {
-			setSession({
+		onCallbackSuccess: async ({ user, state, redirect }) => {
+			const session: UserContext = {
 				id: user.sub,
 				email: user.email ?? '',
-				displayName: user.name ?? user.email?.split('@')[0] ?? 'User',
-			});
+				displayName: user.name ?? user.email?.split('@')[0] ?? 'User'
+			};
+
+			const cookieHeader = await createSessionCookieHeader(session);
 			const returnTo = (state as { returnTo?: string })?.returnTo ?? '/';
-			return redirect(returnTo);
+
+			return redirect(returnTo, {
+				'Set-Cookie': cookieHeader
+			});
 		},
 
 		onCallbackError: ({ error, redirect }) => {
@@ -60,10 +48,10 @@ export const timeback = createIdentityServer({
 			return redirect('/?error=sso_failed');
 		},
 
-		getUser: () => {
-			const s = getSession();
-			if (!s) return undefined;
-			return { id: s.id, email: s.email, name: s.displayName };
-		},
-	},
+		getUser: async (req) => {
+			const session = await getSessionFromRequest(req);
+			if (!session) return undefined;
+			return { id: session.id, email: session.email, name: session.displayName };
+		}
+	}
 });
