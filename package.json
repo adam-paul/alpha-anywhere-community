@@ -1,14 +1,6 @@
 {
   "name": "alpha-anywhere-community",
   "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "vite dev",
-    "dev:cf": "vite build && wrangler pages dev .svelte-kit/cloudflare",
-    "build": "vite build",
-    "preview": "wrangler pages dev .svelte-kit/cloudflare"
-  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260116.0",
     "@sveltejs/adapter-cloudflare": "^7.2.4",
@@ -19,7 +11,15 @@
     "typescript": "^5.7.3",
     "vite": "^6.0.0"
   },
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "dev:cf": "vite build && wrangler pages dev .svelte-kit/cloudflare",
+    "build": "vite build",
+    "preview": "wrangler pages dev .svelte-kit/cloudflare"
+  },
+  "type": "module",
   "dependencies": {
-    "timeback": "^0.1.2"
+    "timeback": "^0.1.3"
   }
 }

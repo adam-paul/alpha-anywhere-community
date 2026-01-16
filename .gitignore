@@ -40,5 +40,9 @@ coverage
 # Project instructions
 CLAUDE.md
 
+# Wrangler local state
+.wrangler
+
 # Internal repositories
 timeback/
+lms-alphalearn/

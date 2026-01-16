@@ -5,18 +5,18 @@
  * Uses Playcademy's production credentials (with permission).
  */
 
-import { createIdentityServer } from 'timeback';
+import { createTimebackIdentity } from 'timeback/edge';
 import { AWS_COGNITO_CLIENT_ID, AWS_COGNITO_CLIENT_SECRET } from '$env/static/private';
 import { createSessionCookieHeader, getSessionFromRequest } from './session';
 import type { UserContext } from '$lib/types';
 
 /**
- * Timeback Identity Server instance
+ * Timeback Identity instance
  *
- * Uses createIdentityServer for SSO-only (no timeback.config.ts required).
+ * Uses createTimebackIdentity for SSO-only (no timeback.config.ts required).
  * env: 'production' sets the default Cognito issuer for Playcademy prod.
  */
-export const timeback = createIdentityServer({
+export const timeback = createTimebackIdentity({
 	env: 'production',
 	identity: {
 		mode: 'sso',
