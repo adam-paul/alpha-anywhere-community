@@ -3,11 +3,13 @@
  *
  * Routes Timeback auth requests through the SDK handler.
  * Populates event.locals.user from session cookie.
+ * Provisions user in D1 on first authenticated request.
  */
 
 import { building } from '$app/environment';
 import { timeback } from '$lib/server/timeback';
 import { getSessionFromCookie } from '$lib/server/session';
+import { createDbClient } from '$lib/server/db';
 import { svelteKitHandler } from 'timeback/svelte-kit';
 
 import type { Handle } from '@sveltejs/kit';
@@ -16,6 +18,21 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// Populate user from session cookie
 	const user = await getSessionFromCookie(event.cookies);
 	event.locals.user = user;
+
+	// If user is authenticated and D1 is available, ensure they exist in database
+	if (user && event.platform?.env?.DB) {
+		try {
+			const db = createDbClient(event.platform.env.DB);
+			await db.users.upsert({
+				timeback_id: user.id,
+				email: user.email,
+				display_name: user.displayName
+			});
+		} catch (error) {
+			// Log but don't block the request if DB provisioning fails
+			console.error('Failed to provision user in D1:', error);
+		}
+	}
 
 	// Let Timeback handle auth routes
 	return svelteKitHandler({
