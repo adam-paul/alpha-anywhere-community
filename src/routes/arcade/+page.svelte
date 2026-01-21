@@ -74,7 +74,7 @@
   <GameGrid disabled={showWorkWall} />
 
   {#if showWorkWall}
-    <WorkWall gatingState={arcade.gatingState} on:dismiss={handleWorkWallDismiss} />
+    <WorkWall gatingState={arcade.gatingState} onDismiss={handleWorkWallDismiss} />
   {/if}
 </div>
 

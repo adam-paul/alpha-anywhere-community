@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-  import type { Game } from '../types';
+  import type { Game, GameLaunchData } from '../types';
   import { Card } from './ui';
   import CategoryBadge from './CategoryBadge.svelte';
   import PlayerCount from './PlayerCount.svelte';
@@ -8,17 +7,14 @@
   interface Props {
     game: Game;
     disabled?: boolean;
+    onLaunch?: (data: GameLaunchData) => void;
   }
 
-  let { game, disabled = false }: Props = $props();
-
-  const dispatch = createEventDispatcher<{
-    launch: { gameId: string; gameType: string; launchUrl: string }
-  }>();
+  let { game, disabled = false, onLaunch }: Props = $props();
 
   function handleClick() {
     if (disabled) return;
-    dispatch('launch', {
+    onLaunch?.({
       gameId: game.id,
       gameType: game.type,
       launchUrl: game.launchUrl

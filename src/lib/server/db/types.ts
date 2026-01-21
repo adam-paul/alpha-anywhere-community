@@ -72,16 +72,6 @@ export interface UserWithProfile extends DbUser {
 	profile: DbProfile | null;
 }
 
-export interface ConversationWithParticipants extends DbConversation {
-	participants: DbUser[];
-	last_message: DbMessage | null;
-	unread_count: number;
-}
-
-export interface MessageWithSender extends DbMessage {
-	sender: DbUser;
-}
-
 // =============================================================================
 // Input Types (for inserts/updates)
 // =============================================================================

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
   import type { GatingState } from '../types';
   import { computeProgressPercent } from '../types';
   import { Button, Icon } from './ui';
@@ -7,18 +6,17 @@
 
   interface Props {
     gatingState: GatingState;
+    onDismiss?: () => void;
   }
 
-  let { gatingState }: Props = $props();
-
-  const dispatch = createEventDispatcher<{ dismiss: void }>();
+  let { gatingState, onDismiss }: Props = $props();
 
   const progressPercent = $derived(computeProgressPercent(gatingState));
   const isComplete = $derived(progressPercent >= 100);
   const modeLabel = $derived(gatingState.mode === 'daily' ? 'today' : 'this week');
 
   function handleDismiss() {
-    dispatch('dismiss');
+    onDismiss?.();
   }
 </script>
 

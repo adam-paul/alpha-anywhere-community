@@ -11,7 +11,7 @@
   let selectedIds = $state<string[]>([]);
 
   // Filter students by search
-  const filteredStudents = $derived(() => {
+  const filteredStudents = $derived.by(() => {
     if (!searchQuery.trim()) return MOCK_STUDENTS;
 
     const query = searchQuery.toLowerCase().trim();
@@ -84,7 +84,7 @@
         {/if}
 
         <div class="students-list">
-          {#each filteredStudents() as student (student.id)}
+          {#each filteredStudents as student (student.id)}
             <button
               class="student-item"
               class:selected={selectedIds.includes(student.id)}

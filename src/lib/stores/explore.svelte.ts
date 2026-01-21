@@ -20,7 +20,7 @@ export function createExploreStore(initialStudents: Student[]) {
 
   const students = initialStudents;
 
-  const filteredStudents = $derived(() => {
+  const filteredStudents = $derived.by(() => {
     let result = students;
 
     // Filter by interest
@@ -54,7 +54,7 @@ export function createExploreStore(initialStudents: Student[]) {
     set viewMode(value) { viewMode = value; },
 
     get students() { return students; },
-    get filteredStudents() { return filteredStudents(); }
+    get filteredStudents() { return filteredStudents; }
   };
 
   setContext(EXPLORE_CONTEXT_KEY, store);

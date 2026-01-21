@@ -19,7 +19,7 @@
   );
 
   // Get display name (custom name or participant names)
-  const displayName = $derived(() => {
+  const displayName = $derived.by(() => {
     if (conversation.name) return conversation.name;
     if (participants.length === 0) return 'Unknown';
     if (participants.length === 1) return participants[0].displayName;
@@ -51,7 +51,7 @@
   }
 
   // Get last message preview with sender prefix
-  const lastMessagePreview = $derived(() => {
+  const lastMessagePreview = $derived.by(() => {
     if (!conversation.lastMessage) return '';
     const prefix = conversation.lastMessage.senderId === 'me' ? 'You: ' : '';
     return prefix + conversation.lastMessage.content;
@@ -93,13 +93,13 @@
 
   <div class="content">
     <div class="header">
-      <span class="name">{displayName()}</span>
+      <span class="name">{displayName}</span>
       {#if conversation.lastMessage}
         <span class="timestamp">{formatTimestamp(conversation.lastMessage.timestamp)}</span>
       {/if}
     </div>
     <div class="preview-row">
-      <span class="preview">{lastMessagePreview()}</span>
+      <span class="preview">{lastMessagePreview}</span>
       {#if conversation.unreadCount > 0}
         <span class="unread-indicator"></span>
       {/if}

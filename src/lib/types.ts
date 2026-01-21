@@ -24,6 +24,12 @@ export interface Game {
   description?: string;
 }
 
+export interface GameLaunchData {
+  gameId: string;
+  gameType: string;
+  launchUrl: string;
+}
+
 export interface GatingState {
   mode: GatingMode;
   isUnlocked: boolean;

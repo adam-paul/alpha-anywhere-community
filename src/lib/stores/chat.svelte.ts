@@ -48,7 +48,7 @@ export function createChatStore(): ChatState {
   let isNewChatModalOpen = $state(false);
 
   // Derived state
-  const filteredConversations = $derived(() => {
+  const filteredConversations = $derived.by(() => {
     if (!searchQuery.trim()) {
       return conversations;
     }
@@ -75,12 +75,12 @@ export function createChatStore(): ChatState {
     conversations.find(c => c.id === activeConversationId) ?? null
   );
 
-  const activeMessages = $derived(() => {
+  const activeMessages = $derived.by(() => {
     if (!activeConversationId) return [];
     return messages[activeConversationId] ?? [];
   });
 
-  const activeParticipants = $derived(() => {
+  const activeParticipants = $derived.by(() => {
     const conv = conversations.find(c => c.id === activeConversationId);
     if (!conv) return [];
 
@@ -195,10 +195,10 @@ export function createChatStore(): ChatState {
     get isNewChatModalOpen() { return isNewChatModalOpen; },
     set isNewChatModalOpen(value) { isNewChatModalOpen = value; },
 
-    get filteredConversations() { return filteredConversations(); },
+    get filteredConversations() { return filteredConversations; },
     get activeConversation() { return activeConversation; },
-    get activeMessages() { return activeMessages(); },
-    get activeParticipants() { return activeParticipants(); },
+    get activeMessages() { return activeMessages; },
+    get activeParticipants() { return activeParticipants; },
 
     selectConversation,
     sendMessage,

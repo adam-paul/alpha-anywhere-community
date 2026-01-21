@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getArcadeStore } from '../stores/arcade.svelte';
+  import type { GameLaunchData } from '../types';
   import GameCard from './GameCard.svelte';
 
   interface Props {
@@ -12,10 +13,10 @@
 
   const games = $derived(arcade.filteredGames);
 
-  function handleLaunch(event: CustomEvent<{ gameId: string; gameType: string; launchUrl: string }>) {
+  function handleLaunch(data: GameLaunchData) {
     // For now, just log the launch. In the future, this would open the game.
-    console.log('Launching game:', event.detail);
-    // Could also: window.open(event.detail.launchUrl, '_blank');
+    console.log('Launching game:', data);
+    // Could also: window.open(data.launchUrl, '_blank');
   }
 </script>
 
@@ -24,7 +25,7 @@
     <GameCard
       {game}
       {disabled}
-      on:launch={handleLaunch}
+      onLaunch={handleLaunch}
     />
   {/each}
 

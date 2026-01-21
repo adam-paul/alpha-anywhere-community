@@ -1,13 +1,15 @@
 <script lang="ts">
   import { getChatStore } from '$lib/stores/chat.svelte';
+  import { getUserStore } from '$lib/stores/user.svelte';
   import { Avatar, Icon, Button } from '$lib/components/ui';
   import { MOCK_STUDENTS } from '$lib/mock-data';
   import type { Student } from '$lib/types';
 
   const chat = getChatStore();
+  const userStore = getUserStore();
 
   // Get display name
-  const displayName = $derived(() => {
+  const displayName = $derived.by(() => {
     const conv = chat.activeConversation;
     if (!conv) return '';
     if (conv.name) return conv.name;
@@ -22,7 +24,7 @@
   });
 
   // Resolve participants
-  const participants = $derived(() => {
+  const participants = $derived.by(() => {
     const conv = chat.activeConversation;
     if (!conv) return [];
 
@@ -46,7 +48,7 @@
   <div class="details-content">
     <section class="section">
       <div class="chat-name-row">
-        <span class="chat-name">{displayName()}</span>
+        <span class="chat-name">{displayName}</span>
         <button class="edit-btn" aria-label="Edit chat name">
           <Icon name="edit" size={16} />
         </button>
@@ -80,16 +82,23 @@
 
       <div class="members-list">
         <!-- Current user -->
-        <div class="member-item">
-          <Avatar size="sm" fallback="A" />
-          <div class="member-info">
-            <span class="member-name">Alex T.</span>
-            <span class="member-status">You</span>
+        {#if userStore.user}
+          <div class="member-item">
+            <Avatar
+              src={userStore.user.avatarUrl}
+              alt={userStore.user.displayName}
+              size="sm"
+              fallback={userStore.user.displayName.charAt(0)}
+            />
+            <div class="member-info">
+              <span class="member-name">{userStore.user.displayName}</span>
+              <span class="member-status">You</span>
+            </div>
           </div>
-        </div>
+        {/if}
 
         <!-- Other participants -->
-        {#each participants() as participant (participant.id)}
+        {#each participants as participant (participant.id)}
           <div class="member-item">
             <Avatar
               src={participant.avatarUrl}

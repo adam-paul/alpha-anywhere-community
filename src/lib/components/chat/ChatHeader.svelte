@@ -18,7 +18,7 @@
   );
 
   // Get display name
-  const displayName = $derived(() => {
+  const displayName = $derived.by(() => {
     if (conversation.name) return conversation.name;
     if (participants.length === 0) return 'Unknown';
     if (participants.length === 1) return participants[0].displayName;
@@ -58,7 +58,7 @@
     </div>
 
     <div class="header-info">
-      <h2 class="name">{displayName()}</h2>
+      <h2 class="name">{displayName}</h2>
       <span class="member-count">{memberCount} Members</span>
     </div>
   </div>
