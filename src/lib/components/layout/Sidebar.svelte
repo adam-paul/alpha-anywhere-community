@@ -46,11 +46,11 @@
 
   <div class="sidebar-user">
     {#if userStore.user}
-      <Avatar src={userStore.user.avatarUrl} alt={userStore.user.displayName} size="sm" fallback={userStore.user.displayName.charAt(0)} />
-      <div class="user-info">
+      <a href="/profile/me" class="user-profile-link">
+        <Avatar src={userStore.user.avatarUrl} alt={userStore.user.displayName} size="sm" fallback={userStore.user.displayName.charAt(0)} />
         <span class="user-name">{userStore.user.displayName}</span>
-        <button class="sign-out-link" onclick={handleSignOut}>Sign out</button>
-      </div>
+      </a>
+      <button class="sign-out-link" onclick={handleSignOut}>Sign out</button>
     {:else}
       <SignInButton size="sm" />
     {/if}
@@ -103,18 +103,27 @@
 
   .sidebar-user {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    gap: var(--space-3);
+    gap: var(--space-2);
     padding: var(--space-4);
     border-top: var(--border-width) solid var(--color-border);
     background: var(--color-bg);
   }
 
-  .user-info {
+  .user-profile-link {
     display: flex;
-    flex-direction: column;
-    min-width: 0;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: inherit;
+    transition: background var(--transition-fast);
+  }
+
+  .user-profile-link:hover {
+    background: var(--color-surface);
   }
 
   .user-name {

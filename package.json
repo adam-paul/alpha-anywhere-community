@@ -14,7 +14,7 @@
   "private": true,
   "scripts": {
     "dev": "vite dev",
-    "dev:cf": "vite build && wrangler pages dev .svelte-kit/cloudflare",
+    "dev:cf": "vite build && wrangler pages dev .svelte-kit/cloudflare --port 5174",
     "build": "vite build",
     "preview": "wrangler pages dev .svelte-kit/cloudflare"
   },

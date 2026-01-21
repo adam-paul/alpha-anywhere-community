@@ -1,79 +1,71 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  import { MOCK_STUDENTS } from '$lib/mock-data';
   import { InterestBadge } from '$lib/components/ui';
   import ProfileHeader from '$lib/components/ProfileHeader.svelte';
-  import StatCard from '$lib/components/StatCard.svelte';
-  import MutualFriends from '$lib/components/MutualFriends.svelte';
   import Placeholder from '$lib/components/Placeholder.svelte';
+  import type { PageData } from './$types';
 
-  // Find student by route param ID
-  const student = $derived(
-    MOCK_STUDENTS.find(s => s.id === $page.params.id)
+  let { data }: { data: PageData } = $props();
+
+  // Format joined date from ISO string
+  const joinedDate = $derived(
+    new Date(data.user.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
   );
 
-  // Resolve mutual friends from IDs
-  const mutualFriends = $derived(
-    student
-      ? student.mutualFriendIds
-          .map(id => MOCK_STUDENTS.find(s => s.id === id))
-          .filter((s): s is typeof MOCK_STUDENTS[0] => s !== undefined)
-      : []
-  );
-
-  // Format stats for display
-  const dailyGoalText = $derived(
-    student
-      ? `${student.stats.dailyXpCurrent} / ${student.stats.dailyXpGoal} XP`
-      : ''
-  );
+  // Build student object for ProfileHeader (adapts server data to component's expected shape)
+  const student = $derived({
+    id: data.user.id,
+    displayName: data.user.displayName,
+    handle: data.user.displayName.toLowerCase().replace(/\s+/g, '_'),
+    avatarUrl: data.profile.avatarUrl ?? undefined,
+    coverUrl: data.profile.coverUrl ?? undefined,
+    location: data.profile.location ?? 'Location not set',
+    bio: data.profile.bio ?? '',
+    interests: data.profile.interests,
+    joinedDate
+  });
 </script>
 
 <svelte:head>
-  <title>{student ? `${student.displayName} - Profile` : 'Profile'} - Alpha Anywhere Community</title>
+  <title>{data.user.displayName} - Profile - Alpha Anywhere Community</title>
 </svelte:head>
 
-{#if student}
-  <ProfileHeader {student} />
+<ProfileHeader {student} isOwnProfile={data.isOwnProfile} />
 
-  <div class="profile-content">
-    <section class="profile-section">
-      <h3 class="section-title">About Me</h3>
+<div class="profile-content">
+  <section class="profile-section">
+    <h3 class="section-title">About Me</h3>
+    {#if student.bio}
       <p class="about-text">{student.bio}</p>
-    </section>
+    {:else}
+      <p class="about-text empty">
+        {#if data.isOwnProfile}
+          You haven't added a bio yet.
+        {:else}
+          This user hasn't added a bio yet.
+        {/if}
+      </p>
+    {/if}
+  </section>
 
-    <section class="profile-section">
-      <h3 class="section-title">Interests</h3>
+  <section class="profile-section">
+    <h3 class="section-title">Interests</h3>
+    {#if student.interests.length > 0}
       <div class="interests-list">
         {#each student.interests as interest (interest)}
           <InterestBadge {interest} />
         {/each}
       </div>
-    </section>
-
-    <section class="profile-section">
-      <h3 class="section-title">Statistics</h3>
-      <div class="stats-grid">
-        <StatCard label="XP Earned" value={student.stats.xpEarned} icon="⚡" />
-        <StatCard label="Timeback" value="{student.stats.timebackHours} hrs" icon="⏱️" />
-        <StatCard label="Daily XP Goal" value={dailyGoalText} icon="🎯" />
-      </div>
-    </section>
-
-    {#if mutualFriends.length > 0}
-      <section class="profile-section">
-        <h3 class="section-title">Mutual Friends</h3>
-        <MutualFriends friends={mutualFriends} />
-      </section>
+    {:else}
+      <p class="about-text empty">
+        {#if data.isOwnProfile}
+          You haven't added any interests yet.
+        {:else}
+          This user hasn't added any interests yet.
+        {/if}
+      </p>
     {/if}
-  </div>
-{:else}
-  <Placeholder
-    title="Student Not Found"
-    description="This student profile doesn't exist or has been removed."
-    icon="user"
-  />
-{/if}
+  </section>
+</div>
 
 <style>
   .profile-content {
@@ -109,9 +101,8 @@
     gap: var(--space-2);
   }
 
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: var(--space-4);
+  .about-text.empty {
+    color: var(--color-text-muted);
+    font-style: italic;
   }
 </style>

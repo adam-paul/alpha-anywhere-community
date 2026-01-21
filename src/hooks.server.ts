@@ -23,11 +23,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (user && event.platform?.env?.DB) {
 		try {
 			const db = createDbClient(event.platform.env.DB);
-			await db.users.upsert({
+			const dbUser = await db.users.upsert({
 				timeback_id: user.id,
 				email: user.email,
 				display_name: user.displayName
 			});
+			await db.profiles.upsert(dbUser.id, {});
 		} catch (error) {
 			// Log but don't block the request if DB provisioning fails
 			console.error('Failed to provision user in D1:', error);

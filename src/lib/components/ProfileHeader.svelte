@@ -1,12 +1,21 @@
 <script lang="ts">
-  import type { Student } from '$lib/types';
   import { Avatar, Button } from './ui';
 
-  interface Props {
-    student: Student;
+  interface ProfileStudent {
+    displayName: string;
+    handle: string;
+    avatarUrl?: string;
+    coverUrl?: string;
+    location: string;
+    joinedDate: string;
   }
 
-  let { student }: Props = $props();
+  interface Props {
+    student: ProfileStudent;
+    isOwnProfile?: boolean;
+  }
+
+  let { student, isOwnProfile = false }: Props = $props();
 </script>
 
 <div class="profile-header">
@@ -30,7 +39,11 @@
           <h1 class="display-name">{student.displayName}</h1>
           <span class="handle">@{student.handle}</span>
         </div>
-        <Button variant="primary" size="sm">Send Friend Request</Button>
+        {#if isOwnProfile}
+          <Button variant="secondary" size="sm" disabled>Edit Profile</Button>
+        {:else}
+          <Button variant="primary" size="sm">Send Friend Request</Button>
+        {/if}
       </div>
 
       <div class="meta-row">

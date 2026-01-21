@@ -26,10 +26,22 @@ export const GET: RequestHandler = async ({ platform, locals }) => {
 		// Simple query to verify connection
 		const users = await db.users.findAll(1);
 
+		// If authenticated, fetch DB user and profile
+		let dbUser = null;
+		let dbProfile = null;
+		if (locals.user) {
+			dbUser = await db.users.findByTimebackId(locals.user.id);
+			if (dbUser) {
+				dbProfile = await db.profiles.findByUserId(dbUser.id);
+			}
+		}
+
 		return Response.json({
 			status: 'ok',
 			database: 'connected',
 			user: locals.user ? { id: locals.user.id, email: locals.user.email } : null,
+			dbUser: dbUser ? { id: dbUser.id, display_name: dbUser.display_name } : null,
+			dbProfile: dbProfile ? { user_id: dbProfile.user_id, bio: dbProfile.bio, location: dbProfile.location } : null,
 			stats: {
 				userCount: users.length > 0 ? '1+' : '0'
 			}
