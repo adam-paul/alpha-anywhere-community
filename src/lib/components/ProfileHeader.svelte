@@ -13,9 +13,11 @@
   interface Props {
     student: ProfileStudent;
     isOwnProfile?: boolean;
+    isEditing?: boolean;
+    onEdit?: () => void;
   }
 
-  let { student, isOwnProfile = false }: Props = $props();
+  let { student, isOwnProfile = false, isEditing = false, onEdit }: Props = $props();
 </script>
 
 <div class="profile-header">
@@ -40,7 +42,9 @@
           <span class="handle">@{student.handle}</span>
         </div>
         {#if isOwnProfile}
-          <Button variant="secondary" size="sm" disabled>Edit Profile</Button>
+          {#if !isEditing}
+            <Button variant="secondary" size="sm" onclick={onEdit}>Edit Profile</Button>
+          {/if}
         {:else}
           <Button variant="primary" size="sm">Send Friend Request</Button>
         {/if}

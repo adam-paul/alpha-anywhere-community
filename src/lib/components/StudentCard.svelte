@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Student } from '$lib/types';
-  import { Card, Avatar, InterestBadge } from './ui';
+  import { Card, Avatar, Badge, InterestBadge } from './ui';
 
   interface Props {
     student: Student;
@@ -12,6 +12,11 @@
   // Show max 4 interests, with overflow indicator
   const displayInterests = $derived(student.interests.slice(0, 4));
   const overflowCount = $derived(Math.max(0, student.interests.length - 4));
+
+  // Check for empty states
+  const hasLocation = $derived(student.location && student.location !== 'Location not set');
+  const hasBio = $derived(student.bio && student.bio.trim().length > 0);
+  const hasInterests = $derived(student.interests.length > 0);
 </script>
 
 <a href="/profile/{student.id}" class="student-card-link" class:disabled>
@@ -26,18 +31,32 @@
         />
         <div class="header-info">
           <h3 class="student-name">{student.displayName}</h3>
-          <span class="student-location">{student.location}</span>
+          {#if hasLocation}
+            <span class="student-location">{student.location}</span>
+          {:else}
+            <span class="student-location empty">Add location</span>
+          {/if}
         </div>
       </div>
 
-      <p class="student-bio">{student.bio}</p>
+      {#if hasBio}
+        <p class="student-bio">{student.bio}</p>
+      {:else}
+        <p class="student-bio empty">No bio yet</p>
+      {/if}
 
       <div class="interests">
-        {#each displayInterests as interest (interest)}
-          <InterestBadge {interest} />
-        {/each}
-        {#if overflowCount > 0}
-          <span class="overflow-count">+{overflowCount}</span>
+        {#if hasInterests}
+          {#each displayInterests as interest (interest)}
+            <InterestBadge {interest} />
+          {/each}
+          {#if overflowCount > 0}
+            <span class="overflow-count">+{overflowCount}</span>
+          {/if}
+        {:else}
+          <Badge color="var(--color-text-muted)" background="transparent" borderColor="var(--color-border)">
+            + Add interests
+          </Badge>
         {/if}
       </div>
     </div>
@@ -86,6 +105,11 @@
     color: var(--color-text-muted);
   }
 
+  .student-location.empty {
+    font-style: italic;
+    opacity: 0.6;
+  }
+
   .student-bio {
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
@@ -95,6 +119,11 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  .student-bio.empty {
+    font-style: italic;
+    opacity: 0.6;
   }
 
   .interests {

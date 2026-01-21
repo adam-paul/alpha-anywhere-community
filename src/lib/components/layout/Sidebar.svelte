@@ -48,9 +48,11 @@
     {#if userStore.user}
       <a href="/profile/me" class="user-profile-link">
         <Avatar src={userStore.user.avatarUrl} alt={userStore.user.displayName} size="sm" fallback={userStore.user.displayName.charAt(0)} />
-        <span class="user-name">{userStore.user.displayName}</span>
       </a>
-      <button class="sign-out-link" onclick={handleSignOut}>Sign out</button>
+      <div class="user-info">
+        <a href="/profile/me" class="user-name-link">{userStore.user.displayName}</a>
+        <button class="sign-out-link" onclick={handleSignOut}>Sign out</button>
+      </div>
     {:else}
       <SignInButton size="sm" />
     {/if}
@@ -103,35 +105,42 @@
 
   .sidebar-user {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: var(--space-2);
+    gap: var(--space-3);
     padding: var(--space-4);
     border-top: var(--border-width) solid var(--color-border);
     background: var(--color-bg);
   }
 
   .user-profile-link {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-2);
-    border-radius: var(--radius);
-    text-decoration: none;
-    color: inherit;
-    transition: background var(--transition-fast);
+    display: block;
+    border-radius: 50%;
+    transition: opacity var(--transition-fast);
   }
 
   .user-profile-link:hover {
-    background: var(--color-surface);
+    opacity: 0.8;
   }
 
-  .user-name {
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .user-name-link {
     font-size: var(--font-size-sm);
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .user-name-link:hover {
+    text-decoration: underline;
   }
 
   .sign-out-link {

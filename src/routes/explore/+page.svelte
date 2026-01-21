@@ -7,9 +7,12 @@
   import SearchBar from '$lib/components/SearchBar.svelte';
   import ViewToggle from '$lib/components/ViewToggle.svelte';
   import Placeholder from '$lib/components/Placeholder.svelte';
+  import type { PageData } from './$types';
 
-  // Create explore store (provides context to child components)
-  const explore = createExploreStore();
+  let { data }: { data: PageData } = $props();
+
+  // Create explore store with server data (provides context to child components)
+  const explore = createExploreStore(data.students);
 
   // Build interest filter options from INTERESTS metadata
   const interestOptions = [

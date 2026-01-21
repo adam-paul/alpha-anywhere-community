@@ -12,6 +12,7 @@ import type {
 	DbConversation,
 	DbMessage,
 	DbConversationParticipant,
+	UserWithProfile,
 	CreateUserInput,
 	UpdateProfileInput,
 	CreateMessageInput
@@ -79,6 +80,47 @@ export function createDbClient(db: D1Database) {
 					.bind(limit, offset)
 					.all<DbUser>();
 				return results;
+			},
+
+			/**
+			 * Get all users with their profiles (for explore page). Paginated.
+			 */
+			async findAllWithProfiles(limit = 50, offset = 0): Promise<UserWithProfile[]> {
+				const { results } = await db
+					.prepare(
+						`
+						SELECT
+							u.id, u.timeback_id, u.email, u.display_name, u.created_at, u.updated_at,
+							p.bio, p.location, p.avatar_url, p.cover_url, p.interests
+						FROM users u
+						LEFT JOIN profiles p ON u.id = p.user_id
+						ORDER BY u.created_at DESC
+						LIMIT ? OFFSET ?
+						`
+					)
+					.bind(limit, offset)
+					.all();
+
+				// Reshape flat results into nested structure
+				return results.map((row: Record<string, unknown>) => ({
+					id: row.id as string,
+					timeback_id: row.timeback_id as string,
+					email: row.email as string,
+					display_name: row.display_name as string,
+					created_at: row.created_at as string,
+					updated_at: row.updated_at as string,
+					profile: row.bio !== null || row.location !== null || row.avatar_url !== null
+						? {
+								user_id: row.id as string,
+								bio: row.bio as string | null,
+								location: row.location as string | null,
+								avatar_url: row.avatar_url as string | null,
+								cover_url: row.cover_url as string | null,
+								interests: row.interests as string | null,
+								updated_at: row.updated_at as string
+							}
+						: null
+				}));
 			}
 		},
 

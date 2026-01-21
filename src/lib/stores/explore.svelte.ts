@@ -1,6 +1,5 @@
 import { getContext, setContext } from 'svelte';
 import type { Interest, Student } from '../types';
-import { MOCK_STUDENTS } from '../mock-data';
 
 const EXPLORE_CONTEXT_KEY = 'explore';
 
@@ -14,12 +13,12 @@ export interface ExploreState {
   readonly filteredStudents: Student[];
 }
 
-export function createExploreStore() {
+export function createExploreStore(initialStudents: Student[]) {
   let searchQuery = $state('');
   let activeInterestFilter = $state<Interest | 'all'>('all');
   let viewMode = $state<ViewMode>('grid');
 
-  const students = MOCK_STUDENTS;
+  const students = initialStudents;
 
   const filteredStudents = $derived(() => {
     let result = students;
