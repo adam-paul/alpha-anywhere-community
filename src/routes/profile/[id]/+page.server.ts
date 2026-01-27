@@ -23,7 +23,8 @@ export const load: PageServerLoad = async ({ params, locals, platform }) => {
 		}
 
 		const db = createDbClient(platform.env.DB);
-		const dbUser = await db.users.findByTimebackId(locals.user.id);
+		// Look up by email (stable across Cognito pools)
+		const dbUser = await db.users.findByEmail(locals.user.email);
 
 		if (!dbUser) {
 			error(404, 'User not found');

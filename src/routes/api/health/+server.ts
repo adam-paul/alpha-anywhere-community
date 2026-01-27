@@ -30,7 +30,7 @@ export const GET: RequestHandler = async ({ platform, locals }) => {
 		let dbUser = null;
 		let dbProfile = null;
 		if (locals.user) {
-			dbUser = await db.users.findByTimebackId(locals.user.id);
+			dbUser = await db.users.findByEmail(locals.user.email);
 			if (dbUser) {
 				dbProfile = await db.profiles.findByUserId(dbUser.id);
 			}

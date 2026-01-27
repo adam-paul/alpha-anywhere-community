@@ -10,7 +10,7 @@ import { building } from '$app/environment';
 import { timeback } from '$lib/server/timeback';
 import { getSessionFromCookie } from '$lib/server/session';
 import { createDbClient } from '$lib/server/db';
-import { svelteKitHandler } from 'timeback/svelte-kit';
+import { svelteKitHandler } from '@timeback/sdk/svelte-kit';
 
 import type { Handle } from '@sveltejs/kit';
 
@@ -41,6 +41,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event,
 		resolve,
 		building,
-		callbackPath: '/api/auth/sso/callback/timeback'
+		callbackPath: '/auth/callback'
 	});
 };

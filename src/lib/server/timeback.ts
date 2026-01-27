@@ -2,11 +2,16 @@
  * Timeback SDK server configuration
  *
  * Handles SSO authentication with cookie-based sessions.
- * Uses Playcademy's production credentials (with permission).
+ * Uses Alpha Anywhere Community's dedicated Cognito credentials.
  */
 
-import { createTimebackIdentity } from 'timeback/edge';
-import { AWS_COGNITO_CLIENT_ID, AWS_COGNITO_CLIENT_SECRET } from '$env/static/private';
+import { createTimebackIdentity } from '@timeback/sdk/edge';
+import {
+	AWS_COGNITO_CLIENT_ID,
+	AWS_COGNITO_CLIENT_SECRET,
+	AWS_COGNITO_ISSUER,
+	AUTH_CALLBACK_URL
+} from '$env/static/private';
 import { createSessionCookieHeader, getSessionFromRequest } from './session';
 import type { UserContext } from '$lib/types';
 
@@ -14,15 +19,16 @@ import type { UserContext } from '$lib/types';
  * Timeback Identity instance
  *
  * Uses createTimebackIdentity for SSO-only (no timeback.config.ts required).
- * env: 'production' sets the default Cognito issuer for Playcademy prod.
+ * Issuer points to Alpha Anywhere Community's Cognito user pool.
  */
 export const timeback = createTimebackIdentity({
-	env: 'production',
+	env: 'staging',
 	identity: {
 		mode: 'sso',
 		clientId: AWS_COGNITO_CLIENT_ID,
 		clientSecret: AWS_COGNITO_CLIENT_SECRET,
-		redirectUri: 'http://localhost:5174/api/auth/sso/callback/timeback',
+		issuer: AWS_COGNITO_ISSUER,
+		redirectUri: AUTH_CALLBACK_URL,
 
 		buildState: ({ url }) => ({
 			returnTo: url.searchParams.get('returnTo') ?? '/'

@@ -1,6 +1,6 @@
 # Alpha Anywhere Community: Roadmap
 
-**Last updated:** 2026-01-16
+**Last updated:** 2026-01-26
 
 This document outlines what's been built, what's missing, and the recommended build order to take the Community from prototype to production.
 
@@ -18,20 +18,20 @@ The frontend is production-quality with complete UI flows. Infrastructure is in 
 | **Styling** | ✅ | Design tokens in `tokens.css`, cel-shaded theme |
 | **Deployment** | ✅ | Cloudflare Pages with Workers runtime |
 | **Database** | ✅ | D1 (SQLite at edge), schema applied locally |
-| **Authentication** | ✅ | Timeback SSO via `timeback/edge`, cookie sessions |
+| **Authentication** | ✅ | Timeback SSO via `@timeback/sdk`, cookie sessions |
 | **Session Management** | ✅ | HMAC-signed cookies, 7-day expiry |
-| **User Provisioning** | ✅ | Auto-creates D1 user on first authenticated request |
+| **User Provisioning** | ✅ | Auto-creates D1 user + profile on first authenticated request |
 
-### Frontend UI (Complete - Mock Data)
+### Frontend UI
 
-| Feature | Location | Status |
-|---------|----------|--------|
-| **Arcade** | `/arcade` | 12 games, 5 engagement categories, filtering, work-wall |
-| **Work Wall** | Integrated in arcade | XP gating UI, progress ring, lock/unlock states |
-| **Profiles** | `/profile/[id]` | Avatar, cover, bio, interests, stats, mutual friends |
-| **Explore** | `/explore` | Search, 23 interest filters, grid/map toggle |
-| **Chat** | `/chat` | 1:1 and group, threads, composer, new chat modal |
-| **UI System** | `$lib/components/ui` | Button, Card, Badge, Avatar, Icon, Select with variants |
+| Feature | Location | Status | Data Source |
+|---------|----------|--------|-------------|
+| **Arcade** | `/arcade` | Complete | Mock data |
+| **Work Wall** | Integrated in arcade | Complete | Mock XP (hardcoded 120) |
+| **Profiles** | `/profile/[id]` | Complete, editable | D1 ✅ |
+| **Explore** | `/explore` | Complete | D1 ✅ |
+| **Chat** | `/chat` | Complete | Mock data |
+| **UI System** | `$lib/components/ui` | Complete | N/A |
 
 ### Database Schema (Applied Locally)
 
@@ -54,13 +54,11 @@ users ←──── profiles (1:1)
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Explore → D1 | Not connected | Still uses `MOCK_STUDENTS` |
 | Chat → D1 | Not connected | Still uses `MOCK_CONVERSATIONS`, `MOCK_MESSAGES` |
-| Profiles → D1 | Not connected | Still uses mock data |
+| Real Timeback ID | ⚠️ Workaround | Using email lookup; `timeback_id` stores Cognito sub, not real OneRoster ID |
 | Real Gating Data | Not connected | Hardcoded 120 XP; needs LWAI/Timeback API |
-| Game Launch | Incomplete | Logs to console; doesn't open Roblox |
+| Game Launch | ✅ Complete | Roblox deep links with web fallback |
 | Student Map | Placeholder | UI exists, shows "Coming soon" |
-| Profile Editing | None | Profiles are read-only |
 | Friend System | None | Schema exists, no UI flow |
 | Real-time Presence | None | No "who's online" functionality |
 | AI Chat Moderation | None | No content filtering |
@@ -75,14 +73,14 @@ users ←──── profiles (1:1)
 
 | Port | Command | Runtime | D1 Access |
 |------|---------|---------|-----------|
-| 5174 | `bun run dev` | Vite (hot reload) | ❌ No |
-| 8788 | `bun run dev:cf` | Wrangler (Workers) | ✅ Yes |
+| 5173 | `bun run dev` | Vite (hot reload) | ❌ No |
+| 6173 | `bun run dev:cf` | Wrangler (Workers) | ✅ Yes |
 
-Use **8788** when testing D1 features. Use **5174** for fast UI iteration.
+Use **6173** (Wrangler) when testing D1 features or auth. Use **5173** (Vite) for fast UI iteration without auth.
 
-**Health check:** `http://localhost:8788/api/health` — Shows DB status, user info, user count.
+**Health check:** `http://localhost:6173/api/health` — Shows DB status, user info, profile info.
 
-**Credentials:** Currently using Playcademy's Timeback credentials (callback on port 5174). Will switch to dedicated credentials later.
+**Credentials:** Alpha Anywhere Community's dedicated Cognito credentials (callbacks on ports 5173 and 6173).
 
 ---
 
@@ -94,22 +92,20 @@ Use **8788** when testing D1 features. Use **5174** for fast UI iteration.
 
 #### 1.1 ~~Activate Timeback SSO~~ ✅ DONE
 
-- SSO works via `timeback/edge` package
+- SSO works via `@timeback/sdk/edge` package
 - Cookie-based sessions with HMAC signing
 - User provisioned in D1 on first authenticated request
-- Using Playcademy credentials temporarily (port 5174 callback)
+- Using dedicated Alpha Anywhere Community Cognito credentials
+
+⚠️ **Known limitation:** See 1.7 below — we're not yet fetching the real Timeback ID.
 
 ---
 
-#### 1.2 Wire Explore to Real Users
+#### 1.2 ~~Wire Explore to Real Users~~ ✅ DONE
 
-**What:** `/explore` shows real users from D1 instead of `MOCK_STUDENTS`.
-
-**Work:**
-- Create `src/routes/explore/+page.server.ts` — fetch `db.users.findAll()` with profiles
-- Pass to page as `data.students`
-- Update `explore.svelte.ts` store to accept server data
-- Remove `MOCK_STUDENTS` imports
+- `src/routes/explore/+page.server.ts` fetches users with profiles from D1
+- `explore.svelte.ts` store accepts `initialStudents` parameter
+- Explore page transforms DB data to Student shape
 
 ---
 
@@ -126,28 +122,21 @@ Use **8788** when testing D1 features. Use **5174** for fast UI iteration.
 
 ---
 
-#### 1.4 Wire Profiles to Real Data
+#### 1.4 ~~Wire Profiles to Real Data~~ ✅ DONE
 
-**What:** `/profile/[id]` shows real profile from D1.
-
-**Work:**
-- Create `src/routes/profile/[id]/+page.server.ts`
-- Handle "profile not found" state
-- Own profile shows edit affordance (UI only for now)
+- `src/routes/profile/[id]/+page.server.ts` fetches user + profile from D1
+- Handles `/profile/me` as alias for current user's profile
+- Edit mode implemented: bio, location, interests editable via `PATCH /api/profile`
 
 ---
 
-#### 1.5 Game Launch
+#### 1.5 ~~Game Launch~~ ✅ DONE
 
-**What:** Clicking a game card actually opens Roblox.
-
-**Work:**
-- Implement deep link launch in `arcade/+page.svelte`
-- Handle different game types (Roblox, Minecraft, web)
-- Optional confirmation modal
-- Track launch events
-
-**Open question:** Validate Roblox deep link format across platforms.
+- `src/lib/utils/game-launcher.ts` handles all game types
+- Roblox: tries `roblox://placeId=X` protocol, falls back to roblox.com
+- Visibility-based detection for protocol success
+- Electron support for Timeback wrapper (`shell.openExternal`)
+- Web/Minecraft/iframe types supported
 
 ---
 
@@ -162,6 +151,34 @@ Use **8788** when testing D1 features. Use **5174** for fast UI iteration.
 - Handle weekly unlock logic
 
 **Dependencies:** LWAI database access (blocked, waiting on IAM user)
+
+---
+
+#### 1.7 Fetch Real Timeback ID via M2M API
+
+**What:** Populate the real Timeback/OneRoster `sourcedId` for each user.
+
+**Current state (workaround):**
+- The `timeback_id` column currently stores the **Cognito `sub`** claim, which is pool-specific (different across Cognito app clients)
+- We match users by **email** (stable) during upsert to avoid duplicates when switching credentials
+- This works but is not the canonical Timeback identity
+
+**Why it matters:**
+- The real Timeback ID (OneRoster `sourcedId`) is the canonical identifier across all Timeback systems
+- Needed for: parent-child linking, XP/gating queries, learning data lookups
+- Email lookup is a workaround; Timeback ID should be the unique key
+
+**Work:**
+- Use M2M API credentials to call OneRoster API on user login
+- Query: `GET /ims/oneroster/rostering/v1p2/users?filter=email='user@example.com'`
+- Extract `sourcedId` from response
+- Store in `timeback_id` column (replacing Cognito sub)
+- Add `UNIQUE` constraint on `timeback_id` once populated correctly
+- Consider caching to avoid API call on every login
+
+**Dependencies:** M2M API credentials (have them), Timeback API auth URL confirmed
+
+**Reference:** Cognito SSO only returns email + basic metadata. Real Timeback ID requires M2M lookup. See conversation with hbauer (2026-01-14).
 
 ---
 
@@ -256,15 +273,12 @@ CREATE TABLE user_settings (
 
 ---
 
-#### 3.2 Profile Editing
+#### 3.2 ~~Profile Editing~~ ✅ DONE (pulled forward to Tier 1)
 
-**What:** Students can edit their own profile.
-
-**Work:**
 - Edit mode toggle on own profile
-- Form: bio, location (city), interests
+- Form: bio, location, interests
 - `PATCH /api/profile` endpoint
-- Defer avatar/cover to Tier 5
+- Avatar/cover editing deferred to Tier 5
 
 ---
 
@@ -416,9 +430,10 @@ CREATE TABLE reports (
 
 | Dependency | Owner | Status | Blocks |
 |------------|-------|--------|--------|
-| Dedicated Timeback credentials | Amanda | Pending | Production deploy |
+| ~~Dedicated Timeback credentials~~ | ~~Beyond AI~~ | ✅ Done | ~~Production deploy~~ |
+| Timeback M2M API auth URL | Beyond AI | Needs confirmation | 1.7 Timeback ID |
 | LWAI IAM user | Amanda | Pending | 1.6 Gating |
-| Roblox deep link validation | Dev | Not started | 1.5 Launch |
+| ~~Roblox deep link validation~~ | ~~Dev~~ | ✅ Done | ~~1.5 Launch~~ |
 | RTC provider selection | Team | Open | 5.1 Voice |
 
 ---
@@ -457,7 +472,9 @@ CREATE TABLE reports (
 
 ## Next Steps (Immediate)
 
-1. **Wire Explore to D1** — First feature to prove full loop works
-2. **Wire Chat to D1** — Messages persist across refresh
-3. **Implement Game Launch** — Deep links actually open Roblox
-4. **Production deploy** — Apply migrations remotely, deploy to Cloudflare Pages
+1. ~~**Wire Explore to D1**~~ ✅ Done
+2. ~~**Wire Profiles to D1**~~ ✅ Done (with editing)
+3. ~~**Implement Game Launch**~~ ✅ Done (Roblox deep links with fallback)
+4. **Wire Chat to D1** — Messages persist across refresh
+5. **Fetch real Timeback ID** — M2M API lookup to get OneRoster `sourcedId` (1.7)
+6. **Production deploy** — Apply migrations remotely, deploy to Cloudflare Pages

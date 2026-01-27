@@ -31,13 +31,21 @@ export function createDbClient(db: D1Database) {
 		// =========================================================================
 		users: {
 			/**
-			 * Find a user by their Timeback ID (from SSO).
+			 * Find a user by their Cognito sub (stored in timeback_id field).
+			 * Note: timeback_id currently stores Cognito sub, not the real Timeback/OneRoster ID.
 			 */
-			async findByTimebackId(timebackId: string): Promise<DbUser | null> {
+			async findByCognitoSub(cognitoSub: string): Promise<DbUser | null> {
 				return db
 					.prepare('SELECT * FROM users WHERE timeback_id = ?')
-					.bind(timebackId)
+					.bind(cognitoSub)
 					.first<DbUser>();
+			},
+
+			/**
+			 * Find a user by email.
+			 */
+			async findByEmail(email: string): Promise<DbUser | null> {
+				return db.prepare('SELECT * FROM users WHERE email = ?').bind(email).first<DbUser>();
 			},
 
 			/**
@@ -48,26 +56,52 @@ export function createDbClient(db: D1Database) {
 			},
 
 			/**
-			 * Create or update a user based on Timeback ID.
+			 * Create or update a user based on email (stable across Cognito pools).
 			 * Used during SSO callback to ensure user exists.
+			 *
+			 * Note: timeback_id field stores the Cognito sub (pool-specific), not the
+			 * real Timeback/OneRoster ID. The real Timeback ID requires an M2M API lookup.
 			 */
 			async upsert(input: CreateUserInput): Promise<DbUser> {
+				// Look up by email first (stable across Cognito pools)
+				const existing = await db
+					.prepare('SELECT * FROM users WHERE email = ?')
+					.bind(input.email)
+					.first<DbUser>();
+
+				if (existing) {
+					// Update existing user, including their Cognito sub if it changed
+					const result = await db
+						.prepare(
+							`
+							UPDATE users SET
+								timeback_id = ?,
+								display_name = ?,
+								updated_at = datetime('now')
+							WHERE id = ?
+							RETURNING *
+						`
+						)
+						.bind(input.timeback_id, input.display_name, existing.id)
+						.first<DbUser>();
+
+					if (!result) throw new Error('Failed to update user');
+					return result;
+				}
+
+				// Create new user
 				const result = await db
 					.prepare(
 						`
 						INSERT INTO users (timeback_id, email, display_name)
 						VALUES (?, ?, ?)
-						ON CONFLICT(timeback_id) DO UPDATE SET
-							email = excluded.email,
-							display_name = excluded.display_name,
-							updated_at = datetime('now')
 						RETURNING *
 					`
 					)
 					.bind(input.timeback_id, input.email, input.display_name)
 					.first<DbUser>();
 
-				if (!result) throw new Error('Failed to upsert user');
+				if (!result) throw new Error('Failed to create user');
 				return result;
 			},
 

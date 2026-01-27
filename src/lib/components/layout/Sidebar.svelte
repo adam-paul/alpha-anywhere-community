@@ -2,7 +2,7 @@
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
   import { Icon, Avatar } from '../ui';
-  import { SignInButton } from 'timeback/svelte';
+  import { SignInButton } from '@timeback/sdk/svelte';
   import { getUserStore } from '$lib/stores/user.svelte';
 
   interface NavItem {

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getArcadeStore } from '../stores/arcade.svelte';
-  import type { GameLaunchData } from '../types';
+  import type { GameLaunchData, GameType } from '../types';
+  import { launchGame } from '../utils/game-launcher';
   import GameCard from './GameCard.svelte';
 
   interface Props {
@@ -13,10 +14,18 @@
 
   const games = $derived(arcade.filteredGames);
 
-  function handleLaunch(data: GameLaunchData) {
-    // For now, just log the launch. In the future, this would open the game.
-    console.log('Launching game:', data);
-    // Could also: window.open(data.launchUrl, '_blank');
+  async function handleLaunch(data: GameLaunchData) {
+    const result = await launchGame({
+      launchUrl: data.launchUrl,
+      type: data.gameType as GameType,
+      gameId: data.gameId
+    });
+
+    if (!result.success) {
+      console.error('Failed to launch game:', result.error);
+    } else {
+      console.log(`Launched via ${result.method}:`, data.gameId);
+    }
   }
 </script>
 

@@ -11,8 +11,13 @@
 -- =============================================================================
 -- USERS
 -- =============================================================================
--- Core identity table. Links to Timeback via timeback_id (from SSO sub claim).
--- We store our own id to decouple from external systems.
+-- Core identity table. We store our own id to decouple from external systems.
+--
+-- NOTE on timeback_id: This currently stores the Cognito `sub` claim, which is
+-- pool-specific (different across Cognito app clients). It is NOT the real
+-- Timeback/OneRoster ID. The real Timeback ID requires an M2M API lookup by email.
+-- We match users by email (stable) and update timeback_id on each login.
+-- Future: Add a `oneroster_id` column for the real Timeback ID once M2M is wired.
 
 CREATE TABLE users (
   id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),

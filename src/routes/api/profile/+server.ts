@@ -20,8 +20,8 @@ export const PATCH: RequestHandler = async ({ request, locals, platform }) => {
 
 	const db = createDbClient(platform.env.DB);
 
-	// Get the user's internal ID
-	const dbUser = await db.users.findByTimebackId(locals.user.id);
+	// Get the user's internal ID (by email, stable across Cognito pools)
+	const dbUser = await db.users.findByEmail(locals.user.email);
 	if (!dbUser) {
 		error(404, 'User not found');
 	}
