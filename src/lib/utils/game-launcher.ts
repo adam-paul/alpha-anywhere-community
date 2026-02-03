@@ -1,6 +1,5 @@
 /**
- * Game launcher utility - handles launching games from protocol URLs
- * with appropriate fallbacks for different platforms and game types.
+ * Game launcher utility - handles launching games via protocol URLs.
  */
 
 export type GameType = 'roblox' | 'minecraft' | 'web' | 'iframe';
@@ -9,6 +8,7 @@ interface LaunchOptions {
 	launchUrl: string;
 	type: GameType;
 	gameId: string;
+	privateServerShareCode?: string;
 }
 
 interface LaunchResult {
@@ -18,112 +18,31 @@ interface LaunchResult {
 }
 
 /**
- * Extract Roblox place ID from a roblox:// protocol URL
- * e.g., "roblox://placeId=1537690962" -> "1537690962"
+ * Build the deep link URL for a private server share code.
+ * Format discovered from Roblox's ShareLinks JavaScript bundle.
+ * @see https://devforum.roblox.com/t/parsing-deeplink-information-from-a-private-server-link-with-the-newer-format/3464724
  */
-function extractRobloxPlaceId(protocolUrl: string): string | null {
-	const match = protocolUrl.match(/placeId=(\d+)/);
-	return match ? match[1] : null;
+function getPrivateServerDeepLink(shareCode: string): string {
+	return `roblox://navigation/share_links?code=${shareCode}&type=Server`;
 }
 
 /**
- * Get the Roblox.com web URL for a place ID
+ * Launch a Roblox private server via deep link.
+ * Requires a private server share code - no public server fallback for safety.
  */
-function getRobloxWebUrl(placeId: string): string {
-	return `https://www.roblox.com/games/${placeId}`;
-}
-
-/**
- * Attempt to launch via protocol handler with visibility-based detection.
- * Returns a promise that resolves when we detect success or timeout.
- */
-function tryProtocolLaunch(protocolUrl: string, timeoutMs: number = 2500): Promise<boolean> {
-	return new Promise((resolve) => {
-		let resolved = false;
-		let iframe: HTMLIFrameElement | null = null;
-
-		const cleanup = () => {
-			if (iframe && iframe.parentNode) {
-				iframe.parentNode.removeChild(iframe);
-			}
-			document.removeEventListener('visibilitychange', handleVisibilityChange);
-			window.removeEventListener('blur', handleBlur);
-		};
-
-		const handleSuccess = () => {
-			if (!resolved) {
-				resolved = true;
-				cleanup();
-				resolve(true);
-			}
-		};
-
-		const handleTimeout = () => {
-			if (!resolved) {
-				resolved = true;
-				cleanup();
-				resolve(false);
-			}
-		};
-
-		// Visibility change indicates app opened and took focus
-		const handleVisibilityChange = () => {
-			if (document.hidden) {
-				handleSuccess();
-			}
-		};
-
-		// Window blur also indicates another app took focus
-		const handleBlur = () => {
-			// Small delay to avoid false positives from clicking
-			setTimeout(() => {
-				if (!resolved && !document.hasFocus()) {
-					handleSuccess();
-				}
-			}, 100);
-		};
-
-		// Set up listeners
-		document.addEventListener('visibilitychange', handleVisibilityChange);
-		window.addEventListener('blur', handleBlur);
-
-		// Create hidden iframe to trigger protocol
-		iframe = document.createElement('iframe');
-		iframe.style.display = 'none';
-		iframe.src = protocolUrl;
-		document.body.appendChild(iframe);
-
-		// Fallback timeout
-		setTimeout(handleTimeout, timeoutMs);
-	});
-}
-
-/**
- * Launch a Roblox game - tries protocol first, falls back to web
- */
-async function launchRoblox(launchUrl: string): Promise<LaunchResult> {
-	const placeId = extractRobloxPlaceId(launchUrl);
-
-	if (!placeId) {
+function launchRoblox(privateServerShareCode?: string): LaunchResult {
+	if (!privateServerShareCode) {
 		return {
 			success: false,
 			method: 'protocol',
-			error: `Invalid Roblox launch URL: ${launchUrl}`
+			error: 'Private server share code is required. Public servers are not supported.'
 		};
 	}
 
-	// Try protocol handler first
-	const protocolWorked = await tryProtocolLaunch(launchUrl);
+	const deepLink = getPrivateServerDeepLink(privateServerShareCode);
+	window.location.href = deepLink;
 
-	if (protocolWorked) {
-		return { success: true, method: 'protocol' };
-	}
-
-	// Fallback: open Roblox.com game page
-	const webUrl = getRobloxWebUrl(placeId);
-	window.open(webUrl, '_blank');
-
-	return { success: true, method: 'web' };
+	return { success: true, method: 'protocol' };
 }
 
 /**
@@ -137,12 +56,12 @@ function launchWeb(launchUrl: string): LaunchResult {
 /**
  * Main entry point for launching any game type
  */
-export async function launchGame(options: LaunchOptions): Promise<LaunchResult> {
-	const { launchUrl, type } = options;
+export function launchGame(options: LaunchOptions): LaunchResult {
+	const { launchUrl, type, privateServerShareCode } = options;
 
 	switch (type) {
 		case 'roblox':
-			return launchRoblox(launchUrl);
+			return launchRoblox(privateServerShareCode);
 
 		case 'web':
 			return launchWeb(launchUrl);

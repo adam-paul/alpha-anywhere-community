@@ -14,11 +14,12 @@
 
   const games = $derived(arcade.filteredGames);
 
-  async function handleLaunch(data: GameLaunchData) {
-    const result = await launchGame({
+  function handleLaunch(data: GameLaunchData) {
+    const result = launchGame({
       launchUrl: data.launchUrl,
       type: data.gameType as GameType,
-      gameId: data.gameId
+      gameId: data.gameId,
+      privateServerShareCode: data.privateServerShareCode
     });
 
     if (!result.success) {

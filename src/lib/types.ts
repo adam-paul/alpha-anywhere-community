@@ -19,15 +19,17 @@ export interface Game {
   thumbnailUrl: string;
   type: GameType;
   engagementCategory: EngagementCategory;
-  currentPlayers: number;
   launchUrl: string;
+  privateServerShareCode?: string;  // Required for Roblox games
   description?: string;
+  isActive?: boolean;
 }
 
 export interface GameLaunchData {
   gameId: string;
   gameType: string;
   launchUrl: string;
+  privateServerShareCode?: string;
 }
 
 export interface GatingState {

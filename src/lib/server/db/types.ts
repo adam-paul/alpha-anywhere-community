@@ -64,6 +64,20 @@ export interface DbMessage {
 	deleted_at: string | null;
 }
 
+export interface DbGame {
+	id: string;
+	title: string;
+	thumbnail_url: string | null;
+	type: 'roblox' | 'minecraft' | 'web' | 'iframe';
+	engagement_category: 'side-by-side' | 'town-square' | 'ice-breaker' | 'trust-builder' | 'rivalry';
+	launch_url: string;
+	private_server_share_code: string | null;
+	description: string | null;
+	is_active: number; // SQLite stores booleans as 0/1
+	created_at: string;
+	updated_at: string;
+}
+
 // =============================================================================
 // Joined/Computed Types
 // =============================================================================

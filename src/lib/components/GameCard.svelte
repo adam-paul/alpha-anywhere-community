@@ -8,16 +8,18 @@
     game: Game;
     disabled?: boolean;
     onLaunch?: (data: GameLaunchData) => void;
+    playerCount?: number;  // Will come from real-time presence later
   }
 
-  let { game, disabled = false, onLaunch }: Props = $props();
+  let { game, disabled = false, onLaunch, playerCount }: Props = $props();
 
   function handleClick() {
     if (disabled) return;
     onLaunch?.({
       gameId: game.id,
       gameType: game.type,
-      launchUrl: game.launchUrl
+      launchUrl: game.launchUrl,
+      privateServerShareCode: game.privateServerShareCode
     });
   }
 </script>
@@ -45,9 +47,11 @@
       <p class="game-description">{game.description}</p>
     {/if}
 
-    <div class="card-footer">
-      <PlayerCount count={game.currentPlayers} />
-    </div>
+    {#if playerCount !== undefined}
+      <div class="card-footer">
+        <PlayerCount count={playerCount} />
+      </div>
+    {/if}
   </div>
 </Card>
 

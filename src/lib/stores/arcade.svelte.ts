@@ -1,6 +1,5 @@
 import { getContext, setContext } from 'svelte';
 import type { EngagementCategory, Game, GatingState, Theme } from '../types';
-import { MOCK_GAMES } from '../mock-data';
 
 const ARCADE_CONTEXT_KEY = 'arcade';
 
@@ -19,7 +18,11 @@ export interface ArcadeState {
   readonly filteredGames: Game[];
 }
 
-export function createArcadeStore() {
+export interface CreateArcadeStoreOptions {
+  games?: Game[];
+}
+
+export function createArcadeStore(options: CreateArcadeStoreOptions = {}) {
   let gatingState = $state<GatingState>({
     mode: 'daily',
     isUnlocked: true,
@@ -30,7 +33,7 @@ export function createArcadeStore() {
   let activeFilter = $state<EngagementCategory | 'all'>('all');
   let theme = $state<Theme>('cel-shaded');
 
-  const games = MOCK_GAMES;
+  const games = options.games ?? [];
 
   const filteredGames = $derived(
     activeFilter === 'all'

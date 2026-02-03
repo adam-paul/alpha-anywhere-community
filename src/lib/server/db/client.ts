@@ -12,6 +12,7 @@ import type {
 	DbConversation,
 	DbMessage,
 	DbConversationParticipant,
+	DbGame,
 	UserWithProfile,
 	CreateUserInput,
 	UpdateProfileInput,
@@ -465,6 +466,39 @@ export function createDbClient(db: D1Database) {
 					.prepare("UPDATE messages SET deleted_at = datetime('now') WHERE id = ?")
 					.bind(messageId)
 					.run();
+			}
+		},
+
+		// =========================================================================
+		// GAMES
+		// =========================================================================
+		games: {
+			/**
+			 * Get all active games.
+			 */
+			async findAll(): Promise<DbGame[]> {
+				const { results } = await db
+					.prepare('SELECT * FROM games WHERE is_active = 1 ORDER BY title')
+					.all<DbGame>();
+				return results;
+			},
+
+			/**
+			 * Get a game by ID.
+			 */
+			async findById(id: string): Promise<DbGame | null> {
+				return db.prepare('SELECT * FROM games WHERE id = ?').bind(id).first<DbGame>();
+			},
+
+			/**
+			 * Get games by engagement category.
+			 */
+			async findByCategory(category: DbGame['engagement_category']): Promise<DbGame[]> {
+				const { results } = await db
+					.prepare('SELECT * FROM games WHERE is_active = 1 AND engagement_category = ? ORDER BY title')
+					.bind(category)
+					.all<DbGame>();
+				return results;
 			}
 		}
 	};

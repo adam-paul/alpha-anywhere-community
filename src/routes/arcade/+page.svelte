@@ -7,8 +7,10 @@
   import FilterBar from '$lib/components/FilterBar.svelte';
   import DevTools from '$lib/components/DevTools.svelte';
 
-  // Create arcade store (provides context to child components)
-  const arcade = createArcadeStore();
+  let { data } = $props();
+
+  // Create arcade store with games from server
+  const arcade = createArcadeStore({ games: data.games });
 
   // Track if user has dismissed the work wall after completing goals
   let workWallDismissed = $state(false);
