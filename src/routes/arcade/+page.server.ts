@@ -19,7 +19,9 @@ export const load: PageServerLoad = async ({ platform }) => {
 		type: g.type,
 		engagementCategory: g.engagement_category,
 		launchUrl: g.launch_url,
-		privateServerShareCode: g.private_server_share_code ?? undefined,
+		placeId: g.place_id ?? undefined,
+		accessCode: g.private_server_access_code ?? undefined,
+		linkCode: g.link_code ?? undefined,
 		description: g.description ?? undefined,
 		isActive: g.is_active === 1
 	}));

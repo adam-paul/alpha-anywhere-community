@@ -71,7 +71,9 @@ export interface DbGame {
 	type: 'roblox' | 'minecraft' | 'web' | 'iframe';
 	engagement_category: 'side-by-side' | 'town-square' | 'ice-breaker' | 'trust-builder' | 'rivalry';
 	launch_url: string;
-	private_server_share_code: string | null;
+	place_id: string | null;  // Roblox place ID for deep links
+	private_server_access_code: string | null;  // UUID access code for private servers
+	link_code: string | null;  // Link code for private server deep links
 	description: string | null;
 	is_active: number; // SQLite stores booleans as 0/1
 	created_at: string;

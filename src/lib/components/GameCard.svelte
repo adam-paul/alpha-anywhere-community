@@ -18,8 +18,10 @@
     onLaunch?.({
       gameId: game.id,
       gameType: game.type,
-      launchUrl: game.launchUrl,
-      privateServerShareCode: game.privateServerShareCode
+      placeId: game.placeId,
+      accessCode: game.accessCode,
+      linkCode: game.linkCode,
+      launchUrl: game.launchUrl
     });
   }
 </script>

@@ -16,10 +16,12 @@
 
   function handleLaunch(data: GameLaunchData) {
     const result = launchGame({
-      launchUrl: data.launchUrl,
       type: data.gameType as GameType,
       gameId: data.gameId,
-      privateServerShareCode: data.privateServerShareCode
+      placeId: data.placeId,
+      accessCode: data.accessCode,
+      linkCode: data.linkCode,
+      launchUrl: data.launchUrl
     });
 
     if (!result.success) {

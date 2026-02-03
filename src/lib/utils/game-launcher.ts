@@ -5,10 +5,14 @@
 export type GameType = 'roblox' | 'minecraft' | 'web' | 'iframe';
 
 interface LaunchOptions {
-	launchUrl: string;
 	type: GameType;
 	gameId: string;
-	privateServerShareCode?: string;
+	// For Roblox private servers
+	placeId?: string;
+	accessCode?: string;
+	linkCode?: string;
+	// For web/iframe games
+	launchUrl?: string;
 }
 
 interface LaunchResult {
@@ -18,28 +22,27 @@ interface LaunchResult {
 }
 
 /**
- * Build the deep link URL for a private server share code.
- * Format discovered from Roblox's ShareLinks JavaScript bundle.
- * @see https://devforum.roblox.com/t/parsing-deeplink-information-from-a-private-server-link-with-the-newer-format/3464724
+ * Build the deep link URL for a Roblox private server.
+ * Requires placeId, accessCode, and linkCode.
  */
-function getPrivateServerDeepLink(shareCode: string): string {
-	return `roblox://navigation/share_links?code=${shareCode}&type=Server`;
+function getPrivateServerDeepLink(placeId: string, accessCode: string, linkCode: string): string {
+	return `roblox://placeId=${placeId}&accessCode=${accessCode}&linkCode=${linkCode}`;
 }
 
 /**
  * Launch a Roblox private server via deep link.
- * Requires a private server share code - no public server fallback for safety.
+ * Requires placeId, accessCode, and linkCode - no public server fallback for safety.
  */
-function launchRoblox(privateServerShareCode?: string): LaunchResult {
-	if (!privateServerShareCode) {
+function launchRoblox(placeId?: string, accessCode?: string, linkCode?: string): LaunchResult {
+	if (!placeId || !accessCode || !linkCode) {
 		return {
 			success: false,
 			method: 'protocol',
-			error: 'Private server share code is required. Public servers are not supported.'
+			error: 'placeId, accessCode, and linkCode are required. Public servers are not supported.'
 		};
 	}
 
-	const deepLink = getPrivateServerDeepLink(privateServerShareCode);
+	const deepLink = getPrivateServerDeepLink(placeId, accessCode, linkCode);
 	window.location.href = deepLink;
 
 	return { success: true, method: 'protocol' };
@@ -57,11 +60,11 @@ function launchWeb(launchUrl: string): LaunchResult {
  * Main entry point for launching any game type
  */
 export function launchGame(options: LaunchOptions): LaunchResult {
-	const { launchUrl, type, privateServerShareCode } = options;
+	const { type, placeId, accessCode, linkCode, launchUrl } = options;
 
 	switch (type) {
 		case 'roblox':
-			return launchRoblox(privateServerShareCode);
+			return launchRoblox(placeId, accessCode, linkCode);
 
 		case 'web':
 			return launchWeb(launchUrl);

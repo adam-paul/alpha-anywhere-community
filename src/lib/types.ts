@@ -19,17 +19,25 @@ export interface Game {
   thumbnailUrl: string;
   type: GameType;
   engagementCategory: EngagementCategory;
-  launchUrl: string;
-  privateServerShareCode?: string;  // Required for Roblox games
   description?: string;
   isActive?: boolean;
+  // For Roblox private servers
+  placeId?: string;
+  accessCode?: string;
+  linkCode?: string;
+  // For web/iframe games
+  launchUrl?: string;
 }
 
 export interface GameLaunchData {
   gameId: string;
   gameType: string;
-  launchUrl: string;
-  privateServerShareCode?: string;
+  // For Roblox private servers
+  placeId?: string;
+  accessCode?: string;
+  linkCode?: string;
+  // For web/iframe games
+  launchUrl?: string;
 }
 
 export interface GatingState {
