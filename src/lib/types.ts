@@ -29,16 +29,12 @@ export interface Game {
   launchUrl?: string;
 }
 
-export interface GameLaunchData {
-  gameId: string;
-  gameType: string;
-  // For Roblox private servers
-  placeId?: string;
-  accessCode?: string;
-  linkCode?: string;
-  // For web/iframe games
-  launchUrl?: string;
-}
+// Discriminated union - each game type requires exactly the fields it needs
+export type LaunchOptions =
+  | { type: 'roblox'; gameId: string; placeId: string; accessCode: string; linkCode: string }
+  | { type: 'web'; gameId: string; launchUrl: string }
+  | { type: 'minecraft'; gameId: string; launchUrl: string }
+  | { type: 'iframe'; gameId: string; launchUrl?: string };
 
 export interface GatingState {
   mode: GatingMode;

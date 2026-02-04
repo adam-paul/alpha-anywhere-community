@@ -14,6 +14,7 @@ import type {
 	DbConversationParticipant,
 	DbGame,
 	UserWithProfile,
+	PendingFriendRequest,
 	CreateUserInput,
 	UpdateProfileInput,
 	CreateMessageInput
@@ -272,12 +273,12 @@ export function createDbClient(db: D1Database) {
 			/**
 			 * Get pending friend requests received by a user.
 			 */
-			async getPendingRequests(userId: string): Promise<(DbFriendship & { requester: DbUser })[]> {
+			async getPendingRequests(userId: string): Promise<PendingFriendRequest[]> {
 				const { results } = await db
 					.prepare(
 						`
 						SELECT f.*,
-							u.id as requester_id, u.email as requester_email,
+							u.email as requester_email,
 							u.display_name as requester_display_name
 						FROM friendships f
 						JOIN users u ON f.requester_id = u.id
@@ -285,9 +286,8 @@ export function createDbClient(db: D1Database) {
 					`
 					)
 					.bind(userId)
-					.all();
-				// Note: This returns a flattened structure, you may want to reshape it
-				return results as (DbFriendship & { requester: DbUser })[];
+					.all<PendingFriendRequest>();
+				return results;
 			}
 		},
 

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getArcadeStore } from '../stores/arcade.svelte';
-  import type { GameLaunchData, GameType } from '../types';
+  import type { Game, LaunchOptions } from '../types';
   import { launchGame } from '../utils/game-launcher';
   import GameCard from './GameCard.svelte';
 
@@ -14,20 +14,52 @@
 
   const games = $derived(arcade.filteredGames);
 
-  function handleLaunch(data: GameLaunchData) {
-    const result = launchGame({
-      type: data.gameType as GameType,
-      gameId: data.gameId,
-      placeId: data.placeId,
-      accessCode: data.accessCode,
-      linkCode: data.linkCode,
-      launchUrl: data.launchUrl
-    });
+  function handleLaunch(game: Game) {
+    let options: LaunchOptions;
+
+    switch (game.type) {
+      case 'roblox':
+        if (!game.placeId || !game.accessCode || !game.linkCode) {
+          console.error('Roblox games require placeId, accessCode, and linkCode');
+          return;
+        }
+        options = {
+          type: 'roblox',
+          gameId: game.id,
+          placeId: game.placeId,
+          accessCode: game.accessCode,
+          linkCode: game.linkCode
+        };
+        break;
+
+      case 'web':
+      case 'minecraft':
+        if (!game.launchUrl) {
+          console.error(`${game.type} games require launchUrl`);
+          return;
+        }
+        options = {
+          type: game.type,
+          gameId: game.id,
+          launchUrl: game.launchUrl
+        };
+        break;
+
+      case 'iframe':
+        options = {
+          type: 'iframe',
+          gameId: game.id,
+          launchUrl: game.launchUrl
+        };
+        break;
+    }
+
+    const result = launchGame(options);
 
     if (!result.success) {
       console.error('Failed to launch game:', result.error);
     } else {
-      console.log(`Launched via ${result.method}:`, data.gameId);
+      console.log(`Launched via ${result.method}:`, game.id);
     }
   }
 </script>

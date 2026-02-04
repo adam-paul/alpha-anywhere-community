@@ -88,6 +88,12 @@ export interface UserWithProfile extends DbUser {
 	profile: DbProfile | null;
 }
 
+// Flat result from getPendingRequests query (JOIN flattens into prefixed columns)
+export interface PendingFriendRequest extends DbFriendship {
+	requester_email: string;
+	requester_display_name: string;
+}
+
 // =============================================================================
 // Input Types (for inserts/updates)
 // =============================================================================

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Game, GameLaunchData } from '../types';
+  import type { Game } from '../types';
   import { Card } from './ui';
   import CategoryBadge from './CategoryBadge.svelte';
   import PlayerCount from './PlayerCount.svelte';
@@ -7,7 +7,7 @@
   interface Props {
     game: Game;
     disabled?: boolean;
-    onLaunch?: (data: GameLaunchData) => void;
+    onLaunch?: (game: Game) => void;
     playerCount?: number;  // Will come from real-time presence later
   }
 
@@ -15,14 +15,7 @@
 
   function handleClick() {
     if (disabled) return;
-    onLaunch?.({
-      gameId: game.id,
-      gameType: game.type,
-      placeId: game.placeId,
-      accessCode: game.accessCode,
-      linkCode: game.linkCode,
-      launchUrl: game.launchUrl
-    });
+    onLaunch?.(game);
   }
 </script>
 

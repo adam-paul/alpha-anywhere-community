@@ -1,13 +1,8 @@
 -- Alpha Community: Games Catalog
 --
 -- This migration creates the games table for the arcade feature.
--- Games are curated by staff and include private server codes for Roblox games.
-
--- =============================================================================
--- GAMES
--- =============================================================================
--- Curated game catalog. Roblox games require a private_server_share_code.
--- engagement_category maps to the social engagement ladder (side-by-side -> rivalry).
+-- Roblox games require placeId, accessCode, and linkCode for private server deep links.
+-- Deep link format: roblox://placeId={id}&accessCode={uuid}&linkCode={code}
 
 CREATE TABLE games (
   id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
@@ -16,9 +11,11 @@ CREATE TABLE games (
   type TEXT NOT NULL CHECK (type IN ('roblox', 'minecraft', 'web', 'iframe')),
   engagement_category TEXT NOT NULL CHECK (engagement_category IN ('side-by-side', 'town-square', 'ice-breaker', 'trust-builder', 'rivalry')),
   launch_url TEXT NOT NULL,
-  private_server_share_code TEXT,  -- Required for Roblox games (hex code from share link)
+  place_id TEXT,  -- Roblox place ID
+  private_server_access_code TEXT,  -- UUID access code for private servers
+  link_code TEXT,  -- Link code for private server deep links
   description TEXT,
-  is_active INTEGER NOT NULL DEFAULT 1,  -- Soft disable without deleting
+  is_active INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );

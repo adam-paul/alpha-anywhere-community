@@ -98,7 +98,7 @@ export function clearSessionCookie(cookies: Cookies): void {
  */
 export async function createSessionCookieHeader(user: UserContext): Promise<string> {
 	const value = await createSessionValue(user);
-	const secure = process.env.NODE_ENV === 'production' ? '; Secure' : '';
+	const secure = import.meta.env.DEV ? '' : '; Secure';
 	return `${COOKIE_NAME}=${value}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${COOKIE_MAX_AGE}${secure}`;
 }
 
