@@ -1,6 +1,6 @@
 # Alpha Anywhere Community: Roadmap
 
-**Last updated:** 2026-02-02
+**Last updated:** 2026-02-03
 
 This document outlines what's been built, what's missing, and the recommended build order to take the Community from prototype to production.
 
@@ -8,7 +8,7 @@ This document outlines what's been built, what's missing, and the recommended bu
 
 ## Current State
 
-The frontend is production-quality with complete UI flows. Infrastructure is in place: D1 database, Timeback SSO, cookie sessions. User provisioning works. Some features still use mock data. **Current focus:** Roblox Arcade with private servers and work-wall gating with real LWAI learning data.
+The frontend is production-quality with complete UI flows. Infrastructure is in place: D1 database (local + remote), Timeback SSO, cookie sessions. User provisioning works. Roblox private server deep links working. **Current focus:** Work-wall gating with real LWAI learning data.
 
 ### Infrastructure (Complete)
 
@@ -17,7 +17,7 @@ The frontend is production-quality with complete UI flows. Infrastructure is in 
 | **Framework** | ✅ | SvelteKit 5 with runes, TypeScript strict |
 | **Styling** | ✅ | Design tokens in `tokens.css`, cel-shaded theme |
 | **Deployment** | ✅ | Cloudflare Pages with Workers runtime |
-| **Database** | ✅ | D1 (SQLite at edge), schema applied locally |
+| **Database** | ✅ | D1 (SQLite at edge), schema applied locally + remote |
 | **Authentication** | ✅ | Timeback SSO via `@timeback/sdk`, cookie sessions |
 | **Session Management** | ✅ | HMAC-signed cookies, 7-day expiry |
 | **User Provisioning** | ✅ | Auto-creates D1 user + profile on first authenticated request |
@@ -26,14 +26,14 @@ The frontend is production-quality with complete UI flows. Infrastructure is in 
 
 | Feature | Location | Status | Data Source |
 |---------|----------|--------|-------------|
-| **Arcade** | `/arcade` | Complete | Mock data |
+| **Arcade** | `/arcade` | Complete | D1 ✅ |
 | **Work Wall** | Integrated in arcade | Complete | Mock XP (hardcoded 120) |
 | **Profiles** | `/profile/[id]` | Complete, editable | D1 ✅ |
 | **Explore** | `/explore` | Complete | D1 ✅ |
 | **Chat** | `/chat` | Complete | Mock data |
 | **UI System** | `$lib/components/ui` | Complete | N/A |
 
-### Database Schema (Applied Locally)
+### Database Schema (Applied Locally + Remote)
 
 ```
 users ←──── profiles (1:1)
@@ -43,10 +43,13 @@ users ←──── profiles (1:1)
   └──── conversation_participants (M:M) ────→ conversations
                                                     │
                                                     └──→ messages (with moderation fields)
+
+games (standalone, Roblox private server support)
 ```
 
 **Key files:**
-- `migrations/0001_initial.sql` — Schema definition
+- `migrations/0001_initial.sql` — Core schema (users, profiles, friendships, chat)
+- `migrations/0002_games.sql` — Games catalog with private server fields
 - `src/lib/server/db/client.ts` — Type-safe D1 client
 - `src/lib/server/db/types.ts` — TypeScript interfaces
 
@@ -57,7 +60,8 @@ users ←──── profiles (1:1)
 | Chat → D1 | Not connected | Still uses `MOCK_CONVERSATIONS`, `MOCK_MESSAGES` |
 | Real Timeback ID | ⚠️ Workaround | Using email lookup; `timeback_id` stores Cognito sub, not real OneRoster ID |
 | Real Gating Data | Not connected | Hardcoded 120 XP; needs LWAI/Timeback API |
-| Game Launch | ✅ Complete | Roblox deep links with web fallback |
+| Game Launch | ✅ Complete | Roblox private server deep links (`placeId` + `accessCode` + `linkCode`) |
+| Games Catalog | ✅ Complete | D1 `games` table with private server support |
 | Student Map | Placeholder | UI exists, shows "Coming soon" |
 | Friend System | None | Schema exists, no UI flow |
 | Real-time Presence | None | No "who's online" functionality |
@@ -156,35 +160,30 @@ Use **6173** (Wrangler) when testing D1 features or auth. Use **5173** (Vite) fo
 
 ---
 
-#### 1.6 Roblox Arcade: Private Servers & Game Management 🔥 PRIORITY
+#### 1.6 ~~Roblox Arcade: Private Servers & Game Management~~ ✅ MOSTLY DONE
 
 **What:** Move from public Roblox game links to Alpha-managed private servers. Admin tooling for game catalog management.
 
-**Current state:** Arcade UI is complete with game grid, category filters, and Roblox deep-link launching. Games are defined in mock data.
+**Done:**
+- ✅ Private server deep links working: `roblox://placeId={id}&accessCode={uuid}&linkCode={code}`
+- ✅ Games table in D1 with `place_id`, `private_server_access_code`, `link_code` fields
+- ✅ Game launcher uses discriminated union types for type-safe launch options
+- ✅ Arcade loads games from D1, not mock data
+- ✅ Bee Swarm Simulator seeded as first game (local + remote)
 
-**Work — Private Servers:**
-- Research Roblox private server API and access patterns
-- Determine server provisioning model: pre-created vs on-demand
-- Implement private server URL/code management (store in D1 or config)
-- Update game launcher to use private server links instead of public place IDs
-- Handle failure cases: server offline, student not logged into Roblox, client not installed
-- Identity linking: bridge AAC user ↔ Roblox account (profile field or OAuth)
+**Remaining:**
+- Admin API for CRUD on games (currently manual SQL inserts)
+- More games need private servers provisioned (see `docs/games-to-add.md`)
 
-**Work — Game Catalog:**
-- Move game definitions from mock data to D1 (new `games` table)
-- Admin API for CRUD on games (add/remove/update games, categories, images)
-- Game metadata: title, description, thumbnail, type, platform, server config
-- Category/tag management
-
-**Work — Minecraft Extensibility:**
+**Future — Minecraft Extensibility:**
 - Evaluate Minecraft server hosting options (Bedrock vs Java, Realms vs self-hosted)
 - `minecraft://` protocol handler support in game launcher (already stubbed)
 - Server connection flow for Minecraft (IP/port vs Realms invite)
 - Determine if work-wall gating applies per-game or globally
 
-**Work — Presence (if feasible):**
+**Future — Presence:**
 - Track game sessions: log when a student launches a game
-- Display "X students playing" on game cards
+- Display "X students playing" on game cards (UI already supports `playerCount` prop)
 - Show which friends are in which game
 - Simple approach: record launch event + 30-min TTL, no real Roblox API polling
 - Advanced: Roblox API presence endpoint (requires Roblox OAuth)
@@ -218,14 +217,18 @@ Use **6173** (Wrangler) when testing D1 features or auth. Use **5173** (Vite) fo
 
 ---
 
-#### 1.8 Production Deploy
+#### 1.8 Production Deploy ⏳ IN PROGRESS
 
 **What:** Get the app running on Cloudflare Pages with real D1.
 
-**Work:**
-- Apply migrations to remote D1: `wrangler d1 migrations apply alpha-community --remote`
-- Consider creating a separate preview D1 database for non-production branches
-- Deploy to Cloudflare Pages
+**Done:**
+- ✅ Migrations applied to remote D1
+- ✅ Bee Swarm seeded in remote D1
+- ✅ Cloudflare Pages deploys from dev branch
+
+**Remaining:**
+- Consider creating a separate D1 database for prod vs preview
+- Set secrets for production branch (currently only dev has them via CLI)
 - Verify SSO callbacks work with production domain
 - Smoke test: login → profile → arcade → work-wall flow
 
@@ -488,8 +491,8 @@ CREATE TABLE reports (
 | ~~Dedicated Timeback credentials~~ | ~~Beyond AI~~ | ✅ Done | ~~Production deploy~~ |
 | ~~LWAI IAM credentials~~ | ~~Amanda~~ | ✅ Done | ~~1.5 Work-wall gating~~ |
 | ~~Roblox deep link validation~~ | ~~Dev~~ | ✅ Done | ~~1.4 Launch~~ |
+| ~~Roblox private server access~~ | ~~Dev~~ | ✅ Done | ~~1.6 Private servers~~ |
 | Timeback M2M API auth URL | Beyond AI | Needs confirmation | 1.7 Timeback ID |
-| Roblox private server access | Dev | Research needed | 1.6 Private servers |
 | LWAI → Community user mapping | Dev | Needs Timeback ID or email bridge | 1.5 Work-wall |
 | RTC provider selection | Team | Open | 5.1 Voice |
 
@@ -538,9 +541,11 @@ CREATE TABLE reports (
 
 1. ~~**Wire Explore to D1**~~ ✅ Done
 2. ~~**Wire Profiles to D1**~~ ✅ Done (with editing)
-3. ~~**Implement Game Launch**~~ ✅ Done (Roblox deep links with fallback)
-4. **Connect work-wall to LWAI data** — Determine criteria, build query layer, replace hardcoded XP (1.5)
-5. **Roblox private servers** — Research API, provision servers, update launcher (1.6)
-6. **Game catalog to D1** — Move games from mock data to database with admin management (1.6)
-7. **Fetch real Timeback ID** — M2M API lookup to get OneRoster `sourcedId` (1.7)
-8. **Production deploy** — Apply migrations remotely, deploy to Cloudflare Pages (1.8)
+3. ~~**Implement Game Launch**~~ ✅ Done (Roblox private server deep links)
+4. ~~**Roblox private servers**~~ ✅ Done (deep link format: `placeId` + `accessCode` + `linkCode`)
+5. ~~**Game catalog to D1**~~ ✅ Done (games table with private server fields)
+6. ~~**Apply migrations remotely**~~ ✅ Done
+7. **Connect work-wall to LWAI data** — Determine criteria, build query layer, replace hardcoded XP (1.5)
+8. **Fetch real Timeback ID** — M2M API lookup to get OneRoster `sourcedId` (1.7)
+9. **Provision more private servers** — See `docs/games-to-add.md` for game list
+10. **Production secrets & final deploy** — Set secrets for prod branch, verify SSO (1.8)

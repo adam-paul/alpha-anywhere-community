@@ -1,12 +1,12 @@
 # Games to Add with Private Servers
 
-Reference list of games from the original mock data. Each needs a private server share code before adding to the database.
+Reference list of games from the original mock data. Each needs a private server with `accessCode` (UUID) and `linkCode` (numeric string) before adding to the database.
 
 ## Side-by-Side (Rung 1) - Solo play near others
 
 | Game | Place ID | Status |
 |------|----------|--------|
-| Bee Swarm Simulator | 1537690962 | ✅ Added (code: ab15da4331469a45bdd6b9243e5b6c30) |
+| Bee Swarm Simulator | 1537690962 | ✅ Added |
 | Adopt Me! | 920587237 | ⏳ Needs private server |
 
 ## Town Square (Rung 2) - Unstructured hangout
@@ -39,35 +39,39 @@ Reference list of games from the original mock data. Each needs a private server
 
 ---
 
-## How to Get Private Server Access Codes
+## How to Get Private Server Credentials
 
 1. Go to the game on Roblox.com
 2. Click the "..." menu → "Create Private Server" (may require Robux)
 3. Copy the share link: `https://www.roblox.com/share?code=XXXXXXXX&type=Server`
-4. Open the share link in a browser with DevTools open (Network tab or Console)
-5. Look for `accessCode` in the network requests or console logs
-   - Format: UUID like `365ac2f6-cde8-41b1-82ff-93dafd34258a`
+4. Open the share link in a browser with DevTools open (Console tab)
+5. Look for both values in the console logs:
+   - `accessCode`: UUID like `365ac2f6-cde8-41b1-82ff-93dafd34258a`
+   - `linkCode`: Numeric string like `32872177519509092753493698228788`
 6. The `placeId` is the game's numeric ID (visible in the game URL)
+
+**Both `accessCode` AND `linkCode` are required** - the deep link won't work with just one.
 
 ## Deep Link Format
 
 ```
-roblox://placeId={placeId}&accessCode={accessCode}
+roblox://placeId={placeId}&accessCode={accessCode}&linkCode={linkCode}
 ```
 
 ## Adding a Game to the Database
 
 ```sql
-INSERT INTO games (id, title, thumbnail_url, type, engagement_category, launch_url, place_id, private_server_access_code, description)
+INSERT INTO games (id, title, thumbnail_url, type, engagement_category, launch_url, place_id, private_server_access_code, link_code, description)
 VALUES (
   'game-slug',
   'Game Title',
   'https://tr.rbxcdn.com/...',  -- Get from Roblox game page
   'roblox',
   'side-by-side',  -- or: town-square, ice-breaker, trust-builder, rivalry
-  'roblox://placeId=XXXXXX',  -- Legacy format, kept for reference
-  'XXXXXX',  -- Roblox place ID (numeric)
-  'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',  -- Private server access code (UUID)
+  'https://www.roblox.com/games/XXXXXX/Game-Name',  -- Web fallback URL
+  'XXXXXX',  -- Roblox place ID (numeric string)
+  'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',  -- accessCode (UUID)
+  'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',  -- linkCode (numeric string)
   'Short description'
 );
 ```
