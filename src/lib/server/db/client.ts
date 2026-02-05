@@ -138,6 +138,7 @@ export function createDbClient(db: D1Database) {
 					.all();
 
 				// Reshape flat results into nested structure
+				// Every user has a profile row (created in hooks.server.ts on first auth)
 				return results.map((row: Record<string, unknown>) => ({
 					id: row.id as string,
 					timeback_id: row.timeback_id as string,
@@ -145,17 +146,15 @@ export function createDbClient(db: D1Database) {
 					display_name: row.display_name as string,
 					created_at: row.created_at as string,
 					updated_at: row.updated_at as string,
-					profile: row.bio !== null || row.location !== null || row.avatar_url !== null
-						? {
-								user_id: row.id as string,
-								bio: row.bio as string | null,
-								location: row.location as string | null,
-								avatar_url: row.avatar_url as string | null,
-								cover_url: row.cover_url as string | null,
-								interests: row.interests as string | null,
-								updated_at: row.updated_at as string
-							}
-						: null
+					profile: {
+						user_id: row.id as string,
+						bio: row.bio as string | null,
+						location: row.location as string | null,
+						avatar_url: row.avatar_url as string | null,
+						cover_url: row.cover_url as string | null,
+						interests: row.interests as string | null,
+						updated_at: row.updated_at as string
+					}
 				}));
 			}
 		},

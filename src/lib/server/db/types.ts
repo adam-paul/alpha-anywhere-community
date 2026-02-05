@@ -85,7 +85,7 @@ export interface DbGame {
 // =============================================================================
 
 export interface UserWithProfile extends DbUser {
-	profile: DbProfile | null;
+	profile: DbProfile;
 }
 
 // Flat result from getPendingRequests query (JOIN flattens into prefixed columns)

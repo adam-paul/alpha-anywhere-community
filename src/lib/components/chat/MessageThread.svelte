@@ -22,7 +22,9 @@
   }
 
   // Check if this is a group chat (multiple participants)
-  const isGroupChat = $derived(chat.activeConversation && chat.activeConversation.participantIds.length > 1);
+  const isGroupChat = $derived(
+    chat.activeConversation !== null && chat.activeConversation.participantIds.length > 1
+  );
 
   function handleSend() {
     chat.sendMessage(chat.composeText);
