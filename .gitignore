@@ -46,6 +46,7 @@ CLAUDE.md
 # Internal repositories
 timeback/
 lms-alphalearn/
+tmp/
 
 # Local docs
 workflow.txt

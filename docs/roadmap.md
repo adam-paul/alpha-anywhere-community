@@ -1,6 +1,6 @@
 # Alpha Anywhere Community: Roadmap
 
-**Last updated:** 2026-02-03
+**Last updated:** 2026-02-09
 
 This document outlines what's been built, what's missing, and the recommended build order to take the Community from prototype to production.
 
@@ -27,7 +27,7 @@ The frontend is production-quality with complete UI flows. Infrastructure is in 
 | Feature | Location | Status | Data Source |
 |---------|----------|--------|-------------|
 | **Arcade** | `/arcade` | Complete | D1 ✅ |
-| **Work Wall** | Integrated in arcade | Complete | Mock XP (hardcoded 120) |
+| **Work Wall** | Integrated in arcade | UI complete | Mock XP (LWAI access ready, needs endpoint) |
 | **Profiles** | `/profile/[id]` | Complete, editable | D1 ✅ |
 | **Explore** | `/explore` | Complete | D1 ✅ |
 | **Chat** | `/chat` | Complete | Mock data |
@@ -58,10 +58,7 @@ games (standalone, Roblox private server support)
 | Feature | Status | Notes |
 |---------|--------|-------|
 | Chat → D1 | Not connected | Still uses `MOCK_CONVERSATIONS`, `MOCK_MESSAGES` |
-| Real Timeback ID | ⚠️ Workaround | Using email lookup; `timeback_id` stores Cognito sub, not real OneRoster ID |
-| Real Gating Data | Not connected | Hardcoded 120 XP; needs LWAI/Timeback API |
-| Game Launch | ✅ Complete | Roblox private server deep links (`placeId` + `accessCode` + `linkCode`) |
-| Games Catalog | ✅ Complete | D1 `games` table with private server support |
+| Real Gating Data | Not connected | Hardcoded 120 XP; LWAI access working, need query architecture |
 | Student Map | Placeholder | UI exists, shows "Coming soon" |
 | Friend System | None | Schema exists, no UI flow |
 | Real-time Presence | None | No "who's online" functionality |
@@ -100,8 +97,7 @@ Use **6173** (Wrangler) when testing D1 features or auth. Use **5173** (Vite) fo
 - Cookie-based sessions with HMAC signing
 - User provisioned in D1 on first authenticated request
 - Using dedicated Alpha Anywhere Community Cognito credentials
-
-⚠️ **Known limitation:** See 1.7 below — we're not yet fetching the real Timeback ID.
+- Real Timeback ID fetched via M2M OneRoster lookup (see 1.7)
 
 ---
 
@@ -133,30 +129,33 @@ Use **6173** (Wrangler) when testing D1 features or auth. Use **5173** (Vite) fo
 
 #### 1.5 Connect Work-Wall to Real LWAI Data 🔥 PRIORITY
 
-**What:** Replace hardcoded 120 XP with real learning progress from the LWAI `daily_learning_metrics` table.
+**What:** Replace hardcoded 120 XP with real learning progress from LWAI.
 
-**Data source:** LWAI/coachbot database via AWS (IAM credentials now available in `.env`)
-- `daily_learning_metrics` table contains per-student, per-day data:
-  - `external_student_id` — matches Alpha/GT School student ID
-  - `date` — date in CT timezone
-  - `active_minutes` — total minutes worked
-  - `correct_questions` — total questions answered correctly
-  - `levels_mastered` — levels mastered that day
+**Data source:** `daily_learning_metrics` table via AWS Athena
+- Cross-account role configured in `.env`
+- Key fields: `email`, `date`, `active_minutes`, `levels_mastered`, `correct_questions`
 
-**Work:**
-- Determine gating criteria (daily vs weekly, which metrics, thresholds)
-- Create server-side LWAI query layer (AWS Athena or direct DB connection)
-- Create `GET /api/gating` endpoint returning unlock status + progress
-- Map LWAI `external_student_id` to Community user (requires Timeback ID or email bridge)
-- Cache strategy (don't hit LWAI on every page load; short TTL or per-session)
-- Handle edge cases: new students with no data, weekends, school breaks
-- Replace hardcoded XP in work-wall overlay with real progress
-- Weekly unlock logic: accumulate across days, unlock when threshold met
+**Progress (2026-02-09):**
+- ✅ Athena access working (CLI tested, queries return data)
+- ✅ Schema confirmed — see `docs/LWAI_Data-Feed-Integration-Guide.md`
+- ✅ User mapping resolved: query by **email**
+- ✅ Gating criteria decided: **`active_minutes`** (weekly sum)
 
-**Open questions:**
-- What metric(s) define "done"? Active minutes? Levels mastered? A combination?
-- Daily unlock vs weekly unlock? (Strategic context says weekly for high schoolers)
-- What happens on weekends/breaks — does the wall drop?
+**Gating criteria:**
+- Use `SUM(active_minutes)` from `daily_learning_metrics` for the current week
+- `active_minutes` reported by "XO" (likely a StudyReel extension or browser extension)
+- Exact methodology is opaque, but it's Alpha Anywhere's official learning time metric
+- Starting threshold TBD (e.g., 300 min/week) — tune empirically
+
+**Remaining:**
+- Design query architecture (CF Workers can't do STS AssumeRole)
+- Implement `GET /api/gating` endpoint with caching
+- Handle edge cases: new students, weekends, breaks
+
+**Architecture options:**
+1. Lambda proxy in AlphaLearn account
+2. Precompute eligibility daily to D1/KV
+3. Use existing AlphaLearn API if available
 
 ---
 
@@ -190,30 +189,18 @@ Use **6173** (Wrangler) when testing D1 features or auth. Use **5173** (Vite) fo
 
 ---
 
-#### 1.7 Fetch Real Timeback ID via M2M API
+#### 1.7 ~~Fetch Real Timeback ID via M2M API~~ ✅ DONE
 
-**What:** Populate the real Timeback/OneRoster `sourcedId` for each user.
+**What:** Fetch OneRoster `sourcedId` (Timeback ID) for each user during SSO.
 
-**Current state (workaround):**
-- The `timeback_id` column currently stores the **Cognito `sub`** claim, which is pool-specific (different across Cognito app clients)
-- We match users by **email** (stable) during upsert to avoid duplicates when switching credentials
-- This works but is not the canonical Timeback identity
+**Implementation:** `src/lib/server/timeback.ts`
+- `getM2MToken()` — client credentials flow to get access token
+- `resolveTimebackId(email)` — queries OneRoster API for `sourcedId`
+- Called in SSO callback; falls back to Cognito `sub` if lookup fails
 
-**Why it matters:**
-- The real Timeback ID (OneRoster `sourcedId`) is the canonical identifier across all Timeback systems
-- Needed for: parent-child linking, XP/gating queries, LWAI data lookups
-- Email lookup is a workaround; Timeback ID should be the unique key
-- **Critical for 1.5** — mapping LWAI `external_student_id` to Community users
+**Credentials:** Staging in `.env`, production credentials for Cloudflare prod env.
 
-**Work:**
-- Use M2M API credentials to call OneRoster API on user login
-- Query: `GET /ims/oneroster/rostering/v1p2/users?filter=email='user@example.com'`
-- Extract `sourcedId` from response
-- Store in `timeback_id` column (replacing Cognito sub)
-- Add `UNIQUE` constraint on `timeback_id` once populated correctly
-- Consider caching to avoid API call on every login
-
-**Dependencies:** M2M API credentials (have them), Timeback API auth URL confirmed
+**Note:** Timeback ID is useful for future Timeback APIs (XP, parent-child linking). For LWAI, use email — see 1.5.
 
 ---
 
@@ -492,8 +479,9 @@ CREATE TABLE reports (
 | ~~LWAI IAM credentials~~ | ~~Amanda~~ | ✅ Done | ~~1.5 Work-wall gating~~ |
 | ~~Roblox deep link validation~~ | ~~Dev~~ | ✅ Done | ~~1.4 Launch~~ |
 | ~~Roblox private server access~~ | ~~Dev~~ | ✅ Done | ~~1.6 Private servers~~ |
-| Timeback M2M API auth URL | Beyond AI | Needs confirmation | 1.7 Timeback ID |
-| LWAI → Community user mapping | Dev | Needs Timeback ID or email bridge | 1.5 Work-wall |
+| ~~Timeback M2M API auth URL~~ | ~~Beyond AI~~ | ✅ Done | ~~1.7 Timeback ID~~ |
+| ~~LWAI → Community user mapping~~ | ~~Dev~~ | ✅ Done (use email) | ~~1.5 Work-wall~~ |
+| LWAI query from edge runtime | Dev | Open (Lambda proxy or precompute) | 1.5 Work-wall |
 | RTC provider selection | Team | Open | 5.1 Voice |
 
 ---
@@ -505,6 +493,8 @@ CREATE TABLE reports (
 | **Database** | Cloudflare D1 | Edge-native, no cold starts, simple, sufficient for MVP |
 | **Sessions** | HMAC-signed cookies | Stateless, no session store needed |
 | **Auth** | Timeback SSO | Already integrated, handles Cognito |
+| **User identity** | Timeback ID (OneRoster sourcedId) | Fetched via M2M API; falls back to Cognito sub |
+| **LWAI user mapping** | Query by email | LWAI uses Alpha's 4-digit IDs, not Timeback UUIDs; email is common key |
 | **Parent portal** | Link to AlphaLearn | Don't rebuild, just add toggles |
 | **Notifications** | Simple D1 table | Multi-channel overkill for MVP |
 | **Permissions** | Role column + settings table | Simple, extensible |
@@ -528,12 +518,13 @@ CREATE TABLE reports (
 
 1. **Work-wall criteria:** What metrics from `daily_learning_metrics` define "done"? Active minutes, levels mastered, correct questions, or a combination?
 2. **Weekly vs daily gating:** AB test, or just go weekly? What happens on weekends/breaks?
-3. **LWAI user mapping:** How does `external_student_id` in LWAI map to Community users? Need Timeback ID bridge or email matching.
-4. **Roblox private servers:** API access model? Pre-provisioned vs on-demand? Cost per server?
-5. **Roblox identity linking:** How to connect AAC accounts to Roblox accounts for private server access?
-6. **Minecraft feasibility:** Bedrock vs Java? Realms vs self-hosted? Worth doing in Feb or defer?
-7. **Voice provider:** Agora vs Daily.co?
-8. **Avatar generation:** Which image model? Cost?
+3. **LWAI query architecture:** How to call Athena from Cloudflare Workers? Lambda proxy, precompute, or existing API?
+4. **Profile stats:** What metrics to show on student profile pages? Options from LWAI: total levels mastered, active minutes, accuracy rate, streak days.
+5. **Roblox private servers:** API access model? Pre-provisioned vs on-demand? Cost per server?
+6. **Roblox identity linking:** How to connect AAC accounts to Roblox accounts for private server access?
+7. **Minecraft feasibility:** Bedrock vs Java? Realms vs self-hosted? Worth doing in Feb or defer?
+8. **Voice provider:** Agora vs Daily.co?
+9. **Avatar generation:** Which image model? Cost?
 
 ---
 
@@ -545,7 +536,11 @@ CREATE TABLE reports (
 4. ~~**Roblox private servers**~~ ✅ Done (deep link format: `placeId` + `accessCode` + `linkCode`)
 5. ~~**Game catalog to D1**~~ ✅ Done (games table with private server fields)
 6. ~~**Apply migrations remotely**~~ ✅ Done
-7. **Connect work-wall to LWAI data** — Determine criteria, build query layer, replace hardcoded XP (1.5)
-8. **Fetch real Timeback ID** — M2M API lookup to get OneRoster `sourcedId` (1.7)
-9. **Provision more private servers** — See `docs/games-to-add.md` for game list
-10. **Production secrets & final deploy** — Set secrets for prod branch, verify SSO (1.8)
+7. ~~**Fetch real Timeback ID**~~ ✅ Done — M2M OneRoster lookup implemented (1.7)
+8. ~~**LWAI access & exploration**~~ ✅ Done — Athena queries working, schema documented
+9. **Design LWAI query architecture** — Solve edge runtime limitation (Lambda proxy, precompute, or existing API)
+10. **Define work-wall criteria** — Choose metrics and thresholds from `daily_learning_metrics`
+11. **Implement work-wall endpoint** — `GET /api/gating` with caching (1.5)
+12. **Explore profile stats metrics** — What LWAI data to surface on student profiles (levels mastered, streaks, etc.)
+13. **Upload production secrets** — Set Cloudflare secrets for prod branch (1.8)
+14. **Provision more private servers** — See `docs/games-to-add.md` for game list
