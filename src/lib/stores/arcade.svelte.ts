@@ -1,23 +1,7 @@
 import { getContext, setContext } from 'svelte';
-import type { EngagementCategory, Game, Theme } from '../types';
+import type { ArcadeState, CreateArcadeStoreOptions, EngagementCategory, Theme } from '$lib/types';
 
 const ARCADE_CONTEXT_KEY = 'arcade';
-
-export interface ArcadeState {
-  // Filter
-  activeFilter: EngagementCategory | 'all';
-
-  // Theme
-  theme: Theme;
-
-  // Games (derived based on filter)
-  readonly games: Game[];
-  readonly filteredGames: Game[];
-}
-
-export interface CreateArcadeStoreOptions {
-  games?: Game[];
-}
 
 export function createArcadeStore(options: CreateArcadeStoreOptions = {}) {
   let activeFilter = $state<EngagementCategory | 'all'>('all');
@@ -26,20 +10,30 @@ export function createArcadeStore(options: CreateArcadeStoreOptions = {}) {
   const games = options.games ?? [];
 
   const filteredGames = $derived(
-    activeFilter === 'all'
-      ? games
-      : games.filter(g => g.engagementCategory === activeFilter)
+    activeFilter === 'all' ? games : games.filter((g) => g.engagementCategory === activeFilter)
   );
 
   const store: ArcadeState = {
-    get activeFilter() { return activeFilter; },
-    set activeFilter(value) { activeFilter = value; },
+    get activeFilter() {
+      return activeFilter;
+    },
+    set activeFilter(value) {
+      activeFilter = value;
+    },
 
-    get theme() { return theme; },
-    set theme(value) { theme = value; },
+    get theme() {
+      return theme;
+    },
+    set theme(value) {
+      theme = value;
+    },
 
-    get games() { return games; },
-    get filteredGames() { return filteredGames; }
+    get games() {
+      return games;
+    },
+    get filteredGames() {
+      return filteredGames;
+    }
   };
 
   setContext(ARCADE_CONTEXT_KEY, store);
@@ -49,7 +43,9 @@ export function createArcadeStore(options: CreateArcadeStoreOptions = {}) {
 export function getArcadeStore(): ArcadeState {
   const store = getContext<ArcadeState>(ARCADE_CONTEXT_KEY);
   if (!store) {
-    throw new Error('Arcade store not found. Ensure createArcadeStore() is called in a parent component.');
+    throw new Error(
+      'Arcade store not found. Ensure createArcadeStore() is called in a parent component.'
+    );
   }
   return store;
 }

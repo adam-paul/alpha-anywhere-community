@@ -1,17 +1,7 @@
 import { getContext, setContext } from 'svelte';
-import type { Interest, Student } from '../types';
+import type { ExploreState, Interest, Student, ViewMode } from '$lib/types';
 
 const EXPLORE_CONTEXT_KEY = 'explore';
-
-export type ViewMode = 'grid' | 'map';
-
-export interface ExploreState {
-  searchQuery: string;
-  activeInterestFilter: Interest | 'all';
-  viewMode: ViewMode;
-  readonly students: Student[];
-  readonly filteredStudents: Student[];
-}
 
 export function createExploreStore(initialStudents: Student[]) {
   let searchQuery = $state('');
@@ -26,17 +16,18 @@ export function createExploreStore(initialStudents: Student[]) {
     // Filter by interest
     if (activeInterestFilter !== 'all') {
       const interest = activeInterestFilter;
-      result = result.filter(s => s.interests.includes(interest));
+      result = result.filter((s) => s.interests.includes(interest));
     }
 
     // Filter by search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim();
-      result = result.filter(s =>
-        s.displayName.toLowerCase().includes(query) ||
-        s.location.toLowerCase().includes(query) ||
-        s.bio.toLowerCase().includes(query) ||
-        s.interests.some(i => i.toLowerCase().includes(query))
+      result = result.filter(
+        (s) =>
+          s.displayName.toLowerCase().includes(query) ||
+          s.location.toLowerCase().includes(query) ||
+          s.bio.toLowerCase().includes(query) ||
+          s.interests.some((i) => i.toLowerCase().includes(query))
       );
     }
 
@@ -44,17 +35,33 @@ export function createExploreStore(initialStudents: Student[]) {
   });
 
   const store: ExploreState = {
-    get searchQuery() { return searchQuery; },
-    set searchQuery(value) { searchQuery = value; },
+    get searchQuery() {
+      return searchQuery;
+    },
+    set searchQuery(value) {
+      searchQuery = value;
+    },
 
-    get activeInterestFilter() { return activeInterestFilter; },
-    set activeInterestFilter(value) { activeInterestFilter = value; },
+    get activeInterestFilter() {
+      return activeInterestFilter;
+    },
+    set activeInterestFilter(value) {
+      activeInterestFilter = value;
+    },
 
-    get viewMode() { return viewMode; },
-    set viewMode(value) { viewMode = value; },
+    get viewMode() {
+      return viewMode;
+    },
+    set viewMode(value) {
+      viewMode = value;
+    },
 
-    get students() { return students; },
-    get filteredStudents() { return filteredStudents; }
+    get students() {
+      return students;
+    },
+    get filteredStudents() {
+      return filteredStudents;
+    }
   };
 
   setContext(EXPLORE_CONTEXT_KEY, store);
@@ -64,7 +71,9 @@ export function createExploreStore(initialStudents: Student[]) {
 export function getExploreStore(): ExploreState {
   const store = getContext<ExploreState>(EXPLORE_CONTEXT_KEY);
   if (!store) {
-    throw new Error('Explore store not found. Ensure createExploreStore() is called in a parent component.');
+    throw new Error(
+      'Explore store not found. Ensure createExploreStore() is called in a parent component.'
+    );
   }
   return store;
 }

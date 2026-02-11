@@ -13,7 +13,7 @@
   // Resolve participants
   const participants = $derived(
     conversation.participantIds
-      .map(id => MOCK_STUDENTS.find(s => s.id === id))
+      .map((id) => MOCK_STUDENTS.find((s) => s.id === id))
       .filter((s): s is Student => s !== undefined)
   );
 
@@ -22,7 +22,7 @@
     if (conversation.name) return conversation.name;
     if (participants.length === 0) return 'Unknown';
     if (participants.length === 1) return participants[0].displayName;
-    return participants.map(p => p.displayName.split(' ')[0]).join(' and ');
+    return participants.map((p) => p.displayName.split(' ')[0]).join(' and ');
   });
 
   // Get member count
@@ -64,11 +64,7 @@
   </div>
 
   <div class="header-right">
-    <button
-      class="info-btn"
-      onclick={onInfoClick}
-      aria-label="Toggle chat details"
-    >
+    <button class="info-btn" onclick={onInfoClick} aria-label="Toggle chat details">
       <Icon name="info" size={20} />
     </button>
   </div>

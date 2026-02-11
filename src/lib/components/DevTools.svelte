@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Theme } from '../types';
+  import type { Theme } from '$lib/types';
 
   interface Props {
     isLocked: boolean;
@@ -9,7 +9,13 @@
     onchange?: () => void;
   }
 
-  let { isLocked = $bindable(), minutesCurrent = $bindable(), minutesRequired, theme = $bindable(), onchange }: Props = $props();
+  let {
+    isLocked = $bindable(),
+    minutesCurrent = $bindable(),
+    minutesRequired,
+    theme = $bindable(),
+    onchange
+  }: Props = $props();
 
   function handleChange() {
     onchange?.();
@@ -25,7 +31,7 @@
 </script>
 
 <aside class="dev-tools" class:collapsed={!isOpen}>
-  <button class="toggle-btn" onclick={() => isOpen = !isOpen}>
+  <button class="toggle-btn" onclick={() => (isOpen = !isOpen)}>
     {isOpen ? '−' : '+'}
   </button>
 
@@ -35,11 +41,7 @@
 
       <div class="control-group">
         <label class="control-label">
-          <input
-            type="checkbox"
-            bind:checked={isLocked}
-            onchange={handleChange}
-          />
+          <input type="checkbox" bind:checked={isLocked} onchange={handleChange} />
           <span>Work Wall Locked</span>
         </label>
       </div>
@@ -135,7 +137,7 @@
     color: var(--color-text);
   }
 
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     width: 16px;
     height: 16px;
     cursor: pointer;

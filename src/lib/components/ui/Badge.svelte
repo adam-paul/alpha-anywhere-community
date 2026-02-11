@@ -5,19 +5,13 @@
 
   interface Props {
     variant?: Variant;
-    color?: string;       // Custom text color override
-    background?: string;  // Custom background override
+    color?: string; // Custom text color override
+    background?: string; // Custom background override
     borderColor?: string; // Custom border color (defaults to text color)
     children: Snippet;
   }
 
-  let {
-    variant = 'default',
-    color,
-    background,
-    borderColor,
-    children
-  }: Props = $props();
+  let { variant = 'default', color, background, borderColor, children }: Props = $props();
 
   // Allow custom colors to override variant colors
   const style = $derived(

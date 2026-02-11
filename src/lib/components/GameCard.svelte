@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Game } from '../types';
+  import type { Game } from '$lib/types';
   import { Card } from './ui';
   import CategoryBadge from './CategoryBadge.svelte';
   import PlayerCount from './PlayerCount.svelte';
@@ -8,7 +8,7 @@
     game: Game;
     disabled?: boolean;
     onLaunch?: (game: Game) => void;
-    playerCount?: number;  // Will come from real-time presence later
+    playerCount?: number; // Will come from real-time presence later
   }
 
   let { game, disabled = false, onLaunch, playerCount }: Props = $props();
@@ -21,12 +21,7 @@
 
 <Card interactive {disabled} onclick={handleClick}>
   <div class="thumbnail-container">
-    <img
-      src={game.thumbnailUrl}
-      alt={game.title}
-      class="thumbnail"
-      loading="lazy"
-    />
+    <img src={game.thumbnailUrl} alt={game.title} class="thumbnail" loading="lazy" />
     <div class="thumbnail-overlay">
       <span class="play-label">Play</span>
     </div>

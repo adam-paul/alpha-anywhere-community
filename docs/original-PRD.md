@@ -40,6 +40,7 @@ Build the **Arcade** with mocked data. Validate the UX before committing to back
 ### Arcade Grid
 
 A grid of game cards. Each card shows:
+
 - Thumbnail image
 - Game title
 - Engagement category badge (see below)
@@ -50,12 +51,14 @@ Clicking a card launches the game via deep link (opens external app).
 ### Work-Wall
 
 When the student hasn't completed their daily goal:
+
 - Arcade is visible but locked
 - Progress indicator: "45 min / 2 hr completed"
 - Cards are dimmed/unclickable
 - Motivational state: can see friends are online, can't join yet
 
 When goal is complete:
+
 - Full access unlocked
 - Cards are interactive
 
@@ -63,23 +66,23 @@ When goal is complete:
 
 Games launch via **deep link**, not iframe. The portal opens the external app directly.
 
-| Type | Launch URL Pattern |
-|------|-------------------|
-| Roblox | `roblox://placeId=XXX&gameInstanceId=YYY` |
-| Minecraft | `minecraft://?addExternalServer=...` |
-| Web | Standard URL, opens in new tab |
+| Type      | Launch URL Pattern                        |
+| --------- | ----------------------------------------- |
+| Roblox    | `roblox://placeId=XXX&gameInstanceId=YYY` |
+| Minecraft | `minecraft://?addExternalServer=...`      |
+| Web       | Standard URL, opens in new tab            |
 
 ### Engagement Ladder
 
 Games are categorized by social intensity. This helps students find games matching their comfort level.
 
-| Rung | Category | Description | Example |
-|------|----------|-------------|---------|
-| 1 | Side-by-Side | Solo play near others, no interaction required | Bee Swarm Simulator |
-| 2 | Town Square | Unstructured hangout, optional interaction | Brookhaven |
-| 3 | Ice Breakers | Short rounds with strangers, shared fate | Natural Disaster Survival |
-| 4 | Trust Builders | Cooperative play requiring coordination | Work at a Pizza Place |
-| 5 | Rivalry | Team vs team competition | BedWars |
+| Rung | Category       | Description                                    | Example                   |
+| ---- | -------------- | ---------------------------------------------- | ------------------------- |
+| 1    | Side-by-Side   | Solo play near others, no interaction required | Bee Swarm Simulator       |
+| 2    | Town Square    | Unstructured hangout, optional interaction     | Brookhaven                |
+| 3    | Ice Breakers   | Short rounds with strangers, shared fate       | Natural Disaster Survival |
+| 4    | Trust Builders | Cooperative play requiring coordination        | Work at a Pizza Place     |
+| 5    | Rivalry        | Team vs team competition                       | BedWars                   |
 
 Display as a badge/tag on each game card.
 
@@ -91,14 +94,14 @@ Display as a badge/tag on each game card.
 
 ```typescript
 interface Game {
-  id: string
-  title: string
-  thumbnailUrl: string
-  type: 'roblox' | 'minecraft' | 'web'
-  engagementCategory: 'side-by-side' | 'town-square' | 'ice-breaker' | 'trust-builder' | 'rivalry'
-  currentPlayers: number
+  id: string;
+  title: string;
+  thumbnailUrl: string;
+  type: 'roblox' | 'minecraft' | 'web';
+  engagementCategory: 'side-by-side' | 'town-square' | 'ice-breaker' | 'trust-builder' | 'rivalry';
+  currentPlayers: number;
   // Deep link data (varies by type)
-  launchUrl: string
+  launchUrl: string;
 }
 ```
 
@@ -106,10 +109,10 @@ interface Game {
 
 ```typescript
 interface GatingState {
-  isUnlocked: boolean
-  minutesCompleted: number
-  minutesRequired: number  // e.g., 120 for 2 hours
-  progressPercent: number  // 0-100
+  isUnlocked: boolean;
+  minutesCompleted: number;
+  minutesRequired: number; // e.g., 120 for 2 hours
+  progressPercent: number; // 0-100
 }
 ```
 
@@ -117,9 +120,9 @@ interface GatingState {
 
 ```typescript
 interface User {
-  id: string
-  displayName: string
-  avatarUrl?: string
+  id: string;
+  displayName: string;
+  avatarUrl?: string;
 }
 ```
 
@@ -192,16 +195,16 @@ The widget should be designed to be **embeddable**—it will eventually live ins
 
 After prototype validation, subsequent phases will add:
 
-| Phase | Features |
-|-------|----------|
-| Backend & Auth | Real auth, live gating from learning data |
-| Presence | Real-time player counts, who's online |
-| Profiles | Student profiles, avatars, interests |
-| Friends | Friend requests, mutual friends |
-| Map | Geographic student discovery |
-| Voice | Browser-based voice chat for games |
-| Messaging | Direct messages with AI moderation |
-| Parent Controls | Per-child feature toggles |
+| Phase           | Features                                  |
+| --------------- | ----------------------------------------- |
+| Backend & Auth  | Real auth, live gating from learning data |
+| Presence        | Real-time player counts, who's online     |
+| Profiles        | Student profiles, avatars, interests      |
+| Friends         | Friend requests, mutual friends           |
+| Map             | Geographic student discovery              |
+| Voice           | Browser-based voice chat for games        |
+| Messaging       | Direct messages with AI moderation        |
+| Parent Controls | Per-child feature toggles                 |
 
 ---
 
@@ -217,6 +220,7 @@ After prototype validation, subsequent phases will add:
 ## Reference Context
 
 This project is related to but **separate from**:
+
 - **Playcademy**: An existing arcade/game platform with similar features. Some backend infrastructure may be ported later.
 - **AlphaLearn**: An existing learning portal for Alpha Anywhere. Community may eventually embed there.
 - **LWAI**: The learning data system that tracks student progress. Will be the source for gating decisions.

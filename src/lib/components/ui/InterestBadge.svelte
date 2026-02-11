@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { INTERESTS, type Interest } from '$lib/types';
+  import { INTERESTS } from '$lib/constants';
+  import type { Interest } from '$lib/types';
   import Badge from './Badge.svelte';
 
   interface Props {

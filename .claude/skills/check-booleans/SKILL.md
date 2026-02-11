@@ -50,6 +50,7 @@ For each finding, report:
 ```
 
 Severity levels:
+
 - **MINOR** — Valid pattern or low impact, no action needed
 - **MODERATE** — Worth refactoring, clear improvement available
 - **SEVERE** — Multiple flags forming implicit state machine, refactor soon

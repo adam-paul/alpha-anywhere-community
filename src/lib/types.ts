@@ -36,11 +36,25 @@ export type LaunchOptions =
   | { type: 'minecraft'; gameId: string; launchUrl: string }
   | { type: 'iframe'; gameId: string; launchUrl?: string };
 
+export interface LaunchResult {
+  success: boolean;
+  method: 'protocol' | 'web' | 'iframe';
+  error?: string;
+}
+
 export interface GatingState {
   mode: GatingMode;
   isUnlocked: boolean;
   minutesCurrent: number;
   minutesRequired: number;
+}
+
+// LWAI proxy response format
+export interface GatingResponse {
+  email: string;
+  weekly_active_minutes: number;
+  threshold: number;
+  eligible: boolean;
 }
 
 export interface UserContext {
@@ -49,45 +63,6 @@ export interface UserContext {
   displayName: string;
   avatarUrl?: string;
   timebackId?: string; // OneRoster sourcedId, populated after M2M lookup
-}
-
-// Engagement category metadata
-export const ENGAGEMENT_CATEGORIES: Record<EngagementCategory, {
-  label: string;
-  description: string;
-  rung: number;
-}> = {
-  'side-by-side': {
-    label: 'Side-by-Side',
-    description: 'Solo play near others, no interaction required',
-    rung: 1
-  },
-  'town-square': {
-    label: 'Town Square',
-    description: 'Unstructured hangout, optional interaction',
-    rung: 2
-  },
-  'ice-breaker': {
-    label: 'Ice Breaker',
-    description: 'Short rounds, shared fate with strangers',
-    rung: 3
-  },
-  'trust-builder': {
-    label: 'Trust Builder',
-    description: 'Cooperative play requiring coordination',
-    rung: 4
-  },
-  'rivalry': {
-    label: 'Rivalry',
-    description: 'Team vs team competition',
-    rung: 5
-  }
-};
-
-// Helper to compute progress percentage
-export function computeProgressPercent(state: GatingState): number {
-  if (state.minutesRequired <= 0) return 100;
-  return Math.min(100, Math.round((state.minutesCurrent / state.minutesRequired) * 100));
 }
 
 // Interest types for student profiles
@@ -116,33 +91,6 @@ export type Interest =
   | 'tennis'
   | 'drawing';
 
-// Interest metadata for display
-export const INTERESTS: Record<Interest, { label: string; color: string }> = {
-  robotics: { label: 'Robotics', color: '#10b981' },
-  painting: { label: 'Painting', color: '#f97316' },
-  music: { label: 'Music', color: '#8b5cf6' },
-  art: { label: 'Art', color: '#ec4899' },
-  piano: { label: 'Piano', color: '#6366f1' },
-  theatre: { label: 'Theatre', color: '#ef4444' },
-  dance: { label: 'Dance', color: '#f472b6' },
-  guitar: { label: 'Guitar', color: '#eab308' },
-  hiking: { label: 'Hiking', color: '#22c55e' },
-  documentaries: { label: 'Documentaries', color: '#0ea5e9' },
-  dinosaurs: { label: 'Dinosaurs', color: '#84cc16' },
-  gaming: { label: 'Gaming', color: '#a855f7' },
-  basketball: { label: 'Basketball', color: '#f97316' },
-  science: { label: 'Science', color: '#14b8a6' },
-  geography: { label: 'Geography', color: '#3b82f6' },
-  astronomy: { label: 'Astronomy', color: '#a855f7' },
-  drama: { label: 'Drama', color: '#ef4444' },
-  books: { label: 'Books', color: '#6366f1' },
-  movies: { label: 'Movies', color: '#f59e0b' },
-  cooking: { label: 'Cooking', color: '#f97316' },
-  baking: { label: 'Baking', color: '#ec4899' },
-  tennis: { label: 'Tennis', color: '#22c55e' },
-  drawing: { label: 'Drawing', color: '#f472b6' }
-};
-
 // Student profile
 export interface Student {
   id: string;
@@ -166,6 +114,73 @@ export interface Student {
     tiktok?: string;
     discord?: string;
   };
+}
+
+// Store state types
+export type ViewMode = 'grid' | 'map';
+
+export interface ArcadeState {
+  activeFilter: EngagementCategory | 'all';
+  theme: Theme;
+  readonly games: Game[];
+  readonly filteredGames: Game[];
+}
+
+export interface CreateArcadeStoreOptions {
+  games?: Game[];
+}
+
+export interface ExploreState {
+  searchQuery: string;
+  activeInterestFilter: Interest | 'all';
+  viewMode: ViewMode;
+  readonly students: Student[];
+  readonly filteredStudents: Student[];
+}
+
+export interface UserState {
+  user: UserContext | null;
+  isAuthenticated: boolean;
+  setUser: (user: UserContext | null) => void;
+  logout: () => void;
+}
+
+export interface GatingStore {
+  readonly isLoading: boolean;
+  readonly hasError: boolean;
+  readonly serverData: GatingState | null;
+  readonly activeData: GatingState | null;
+  readonly showWorkWall: boolean;
+  readonly progressPercent: number;
+  readonly isGoalComplete: boolean;
+  dismiss: () => void;
+  setDevOverride: (override: GatingState | null) => void;
+}
+
+// Internal loading state for gating store
+export type GatingLoadState =
+  | { status: 'loading' }
+  | { status: 'error' }
+  | { status: 'ready'; data: GatingState; dismissed: boolean };
+
+export interface ChatState {
+  conversations: Conversation[];
+  messages: Record<string, Message[]>;
+  activeConversationId: string | null;
+  searchQuery: string;
+  composeText: string;
+  isDetailsPanelOpen: boolean;
+  isNewChatModalOpen: boolean;
+  readonly filteredConversations: Conversation[];
+  readonly activeConversation: Conversation | null;
+  readonly activeMessages: Message[];
+  readonly activeParticipants: Student[];
+  selectConversation(id: string): void;
+  sendMessage(text: string): void;
+  toggleDetailsPanel(): void;
+  openNewChatModal(): void;
+  closeNewChatModal(): void;
+  createConversation(participantIds: string[]): string;
 }
 
 // Chat types

@@ -54,7 +54,11 @@
             <span class="overflow-count">+{overflowCount}</span>
           {/if}
         {:else}
-          <Badge color="var(--color-text-muted)" background="transparent" borderColor="var(--color-border)">
+          <Badge
+            color="var(--color-text-muted)"
+            background="transparent"
+            borderColor="var(--color-border)"
+          >
             + Add interests
           </Badge>
         {/if}

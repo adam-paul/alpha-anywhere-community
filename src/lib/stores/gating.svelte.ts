@@ -5,111 +5,95 @@
  * in a single store with impossible states unrepresentable.
  */
 
-import { computeProgressPercent, type GatingState } from '$lib/types';
-
-type GatingLoadState =
-	| { status: 'loading' }
-	| { status: 'error' }
-	| { status: 'ready'; data: GatingState; dismissed: boolean };
-
-export interface GatingStore {
-	readonly isLoading: boolean;
-	readonly hasError: boolean;
-	readonly serverData: GatingState | null;
-	readonly activeData: GatingState | null;
-	readonly showWorkWall: boolean;
-	readonly progressPercent: number;
-	readonly isGoalComplete: boolean;
-	dismiss: () => void;
-	setDevOverride: (override: GatingState | null) => void;
-}
+import type { GatingLoadState, GatingState, GatingStore } from '$lib/types';
+import { computeProgressPercent } from '$lib/utils/gating';
 
 export function createGatingStore(gatingPromise: Promise<GatingState>): GatingStore {
-	let state = $state<GatingLoadState>({ status: 'loading' });
-	let devOverride = $state<GatingState | null>(null);
+  let state = $state<GatingLoadState>({ status: 'loading' });
+  let devOverride = $state<GatingState | null>(null);
 
-	// Track previous unlock state for detecting lock transitions
-	let prevIsUnlocked = $state<boolean | null>(null);
+  // Track previous unlock state for detecting lock transitions
+  let prevIsUnlocked = $state<boolean | null>(null);
 
-	// Load data once
-	gatingPromise
-		.then((data) => {
-			state = { status: 'ready', data, dismissed: false };
-			prevIsUnlocked = data.isUnlocked;
-		})
-		.catch(() => {
-			state = { status: 'error' };
-		});
+  // Load data once
+  gatingPromise
+    .then((data) => {
+      state = { status: 'ready', data, dismissed: false };
+      prevIsUnlocked = data.isUnlocked;
+    })
+    .catch(() => {
+      state = { status: 'error' };
+    });
 
-	// Derived values
-	const isLoading = $derived(state.status === 'loading');
-	const hasError = $derived(state.status === 'error');
-	const serverData = $derived(state.status === 'ready' ? state.data : null);
-	const activeData = $derived(devOverride ?? serverData);
+  // Derived values
+  const isLoading = $derived(state.status === 'loading');
+  const hasError = $derived(state.status === 'error');
+  const serverData = $derived(state.status === 'ready' ? state.data : null);
+  const activeData = $derived(devOverride ?? serverData);
 
-	const progressPercent = $derived(activeData ? computeProgressPercent(activeData) : 0);
-	const isGoalComplete = $derived(progressPercent >= 100);
+  const progressPercent = $derived(activeData ? computeProgressPercent(activeData) : 0);
+  const isGoalComplete = $derived(progressPercent >= 100);
 
-	// Reset dismissed state if lock state changes from unlocked → locked
-	$effect(() => {
-		if (activeData && prevIsUnlocked !== null) {
-			const currentIsUnlocked = activeData.isUnlocked;
-			if (prevIsUnlocked && !currentIsUnlocked) {
-				// Became locked - reset dismissed
-				if (state.status === 'ready') {
-					state = { ...state, dismissed: false };
-				}
-			}
-			prevIsUnlocked = currentIsUnlocked;
-		}
-	});
+  // Reset dismissed state if lock state changes from unlocked → locked
+  $effect(() => {
+    if (activeData && prevIsUnlocked !== null) {
+      const currentIsUnlocked = activeData.isUnlocked;
+      if (prevIsUnlocked && !currentIsUnlocked) {
+        // Became locked - reset dismissed
+        if (state.status === 'ready') {
+          state = { ...state, dismissed: false };
+        }
+      }
+      prevIsUnlocked = currentIsUnlocked;
+    }
+  });
 
-	// Reset dismissed if progress drops below 100%
-	$effect(() => {
-		if (!isGoalComplete && state.status === 'ready' && state.dismissed) {
-			state = { ...state, dismissed: false };
-		}
-	});
+  // Reset dismissed if progress drops below 100%
+  $effect(() => {
+    if (!isGoalComplete && state.status === 'ready' && state.dismissed) {
+      state = { ...state, dismissed: false };
+    }
+  });
 
-	const showWorkWall = $derived(
-		state.status === 'loading' ||
-			(state.status === 'ready' &&
-				activeData !== null &&
-				!activeData.isUnlocked &&
-				!(isGoalComplete && state.dismissed))
-	);
+  const showWorkWall = $derived(
+    state.status === 'loading' ||
+      (state.status === 'ready' &&
+        activeData !== null &&
+        !activeData.isUnlocked &&
+        !(isGoalComplete && state.dismissed))
+  );
 
-	return {
-		get isLoading() {
-			return isLoading;
-		},
-		get hasError() {
-			return hasError;
-		},
-		get serverData() {
-			return serverData;
-		},
-		get activeData() {
-			return activeData;
-		},
-		get showWorkWall() {
-			return showWorkWall;
-		},
-		get progressPercent() {
-			return progressPercent;
-		},
-		get isGoalComplete() {
-			return isGoalComplete;
-		},
+  return {
+    get isLoading() {
+      return isLoading;
+    },
+    get hasError() {
+      return hasError;
+    },
+    get serverData() {
+      return serverData;
+    },
+    get activeData() {
+      return activeData;
+    },
+    get showWorkWall() {
+      return showWorkWall;
+    },
+    get progressPercent() {
+      return progressPercent;
+    },
+    get isGoalComplete() {
+      return isGoalComplete;
+    },
 
-		dismiss() {
-			if (state.status === 'ready') {
-				state = { ...state, dismissed: true };
-			}
-		},
+    dismiss() {
+      if (state.status === 'ready') {
+        state = { ...state, dismissed: true };
+      }
+    },
 
-		setDevOverride(override: GatingState | null) {
-			devOverride = override;
-		}
-	};
+    setDevOverride(override: GatingState | null) {
+      devOverride = override;
+    }
+  };
 }

@@ -1,12 +1,18 @@
 {
   "name": "alpha-anywhere-community",
   "version": "0.1.0",
-  "workspaces": ["infra/lwai-proxy"],
+  "workspaces": [
+    "infra/lwai-proxy"
+  ],
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260206.0",
     "@sveltejs/adapter-cloudflare": "^7.2.6",
     "@sveltejs/kit": "^2.50.2",
     "@sveltejs/vite-plugin-svelte": "^5.1.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.1",
+    "prettier-plugin-svelte": "^3.4.1",
     "svelte": "^5.50.0",
     "svelte-check": "^4.3.6",
     "typescript": "^5.9.3",
@@ -17,7 +23,13 @@
     "dev": "vite dev",
     "dev:cf": "vite build && wrangler pages dev .svelte-kit/cloudflare --port 6173",
     "build": "vite build",
-    "preview": "wrangler pages dev .svelte-kit/cloudflare"
+    "preview": "wrangler pages dev .svelte-kit/cloudflare",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,ts,svelte,css,md,json}": "prettier --write"
   },
   "type": "module",
   "dependencies": {

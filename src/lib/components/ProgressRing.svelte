@@ -72,7 +72,9 @@
   .progress-fill {
     stroke: var(--color-progress-incomplete, #f97316);
     stroke-linecap: square;
-    transition: stroke-dashoffset 0.5s ease, stroke 0.3s ease;
+    transition:
+      stroke-dashoffset 0.5s ease,
+      stroke 0.3s ease;
   }
 
   .progress-ring.complete .progress-fill {

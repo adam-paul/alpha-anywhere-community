@@ -2,7 +2,8 @@
   import { invalidateAll } from '$app/navigation';
   import { Button, Badge, InterestBadge } from '$lib/components/ui';
   import ProfileHeader from '$lib/components/ProfileHeader.svelte';
-  import { INTERESTS, type Interest } from '$lib/types';
+  import { INTERESTS } from '$lib/constants';
+  import type { Interest } from '$lib/types';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();
@@ -53,7 +54,7 @@
 
   function toggleInterest(interest: Interest) {
     if (editInterests.includes(interest)) {
-      editInterests = editInterests.filter(i => i !== interest);
+      editInterests = editInterests.filter((i) => i !== interest);
     } else {
       editInterests = [...editInterests, interest];
     }

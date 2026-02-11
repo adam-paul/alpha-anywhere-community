@@ -151,14 +151,14 @@ Roblox allegedly uses `roblox://placeId=XXX` protocol links that can't be iframe
 ```typescript
 // New game type or launcher component
 interface RobloxGame extends Game {
-    gameType: 'roblox'
-    robloxPlaceId: string
-    robloxPrivateServerId: string
+  gameType: 'roblox';
+  robloxPlaceId: string;
+  robloxPrivateServerId: string;
 }
 
 // Launcher opens deep link instead of iframe
 function launchRoblox(game: RobloxGame) {
-    window.location.href = `roblox://placeId=${game.robloxPlaceId}&gameInstanceId=${game.robloxPrivateServerId}`
+  window.location.href = `roblox://placeId=${game.robloxPlaceId}&gameInstanceId=${game.robloxPrivateServerId}`;
 }
 ```
 
@@ -307,8 +307,8 @@ The "Engagement Ladder" (Side-by-Side → Town Square → Ice Breakers → Trust
 
 ```typescript
 gameMetadata: {
-    engagementLevel: 1 | 2 | 3 | 4 | 5
-    engagementCategory: 'side-by-side' | 'town-square' | 'ice-breaker' | 'trust-builder' | 'rivalry'
+  engagementLevel: 1 | 2 | 3 | 4 | 5;
+  engagementCategory: 'side-by-side' | 'town-square' | 'ice-breaker' | 'trust-builder' | 'rivalry';
 }
 ```
 

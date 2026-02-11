@@ -13,18 +13,16 @@
   const isSent = $derived(message.senderId === 'me');
 
   // Resolve sender for received messages
-  const sender = $derived(
-    !isSent
-      ? MOCK_STUDENTS.find(s => s.id === message.senderId)
-      : null
-  );
+  const sender = $derived(!isSent ? MOCK_STUDENTS.find((s) => s.id === message.senderId) : null);
 
   function formatTime(date: Date): string {
-    return date.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    }).toLowerCase();
+    return date
+      .toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      })
+      .toLowerCase();
   }
 </script>
 

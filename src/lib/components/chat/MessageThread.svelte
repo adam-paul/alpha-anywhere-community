@@ -63,18 +63,12 @@
           {#if shouldShowDateSeparator(chat.activeMessages, index)}
             <DateSeparator date={message.timestamp} />
           {/if}
-          <MessageBubble
-            {message}
-            showSenderName={isGroupChat && message.senderId !== 'me'}
-          />
+          <MessageBubble {message} showSenderName={isGroupChat && message.senderId !== 'me'} />
         {/each}
       {/if}
     </div>
 
-    <MessageComposer
-      bind:value={chat.composeText}
-      onsubmit={handleSend}
-    />
+    <MessageComposer bind:value={chat.composeText} onsubmit={handleSend} />
   {:else}
     <div class="no-conversation">
       <Placeholder

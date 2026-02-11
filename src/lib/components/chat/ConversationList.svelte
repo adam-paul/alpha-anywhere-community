@@ -20,10 +20,7 @@
   </header>
 
   <div class="search-container">
-    <SearchBar
-      bind:value={chat.searchQuery}
-      placeholder="Search"
-    />
+    <SearchBar bind:value={chat.searchQuery} placeholder="Search" />
   </div>
 
   <div class="list-content">

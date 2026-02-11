@@ -8,12 +8,7 @@
     children: Snippet;
   }
 
-  let {
-    interactive = false,
-    disabled = false,
-    onclick,
-    children
-  }: Props = $props();
+  let { interactive = false, disabled = false, onclick, children }: Props = $props();
 
   function handleClick(e: MouseEvent) {
     if (disabled || !onclick) return;
@@ -55,7 +50,9 @@
     cursor: pointer;
     outline: none;
     user-select: none;
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    transition:
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
   }
 
   .card.interactive:hover:not(.disabled) {

@@ -10,6 +10,6 @@ import { clearSessionCookie } from '$lib/server/session';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = ({ cookies }) => {
-	clearSessionCookie(cookies);
-	throw redirect(302, '/');
+  clearSessionCookie(cookies);
+  throw redirect(302, '/');
 };

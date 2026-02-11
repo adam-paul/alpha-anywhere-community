@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getArcadeStore } from '../stores/arcade.svelte';
-  import { ENGAGEMENT_CATEGORIES, type EngagementCategory } from '../types';
+  import { ENGAGEMENT_CATEGORIES } from '$lib/constants';
+  import type { EngagementCategory } from '$lib/types';
   import { ToggleButton } from './ui';
 
   interface Props {

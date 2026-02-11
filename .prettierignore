@@ -1,0 +1,19 @@
+# Dependencies
+node_modules
+
+# Build outputs
+build
+dist
+.svelte-kit
+
+# SST artifacts
+.sst
+.wrangler
+
+# Lock files
+bun.lock
+package-lock.json
+
+# Generated
+*.min.js
+*.min.css

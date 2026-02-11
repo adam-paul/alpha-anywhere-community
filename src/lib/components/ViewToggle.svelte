@@ -8,11 +8,7 @@
     onchange?: (mode: ViewMode) => void;
   }
 
-  let {
-    mode = $bindable(),
-    disabled = false,
-    onchange
-  }: Props = $props();
+  let { mode = $bindable(), disabled = false, onchange }: Props = $props();
 
   function setMode(newMode: ViewMode) {
     mode = newMode;
@@ -21,20 +17,10 @@
 </script>
 
 <div class="view-toggle">
-  <ToggleButton
-    active={mode === 'grid'}
-    {disabled}
-    onclick={() => setMode('grid')}
-  >
+  <ToggleButton active={mode === 'grid'} {disabled} onclick={() => setMode('grid')}>
     Grid
   </ToggleButton>
-  <ToggleButton
-    active={mode === 'map'}
-    {disabled}
-    onclick={() => setMode('map')}
-  >
-    Map
-  </ToggleButton>
+  <ToggleButton active={mode === 'map'} {disabled} onclick={() => setMode('map')}>Map</ToggleButton>
 </div>
 
 <style>

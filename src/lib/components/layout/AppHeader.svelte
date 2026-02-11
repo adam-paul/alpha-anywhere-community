@@ -6,7 +6,8 @@
     subtitle?: string;
   }
 
-  let { title = 'Alpha Anywhere Community', subtitle = 'Prototype Demo - staging' }: Props = $props();
+  let { title = 'Alpha Anywhere Community', subtitle = 'Prototype Demo - staging' }: Props =
+    $props();
 </script>
 
 <header class="app-header">

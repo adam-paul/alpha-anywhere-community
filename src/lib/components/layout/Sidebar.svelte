@@ -47,7 +47,12 @@
   <div class="sidebar-user">
     {#if userStore.user}
       <a href="/profile/me" class="user-profile-link">
-        <Avatar src={userStore.user.avatarUrl} alt={userStore.user.displayName} size="sm" fallback={userStore.user.displayName.charAt(0)} />
+        <Avatar
+          src={userStore.user.avatarUrl}
+          alt={userStore.user.displayName}
+          size="sm"
+          fallback={userStore.user.displayName.charAt(0)}
+        />
       </a>
       <div class="user-info">
         <a href="/profile/me" class="user-name-link">{userStore.user.displayName}</a>

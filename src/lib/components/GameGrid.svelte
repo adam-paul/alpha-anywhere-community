@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getArcadeStore } from '../stores/arcade.svelte';
-  import type { Game, LaunchOptions } from '../types';
+  import type { Game, LaunchOptions } from '$lib/types';
   import { launchGame } from '../utils/game-launcher';
   import GameCard from './GameCard.svelte';
 
@@ -66,11 +66,7 @@
 
 <div class="game-grid">
   {#each games as game (game.id)}
-    <GameCard
-      {game}
-      {disabled}
-      onLaunch={handleLaunch}
-    />
+    <GameCard {game} {disabled} onLaunch={handleLaunch} />
   {/each}
 
   {#if games.length === 0}

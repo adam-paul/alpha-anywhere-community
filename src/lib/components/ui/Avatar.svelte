@@ -8,12 +8,7 @@
     fallback?: string; // Initials or text to show if no image
   }
 
-  let {
-    src,
-    alt = '',
-    size = 'md',
-    fallback = '?'
-  }: Props = $props();
+  let { src, alt = '', size = 'md', fallback = '?' }: Props = $props();
 
   let imageError = $state(false);
 

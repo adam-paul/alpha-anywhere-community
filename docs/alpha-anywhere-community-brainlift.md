@@ -2,328 +2,327 @@ AlphaAnywhere Community: Roblox games as social features
 
 - Problem: Socially, Alpha Anywhere students are invisible to each other. They lack a "campus" where they can see who their classmates are, signal their interests, and form squads.
 - The Community Zone is **Work-Walled**. Access is locked until the student completes their academic goals. This turns socialization from a distraction into a core motivator.
-    - \*Note: considering weekly goals and unlock loops over daily
+  - \*Note: considering weekly goals and unlock loops over daily
 - Strategic Roadmap (Q1 2026)
-    - _We utilize a "Content before Connection" rollout strategy to solve the Cold Start problem._
-    - **Phase 1: The Minimum Lovable Product (Feb 1)**
-        - **Strategy:** **Utility First.** We prioritize the Arcade (Activity) over Profiles (Identity). A directory of people who never log in is useless; we must first give early adopters an intrinsic reason to return daily.
-        - Work-Wall gate
-            - Gates the entire community zone
-            - Weekly goal completion check (Dash system, 4 hr sync)
-            - Unlocks for the following week upon completion. Can unlock early/as soon as weekly goals are met
-            - Future: Daily unlock when AA migrates to timeback
-        - Parent Controls & Permissions
-            - Terms of Service acceptance
-            - Master toggle: Enable/disable Community access per child
-            - Granular controls for specific features (location, voice, etc.)
-            - Per-student settings
-            - Integrated into existing AlphaLearn parent dashboard
-        - Arcade
-            - Web-based Arcade UI with game tiles
-            - Deep links to Roblox private servers
-            - Alpha Voice (TBC based on playcademy scope)
-            - 4 games across engagement ladder rungs
-    - **Phase 2: The Digital Campus (Mar 1)**
-        - **Strategy:** **From Usage to Belonging.** Once Phase 1 secures Daily Active Users (DAU), we introduce Identity to trigger network effects. We convert anonymous "Players" into recognizable "Classmates," increasing the emotional cost of churn.
-        - Student Profiles
-            - Avatar generation (Nano banana AI)
-            - User handle, location
-            - About me section
-            - Interest tags (curated list)
-            - Profile gallery (up to 6 images)
-            - Theme selector (hero images and theme colours)
-            - Friend requests and mutual friends visibility
-        - Student MAP
-            - Visual world map showing student locations (city level)
-            - Students near me discovery
-    - **Phase 3: Safe Comms (Apr 1)**
-        - **Strategy:** **Deepening the Moat.** With squads formed and shared history established, direct communication becomes high-value and lower-risk. This locks in long-term retention via genuine friendship.
-        - **Direct messaging between students**
-            - AI moderation for text (flag and escalate)
-            - Staff escalation dashboard & workflows
-            - Parent visibility into escalated messages
+  - _We utilize a "Content before Connection" rollout strategy to solve the Cold Start problem._
+  - **Phase 1: The Minimum Lovable Product (Feb 1)**
+    - **Strategy:** **Utility First.** We prioritize the Arcade (Activity) over Profiles (Identity). A directory of people who never log in is useless; we must first give early adopters an intrinsic reason to return daily.
+    - Work-Wall gate
+      - Gates the entire community zone
+      - Weekly goal completion check (Dash system, 4 hr sync)
+      - Unlocks for the following week upon completion. Can unlock early/as soon as weekly goals are met
+      - Future: Daily unlock when AA migrates to timeback
+    - Parent Controls & Permissions
+      - Terms of Service acceptance
+      - Master toggle: Enable/disable Community access per child
+      - Granular controls for specific features (location, voice, etc.)
+      - Per-student settings
+      - Integrated into existing AlphaLearn parent dashboard
+    - Arcade
+      - Web-based Arcade UI with game tiles
+      - Deep links to Roblox private servers
+      - Alpha Voice (TBC based on playcademy scope)
+      - 4 games across engagement ladder rungs
+  - **Phase 2: The Digital Campus (Mar 1)**
+    - **Strategy:** **From Usage to Belonging.** Once Phase 1 secures Daily Active Users (DAU), we introduce Identity to trigger network effects. We convert anonymous "Players" into recognizable "Classmates," increasing the emotional cost of churn.
+    - Student Profiles
+      - Avatar generation (Nano banana AI)
+      - User handle, location
+      - About me section
+      - Interest tags (curated list)
+      - Profile gallery (up to 6 images)
+      - Theme selector (hero images and theme colours)
+      - Friend requests and mutual friends visibility
+    - Student MAP
+      - Visual world map showing student locations (city level)
+      - Students near me discovery
+  - **Phase 3: Safe Comms (Apr 1)**
+    - **Strategy:** **Deepening the Moat.** With squads formed and shared history established, direct communication becomes high-value and lower-risk. This locks in long-term retention via genuine friendship.
+    - **Direct messaging between students**
+      - AI moderation for text (flag and escalate)
+      - Staff escalation dashboard & workflows
+      - Parent visibility into escalated messages
 - User Experience (Student Flow)
-    - **The Gate:** The student logs in. The Community Zone is **locked**.
-    - **The Key:** The student must complete their Daily Goals (academic work).
-    - **The Reward:** Upon completion, the Community Zone unlocks.
-    - **The Exploration:** They browse to see who's online, and pan around the map to see if any new kids joined in their area. They send a message saying hi to the new kid that lives in their town.
-    - **The Action:** They click over to the arcade and see a curated grid of "Game Tiles" (e.g., _BedWars_, _Pizza Place_, _Build a Boat_).
-    - **The Social Proof:** Tiles show active engagement (e.g., _"12 Students Playing Now"_).
-    - **The Launch:** Clicking "Play" triggers a deep link. The Roblox app opens automatically and bypasses the public menu, dropping the student directly into the **Alpha Private Server**.
-    - **The Connection: **They join Alpha Voice (our browser-based audio sidecar) to talk with their squad while playing.
+  - **The Gate:** The student logs in. The Community Zone is **locked**.
+  - **The Key:** The student must complete their Daily Goals (academic work).
+  - **The Reward:** Upon completion, the Community Zone unlocks.
+  - **The Exploration:** They browse to see who's online, and pan around the map to see if any new kids joined in their area. They send a message saying hi to the new kid that lives in their town.
+  - **The Action:** They click over to the arcade and see a curated grid of "Game Tiles" (e.g., _BedWars_, _Pizza Place_, _Build a Boat_).
+  - **The Social Proof:** Tiles show active engagement (e.g., _"12 Students Playing Now"_).
+  - **The Launch:** Clicking "Play" triggers a deep link. The Roblox app opens automatically and bypasses the public menu, dropping the student directly into the **Alpha Private Server**.
+  - **The Connection: **They join Alpha Voice (our browser-based audio sidecar) to talk with their squad while playing.
 - 3 Core Pillars
-    - **1. Identity: "The Live Yearbook/Digital Campus" (Profiles)**
-        - Goal: Solve the visibility problem. Make students "real" to one another.
-        - **Searchable "Alpha Cards":** A digital trading card for every student.
-            - Shows their First Name, Location (City/State/Country), Top 3 Interests (e.g., "Robotics, Minecraft, Piano"), and their** Avatar**.
-        - **Student Map:** A visual world map showing "Where Alpha Students Are" (privacy-protected to City level). It visualizes the scale of their community and who is close by if they want to initiate meet ups.
-        - **Friends: **Create connections between students
-        - **Customizable Profile and Avatar: **
-            - **Avatars: **Students upload a selfie (or choose a preset). Our integrated AI tool instantly processes the photo into a stylized cartoon avatar.
-            - Custom bios, generate wallpapers, custom colours
-            - **Badges:** Academic wins (e.g., AlphaLearn Mastery Badges) appear as stickers on their profile, signaling status.
-    - **2. Safe comms (Chat)**
-        - Goal: Facilitate squad formation and meaningful friendships with appropriate oversight.
-            - In interviews students said "how do I know I want to be friends with someone if I can't talk to them?". A valid concern.
-        - Direct messages between students.
-        - Safety layer
-            - Students can report harmful or inappropriate messages
-            - AI moderation to flag and escalate harmful messages
-                - Escalated messages become visible to parents and staff
-    - **3. The Arcade (Engagement Ladder)**
-        - _Goal: High-quality engagement via curated Roblox Private Servers._
-        - We use a psychological framework called **The Engagement Ladder** to meet students at their social comfort level.
-        - Building a custom video game from scratch is expensive, risky, and rarely competes with the AAA games kids already play - starting with a focus on Roblox.
-        - **The Alpha Arcade** is a strategic pivot. Instead of building a mediocre game, we will build a **gated web portal** that launches students directly into private, secure instances of the world’s most popular collaborative Roblox games.
-        - We get AAA-quality engagement (games kids love) with Alpha-level safety (private servers) for <1% of the cost and risk of custom game development.
-        - The Psychology of Play: The "Social Spectrum"
-            - Our game selection is not random. It is based on **Mildred Parten’s Stages of Play**. We recognize that relationships form in stages, and different students have different social "batteries."
-            - We have 4 game categories to represent "The engagement Ladder"
-                - Rung 1: Side-by-Side (The "Safe" On-Ramp)
-                    - **The Goal:** **Comfort.** Just getting the student to log in and stay.
-                    - **Why it's the bottom:** It demands **zero** social performance. A student can join _Bee Swarm Simulator_, grind their own hive, and never type a word. They are "alone together."
-                    - **The "Step Up" Mechanism:** **Curiosity.** Eventually, they will look at their neighbor’s hive and ask, "How did you get that?" This breaks the silence without pressure.
-                - Rung 2: Town Square (The "Low-Stakes" Mixer)
-                    - **The Vibe:** "Recess." There are no rules, no scores, and no objectives. You just... exist.
-                    - **The Goal:** **Presence.** Feeling the scale of the community.
-                    - **Why it's next:** It is still parallel, but it is **unstructured**. In _Bee Swarm_, you look at bees. In _Brookhaven_, you look at _people_. The focus shifts from "My Stats" to "Our World."
-                    - **The "Step Up" Mechanism:** **Roleplay.** To enjoy this game, you eventually have to play along ("Can I come into your house?"). This is the first "Soft Contract" of cooperation.
-                    - **The Mechanic:** **Unstructured Roleplay (RP).** The game provides a set—a house, a school, a town—and the players are the actors. They decide if they are playing "Family," "School," or "Cops and Robbers."
-                    - **The Psychology:** **"The Canvas."** This appeals to the **Socializers** and **Creatives**. They don't care about winning; they care about expression ("Look at my outfit") and narrative ("I'm the mayor today").
-                    - **The Social Hook:** Proximity. You buy a house next to someone else and simply say, "Hi neighbor."
-                    - **Game Examples:**
-                        - _Brookhaven RP_ (The massive life sim).
-                        - _Bloxburg_ (Sims-style building + RP - _Note: Paid entry, but high quality_).
-                        - _Royale High_ (Fantasy school RP).
-                - Rung 3: Ice Breakers (The "Filter")
-                    - This category creates a feeling of shared fate with other players, through a psychological loop of a stress-recovery cycle, and proximity during the recovery phase. (see [elevator](https://workflowy.com/#/4b0503f9bc1a) review)
-                    - **The Goal:** **Interaction.** Moving from parallel play to shared experience.
-                    - **Why it's the pivot point:** This is where the "Pulse Loop" (Stress/Recovery) kicks in. You are forced into a confined space (The Elevator/Lobby). You can't just grind your own bees anymore; you have to react to the Zombie that just spawned.
-                    - **The "Step Up" Mechanism:** **Shared Trauma.** "Wow, we almost died." This shared emotion prepares them for the trust required in the next stage.
-                    - **The Mechanic:** **Lobby-as-Vehicle.** Short, chaotic rounds (1-2 mins) followed by forced downtime in a confined space.
-                    - **Psychology:** **The Decompression Cycle.** The game provides the "topic" of conversation, and the lobby provides the "space" to discuss it. It is the perfect "warm-up" for students who aren't ready to join a tight squad yet.
-                        - The Decompression Lobby
-                            -  If you only provide the "Battle," you get teammates. If you provide the "Decompression Zone," you get **friends**.
-                            - The "Bonding Equation"
-                                - Relationships are not actually formed _during_ the high-stress activity. They are formed immediately _after_.
-                                - **Phase 1: High Adrenaline (The Game).** Cortisol spikes. Focus narrows. Communication is purely functional ("Look out!", "Behind you!"). There is no room for personality, only survival.
-                                - **Phase 2: The Crash (The Elevator).** The threat is removed. Cortisol drops, and dopamine/oxytocin (the bonding hormone) flood the brain.
-                                - **The "Magic Window":** In the 2-3 minutes immediately following a high-stress event, the brain is desperate to **process the shared reality**.
-                                    - _The behavior:_ "Did you see that jump?" "I can't believe we survived."
-                                    - _The result:_ This is where the social memory is encoded. If you cut the connection here, the bond evaporates. If you sustain it, the bond solidifies.
-                            -
-                    - Game Examples (to review)
-                        -   1. Regretavator (The Modern Successor)
-                            - This is currently one of the hottest games on Roblox. It is "The Normal Elevator" but with high-quality aesthetics and indie-game humor.
-                            - **Why it fits:** It leans heavily into the "Hangout" aspect. Characters (NPCs) enter the elevator and chat with players. It feels like a sitcom where the players are the cast.
-                        -   2. Natural Disaster Survival
-                            - **The Loop:** A tower (The Lobby) $\rightarrow$ Teleport to an Island $\rightarrow$ Survive a Disaster $\rightarrow$ Teleport back to the Tower.
-                            - **Why it works:** The Tower is safe. You stand there and watch the island you just survived disappear. It builds massive camaraderie as you watch the "Survivor List" tick down.
-                        -   3. Breaking Point
-                            - **The Loop:** Everyone sits at a round table in a dark room. A light spins and selects one person to eliminate or play a minigame.
-                            - **The Psychology:** This is the **Panopticon** turned into a game. Everyone is staring at everyone. It is intense, social, and creates instant "alliances." (Note: This might be too "murder-y" for your younger demographics, but the _mechanic_ of sitting in a circle is powerful).
-                        -   4. Tower of Hell (The "Spectator" variant)
-                        -   5. Epic Minigames (Constant variety, constant lobby return)
-                - Rung 4: Trust Builders (The "Bond")
-                    - **The Vibe:** "The Foxhole."
-                    - **The Goal:** **Intimacy.** Forming a specific squad.
-                    - **Why it's high up:** It introduces **Social Liability**. In _Pizza Place_, if you don't cook the pizza, the Driver has nothing to deliver. The student is now accountable to a peer. This creates the strongest friendships but carries the highest risk of anxiety.
-                    - **The "Step Up" Mechanism:** **Competence.** Once a squad realizes they are good at working together, they naturally crave a bigger challenge... which leads to the top.
-                    - **The Mechanic:** **Cooperative PVE** (Player vs. Environment). Success is physically impossible without 3-4 people doing specific jobs.
-                    - **Psychology:** **Shared Accountability.** "If I fail, we all fail." This builds the deepest 1-on-1 bonds but has the highest pressure.
-                    - **Game Examples:**
-                        - _Work at a Pizza Place_ (Supply Chain).
-                        - _Build a Boat_ (Physics Consensus).
-                        - _Keep Talking and Nobody Explodes_ (Information Gap).
-                - Rung 5: Rivalry (The "Tribe")
-                    - **The Vibe:** "The Sports Team."
-                    - **The Goal:** **Loyalty.** Us against the World.
-                    - **Why it's the top:** It combines the accountability of Rung 4 with the adrenaline of **External Conflict**. Defeating another human team requires peak communication and trust.
-                    - **The Result:** This creates "Clans" and long-term retention. These students don't leave AlphaAnywhere because they can't let their teammates down.
-                    - **The Mechanic:** **Squad PVP** (Player vs. Player). It is still interdependent (you need your team), but the bonding comes from defeating an _external_ human opponent.
-                    - **Psychology:** **Us vs. Them.** Nothing unites a group faster than a common enemy. This captures the competitive students who find "Pizza Place" too boring.
-                    - **Game Examples:**
-                        - _BedWars_ (Strategy/Defense).
-                        - _Arsenal_ (Reflexes - but might be too violent? Usually safe-ish).
-                        - _Capture the Flag_ classics.
-        - The Technical Solution
-            - The Web Gateway Approach
-            - We are not hiring Roblox/Lua developers. We are building a standard web interface
-            - **1. The "Arcade" (Frontend):**
-                - Built into the AlphaLearn community module
-                - **Core Feature:** A grid of clickable image cards.
-                - **Action:** Each card contains a hardcoded **Roblox Deep Link** (e.g., `roblox://...`) that points to our purchased Private Server instance.
-            - **2. The "Security" (Backend/Process):**
-                - **Gatekeeper Account:** We create one master Roblox account (`Alpha_Host`).
-                - **Access Control:** This account purchases the Private Servers.
-                - **Whitelist:** We set the servers to _"Friends Only."_ Students must friend the `Alpha_Host` account to gain entry. This effectively "locks" the arcade links to enrolled students only.
-        - Alpha Voice
-            - Overcoming the age barrier for voice chat with a "Sidecar" Audio System
-            - **The Constraint:** Roblox restricts voice chat (Spatial Voice) to users aged 13+ with ID verification. This excludes a significant portion of our student body, rendering high-coordination games difficult. Even with our private servers and verified AlphaAnywhere students, there is no disabling this constraint.
-            - We need this to enable collaborative games between younger users that require communication and coordination (nearly impossible typing - especially with the typing fluency of a 8-10 year old)
-            - **The Solution:** **Alpha Voice.** Instead of relying on Roblox’s internal tools, we build a browser-based Real-Time Communication (RTC) widget directly into the community Arcade. This functions as a "Discord Lite"—a secure voice channel that runs in the background while students play.
-            - User Experience ("The Sidecar Workflow")
-                - Since Roblox launches as a separate application, the AlphaLearn browser tab remains open. We use this to host the audio.
-                - **Lobby:** When a student views a game tile (e.g., _BedWars_), they see a list of active "Voice Pods" (e.g., _Squad Alpha_, _Squad Bravo_).
-                - **Connection:** Clicking "Join Pod" connects their microphone via the browser. They can now hear their teammates.
-                - **The Gameplay:** They launch Roblox. The game runs in full screen, but the audio continues clearly through the browser in the background.
-                - **The Feedback:** A "Floating Overlay" or simple dashboard widget shows who is currently speaking, allowing students to identify teammates by voice even if they haven't met IRL.
-            -   2. Technical Architecture (The Build)
-                - We will not build VoIP infrastructure from scratch. We will integrate a white-label RTC (Real-Time Communication) API.
-                - **The Engine:** Integration of **[Agora.io](http://agora.io/)** or **[Daily.co](http://daily.co/)** SDKs. These provide low-latency, high-quality voice audio specifically designed for gaming and social apps.
-                - **The Integration:** The voice client is embedded as a JavaScript widget on the Arcade page.
-                - **Bandwidth:** Audio-only streams are lightweight, ensuring no lag is introduced to the Roblox game client.
-            -   3. Safety & Moderation
-                - Because we own the voice platform, we have total control over safety standards that Roblox cannot offer.
-                - **The "Panic Button" (Intervention)**
-                    - The web widget features a prominent **Report/Flag** button.
-                    - _Action:_ Clicking this button immediately mutes the offender for the reporting student and timestamps the audio log for staff review.
-                - **AI Sentiment Analysis (Automated Oversight)**
-                    - We can integrate moderation APIs (like **Modulate**) that transcribe and scan audio for bullying, aggressive volume levels, or inappropriate language, automatically flagging the account to Alpha administrators.
-                - The Observer Effect (Self moderation)
-                    - A prominent indicator that the chat/game session is being recorded or monitored, in combination with the fact that students are NOT anonymous, creates an effect where students self moderate. It significantly reduces the likelihood of bullying or inappropriate language because they know they are accountable.
-            -   4. The Strategic Value
-                - By moving voice chat to our platform, we achieve accessibility: 8-year-olds can now coordinate effectively in collaborative games like _Pizza Place_, unlocking "Squad Play" for the younger demographic.
-    -
+  - **1. Identity: "The Live Yearbook/Digital Campus" (Profiles)**
+    - Goal: Solve the visibility problem. Make students "real" to one another.
+    - **Searchable "Alpha Cards":** A digital trading card for every student.
+      - Shows their First Name, Location (City/State/Country), Top 3 Interests (e.g., "Robotics, Minecraft, Piano"), and their** Avatar**.
+    - **Student Map:** A visual world map showing "Where Alpha Students Are" (privacy-protected to City level). It visualizes the scale of their community and who is close by if they want to initiate meet ups.
+    - **Friends: **Create connections between students
+    - **Customizable Profile and Avatar: **
+      - **Avatars: **Students upload a selfie (or choose a preset). Our integrated AI tool instantly processes the photo into a stylized cartoon avatar.
+      - Custom bios, generate wallpapers, custom colours
+      - **Badges:** Academic wins (e.g., AlphaLearn Mastery Badges) appear as stickers on their profile, signaling status.
+  - **2. Safe comms (Chat)**
+    - Goal: Facilitate squad formation and meaningful friendships with appropriate oversight.
+      - In interviews students said "how do I know I want to be friends with someone if I can't talk to them?". A valid concern.
+    - Direct messages between students.
+    - Safety layer
+      - Students can report harmful or inappropriate messages
+      - AI moderation to flag and escalate harmful messages
+        - Escalated messages become visible to parents and staff
+  - **3. The Arcade (Engagement Ladder)**
+    - _Goal: High-quality engagement via curated Roblox Private Servers._
+    - We use a psychological framework called **The Engagement Ladder** to meet students at their social comfort level.
+    - Building a custom video game from scratch is expensive, risky, and rarely competes with the AAA games kids already play - starting with a focus on Roblox.
+    - **The Alpha Arcade** is a strategic pivot. Instead of building a mediocre game, we will build a **gated web portal** that launches students directly into private, secure instances of the world’s most popular collaborative Roblox games.
+    - We get AAA-quality engagement (games kids love) with Alpha-level safety (private servers) for <1% of the cost and risk of custom game development.
+    - The Psychology of Play: The "Social Spectrum"
+      - Our game selection is not random. It is based on **Mildred Parten’s Stages of Play**. We recognize that relationships form in stages, and different students have different social "batteries."
+      - We have 4 game categories to represent "The engagement Ladder"
+        - Rung 1: Side-by-Side (The "Safe" On-Ramp)
+          - **The Goal:** **Comfort.** Just getting the student to log in and stay.
+          - **Why it's the bottom:** It demands **zero** social performance. A student can join _Bee Swarm Simulator_, grind their own hive, and never type a word. They are "alone together."
+          - **The "Step Up" Mechanism:** **Curiosity.** Eventually, they will look at their neighbor’s hive and ask, "How did you get that?" This breaks the silence without pressure.
+        - Rung 2: Town Square (The "Low-Stakes" Mixer)
+          - **The Vibe:** "Recess." There are no rules, no scores, and no objectives. You just... exist.
+          - **The Goal:** **Presence.** Feeling the scale of the community.
+          - **Why it's next:** It is still parallel, but it is **unstructured**. In _Bee Swarm_, you look at bees. In _Brookhaven_, you look at _people_. The focus shifts from "My Stats" to "Our World."
+          - **The "Step Up" Mechanism:** **Roleplay.** To enjoy this game, you eventually have to play along ("Can I come into your house?"). This is the first "Soft Contract" of cooperation.
+          - **The Mechanic:** **Unstructured Roleplay (RP).** The game provides a set—a house, a school, a town—and the players are the actors. They decide if they are playing "Family," "School," or "Cops and Robbers."
+          - **The Psychology:** **"The Canvas."** This appeals to the **Socializers** and **Creatives**. They don't care about winning; they care about expression ("Look at my outfit") and narrative ("I'm the mayor today").
+          - **The Social Hook:** Proximity. You buy a house next to someone else and simply say, "Hi neighbor."
+          - **Game Examples:**
+            - _Brookhaven RP_ (The massive life sim).
+            - _Bloxburg_ (Sims-style building + RP - _Note: Paid entry, but high quality_).
+            - _Royale High_ (Fantasy school RP).
+        - Rung 3: Ice Breakers (The "Filter")
+          - This category creates a feeling of shared fate with other players, through a psychological loop of a stress-recovery cycle, and proximity during the recovery phase. (see [elevator](https://workflowy.com/#/4b0503f9bc1a) review)
+          - **The Goal:** **Interaction.** Moving from parallel play to shared experience.
+          - **Why it's the pivot point:** This is where the "Pulse Loop" (Stress/Recovery) kicks in. You are forced into a confined space (The Elevator/Lobby). You can't just grind your own bees anymore; you have to react to the Zombie that just spawned.
+          - **The "Step Up" Mechanism:** **Shared Trauma.** "Wow, we almost died." This shared emotion prepares them for the trust required in the next stage.
+          - **The Mechanic:** **Lobby-as-Vehicle.** Short, chaotic rounds (1-2 mins) followed by forced downtime in a confined space.
+          - **Psychology:** **The Decompression Cycle.** The game provides the "topic" of conversation, and the lobby provides the "space" to discuss it. It is the perfect "warm-up" for students who aren't ready to join a tight squad yet.
+            - The Decompression Lobby
+              -  If you only provide the "Battle," you get teammates. If you provide the "Decompression Zone," you get **friends**.
+              - The "Bonding Equation"
+                - Relationships are not actually formed _during_ the high-stress activity. They are formed immediately _after_.
+                - **Phase 1: High Adrenaline (The Game).** Cortisol spikes. Focus narrows. Communication is purely functional ("Look out!", "Behind you!"). There is no room for personality, only survival.
+                - **Phase 2: The Crash (The Elevator).** The threat is removed. Cortisol drops, and dopamine/oxytocin (the bonding hormone) flood the brain.
+                - **The "Magic Window":** In the 2-3 minutes immediately following a high-stress event, the brain is desperate to **process the shared reality**.
+                  - _The behavior:_ "Did you see that jump?" "I can't believe we survived."
+                  - _The result:_ This is where the social memory is encoded. If you cut the connection here, the bond evaporates. If you sustain it, the bond solidifies.
+              -
+          - Game Examples (to review)
+            - 1. Regretavator (The Modern Successor)
+              - This is currently one of the hottest games on Roblox. It is "The Normal Elevator" but with high-quality aesthetics and indie-game humor.
+              - **Why it fits:** It leans heavily into the "Hangout" aspect. Characters (NPCs) enter the elevator and chat with players. It feels like a sitcom where the players are the cast.
+            - 2. Natural Disaster Survival
+              - **The Loop:** A tower (The Lobby) $\rightarrow$ Teleport to an Island $\rightarrow$ Survive a Disaster $\rightarrow$ Teleport back to the Tower.
+              - **Why it works:** The Tower is safe. You stand there and watch the island you just survived disappear. It builds massive camaraderie as you watch the "Survivor List" tick down.
+            - 3. Breaking Point
+              - **The Loop:** Everyone sits at a round table in a dark room. A light spins and selects one person to eliminate or play a minigame.
+              - **The Psychology:** This is the **Panopticon** turned into a game. Everyone is staring at everyone. It is intense, social, and creates instant "alliances." (Note: This might be too "murder-y" for your younger demographics, but the _mechanic_ of sitting in a circle is powerful).
+            - 4. Tower of Hell (The "Spectator" variant)
+            - 5. Epic Minigames (Constant variety, constant lobby return)
+        - Rung 4: Trust Builders (The "Bond")
+          - **The Vibe:** "The Foxhole."
+          - **The Goal:** **Intimacy.** Forming a specific squad.
+          - **Why it's high up:** It introduces **Social Liability**. In _Pizza Place_, if you don't cook the pizza, the Driver has nothing to deliver. The student is now accountable to a peer. This creates the strongest friendships but carries the highest risk of anxiety.
+          - **The "Step Up" Mechanism:** **Competence.** Once a squad realizes they are good at working together, they naturally crave a bigger challenge... which leads to the top.
+          - **The Mechanic:** **Cooperative PVE** (Player vs. Environment). Success is physically impossible without 3-4 people doing specific jobs.
+          - **Psychology:** **Shared Accountability.** "If I fail, we all fail." This builds the deepest 1-on-1 bonds but has the highest pressure.
+          - **Game Examples:**
+            - _Work at a Pizza Place_ (Supply Chain).
+            - _Build a Boat_ (Physics Consensus).
+            - _Keep Talking and Nobody Explodes_ (Information Gap).
+        - Rung 5: Rivalry (The "Tribe")
+          - **The Vibe:** "The Sports Team."
+          - **The Goal:** **Loyalty.** Us against the World.
+          - **Why it's the top:** It combines the accountability of Rung 4 with the adrenaline of **External Conflict**. Defeating another human team requires peak communication and trust.
+          - **The Result:** This creates "Clans" and long-term retention. These students don't leave AlphaAnywhere because they can't let their teammates down.
+          - **The Mechanic:** **Squad PVP** (Player vs. Player). It is still interdependent (you need your team), but the bonding comes from defeating an _external_ human opponent.
+          - **Psychology:** **Us vs. Them.** Nothing unites a group faster than a common enemy. This captures the competitive students who find "Pizza Place" too boring.
+          - **Game Examples:**
+            - _BedWars_ (Strategy/Defense).
+            - _Arsenal_ (Reflexes - but might be too violent? Usually safe-ish).
+            - _Capture the Flag_ classics.
+    - The Technical Solution
+      - The Web Gateway Approach
+      - We are not hiring Roblox/Lua developers. We are building a standard web interface
+      - **1. The "Arcade" (Frontend):**
+        - Built into the AlphaLearn community module
+        - **Core Feature:** A grid of clickable image cards.
+        - **Action:** Each card contains a hardcoded **Roblox Deep Link** (e.g., `roblox://...`) that points to our purchased Private Server instance.
+      - **2. The "Security" (Backend/Process):**
+        - **Gatekeeper Account:** We create one master Roblox account (`Alpha_Host`).
+        - **Access Control:** This account purchases the Private Servers.
+        - **Whitelist:** We set the servers to _"Friends Only."_ Students must friend the `Alpha_Host` account to gain entry. This effectively "locks" the arcade links to enrolled students only.
+    - Alpha Voice
+      - Overcoming the age barrier for voice chat with a "Sidecar" Audio System
+      - **The Constraint:** Roblox restricts voice chat (Spatial Voice) to users aged 13+ with ID verification. This excludes a significant portion of our student body, rendering high-coordination games difficult. Even with our private servers and verified AlphaAnywhere students, there is no disabling this constraint.
+      - We need this to enable collaborative games between younger users that require communication and coordination (nearly impossible typing - especially with the typing fluency of a 8-10 year old)
+      - **The Solution:** **Alpha Voice.** Instead of relying on Roblox’s internal tools, we build a browser-based Real-Time Communication (RTC) widget directly into the community Arcade. This functions as a "Discord Lite"—a secure voice channel that runs in the background while students play.
+      - User Experience ("The Sidecar Workflow")
+        - Since Roblox launches as a separate application, the AlphaLearn browser tab remains open. We use this to host the audio.
+        - **Lobby:** When a student views a game tile (e.g., _BedWars_), they see a list of active "Voice Pods" (e.g., _Squad Alpha_, _Squad Bravo_).
+        - **Connection:** Clicking "Join Pod" connects their microphone via the browser. They can now hear their teammates.
+        - **The Gameplay:** They launch Roblox. The game runs in full screen, but the audio continues clearly through the browser in the background.
+        - **The Feedback:** A "Floating Overlay" or simple dashboard widget shows who is currently speaking, allowing students to identify teammates by voice even if they haven't met IRL.
+      - 2. Technical Architecture (The Build)
+        - We will not build VoIP infrastructure from scratch. We will integrate a white-label RTC (Real-Time Communication) API.
+        - **The Engine:** Integration of **[Agora.io](http://agora.io/)** or **[Daily.co](http://daily.co/)** SDKs. These provide low-latency, high-quality voice audio specifically designed for gaming and social apps.
+        - **The Integration:** The voice client is embedded as a JavaScript widget on the Arcade page.
+        - **Bandwidth:** Audio-only streams are lightweight, ensuring no lag is introduced to the Roblox game client.
+      - 3. Safety & Moderation
+        - Because we own the voice platform, we have total control over safety standards that Roblox cannot offer.
+        - **The "Panic Button" (Intervention)**
+          - The web widget features a prominent **Report/Flag** button.
+          - _Action:_ Clicking this button immediately mutes the offender for the reporting student and timestamps the audio log for staff review.
+        - **AI Sentiment Analysis (Automated Oversight)**
+          - We can integrate moderation APIs (like **Modulate**) that transcribe and scan audio for bullying, aggressive volume levels, or inappropriate language, automatically flagging the account to Alpha administrators.
+        - The Observer Effect (Self moderation)
+          - A prominent indicator that the chat/game session is being recorded or monitored, in combination with the fact that students are NOT anonymous, creates an effect where students self moderate. It significantly reduces the likelihood of bullying or inappropriate language because they know they are accountable.
+      - 4. The Strategic Value
+        - By moving voice chat to our platform, we achieve accessibility: 8-year-olds can now coordinate effectively in collaborative games like _Pizza Place_, unlocking "Squad Play" for the younger demographic.
+  -
 - Archive
-    - Roblox Research
-        - Roblox open questions
-            - Is Alpha already an approved business for gift cards? Do we have an established Robux channel?
-            - Can you create your own token economy in a custom server? Ie Alphas
-            -
-        - Roblox review
-            - Game designs
-                - Elevator
-                    - In this game loop, the elevator is the "Lobby," but unlike a static menu screen, it is a physical space where avatars are trapped together.
-                    - The game:
-                        -   1. The Box (Safety): Players stand in a small elevator. Cheesy muzak plays. You are forced to look at each other's avatars.
-                        -   2. The Reveal (Anticipation): The doors open. It could be a zombie horde, a giant toaster, or a battle royale.
-                        -   3. The Chaos (Activity): You survive for 60 seconds.
-                        -   4. The Return (Relief): You are teleported back to the safety of the box.
-                    - The Psychology: Players feel "In It Together"
-                        - This game mechanic utilizes a powerful psychological loop called **The Stress-Recovery Cycle**, amplified by **Proximity**.
-                            - A. The "Life Raft" Effect (Shared Fate)Because the elevator moves _everyone_ together, it creates a sense of **Shared Fate**. In a typical lobby, players run around ignoring each other. In the elevator, if the cable snaps, you _all_ fall. If the door opens to fire, you _all_ burn.
-                                - **The Principle:** **"Common Fate"** (Gestalt Psychology). When elements move in the same direction at the same speed, we perceive them as a single group. The elevator literally forces this perception.
-                            - B. The Decompression Chamber (The "Campfire")The genius of this game is not the minigames; it is the **Elevator Music Phase**.
-                                - **The Mechanism:** High Adrenaline (The Floor) -> Low Adrenaline (The Elevator).
-                                - **The Effect:** After surviving a chaotic round, the return to the elevator acts as a **Collective Sigh of Relief**. The cheesy music signals "We are safe." This moment of calm is when socialization happens ("That was crazy," "I almost died").
-                            - C. Forced Proximity
-                                - **The Mechanism:** The elevator is small. You cannot run away.
-                                - **The Effect:** **Proximity Effect.** You are forced to notice the details of other players' avatars ("I like your hat"). In a large open world, you wouldn't notice. In the elevator, they are your entire world.
-                - Bee game - make honey. Like a farming game. Honey becomes currency used to upgrade and purchase more bees. Number of bees owned becomes the way to pass through gates
-                    - Start with 1 bee that is a "good one".
-                    - Announcements to the game when someone achieves something
-                    - Quests that teach you about the game. A bear gives little tutorials and quests to level up - always promising an exciting reward
-                    - Progression is exponential. You go from creating 200 honey at a time to 2000 in short order. This makes it hard to stop. Because the next 5 minutes will be much more productive than the last
-                    - Can do multiple challenges at once. It feels very efficient
-                    - Random rewards can appear at any time, and often enough that it's motivating
-            - Custom worlds are standard
-            - Voice is only available for 13+
-            - Robux <> XP = easy reward system
-                - Robux is used to customize avatars, in game experiences, items
-            - Lots of single-game worlds that can be used as an arcade
-                - Kids can build their own and share and publish in to the arcade. Taps into the need to create/build and share with peers.
-            - Feature brainstorm
-                - Avoid addictive loops . Instead reward:
-                    - pro-social actions. Badges/titles for:
-                        - "Helpful" (helped someone with a puzzle)
-                        - "Great host" (started a group activity)
-                        - "collaborator" (completed 3 group builds)
-                    - Participation, not winning
-                        - Cosmetic unlocks for just showing up to events or finishing collaborative projects
-                    - Showcases instead of leaderboards
-                        - Hall of projects where finished group builds, stories or art are displayed for a week
-                - Proximity chat (voice)
-                - Vibe spots
-                    -
-                - Collaboration and interaction
-                    - To combat isolation, we need to create small-group, low-pressure encounters. What is the optimal number of students
-                    - Sandbox/Maker space - in-game building tools. Allow students to build structures together in real time.
-                        - Build-battle every Friday where teams have to build a bridge or a skyscraper etc. Live event
-                        - Dedicated room with a prompt of the day "Build a science museum exhibit"
-                    - Group "Obbys"/escape rooms/puzzle pods - traditionally just jumping puzzles, but we could create logic Obby's/escape rooms that require collaboration of 2-4 players. E.g to open a door, three students must stand on pressure plates that correspond to the correct answer of a problem
-                    - Conversation starters
-                        - "Introduce myself" prompt (e.g. shows name, grade favorite subject in a little speech bubble)
-                        - Question of the day board
-                    - Interest-based rooms/Clubs
-                        - Small themed rooms
-                    - Cafeteria - where students can sit and talk
-                - AlphaAnywhere branding
-                    - Make it feel very AlphaAnywhere, not some random Roblox server.
-                - Identity and Status
-                    - Alpha Merch
-                    - Trophy room showcase - immortalize students for certain achievements
-                    - Aura/Trails - If a student gets a 100% on a test, they could get a temporary "Gold Glow" or a particle trail that follows them in the game for 24 hours. It signals to others: _"I crushed my work today._
-                    - Locker bay: every student gets a customizable persistent locker. They can decorate the inside/outside with digital stickers earned. Add a status "Just finished Algebra". Let others react
-                - Moderation
-                    - Can create admin commands so that if students are misbehaving, a mod can freeze them or kick them from the server
-                    - Roblox is rolling out mandatory age checks and segments users into narrow age brackets (<9, 9-12, 13-15 etc) restricting who can chat with whom.
-        - Roblox metaverse MVP feature set
-            - Private AlphaAnywhere experience
-            - For speed, ideally built from an existing official roblox template plus asset packs.
-                - Use only trusted asset sources and audit all scripts for security
-            - Complete documentation of all packs/maps used
-            - Pairing code to pair roblox users with timeback users
-            - Gating logic to check if a student is completed their academic work for the day (we will provide the endpoint to call with the user's timeback id or roblox id)
-            - "Open hours" to ensure we have a high enough density of users online and moderator capacity.
-            - Moderator/Admin/Safety tools
-                - A way for staff to
-                    - See a list of who's in the experience
-                    - Teleport everyone to a safe area if something weird happens
-                    - Mute/kick individual users quickly
-                - An obvious report a problem button in the world for students
-                    - We get the reports
-            - Spawn point in central courtyard with AlphaAnywhere branding and ice breaker activities (soccer ball and whiteboard?). The goal is to get the kids seeing each other and interacting with each other with a "third object"
-            - Avatar customizations, custom merch as part of our rewards economy. "Alphas" (school currency) as an in game currency, or conversion to Robux
-            - 3 zones - goal is to get them interacting with each other, and also a feeling of progression.
-                - Zones themselves could be on floating islands
-                - Progressional puzzles
-                    - 3-4 high quality teamwork puzzles/obbys - use existing successful obbys? that are appropriate for 8-14 year olds.
-                - Builder zone
-                    - E.g. floating island where users are given building tools to build structures together.
-                - Cafeteria
-            - Train loop
-                - A simple automated train or tram that loops around the map. It gives students a place to sit and chat while "moving," which psychologically encourages conversation more than sitting in a static chair.
-        - Roblox metaverse MVP Pre-mortem
-            - Empty Restaurant effect/synchronicity failure
-                - If the server is empty/ dead zone.
-                - cause:
-                    - Asynchronous logins
-                    - World is too large lacking social density, and/or
-                    - Lack of convergence points
-                    - After-academics gate backfires and few students make it in - only the really motivated kids and the rest don't bother
-                - The fix:
-                    - Set hours until we have enough scale to be always on
-            - The cringe factor
-                - Overly school-feel and "adult' design.
-                - Kids and teenagers sniff out educational edutainment instantly. If it feels like a teacher is watching, or the "fun" is just math problems disguised as obbys, they will reject it.
-                - The fix: Dont make it too polished or preppy. It needs to feel a bit like a secret clubhouse and less like a corporate campus.
-            - Not compelling enough
-                - They try it a couple times then say "it's fine" but drift back to other games/social apps they already use
-                - Cause
-                    - Activities feel too educational -feels like "more school"
-                    - Puzzles are more annoying than fun (too hard, too long, too similar)
-                    - There's no sense of progression
-                    - It doesn't compete with the frictionless dopamine hit of whatever they were doing before
-                    - It doesn't deliver enough joy or belonging per minute of effort
-                - Fix
-                    - Treat it like a product
-                    - Incremental engagement tests, measurements, tweaks, improvements focusing on daily logins
-                    - Authority figures are modeling "this matters" - coaches say "See you in the Alpha Lounge!". Champion it to ensure the problem isn't the initial momentum.
-                    - Run structured events
-            - Wrong fit for the homeschool population
-                - Adoption is low from the start and we struggle to get a meaningful sample to even test with
-                - Cause
-                    - Age mismatch. Young kids struggle with 3D navigation, older teens think Roblox is for little kids
-                    - Parent culture. If a meaningful amount of parents are anti-Roblox (screen time, safety, "I dont want my kid on that platform")
-            - The login wall
-                - Technical friction. Code doesn't work. Account isn't set up. Mom needs to update the app. It says we're not in the group yet.
-                - Roblox can be a nightmare for kids that don't already use Roblox.
-                - The fix: white glove onboarding. Host a live Zoom tech support group. Walk every single family through the account setup, mic permissions and privacy settings in real time
-            - The safety panic/trust breach
-                - A student learns how to bypass the chat filter. Someone draws something inappropriate on the whiteboard. A parent walks by, sees it, and demands the program be shut down.
-                - Don't over rely on honor code. The reality is students will try to break the rules.
-                - The fix: Nothing is anonymous. Chat logs are persisted and reviewed. Drawings are attributed. Reporting feature to report and erase the whiteboard.
-        - Design studios
-            - AppStudio
-            - Juego
+  - Roblox Research
+    - Roblox open questions
+      - Is Alpha already an approved business for gift cards? Do we have an established Robux channel?
+      - Can you create your own token economy in a custom server? Ie Alphas
+      -
+    - Roblox review
+      - Game designs
+        - Elevator
+          - In this game loop, the elevator is the "Lobby," but unlike a static menu screen, it is a physical space where avatars are trapped together.
+          - The game:
+            - 1. The Box (Safety): Players stand in a small elevator. Cheesy muzak plays. You are forced to look at each other's avatars.
+            - 2. The Reveal (Anticipation): The doors open. It could be a zombie horde, a giant toaster, or a battle royale.
+            - 3. The Chaos (Activity): You survive for 60 seconds.
+            - 4. The Return (Relief): You are teleported back to the safety of the box.
+          - The Psychology: Players feel "In It Together"
+            - This game mechanic utilizes a powerful psychological loop called **The Stress-Recovery Cycle**, amplified by **Proximity**.
+              - A. The "Life Raft" Effect (Shared Fate)Because the elevator moves _everyone_ together, it creates a sense of **Shared Fate**. In a typical lobby, players run around ignoring each other. In the elevator, if the cable snaps, you _all_ fall. If the door opens to fire, you _all_ burn.
+                - **The Principle:** **"Common Fate"** (Gestalt Psychology). When elements move in the same direction at the same speed, we perceive them as a single group. The elevator literally forces this perception.
+              - B. The Decompression Chamber (The "Campfire")The genius of this game is not the minigames; it is the **Elevator Music Phase**.
+                - **The Mechanism:** High Adrenaline (The Floor) -> Low Adrenaline (The Elevator).
+                - **The Effect:** After surviving a chaotic round, the return to the elevator acts as a **Collective Sigh of Relief**. The cheesy music signals "We are safe." This moment of calm is when socialization happens ("That was crazy," "I almost died").
+              - C. Forced Proximity
+                - **The Mechanism:** The elevator is small. You cannot run away.
+                - **The Effect:** **Proximity Effect.** You are forced to notice the details of other players' avatars ("I like your hat"). In a large open world, you wouldn't notice. In the elevator, they are your entire world.
+        - Bee game - make honey. Like a farming game. Honey becomes currency used to upgrade and purchase more bees. Number of bees owned becomes the way to pass through gates
+          - Start with 1 bee that is a "good one".
+          - Announcements to the game when someone achieves something
+          - Quests that teach you about the game. A bear gives little tutorials and quests to level up - always promising an exciting reward
+          - Progression is exponential. You go from creating 200 honey at a time to 2000 in short order. This makes it hard to stop. Because the next 5 minutes will be much more productive than the last
+          - Can do multiple challenges at once. It feels very efficient
+          - Random rewards can appear at any time, and often enough that it's motivating
+      - Custom worlds are standard
+      - Voice is only available for 13+
+      - Robux <> XP = easy reward system
+        - Robux is used to customize avatars, in game experiences, items
+      - Lots of single-game worlds that can be used as an arcade
+        - Kids can build their own and share and publish in to the arcade. Taps into the need to create/build and share with peers.
+      - Feature brainstorm
+        - Avoid addictive loops . Instead reward:
+          - pro-social actions. Badges/titles for:
+            - "Helpful" (helped someone with a puzzle)
+            - "Great host" (started a group activity)
+            - "collaborator" (completed 3 group builds)
+          - Participation, not winning
+            - Cosmetic unlocks for just showing up to events or finishing collaborative projects
+          - Showcases instead of leaderboards
+            - Hall of projects where finished group builds, stories or art are displayed for a week
+        - Proximity chat (voice)
+        - ## Vibe spots
+        - Collaboration and interaction
+          - To combat isolation, we need to create small-group, low-pressure encounters. What is the optimal number of students
+          - Sandbox/Maker space - in-game building tools. Allow students to build structures together in real time.
+            - Build-battle every Friday where teams have to build a bridge or a skyscraper etc. Live event
+            - Dedicated room with a prompt of the day "Build a science museum exhibit"
+          - Group "Obbys"/escape rooms/puzzle pods - traditionally just jumping puzzles, but we could create logic Obby's/escape rooms that require collaboration of 2-4 players. E.g to open a door, three students must stand on pressure plates that correspond to the correct answer of a problem
+          - Conversation starters
+            - "Introduce myself" prompt (e.g. shows name, grade favorite subject in a little speech bubble)
+            - Question of the day board
+          - Interest-based rooms/Clubs
+            - Small themed rooms
+          - Cafeteria - where students can sit and talk
+        - AlphaAnywhere branding
+          - Make it feel very AlphaAnywhere, not some random Roblox server.
+        - Identity and Status
+          - Alpha Merch
+          - Trophy room showcase - immortalize students for certain achievements
+          - Aura/Trails - If a student gets a 100% on a test, they could get a temporary "Gold Glow" or a particle trail that follows them in the game for 24 hours. It signals to others: _"I crushed my work today._
+          - Locker bay: every student gets a customizable persistent locker. They can decorate the inside/outside with digital stickers earned. Add a status "Just finished Algebra". Let others react
+        - Moderation
+          - Can create admin commands so that if students are misbehaving, a mod can freeze them or kick them from the server
+          - Roblox is rolling out mandatory age checks and segments users into narrow age brackets (<9, 9-12, 13-15 etc) restricting who can chat with whom.
+    - Roblox metaverse MVP feature set
+      - Private AlphaAnywhere experience
+      - For speed, ideally built from an existing official roblox template plus asset packs.
+        - Use only trusted asset sources and audit all scripts for security
+      - Complete documentation of all packs/maps used
+      - Pairing code to pair roblox users with timeback users
+      - Gating logic to check if a student is completed their academic work for the day (we will provide the endpoint to call with the user's timeback id or roblox id)
+      - "Open hours" to ensure we have a high enough density of users online and moderator capacity.
+      - Moderator/Admin/Safety tools
+        - A way for staff to
+          - See a list of who's in the experience
+          - Teleport everyone to a safe area if something weird happens
+          - Mute/kick individual users quickly
+        - An obvious report a problem button in the world for students
+          - We get the reports
+      - Spawn point in central courtyard with AlphaAnywhere branding and ice breaker activities (soccer ball and whiteboard?). The goal is to get the kids seeing each other and interacting with each other with a "third object"
+      - Avatar customizations, custom merch as part of our rewards economy. "Alphas" (school currency) as an in game currency, or conversion to Robux
+      - 3 zones - goal is to get them interacting with each other, and also a feeling of progression.
+        - Zones themselves could be on floating islands
+        - Progressional puzzles
+          - 3-4 high quality teamwork puzzles/obbys - use existing successful obbys? that are appropriate for 8-14 year olds.
+        - Builder zone
+          - E.g. floating island where users are given building tools to build structures together.
+        - Cafeteria
+      - Train loop
+        - A simple automated train or tram that loops around the map. It gives students a place to sit and chat while "moving," which psychologically encourages conversation more than sitting in a static chair.
+    - Roblox metaverse MVP Pre-mortem
+      - Empty Restaurant effect/synchronicity failure
+        - If the server is empty/ dead zone.
+        - cause:
+          - Asynchronous logins
+          - World is too large lacking social density, and/or
+          - Lack of convergence points
+          - After-academics gate backfires and few students make it in - only the really motivated kids and the rest don't bother
+        - The fix:
+          - Set hours until we have enough scale to be always on
+      - The cringe factor
+        - Overly school-feel and "adult' design.
+        - Kids and teenagers sniff out educational edutainment instantly. If it feels like a teacher is watching, or the "fun" is just math problems disguised as obbys, they will reject it.
+        - The fix: Dont make it too polished or preppy. It needs to feel a bit like a secret clubhouse and less like a corporate campus.
+      - Not compelling enough
+        - They try it a couple times then say "it's fine" but drift back to other games/social apps they already use
+        - Cause
+          - Activities feel too educational -feels like "more school"
+          - Puzzles are more annoying than fun (too hard, too long, too similar)
+          - There's no sense of progression
+          - It doesn't compete with the frictionless dopamine hit of whatever they were doing before
+          - It doesn't deliver enough joy or belonging per minute of effort
+        - Fix
+          - Treat it like a product
+          - Incremental engagement tests, measurements, tweaks, improvements focusing on daily logins
+          - Authority figures are modeling "this matters" - coaches say "See you in the Alpha Lounge!". Champion it to ensure the problem isn't the initial momentum.
+          - Run structured events
+      - Wrong fit for the homeschool population
+        - Adoption is low from the start and we struggle to get a meaningful sample to even test with
+        - Cause
+          - Age mismatch. Young kids struggle with 3D navigation, older teens think Roblox is for little kids
+          - Parent culture. If a meaningful amount of parents are anti-Roblox (screen time, safety, "I dont want my kid on that platform")
+      - The login wall
+        - Technical friction. Code doesn't work. Account isn't set up. Mom needs to update the app. It says we're not in the group yet.
+        - Roblox can be a nightmare for kids that don't already use Roblox.
+        - The fix: white glove onboarding. Host a live Zoom tech support group. Walk every single family through the account setup, mic permissions and privacy settings in real time
+      - The safety panic/trust breach
+        - A student learns how to bypass the chat filter. Someone draws something inappropriate on the whiteboard. A parent walks by, sees it, and demands the program be shut down.
+        - Don't over rely on honor code. The reality is students will try to break the rules.
+        - The fix: Nothing is anonymous. Chat logs are persisted and reviewed. Drawings are attributed. Reporting feature to report and erase the whiteboard.
+    - Design studios
+      - AppStudio
+      - Juego

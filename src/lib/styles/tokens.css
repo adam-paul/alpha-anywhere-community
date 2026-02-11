@@ -31,9 +31,9 @@
   --shadow: none;
 
   /* Component sizes */
-  --avatar-size-sm: 2rem;    /* 32px */
-  --avatar-size-md: 2.5rem;  /* 40px */
-  --avatar-size-lg: 3.5rem;  /* 56px */
+  --avatar-size-sm: 2rem; /* 32px */
+  --avatar-size-md: 2.5rem; /* 40px */
+  --avatar-size-lg: 3.5rem; /* 56px */
 
   /* Panel layout - used for consistent header/footer heights in chat, etc. */
   --panel-bar-height: calc(var(--avatar-size-md) + var(--space-4) * 2 + var(--border-width));
@@ -62,7 +62,9 @@
 }
 
 /* Reset and base styles */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -77,7 +79,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display);
   margin: 0;
   line-height: 1.2;

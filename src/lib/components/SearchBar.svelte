@@ -24,13 +24,7 @@
 
 <div class="search-bar" class:disabled>
   <Icon name="search" size={18} />
-  <input
-    type="text"
-    {value}
-    {placeholder}
-    {disabled}
-    oninput={handleInput}
-  />
+  <input type="text" {value} {placeholder} {disabled} oninput={handleInput} />
 </div>
 
 <style>

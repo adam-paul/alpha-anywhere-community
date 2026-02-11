@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { GatingState } from '../types';
-  import { computeProgressPercent } from '../types';
+  import type { GatingState } from '$lib/types';
+  import { computeProgressPercent } from '$lib/utils/gating';
   import { Button, Icon } from './ui';
   import ProgressRing from './ProgressRing.svelte';
 
@@ -30,16 +30,10 @@
       </div>
 
       <h3 class="work-wall-title">Checking Progress...</h3>
-      <p class="work-wall-message">
-        Loading your learning data
-      </p>
+      <p class="work-wall-message">Loading your learning data</p>
 
       <div class="progress-container">
-        <ProgressRing
-          progress={0}
-          size={120}
-          strokeWidth={10}
-        />
+        <ProgressRing progress={0} size={120} strokeWidth={10} />
         <div class="progress-label">
           <span class="minutes-current">—</span>
           <span class="minutes-separator">/</span>
@@ -58,11 +52,7 @@
       </p>
 
       <div class="progress-container">
-        <ProgressRing
-          progress={progressPercent}
-          size={120}
-          strokeWidth={10}
-        />
+        <ProgressRing progress={progressPercent} size={120} strokeWidth={10} />
         <div class="progress-label">
           <span class="minutes-current complete">{gatingState.minutesCurrent}</span>
           <span class="minutes-separator">/</span>
@@ -70,14 +60,10 @@
         </div>
       </div>
 
-      <p class="congrats-text">
-        You crushed it! Time to play.
-      </p>
+      <p class="congrats-text">You crushed it! Time to play.</p>
 
       <div class="unlock-btn">
-        <Button variant="primary" size="lg" onclick={handleDismiss}>
-          Enter Arcade
-        </Button>
+        <Button variant="primary" size="lg" onclick={handleDismiss}>Enter Arcade</Button>
       </div>
     {:else}
       <!-- In-progress state -->
@@ -91,11 +77,7 @@
       </p>
 
       <div class="progress-container">
-        <ProgressRing
-          progress={progressPercent}
-          size={120}
-          strokeWidth={10}
-        />
+        <ProgressRing progress={progressPercent} size={120} strokeWidth={10} />
         <div class="progress-label">
           <span class="minutes-current">{gatingState.minutesCurrent}</span>
           <span class="minutes-separator">/</span>
@@ -159,8 +141,13 @@
   }
 
   @keyframes pulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 
   .work-wall-title {

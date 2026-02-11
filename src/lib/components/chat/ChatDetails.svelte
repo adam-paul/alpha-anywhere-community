@@ -15,12 +15,12 @@
     if (conv.name) return conv.name;
 
     const participants = conv.participantIds
-      .map(id => MOCK_STUDENTS.find(s => s.id === id))
+      .map((id) => MOCK_STUDENTS.find((s) => s.id === id))
       .filter((s): s is Student => s !== undefined);
 
     if (participants.length === 0) return 'Unknown';
     if (participants.length === 1) return participants[0].displayName;
-    return participants.map(p => p.displayName.split(' ')[0]).join(' and ');
+    return participants.map((p) => p.displayName.split(' ')[0]).join(' and ');
   });
 
   // Resolve participants
@@ -29,7 +29,7 @@
     if (!conv) return [];
 
     return conv.participantIds
-      .map(id => MOCK_STUDENTS.find(s => s.id === id))
+      .map((id) => MOCK_STUDENTS.find((s) => s.id === id))
       .filter((s): s is Student => s !== undefined);
   });
 

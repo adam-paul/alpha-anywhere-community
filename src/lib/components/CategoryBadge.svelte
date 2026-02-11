@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { EngagementCategory } from '../types';
-  import { ENGAGEMENT_CATEGORIES } from '../types';
+  import { ENGAGEMENT_CATEGORIES } from '$lib/constants';
+  import type { EngagementCategory } from '$lib/types';
   import { Badge } from './ui';
 
   interface Props {
@@ -18,7 +18,7 @@
     'town-square': { color: 'var(--color-town-square)', bg: 'var(--color-town-square-bg)' },
     'ice-breaker': { color: 'var(--color-ice-breaker)', bg: 'var(--color-ice-breaker-bg)' },
     'trust-builder': { color: 'var(--color-trust-builder)', bg: 'var(--color-trust-builder-bg)' },
-    'rivalry': { color: 'var(--color-rivalry)', bg: 'var(--color-rivalry-bg)' }
+    rivalry: { color: 'var(--color-rivalry)', bg: 'var(--color-rivalry-bg)' }
   };
 
   const colors = $derived(colorMap[category]);

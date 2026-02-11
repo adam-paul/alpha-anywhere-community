@@ -2,7 +2,8 @@
   import { PageHeader } from '$lib/components/layout';
   import { Select } from '$lib/components/ui';
   import { createExploreStore } from '$lib/stores/explore.svelte';
-  import { INTERESTS, type Interest } from '$lib/types';
+  import { INTERESTS } from '$lib/constants';
+  import type { Interest } from '$lib/types';
   import StudentGrid from '$lib/components/StudentGrid.svelte';
   import SearchBar from '$lib/components/SearchBar.svelte';
   import ViewToggle from '$lib/components/ViewToggle.svelte';
@@ -40,10 +41,7 @@
 </PageHeader>
 
 <div class="explore-toolbar">
-  <SearchBar
-    bind:value={explore.searchQuery}
-    placeholder="Search by name, interests or skills"
-  />
+  <SearchBar bind:value={explore.searchQuery} placeholder="Search by name, interests or skills" />
   <Select
     options={interestOptions}
     value={explore.activeInterestFilter}

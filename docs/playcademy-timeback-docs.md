@@ -18,7 +18,7 @@ This diagram illustrates how the major pieces of the ecosystem fit together.
 
 You'll primarily interact with these tools:
 
-{/* prettier-ignore */}
+{/_ prettier-ignore _/}
 
 <table>
   <thead>
@@ -31,6 +31,7 @@ You'll primarily interact with these tools:
         Description
       </th>
     </tr>
+
   </thead>
 
   <tbody>
@@ -69,15 +70,16 @@ You'll primarily interact with these tools:
         Starts the development sandbox and backend server during `vite dev` for better DX.
       </td>
     </tr>
+
   </tbody>
 </table>
 
 <Callout type="info">
   **Note for Godot & Unity Developers**
 
-  This guide focuses on our Vite-based toolchain for building apps and games.
+This guide focuses on our Vite-based toolchain for building apps and games.
 
-  For engine-specific instructions, see our dedicated guides for [Godot](/platform/guides/godot) and [Unity](/platform/guides/unity).
+For engine-specific instructions, see our dedicated guides for [Godot](/platform/guides/godot) and [Unity](/platform/guides/unity).
 </Callout>
 
 ## Explore the Platform
@@ -111,7 +113,6 @@ You'll primarily interact with these tools:
   </Card>
 </Cards>
 
-
 # Quick Start
 
 import { DiscordIcon } from '@/components/svg-icons'
@@ -130,11 +131,11 @@ In this quickstart, you'll use the [**Playcademy CLI**](/platform/cli) along wit
 <Callout title="Not Using Vite?">
   This guide uses Vite as the default web development setup.
 
-  For engine-specific guides, see:
+For engine-specific guides, see:
 
-  * [Godot Integration](/platform/guides/godot)
-  * [Unity Integration](/platform/guides/unity)
-</Callout>
+- [Godot Integration](/platform/guides/godot)
+- [Unity Integration](/platform/guides/unity)
+  </Callout>
 
 ## Prerequisites
 
@@ -162,8 +163,9 @@ Before we begin, ensure you have:
       npm: 'npx playcademy login',
       pnpm: 'pnpm dlx playcademy login',
       yarn: 'yarn dlx playcademy login',
-  }}
-    />
+
+}}
+/>
 
     Verify you're logged in:
 
@@ -173,8 +175,9 @@ Before we begin, ensure you have:
       npm: 'npx playcademy me',
       pnpm: 'pnpm dlx playcademy me',
       yarn: 'yarn dlx playcademy me',
-  }}
-    />
+
+}}
+/>
 
     <Callout type="info" title="Don't have a Playcademy account yet?">
       <Tabs items={['Staging', 'Production']}>
@@ -187,6 +190,7 @@ Before we begin, ensure you have:
         </Tab>
       </Tabs>
     </Callout>
+
   </Step>
 
   <Step>
@@ -200,8 +204,9 @@ Before we begin, ensure you have:
       npm: 'npm create playcademy my-app',
       pnpm: 'pnpm create playcademy my-app',
       yarn: 'yarn create playcademy my-app',
-  }}
-    />
+
+}}
+/>
 
     The CLI will guide you through:
 
@@ -209,6 +214,7 @@ Before we begin, ensure you have:
     2. **Framework**: Choose React, Vue, Svelte, or Vanilla (for this quickstart, select **React**)
     3. **Project info**: Name, description, and emoji
     4. **Integrations**: Timeback, Database, etc.
+
   </Step>
 
   <Step>
@@ -241,6 +247,7 @@ Before we begin, ensure you have:
         return client
     }
     ```
+
   </Step>
 
   <Step>
@@ -281,6 +288,7 @@ Before we begin, ensure you have:
       )
       ```
     </Callout>
+
   </Step>
 
   <Step>
@@ -320,6 +328,7 @@ Before we begin, ensure you have:
 
       Initialize `PlaycademyClient.init()` early in your app, then use the client throughout your components.
     </Callout>
+
   </Step>
 
   <Step>
@@ -333,8 +342,9 @@ Before we begin, ensure you have:
       npm: 'npm run dev',
       pnpm: 'pnpm run dev',
       yarn: 'yarn run dev',
-  }}
-    />
+
+}}
+/>
 
     The [**Vite Plugin**](/platform/vite-plugin/develop) automatically:
 
@@ -350,11 +360,13 @@ Before we begin, ensure you have:
       npm: 'npx playcademy dev',
       pnpm: 'pnpm dlx playcademy dev',
       yarn: 'yarn dlx playcademy dev',
-  }}
-      />
+
+}}
+/>
 
       Then start your own bundler/dev server in another terminal.
     </Callout>
+
   </Step>
 
   <Step>
@@ -368,8 +380,9 @@ Before we begin, ensure you have:
       npm: 'npm run build',
       pnpm: 'pnpm run build',
       yarn: 'yarn run build',
-  }}
-    />
+
+}}
+/>
 
     The [**Vite Plugin**](/platform/vite-plugin/build) automatically creates `.playcademy/<app-slug>.zip` ready for deployment.
 
@@ -387,6 +400,7 @@ Before we begin, ensure you have:
 
       If you don't add it, `playcademy deploy` will prompt you for the path interactively.
     </Callout>
+
   </Step>
 
   <Step>
@@ -400,8 +414,9 @@ Before we begin, ensure you have:
       npm: 'npx playcademy deploy',
       pnpm: 'pnpm dlx playcademy deploy',
       yarn: 'yarn dlx playcademy deploy',
-  }}
-    />
+
+}}
+/>
 
     <Callout type="info" title="Deploy to Production">
       The CLI deploys to **staging** by default.
@@ -414,10 +429,11 @@ Before we begin, ensure you have:
       npm: 'npx playcademy deploy --env production',
       pnpm: 'pnpm dlx playcademy deploy --env production',
       yarn: 'yarn dlx playcademy deploy --env production',
-  }}
-      />
-    </Callout>
-  </Step>
+
+}}
+/>
+</Callout>
+</Step>
 
   <Step>
     ### Stream Logs
@@ -430,10 +446,12 @@ Before we begin, ensure you have:
       npm: 'npx playcademy logs',
       pnpm: 'pnpm dlx playcademy logs',
       yarn: 'yarn dlx playcademy logs',
-  }}
-    />
+
+}}
+/>
 
     See [`playcademy logs`](/platform/cli/commands#logs) for all options.
+
   </Step>
 </Steps>
 
@@ -576,6 +594,7 @@ Explore backend integrations that add storage, user accounts, and server-side lo
         </td>
       </tr>
     </tbody>
+
   </table>
 </div>
 
@@ -597,7 +616,6 @@ Explore backend integrations that add storage, user accounts, and server-side lo
   </Card>
 </Cards>
 
-
 # @playcademy/sandbox
 
 # @playcademy/sandbox
@@ -610,19 +628,19 @@ The Playcademy sandbox provides a complete local simulation of the Playcademy pl
 
 The sandbox is a local development server that lets you:
 
-* **Develop games locally** with full platform integration.
-* **Test SDK functionality** without needing the live platform.
-* **Simulate user accounts** and game data in a controlled environment.
-* **Work offline** without an internet connection.
+- **Develop games locally** with full platform integration.
+- **Test SDK functionality** without needing the live platform.
+- **Simulate user accounts** and game data in a controlled environment.
+- **Work offline** without an internet connection.
 
 It's a "mock Playcademy platform" running on your machine that behaves just like the real thing.
 
 ### Key Benefits
 
-* **Isolated Environment**: Completely local execution with no external dependencies.
-* **Zero Configuration**: Automatic database setup and seeding.
-* **Full API Compatibility**: All Playcademy APIs available locally.
-* **Fast Development Cycle**: Quick startup with persistent local database.
+- **Isolated Environment**: Completely local execution with no external dependencies.
+- **Zero Configuration**: Automatic database setup and seeding.
+- **Full API Compatibility**: All Playcademy APIs available locally.
+- **Fast Development Cycle**: Quick startup with persistent local database.
 
 ## How It Works
 
@@ -681,19 +699,19 @@ PLAYCADEMY v0.1.0
 
 ```typescript
 // vite.config.ts
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
 
-import { playcademy } from '@playcademy/vite-plugin'
+import { playcademy } from '@playcademy/vite-plugin';
 
 export default defineConfig({
-    plugins: [
-        playcademy({
-            sandbox: {
-                autoStart: true,
-            },
-        }),
-    ],
-})
+  plugins: [
+    playcademy({
+      sandbox: {
+        autoStart: true
+      }
+    })
+  ]
+});
 ```
 
 ### Manual Setup
@@ -744,13 +762,13 @@ npx @playcademy/sandbox --port 8080 --verbose
 If you run the sandbox manually, you'll need to configure the SDK client to point to it.
 
 ```typescript
-import { PlaycademyClient } from '@playcademy/sdk'
+import { PlaycademyClient } from '@playcademy/sdk';
 
 const client = await PlaycademyClient.init({
-    baseUrl: 'http://localhost:4321/api',
-    // In manual mode, you must provide a mock token
-    token: 'mock-dev-token',
-})
+  baseUrl: 'http://localhost:4321/api',
+  // In manual mode, you must provide a mock token
+  token: 'mock-dev-token'
+});
 ```
 
 ## Sandbox Features
@@ -766,8 +784,8 @@ const client = await PlaycademyClient.init({
 
 Once running, the sandbox provides several key endpoints:
 
-* **Health Check**: `GET /health`
-* **API Base URL**: `/api`
+- **Health Check**: `GET /health`
+- **API Base URL**: `/api`
 
 All production Playcademy APIs are available under the `/api` prefix, including `/users`, `/games`, `/inventory`, and more.
 
@@ -841,9 +859,9 @@ Once configured, your game can use the SDK to submit activities:
 
 ```typescript
 await client.timeback.endActivity({
-    correctQuestions: 8,
-    totalQuestions: 10,
-})
+  correctQuestions: 8,
+  totalQuestions: 10
+});
 ```
 
 **Note on CLI Commands:**
@@ -855,22 +873,22 @@ The sandbox provides these TimeBack endpoints (matching production platform):
 
 **Management:**
 
-* `GET /api/timeback/integrations/:gameId` - Get integration details
-* `POST /api/timeback/setup` - Create TimeBack integration
-* `DELETE /api/timeback/integrations/:gameId` - Delete integration
-* `GET /api/timeback/verify/:gameId` - Verify OneRoster resources
-* `GET /api/timeback/config/:gameId` - Get TimeBack configuration
+- `GET /api/timeback/integrations/:gameId` - Get integration details
+- `POST /api/timeback/setup` - Create TimeBack integration
+- `DELETE /api/timeback/integrations/:gameId` - Delete integration
+- `GET /api/timeback/verify/:gameId` - Verify OneRoster resources
+- `GET /api/timeback/config/:gameId` - Get TimeBack configuration
 
 **Runtime:**
 
-* `POST /api/timeback/end-activity` - Submit activity results
+- `POST /api/timeback/end-activity` - Submit activity results
 
 **XP Queries:**
 
-* `GET /api/timeback/xp/today` - Get today's XP
-* `PUT /api/timeback/xp/today` - Update today's XP
-* `GET /api/timeback/xp/total` - Get total XP
-* `GET /api/timeback/xp/history` - Get XP history
+- `GET /api/timeback/xp/today` - Get today's XP
+- `PUT /api/timeback/xp/today` - Update today's XP
+- `GET /api/timeback/xp/total` - Get total XP
+- `GET /api/timeback/xp/history` - Get XP history
 
 These use the same api-core handlers as the production platform, ensuring consistency.
 
@@ -890,8 +908,8 @@ This should return a JSON object with the status:
 
 ```json
 {
-    "status": "ok",
-    "timestamp": "2023-10-27T00:00:00.000Z"
+  "status": "ok",
+  "timestamp": "2023-10-27T00:00:00.000Z"
 }
 ```
 
@@ -934,14 +952,15 @@ Defined in: [index.ts:24](https://github.com/superbuilders/playcademy/blob/90cc2
 
 ```ts
 function startServer(
-   port, 
-   project?, 
-   options?): Promise<{
+  port,
+  project?,
+  options?
+): Promise<{
   gameId: undefined | string;
   main: ServerType;
   setRole: (role) => void;
   stop: () => Promise<void>;
-  timebackMode: null | "local" | "remote" | "mock";
+  timebackMode: null | 'local' | 'remote' | 'mock';
 }>;
 ```
 
@@ -981,7 +1000,6 @@ Server configuration options
 
 Server instance with stop method
 
-
 # @playcademy/sdk
 
 # @playcademy/sdk
@@ -994,11 +1012,11 @@ The Playcademy SDK provides a comprehensive, type-safe interface for building ga
 
 The SDK serves as the primary interface between your game and the Playcademy platform, providing:
 
-* **Automatic Environment Detection**: Seamlessly works in development and production
-* **Type-Safe API Access**: Full TypeScript support with comprehensive type definitions
-* **Session Management**: Automatic game session handling and state persistence
-* **Event System**: Real-time notifications for inventory changes, level ups, and more
-* **Developer Tools**: Built-in support for game development and testing workflows
+- **Automatic Environment Detection**: Seamlessly works in development and production
+- **Type-Safe API Access**: Full TypeScript support with comprehensive type definitions
+- **Session Management**: Automatic game session handling and state persistence
+- **Event System**: Real-time notifications for inventory changes, level ups, and more
+- **Developer Tools**: Built-in support for game development and testing workflows
 
 ### Public vs Internal SDK
 
@@ -1008,20 +1026,20 @@ The Playcademy SDK is split into two entry points:
 
 For game developers building games on the Playcademy platform. Includes 8 essential namespaces:
 
-* **Core**: `identity`, `runtime`, `backend`, `users`
-* **Economy**: `credits`
-* **Gameplay**: `scores`
-* **Multiplayer**: `realtime`
-* **Integrations**: `timeback`
+- **Core**: `identity`, `runtime`, `backend`, `users`
+- **Economy**: `credits`
+- **Gameplay**: `scores`
+- **Multiplayer**: `realtime`
+- **Integrations**: `timeback`
 
 ```typescript
-import { PlaycademyClient } from '@playcademy/sdk'
+import { PlaycademyClient } from '@playcademy/sdk';
 
-const client = await PlaycademyClient.init()
+const client = await PlaycademyClient.init();
 await client.timeback.endActivity({
-    /* ... */
-})
-await client.users.inventory.add('gold-coin', 100)
+  /* ... */
+});
+await client.users.inventory.add('gold-coin', 100);
 ```
 
 #### Internal SDK (`@playcademy/sdk/internal`)
@@ -1030,49 +1048,49 @@ For CLI, platform, and admin tools. Includes all 21 namespaces (8 public + 13 in
 
 **Additional internal namespaces:**
 
-* **Platform Auth**: `auth` (email/password login, API keys)
-* **Administration**: `admin` (game management, items, currencies)
-* **Developer Tools**: `dev` (publish games, uploads)
-* **Game Directory**: `games` (fetch, list, sessions)
-* **Overworld Features**: `character`, `achievements`, `leaderboard`, `levels`, `shop`, `maps`, `sprites`, `notifications`
-* **Analytics**: `telemetry`
+- **Platform Auth**: `auth` (email/password login, API keys)
+- **Administration**: `admin` (game management, items, currencies)
+- **Developer Tools**: `dev` (publish games, uploads)
+- **Game Directory**: `games` (fetch, list, sessions)
+- **Overworld Features**: `character`, `achievements`, `leaderboard`, `levels`, `shop`, `maps`, `sprites`, `notifications`
+- **Analytics**: `telemetry`
 
 ```typescript
-import { PlaycademyClient } from '@playcademy/sdk/internal'
+import { PlaycademyClient } from '@playcademy/sdk/internal';
 
-const client = new PlaycademyClient({ baseUrl: 'https://hub.playcademy.net' })
-await client.auth.login({ email: 'dev@example.com', password: '***' })
-const games = await client.games.list()
-await client.admin.games.pauseGame('game-123')
+const client = new PlaycademyClient({ baseUrl: 'https://hub.playcademy.net' });
+await client.auth.login({ email: 'dev@example.com', password: '***' });
+const games = await client.games.list();
+await client.admin.games.pauseGame('game-123');
 ```
 
 **Note**: The internal SDK is for trusted code only (CLI, platform internals). Game developers should use the public SDK.
 
 ### Key Benefits
 
-* **Zero Configuration**: Automatic initialization with environment detection
-* **Production Ready**: Battle-tested API patterns with robust error handling
-* **Real-Time Communication**: Open game-scoped WebSocket channels for multiplayer features.
-* **Event System**: Subscribe to platform events like inventory changes and level ups
-* **Comprehensive Coverage**: Access to all Playcademy platform features
-* **Development Experience**: Integrated with sandbox environment for local development
+- **Zero Configuration**: Automatic initialization with environment detection
+- **Production Ready**: Battle-tested API patterns with robust error handling
+- **Real-Time Communication**: Open game-scoped WebSocket channels for multiplayer features.
+- **Event System**: Subscribe to platform events like inventory changes and level ups
+- **Comprehensive Coverage**: Access to all Playcademy platform features
+- **Development Experience**: Integrated with sandbox environment for local development
 
 ### Use Cases
 
-* **Game Development**: Primary SDK for building games on Playcademy
-* **Web Applications**: Frontend applications interacting with the platform
-* **Developer Tools**: Scripts and utilities for game management
-* **Server Integration**: Backend services integrating with Playcademy APIs
-* **Testing & Automation**: Automated testing of platform integrations
+- **Game Development**: Primary SDK for building games on Playcademy
+- **Web Applications**: Frontend applications interacting with the platform
+- **Developer Tools**: Scripts and utilities for game management
+- **Server Integration**: Backend services integrating with Playcademy APIs
+- **Testing & Automation**: Automated testing of platform integrations
 
 ### Connection Monitoring
 
 The SDK automatically monitors network connectivity and provides hooks for games to handle disconnects gracefully:
 
-* **Automatic Detection**: Multi-signal approach detects offline, slow, and degraded connections
-* **Game Handlers**: Implement custom disconnect behavior (e.g., return to lobby, pause game)
-* **Platform Integration**: Built-in helpers for displaying connection alerts
-* **Zero Config**: Works out of the box, customizable when needed
+- **Automatic Detection**: Multi-signal approach detects offline, slow, and degraded connections
+- **Game Handlers**: Implement custom disconnect behavior (e.g., return to lobby, pause game)
+- **Platform Integration**: Built-in helpers for displaying connection alerts
+- **Zero Config**: Works out of the box, customizable when needed
 
 See the SDK Browser documentation for detailed connection monitoring documentation and examples.
 
@@ -1101,31 +1119,31 @@ pnpm add @playcademy/sdk
 For most game development scenarios, use automatic initialization:
 
 ```typescript
-import { PlaycademyClient } from '@playcademy/sdk'
+import { PlaycademyClient } from '@playcademy/sdk';
 
 async function initializeGame() {
-    try {
-        // Automatic initialization - detects environment and configures appropriately
-        const client = await PlaycademyClient.init({
-            // Optional: Handle connection issues gracefully
-            onDisconnect: ({ state, displayAlert }) => {
-                if (state === 'offline') {
-                    displayAlert?.('Connection lost. Reconnecting...', { type: 'warning' })
-                    // Return to safe state (e.g., lobby)
-                }
-            },
-        })
+  try {
+    // Automatic initialization - detects environment and configures appropriately
+    const client = await PlaycademyClient.init({
+      // Optional: Handle connection issues gracefully
+      onDisconnect: ({ state, displayAlert }) => {
+        if (state === 'offline') {
+          displayAlert?.('Connection lost. Reconnecting...', { type: 'warning' });
+          // Return to safe state (e.g., lobby)
+        }
+      }
+    });
 
-        // Get current user
-        const user = await client.users.me()
-        console.log('Welcome,', user.name)
+    // Get current user
+    const user = await client.users.me();
+    console.log('Welcome,', user.name);
 
-        // The client is ready for all platform operations
-        return client
-    } catch (error) {
-        console.error('Failed to initialize Playcademy SDK:', error)
-        throw error
-    }
+    // The client is ready for all platform operations
+    return client;
+  } catch (error) {
+    console.error('Failed to initialize Playcademy SDK:', error);
+    throw error;
+  }
 }
 ```
 
@@ -1133,9 +1151,9 @@ async function initializeGame() {
 
 The SDK automatically detects and configures for different environments:
 
-* **Development**: Connects to local sandbox (started by `@playcademy/vite-plugin`)
-* **Production**: Receives configuration from Playcademy platform loader
-* **Testing**: Falls back to mock configuration for automated testing
+- **Development**: Connects to local sandbox (started by `@playcademy/vite-plugin`)
+- **Production**: Receives configuration from Playcademy platform loader
+- **Testing**: Falls back to mock configuration for automated testing
 
 ## Core Features
 
@@ -1143,53 +1161,53 @@ The SDK automatically detects and configures for different environments:
 
 ```typescript
 // Automatic session management when gameId is available
-const client = await PlaycademyClient.init()
+const client = await PlaycademyClient.init();
 
 // Save transient game state (position, health, temporary data)
 await client.games.saveState({
-    currentLevel: 'forest_glade',
-    playerPosition: { x: 100, y: 200 },
-    health: 85,
-    activePowerUps: ['speed_boost'],
-})
+  currentLevel: 'forest_glade',
+  playerPosition: { x: 100, y: 200 },
+  health: 85,
+  activePowerUps: ['speed_boost']
+});
 
 // Load previously saved state
-const gameState = await client.games.loadState()
-console.log('Loaded state:', gameState)
+const gameState = await client.games.loadState();
+console.log('Loaded state:', gameState);
 
 // Exit game (automatically ends session if managed)
-await client.runtime.exit()
+await client.runtime.exit();
 ```
 
 ### User & Inventory Management
 
 ```typescript
 // Get user information
-const user = await client.users.me()
+const user = await client.users.me();
 
 // Inventory operations (accepts UUIDs or slugs)
-const inventory = await client.users.inventory.get()
-await client.users.inventory.add('magic-sword', 1)
-await client.users.inventory.remove('health-potion', 1)
+const inventory = await client.users.inventory.get();
+await client.users.inventory.add('magic-sword', 1);
+await client.users.inventory.remove('health-potion', 1);
 
 // Check item quantities and ownership
-const goldCount = await client.users.inventory.quantity('gold-coin')
-const hasKey = await client.users.inventory.has('dungeon-key')
-const hasEnoughGold = await client.users.inventory.has('gold-coin', 100)
+const goldCount = await client.users.inventory.quantity('gold-coin');
+const hasKey = await client.users.inventory.has('dungeon-key');
+const hasEnoughGold = await client.users.inventory.has('gold-coin', 100);
 ```
 
 ### Credits & Currency
 
 ```typescript
 // Platform currency management
-const balance = await client.credits.balance()
-await client.credits.add(100)
-await client.credits.spend(50)
+const balance = await client.credits.balance();
+await client.credits.add(100);
+await client.credits.spend(50);
 
 // Check affordability
 if ((await client.credits.balance()) >= 100) {
-    await client.credits.spend(100)
-    console.log('Purchase successful!')
+  await client.credits.spend(100);
+  console.log('Purchase successful!');
 }
 ```
 
@@ -1197,9 +1215,9 @@ if ((await client.credits.balance()) >= 100) {
 
 ```typescript
 // Level management
-const userLevel = await client.levels.get()
-const progress = await client.levels.progress()
-console.log(`Level ${userLevel.currentLevel}, ${progress.xpToNextLevel} XP to next level`)
+const userLevel = await client.levels.get();
+const progress = await client.levels.progress();
+console.log(`Level ${userLevel.currentLevel}, ${progress.xpToNextLevel} XP to next level`);
 
 // Note: XP is now managed entirely through TimeBack integration.
 // XP updates come from TimeBack webhooks only.
@@ -1211,19 +1229,19 @@ Access user role and enrollments, and track learning activities:
 
 ```typescript
 // Access TimeBack role and enrollments
-const role = client.timeback.role // 'student' | 'parent' | 'teacher' | 'administrator'
-const enrollments = client.timeback.enrollments // [{ subject, grade, courseId }]
+const role = client.timeback.role; // 'student' | 'parent' | 'teacher' | 'administrator'
+const enrollments = client.timeback.enrollments; // [{ subject, grade, courseId }]
 
 // Check if user is enrolled in a specific grade
-const grade3Enrollment = enrollments.find(e => e.grade === 3)
+const grade3Enrollment = enrollments.find((e) => e.grade === 3);
 if (grade3Enrollment) {
-    // Show grade 3 content
+  // Show grade 3 content
 }
 
 // Start tracking an activity (only activityId required!)
 client.timeback.startActivity({
-    activityId: 'math-quiz-level-1',
-})
+  activityId: 'math-quiz-level-1'
+});
 // Auto-derived: activityName "Math Quiz Level 1"
 // Auto-filled by backend: appName, subject, sensorUrl
 
@@ -1231,9 +1249,9 @@ client.timeback.startActivity({
 
 // End activity and submit results (XP calculated automatically)
 await client.timeback.endActivity({
-    correctQuestions: 8,
-    totalQuestions: 10,
-})
+  correctQuestions: 8,
+  totalQuestions: 10
+});
 // XP calculation: base (1 min = 1 XP) × accuracy multiplier
 // 100%: 1.25x | 80-99%: 1.0x | 65-79%: 0.5x | <65%: 0x
 ```
@@ -1244,7 +1262,7 @@ Get authentication tokens for WebSocket connections used by the platform's multi
 
 ```typescript
 // Get a realtime token for WebSocket authentication
-const { token } = await client.realtime.token.get()
+const { token } = await client.realtime.token.get();
 
 // Token is used internally by the platform's multiplayer WebSocket client
 // for presence tracking, player positions, and real-time game features
@@ -1256,115 +1274,115 @@ const { token } = await client.realtime.token.get()
 
 #### **Authentication** (`client.auth`)
 
-* `logout()`: Logs out user and clears authentication token
+- `logout()`: Logs out user and clears authentication token
 
 #### **Users** (`client.users`)
 
-* `me()`: Get current user information
-* **Inventory** (`client.users.inventory`):
-  * `get()`: Get user's inventory
-  * `add(identifier, quantity)`: Add items to inventory
-  * `remove(identifier, quantity)`: Remove items from inventory
-  * `quantity(identifier)`: Get item quantity
-  * `has(identifier, minQuantity?)`: Check item ownership
+- `me()`: Get current user information
+- **Inventory** (`client.users.inventory`):
+  - `get()`: Get user's inventory
+  - `add(identifier, quantity)`: Add items to inventory
+  - `remove(identifier, quantity)`: Remove items from inventory
+  - `quantity(identifier)`: Get item quantity
+  - `has(identifier, minQuantity?)`: Check item ownership
 
 #### **Games** (`client.games`)
 
-* `list()`: Get all available games
-* `fetch(gameIdOrSlug)`: Get specific game details
-* `saveState(state)`: Save transient game state
-* `loadState()`: Load saved game state
-* `startSession(gameId?)`: Start game session
-* `endSession(sessionId, gameId?)`: End game session
+- `list()`: Get all available games
+- `fetch(gameIdOrSlug)`: Get specific game details
+- `saveState(state)`: Save transient game state
+- `loadState()`: Load saved game state
+- `startSession(gameId?)`: Start game session
+- `endSession(sessionId, gameId?)`: End game session
 
 #### **Credits** (`client.credits`)
 
-* `balance()`: Get current credits balance
-* `add(amount)`: Add credits to user
-* `spend(amount)`: Spend user credits
+- `balance()`: Get current credits balance
+- `add(amount)`: Add credits to user
+- `spend(amount)`: Spend user credits
 
 #### **Levels** (`client.levels`)
 
-* `get()`: Get current user level information
-* `progress()`: Get level progress and XP to next level
-* `addXP(amount)`: Add experience points
-* **Config** (`client.levels.config`):
-  * `list()`: Get all level configurations
-  * `get(level)`: Get specific level configuration
+- `get()`: Get current user level information
+- `progress()`: Get level progress and XP to next level
+- `addXP(amount)`: Add experience points
+- **Config** (`client.levels.config`):
+  - `list()`: Get all level configurations
+  - `get(level)`: Get specific level configuration
 
 #### **Maps** (`client.maps`)
 
-* `elements(mapId)`: Get map elements and points of interest
+- `elements(mapId)`: Get map elements and points of interest
 
 #### **Runtime** (`client.runtime`)
 
-* `getGameToken(gameId, options?)`: Get game-specific authentication token
-* `exit()`: Signal platform to exit game view
+- `getGameToken(gameId, options?)`: Get game-specific authentication token
+- `exit()`: Signal platform to exit game view
 
 #### **Real-time** (`client.realtime`)
 
-* `token.get()`: Retrieves a JWT for WebSocket authentication (used by the platform's multiplayer system).
+- `token.get()`: Retrieves a JWT for WebSocket authentication (used by the platform's multiplayer system).
 
 #### **TimeBack** (`client.timeback`)
 
-* `role`: The user's TimeBack role (`'student'`, `'parent'`, `'teacher'`, or `'administrator'`)
-* `enrollments`: Array of course enrollments with `subject`, `grade`, and `courseId`
-* `startActivity(metadata)`: Start tracking an activity (stores start time and metadata)
-  * `metadata.activityId`: Unique activity identifier (required)
-  * `metadata.activityName`: Human-readable activity name
-  * `metadata.subject`: Subject area (Math, Reading, Science, etc.)
-  * `metadata.appName`: Application name
-  * `metadata.sensorUrl`: Sensor URL for tracking
-* `endActivity(scoreData)`: End activity and submit results
-  * `scoreData.correctQuestions`: Number of correct answers
-  * `scoreData.totalQuestions`: Total number of questions
-* **XP Query** (`client.timeback.xp`):
-  * `today(options?)`: Get today's XP (supports timezone parameter)
-  * `total()`: Get total accumulated XP
-  * `history(options?)`: Get XP history with optional date filtering
-  * `summary(options?)`: Get both today's and total XP in one call
+- `role`: The user's TimeBack role (`'student'`, `'parent'`, `'teacher'`, or `'administrator'`)
+- `enrollments`: Array of course enrollments with `subject`, `grade`, and `courseId`
+- `startActivity(metadata)`: Start tracking an activity (stores start time and metadata)
+  - `metadata.activityId`: Unique activity identifier (required)
+  - `metadata.activityName`: Human-readable activity name
+  - `metadata.subject`: Subject area (Math, Reading, Science, etc.)
+  - `metadata.appName`: Application name
+  - `metadata.sensorUrl`: Sensor URL for tracking
+- `endActivity(scoreData)`: End activity and submit results
+  - `scoreData.correctQuestions`: Number of correct answers
+  - `scoreData.totalQuestions`: Total number of questions
+- **XP Query** (`client.timeback.xp`):
+  - `today(options?)`: Get today's XP (supports timezone parameter)
+  - `total()`: Get total accumulated XP
+  - `history(options?)`: Get XP history with optional date filtering
+  - `summary(options?)`: Get both today's and total XP in one call
 
 #### **Leaderboard** (`client.leaderboard`) - Game-specific
 
-* `fetch(options?)`: Get leaderboard for a specific game
-  * `options.timeframe`: Filter by time period (`'all_time'`, `'monthly'`, `'weekly'`, `'daily'`)
-  * `options.gameId`: Game ID to fetch leaderboard for (required)
-  * `options.limit`: Number of entries to return (default: 10)
-  * `options.offset`: Pagination offset (default: 0)
+- `fetch(options?)`: Get leaderboard for a specific game
+  - `options.timeframe`: Filter by time period (`'all_time'`, `'monthly'`, `'weekly'`, `'daily'`)
+  - `options.gameId`: Game ID to fetch leaderboard for (required)
+  - `options.limit`: Number of entries to return (default: 10)
+  - `options.offset`: Pagination offset (default: 0)
 
 #### **Scores** (`client.scores`) - Platform-wide
 
-* `submit(gameId, score, metadata?)`: Submit a score for any game
-* `getUserScores(userId, options?)`: Get all scores for a user
-  * `options.gameId`: Filter by specific game (optional)
-  * `options.limit`: Number of scores to return (default: 50)
+- `submit(gameId, score, metadata?)`: Submit a score for any game
+- `getUserScores(userId, options?)`: Get all scores for a user
+  - `options.gameId`: Filter by specific game (optional)
+  - `options.limit`: Number of scores to return (default: 50)
 
 ### Developer Tools
 
 #### **Developer Authentication** (`client.dev.auth`)
 
-* `applyForDeveloper()`: Apply for developer status
-* `getDeveloperStatus()`: Check current developer status
+- `applyForDeveloper()`: Apply for developer status
+- `getDeveloperStatus()`: Check current developer status
 
 #### **Game Management** (`client.dev.games`)
 
-* `upsert(slug, metadata, gameFile)`: Create or update game
-* `update(gameId, updates)`: Update game properties
-* `delete(gameId)`: Delete game
+- `upsert(slug, metadata, gameFile)`: Create or update game
+- `update(gameId, updates)`: Update game properties
+- `delete(gameId)`: Delete game
 
 #### **API Keys** (`client.dev.keys`)
 
-* `createKey(gameId, name)`: Create API key for server authentication
-* `listKeys()`: List all API keys
-* `revokeKey(keyId)`: Revoke API key
+- `createKey(gameId, name)`: Create API key for server authentication
+- `listKeys()`: List all API keys
+- `revokeKey(keyId)`: Revoke API key
 
 #### **Item Management** (`client.dev.items`)
 
-* `list(gameId)`: List all items for a game
-* `get(gameId, slug)`: Get specific item
-* `create(gameId, slug, data)`: Create new game item
-* `update(gameId, itemId, updates)`: Update existing item
-* `delete(gameId, itemId)`: Delete item
+- `list(gameId)`: List all items for a game
+- `get(gameId, slug)`: Get specific item
+- `create(gameId, slug, data)`: Create new game item
+- `update(gameId, itemId, updates)`: Update existing item
+- `delete(gameId, itemId)`: Delete item
 
 ## Event System
 
@@ -1374,30 +1392,30 @@ The SDK provides real-time event notifications for important platform changes:
 
 ```typescript
 // Authentication changes
-client.on('authChange', payload => {
-    console.log('Authentication changed:', payload.token)
-})
+client.on('authChange', (payload) => {
+  console.log('Authentication changed:', payload.token);
+});
 
 // Connection state changes
 client.on('connectionChange', ({ state, reason }) => {
-    console.log(`Connection: ${state} - ${reason}`)
-})
+  console.log(`Connection: ${state} - ${reason}`);
+});
 
 // Inventory changes
-client.on('inventoryChange', payload => {
-    console.log(`Item ${payload.itemId}: ${payload.delta} (total: ${payload.newTotal})`)
-})
+client.on('inventoryChange', (payload) => {
+  console.log(`Item ${payload.itemId}: ${payload.delta} (total: ${payload.newTotal})`);
+});
 
 // Experience gained
-client.on('xpGained', payload => {
-    console.log(`Gained ${payload.amount} XP (total: ${payload.totalXP})`)
-})
+client.on('xpGained', (payload) => {
+  console.log(`Gained ${payload.amount} XP (total: ${payload.totalXP})`);
+});
 
 // Level up notifications
-client.on('levelUp', payload => {
-    console.log(`Level up! ${payload.oldLevel} → ${payload.newLevel}`)
-    console.log('Credits awarded:', payload.creditsAwarded)
-})
+client.on('levelUp', (payload) => {
+  console.log(`Level up! ${payload.oldLevel} → ${payload.newLevel}`);
+  console.log('Credits awarded:', payload.creditsAwarded);
+});
 ```
 
 ### Disconnect Handling
@@ -1406,9 +1424,9 @@ For convenience, use the `onDisconnect` method to handle only offline/degraded s
 
 ```typescript
 const cleanup = client.onDisconnect(({ state, reason, displayAlert }) => {
-    console.log(`Disconnect detected: ${state}`)
-    displayAlert?.(`Connection ${state}: ${reason}`, { type: 'warning' })
-})
+  console.log(`Disconnect detected: ${state}`);
+  displayAlert?.(`Connection ${state}: ${reason}`, { type: 'warning' });
+});
 
 // Later: cleanup() to unregister
 ```
@@ -1417,18 +1435,18 @@ const cleanup = client.onDisconnect(({ state, reason, displayAlert }) => {
 
 ```typescript
 // Update UI in response to platform events
-client.on('inventoryChange', payload => {
-    updateInventoryDisplay(payload.itemId, payload.newTotal)
-})
+client.on('inventoryChange', (payload) => {
+  updateInventoryDisplay(payload.itemId, payload.newTotal);
+});
 
-client.on('levelUp', payload => {
-    showLevelUpAnimation(payload.newLevel)
-    showCreditsAwarded(payload.creditsAwarded)
-})
+client.on('levelUp', (payload) => {
+  showLevelUpAnimation(payload.newLevel);
+  showCreditsAwarded(payload.creditsAwarded);
+});
 
-client.on('xpGained', payload => {
-    updateXPBar(payload.totalXP, payload.leveledUp)
-})
+client.on('xpGained', (payload) => {
+  updateXPBar(payload.totalXP, payload.leveledUp);
+});
 ```
 
 ## Advanced Usage
@@ -1438,54 +1456,54 @@ client.on('xpGained', payload => {
 For server-side applications or custom environments:
 
 ```typescript
-import { PlaycademyClient } from '@playcademy/sdk'
+import { PlaycademyClient } from '@playcademy/sdk';
 
-import type { LoginResponse } from '@playcademy/sdk'
+import type { LoginResponse } from '@playcademy/sdk';
 
 // Step 1: Authenticate
 const loginData: LoginResponse = await PlaycademyClient.login(
-    'https://api.playcademy.com',
-    'user@example.com',
-    'password',
-)
+  'https://api.playcademy.com',
+  'user@example.com',
+  'password'
+);
 
 // Step 2: Initialize client
 const client = new PlaycademyClient({
-    baseUrl: 'https://api.playcademy.com',
-    token: loginData.token,
-    gameId: 'your-game-id', // Optional: enables automatic session management
-})
+  baseUrl: 'https://api.playcademy.com',
+  token: loginData.token,
+  gameId: 'your-game-id' // Optional: enables automatic session management
+});
 ```
 
 ### Custom Configuration
 
 ```typescript
 const client = new PlaycademyClient({
-    baseUrl: 'https://api.playcademy.com',
-    token: 'your-auth-token',
-    gameId: 'your-game-id',
-    // Additional options
-    timeout: 10000, // Request timeout in milliseconds
-    retries: 3, // Number of retry attempts
-})
+  baseUrl: 'https://api.playcademy.com',
+  token: 'your-auth-token',
+  gameId: 'your-game-id',
+  // Additional options
+  timeout: 10000, // Request timeout in milliseconds
+  retries: 3 // Number of retry attempts
+});
 ```
 
 ### Error Handling
 
 ```typescript
-import { PlaycademyError } from '@playcademy/sdk'
+import { PlaycademyError } from '@playcademy/sdk';
 
 try {
-    const user = await client.users.me()
-    // Handle success
+  const user = await client.users.me();
+  // Handle success
 } catch (error) {
-    if (error instanceof PlaycademyError) {
-        console.error('Playcademy API Error:', error.message)
-        console.error('Status Code:', error.statusCode)
-        console.error('Error Code:', error.code)
-    } else {
-        console.error('Unexpected error:', error)
-    }
+  if (error instanceof PlaycademyError) {
+    console.error('Playcademy API Error:', error.message);
+    console.error('Status Code:', error.statusCode);
+    console.error('Error Code:', error.code);
+  } else {
+    console.error('Unexpected error:', error);
+  }
 }
 ```
 
@@ -1497,10 +1515,10 @@ When using the official Playcademy Vite templates, the development environment i
 
 ```typescript
 // In your game's main file
-import { PlaycademyClient } from '@playcademy/sdk'
+import { PlaycademyClient } from '@playcademy/sdk';
 
 // The vite plugin automatically starts the sandbox
-const client = await PlaycademyClient.init()
+const client = await PlaycademyClient.init();
 // SDK automatically connects to local sandbox at http://localhost:4321
 ```
 
@@ -1524,37 +1542,37 @@ const client = new PlaycademyClient({
 
 ### Initialization & Setup
 
-* **Always use automatic initialization** for game development with `PlaycademyClient.init()`
-* **Handle initialization errors gracefully** with proper try-catch blocks
-* **Store the client instance** for reuse throughout your application lifecycle
+- **Always use automatic initialization** for game development with `PlaycademyClient.init()`
+- **Handle initialization errors gracefully** with proper try-catch blocks
+- **Store the client instance** for reuse throughout your application lifecycle
 
 ### State Management
 
-* **Use `games.saveState()`** for transient data (current level, position, temporary status)
-* **Use `users.inventory`** for persistent items and resources that carry between sessions
-* **Save state periodically**, not on every frame or minor change
-* **Load state once** at game start, then manage locally
+- **Use `games.saveState()`** for transient data (current level, position, temporary status)
+- **Use `users.inventory`** for persistent items and resources that carry between sessions
+- **Save state periodically**, not on every frame or minor change
+- **Load state once** at game start, then manage locally
 
 ### Performance Optimization
 
-* **Cache frequently accessed data** like user information and inventory
-* **Batch inventory operations** when possible instead of individual API calls
-* **Use event listeners** to update UI reactively rather than polling
-* **Implement proper loading states** for better user experience
+- **Cache frequently accessed data** like user information and inventory
+- **Batch inventory operations** when possible instead of individual API calls
+- **Use event listeners** to update UI reactively rather than polling
+- **Implement proper loading states** for better user experience
 
 ### Error Handling
 
-* **Wrap all SDK calls** in appropriate try-catch blocks
-* **Provide fallback behavior** for network errors and API failures
-* **Show meaningful error messages** to users when operations fail
-* **Implement retry logic** for non-critical operations
+- **Wrap all SDK calls** in appropriate try-catch blocks
+- **Provide fallback behavior** for network errors and API failures
+- **Show meaningful error messages** to users when operations fail
+- **Implement retry logic** for non-critical operations
 
 ### Development Workflow
 
-* **Use the sandbox environment** for all local development
-* **Test both online and offline scenarios** to ensure robust error handling
-* **Enable verbose logging** during development for debugging
-* **Validate API responses** and handle edge cases appropriately
+- **Use the sandbox environment** for all local development
+- **Test both online and offline scenarios** to ensure robust error handling
+- **Enable verbose logging** during development for debugging
+- **Validate API responses** and handle edge cases appropriately
 
 ## Testing
 
@@ -1562,47 +1580,47 @@ const client = new PlaycademyClient({
 
 ```typescript
 // Mock the SDK for unit tests
-import { jest } from '@jest/globals'
+import { jest } from '@jest/globals';
 
 // Mock the entire SDK module
 jest.mock('@playcademy/sdk', () => ({
-    PlaycademyClient: {
-        init: jest.fn().mockResolvedValue({
-            users: {
-                me: jest.fn().mockResolvedValue({ id: 'test-user', name: 'Test User' }),
-                inventory: {
-                    get: jest.fn().mockResolvedValue([]),
-                    add: jest.fn().mockResolvedValue(undefined),
-                },
-            },
-        }),
-    },
-}))
+  PlaycademyClient: {
+    init: jest.fn().mockResolvedValue({
+      users: {
+        me: jest.fn().mockResolvedValue({ id: 'test-user', name: 'Test User' }),
+        inventory: {
+          get: jest.fn().mockResolvedValue([]),
+          add: jest.fn().mockResolvedValue(undefined)
+        }
+      }
+    })
+  }
+}));
 ```
 
 ### Integration Testing
 
 ```typescript
 // Test with real sandbox
-import { PlaycademyClient } from '@playcademy/sdk'
+import { PlaycademyClient } from '@playcademy/sdk';
 
 describe('Playcademy Integration', () => {
-    let client: PlaycademyClient
+  let client: PlaycademyClient;
 
-    beforeAll(async () => {
-        // Initialize with sandbox
-        client = new PlaycademyClient({
-            baseUrl: 'http://localhost:4321/api',
-            token: 'test-token',
-        })
-    })
+  beforeAll(async () => {
+    // Initialize with sandbox
+    client = new PlaycademyClient({
+      baseUrl: 'http://localhost:4321/api',
+      token: 'test-token'
+    });
+  });
 
-    test('should fetch user data', async () => {
-        const user = await client.users.me()
-        expect(user).toBeDefined()
-        expect(user.name).toEqual(expect.any(String))
-    })
-})
+  test('should fetch user data', async () => {
+    const user = await client.users.me();
+    expect(user).toBeDefined();
+    expect(user.name).toEqual(expect.any(String));
+  });
+});
 ```
 
 ## Troubleshooting
@@ -1615,9 +1633,9 @@ describe('Playcademy Integration', () => {
 Error: PLAYCADEMY_INIT not received within 5000ms
 ```
 
-* Ensure you're running in the correct environment (development with sandbox, or production with platform)
-* Check that the Vite plugin is properly configured
-* Verify the sandbox is running on the expected port
+- Ensure you're running in the correct environment (development with sandbox, or production with platform)
+- Check that the Vite plugin is properly configured
+- Verify the sandbox is running on the expected port
 
 **Authentication Errors**
 
@@ -1625,9 +1643,9 @@ Error: PLAYCADEMY_INIT not received within 5000ms
 Error: Unauthorized (401)
 ```
 
-* Check that your authentication token is valid
-* Ensure you have the necessary permissions for the operation
-* Try re-authenticating with `PlaycademyClient.login()`
+- Check that your authentication token is valid
+- Ensure you have the necessary permissions for the operation
+- Try re-authenticating with `PlaycademyClient.login()`
 
 **Network Connection Issues**
 
@@ -1635,9 +1653,9 @@ Error: Unauthorized (401)
 Error: Failed to fetch
 ```
 
-* Verify the API endpoint is accessible
-* Check network connectivity
-* Ensure CORS is properly configured for cross-origin requests
+- Verify the API endpoint is accessible
+- Check network connectivity
+- Ensure CORS is properly configured for cross-origin requests
 
 ### Debugging
 
@@ -1646,10 +1664,10 @@ Use these debugging techniques for troubleshooting SDK issues:
 ```typescript
 // Check initialization process
 try {
-    const client = await PlaycademyClient.init()
-    console.log('SDK initialized successfully')
+  const client = await PlaycademyClient.init();
+  console.log('SDK initialized successfully');
 } catch (error) {
-    console.error('SDK initialization failed:', error)
+  console.error('SDK initialization failed:', error);
 }
 
 // Monitor network requests in browser dev tools (Network tab)
@@ -1681,24 +1699,24 @@ Enumeration of all message types used in the Playcademy messaging system.
 
 **Parent → Game (Overworld → Game)**:
 
-* INIT: Provides game with authentication token and configuration
-* TOKEN\_REFRESH: Updates game's authentication token before expiry
-* PAUSE/RESUME: Controls game execution state
-* FORCE\_EXIT: Immediately terminates the game
-* OVERLAY: Shows/hides UI overlays over the game
+- INIT: Provides game with authentication token and configuration
+- TOKEN_REFRESH: Updates game's authentication token before expiry
+- PAUSE/RESUME: Controls game execution state
+- FORCE_EXIT: Immediately terminates the game
+- OVERLAY: Shows/hides UI overlays over the game
 
 **Game → Parent (Game → Overworld)**:
 
-* READY: Game has loaded and is ready to receive messages
-* EXIT: Game requests to be closed (user clicked exit, game ended, etc.)
-* TELEMETRY: Game reports performance metrics (FPS, memory usage, etc.)
+- READY: Game has loaded and is ready to receive messages
+- EXIT: Game requests to be closed (user clicked exit, game ended, etc.)
+- TELEMETRY: Game reports performance metrics (FPS, memory usage, etc.)
 
 #### Enumeration Members
 
-##### AUTH\_CALLBACK
+##### AUTH_CALLBACK
 
 ```ts
-AUTH_CALLBACK: "PLAYCADEMY_AUTH_CALLBACK";
+AUTH_CALLBACK: 'PLAYCADEMY_AUTH_CALLBACK';
 ```
 
 Defined in: [messaging.ts:180](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/messaging.ts#L180)
@@ -1707,14 +1725,14 @@ OAuth callback data from popup/new-tab windows.
 Sent from popup window back to parent after OAuth completes.
 Payload:
 
-* `code`: string (OAuth authorization code)
-* `state`: string (OAuth state for CSRF protection)
-* `error`: string | null (OAuth error if any)
+- `code`: string (OAuth authorization code)
+- `state`: string (OAuth state for CSRF protection)
+- `error`: string | null (OAuth error if any)
 
-##### AUTH\_STATE\_CHANGE
+##### AUTH_STATE_CHANGE
 
 ```ts
-AUTH_STATE_CHANGE: "PLAYCADEMY_AUTH_STATE_CHANGE";
+AUTH_STATE_CHANGE: 'PLAYCADEMY_AUTH_STATE_CHANGE';
 ```
 
 Defined in: [messaging.ts:170](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/messaging.ts#L170)
@@ -1723,14 +1741,14 @@ Notifies about authentication state changes.
 Can be sent in both directions depending on auth flow.
 Payload:
 
-* `authenticated`: boolean
-* `user`: UserInfo | null
-* `error`: Error | null
+- `authenticated`: boolean
+- `user`: UserInfo | null
+- `error`: Error | null
 
-##### CONNECTION\_STATE
+##### CONNECTION_STATE
 
 ```ts
-CONNECTION_STATE: "PLAYCADEMY_CONNECTION_STATE";
+CONNECTION_STATE: 'PLAYCADEMY_CONNECTION_STATE';
 ```
 
 Defined in: [messaging.ts:110](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/messaging.ts#L110)
@@ -1739,13 +1757,13 @@ Broadcasts connection state changes to games.
 Sent by platform when network connectivity changes.
 Payload:
 
-* `state`: 'online' | 'offline' | 'degraded'
-* `reason`: string
+- `state`: 'online' | 'offline' | 'degraded'
+- `reason`: string
 
-##### DISPLAY\_ALERT
+##### DISPLAY_ALERT
 
 ```ts
-DISPLAY_ALERT: "PLAYCADEMY_DISPLAY_ALERT";
+DISPLAY_ALERT: 'PLAYCADEMY_DISPLAY_ALERT';
 ```
 
 Defined in: [messaging.ts:156](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/messaging.ts#L156)
@@ -1754,13 +1772,13 @@ Game requests platform to display an alert.
 Sent when connection issues are detected or other important events occur.
 Payload:
 
-* `message`: string
-* `options`: `{ type?: 'info' | 'warning' | 'error', duration?: number }`
+- `message`: string
+- `options`: `{ type?: 'info' | 'warning' | 'error', duration?: number }`
 
 ##### EXIT
 
 ```ts
-EXIT: "PLAYCADEMY_EXIT";
+EXIT: 'PLAYCADEMY_EXIT';
 ```
 
 Defined in: [messaging.ts:128](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/messaging.ts#L128)
@@ -1769,10 +1787,10 @@ Game requests to be closed/exited.
 Sent when user clicks exit button or game naturally ends.
 Payload: void
 
-##### FORCE\_EXIT
+##### FORCE_EXIT
 
 ```ts
-FORCE_EXIT: "PLAYCADEMY_FORCE_EXIT";
+FORCE_EXIT: 'PLAYCADEMY_FORCE_EXIT';
 ```
 
 Defined in: [messaging.ts:94](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/messaging.ts#L94)
@@ -1784,7 +1802,7 @@ Payload: void
 ##### INIT
 
 ```ts
-INIT: "PLAYCADEMY_INIT";
+INIT: 'PLAYCADEMY_INIT';
 ```
 
 Defined in: [messaging.ts:64](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/messaging.ts#L64)
@@ -1793,14 +1811,14 @@ Initializes the game with authentication context and configuration.
 Sent immediately after game iframe loads.
 Payload:
 
-* `baseUrl`: string
-* `token`: string
-* `gameId`: string
+- `baseUrl`: string
+- `token`: string
+- `gameId`: string
 
-##### KEY\_EVENT
+##### KEY_EVENT
 
 ```ts
-KEY_EVENT: "PLAYCADEMY_KEY_EVENT";
+KEY_EVENT: 'PLAYCADEMY_KEY_EVENT';
 ```
 
 Defined in: [messaging.ts:147](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/messaging.ts#L147)
@@ -1809,14 +1827,14 @@ Game reports key events to parent.
 Sent when certain keys are pressed within the game iframe.
 Payload:
 
-* `key`: string
-* `code?`: string
-* `type`: 'keydown' | 'keyup'
+- `key`: string
+- `code?`: string
+- `type`: 'keydown' | 'keyup'
 
 ##### OVERLAY
 
 ```ts
-OVERLAY: "PLAYCADEMY_OVERLAY";
+OVERLAY: 'PLAYCADEMY_OVERLAY';
 ```
 
 Defined in: [messaging.ts:101](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/messaging.ts#L101)
@@ -1828,7 +1846,7 @@ Payload: boolean (true = show overlay, false = hide overlay)
 ##### PAUSE
 
 ```ts
-PAUSE: "PLAYCADEMY_PAUSE";
+PAUSE: 'PLAYCADEMY_PAUSE';
 ```
 
 Defined in: [messaging.ts:80](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/messaging.ts#L80)
@@ -1840,7 +1858,7 @@ Payload: void
 ##### READY
 
 ```ts
-READY: "PLAYCADEMY_READY";
+READY: 'PLAYCADEMY_READY';
 ```
 
 Defined in: [messaging.ts:121](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/messaging.ts#L121)
@@ -1852,7 +1870,7 @@ Payload: void
 ##### RESUME
 
 ```ts
-RESUME: "PLAYCADEMY_RESUME";
+RESUME: 'PLAYCADEMY_RESUME';
 ```
 
 Defined in: [messaging.ts:87](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/messaging.ts#L87)
@@ -1864,7 +1882,7 @@ Payload: void
 ##### TELEMETRY
 
 ```ts
-TELEMETRY: "PLAYCADEMY_TELEMETRY";
+TELEMETRY: 'PLAYCADEMY_TELEMETRY';
 ```
 
 Defined in: [messaging.ts:137](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/messaging.ts#L137)
@@ -1873,13 +1891,13 @@ Game reports performance telemetry data.
 Sent periodically for monitoring and analytics.
 Payload:
 
-* `fps`: number
-* `mem`: number
+- `fps`: number
+- `mem`: number
 
-##### TOKEN\_REFRESH
+##### TOKEN_REFRESH
 
 ```ts
-TOKEN_REFRESH: "PLAYCADEMY_TOKEN_REFRESH";
+TOKEN_REFRESH: 'PLAYCADEMY_TOKEN_REFRESH';
 ```
 
 Defined in: [messaging.ts:73](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/messaging.ts#L73)
@@ -1888,8 +1906,8 @@ Updates the game's authentication token before it expires.
 Sent periodically to maintain valid authentication.
 Payload:
 
-* `token`: string
-* `exp`: number
+- `token`: string
+- `exp`: number
 
 ## Classes
 
@@ -1901,29 +1919,29 @@ API error thrown when a request fails.
 
 Contains structured error information from the API response:
 
-* `status` - HTTP status code (e.g., 404)
-* `code` - API error code (e.g., "NOT\_FOUND")
-* `message` - Human-readable error message
-* `details` - Optional additional error context
+- `status` - HTTP status code (e.g., 404)
+- `code` - API error code (e.g., "NOT_FOUND")
+- `message` - Human-readable error message
+- `details` - Optional additional error context
 
 #### Example
 
 ```typescript
 try {
-  await client.games.get('nonexistent')
+  await client.games.get('nonexistent');
 } catch (error) {
   if (error instanceof ApiError) {
-    console.log(error.status)   // 404
-    console.log(error.code)     // "NOT_FOUND"
-    console.log(error.message)  // "Game not found"
-    console.log(error.details)  // { identifier: "nonexistent" }
+    console.log(error.status); // 404
+    console.log(error.code); // "NOT_FOUND"
+    console.log(error.message); // "Game not found"
+    console.log(error.details); // { identifier: "nonexistent" }
   }
 }
 ```
 
 #### Extends
 
-* `Error`
+- `Error`
 
 #### Constructors
 
@@ -1931,10 +1949,10 @@ try {
 
 ```ts
 new ApiError(
-   status, 
-   code, 
-   message, 
-   details?, 
+   status,
+   code,
+   message,
+   details?,
    rawBody?): ApiError;
 ```
 
@@ -1979,7 +1997,7 @@ Raw response body
 ###### Overrides
 
 ```ts
-Error.constructor
+Error.constructor;
 ```
 
 #### Properties
@@ -1992,7 +2010,7 @@ readonly code: string;
 
 Defined in: [core/errors.ts:91](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/core/errors.ts#L91)
 
-API error code (e.g., "NOT\_FOUND", "VALIDATION\_FAILED").
+API error code (e.g., "NOT_FOUND", "VALIDATION_FAILED").
 Use this for programmatic error handling.
 
 ##### details
@@ -2107,8 +2125,8 @@ Check if this is a server error (5xx).
 
 ```ts
 static fromResponse(
-   status, 
-   statusText, 
+   status,
+   statusText,
    body): ApiError;
 ```
 
@@ -2137,7 +2155,7 @@ Parses the structured error response from the API.
 
 [`ApiError`](./README.mdx#apierror)
 
-***
+---
 
 ### ConnectionManager
 
@@ -2148,18 +2166,18 @@ Manages connection monitoring for the Playcademy client.
 The ConnectionManager serves as an integration layer between the low-level
 ConnectionMonitor and the PlaycademyClient. It handles:
 
-* Event wiring and coordination
-* Disconnect callbacks with context
-* Platform-level alert integration
-* Request success/failure tracking
+- Event wiring and coordination
+- Disconnect callbacks with context
+- Platform-level alert integration
+- Request success/failure tracking
 
 This class is used internally by PlaycademyClient and typically not
 instantiated directly by game developers.
 
 #### See
 
-* [ConnectionMonitor](./README.mdx#connectionmonitor) for the underlying monitoring implementation
-* [PlaycademyClient.onDisconnect](./README.mdx#playcademyclient#ondisconnect-2) for the public API
+- [ConnectionMonitor](./README.mdx#connectionmonitor) for the underlying monitoring implementation
+- [PlaycademyClient.onDisconnect](./README.mdx#playcademyclient#ondisconnect-2) for the public API
 
 #### Constructors
 
@@ -2192,12 +2210,12 @@ const manager = new ConnectionManager({
   baseUrl: 'https://api.playcademy.com',
   authContext: { isInIframe: false },
   onDisconnect: (context) => {
-    console.log(`Disconnected: ${context.state}`)
+    console.log(`Disconnected: ${context.state}`);
   },
   onConnectionChange: (state, reason) => {
-    console.log(`Connection changed: ${state}`)
+    console.log(`Connection changed: ${state}`);
   }
-})
+});
 ```
 
 #### Methods
@@ -2226,9 +2244,9 @@ Promise resolving to the current connection state
 ###### Example
 
 ```typescript
-const state = await manager.checkNow()
+const state = await manager.checkNow();
 if (state === 'online') {
-  await performCriticalOperation()
+  await performCriticalOperation();
 }
 ```
 
@@ -2251,9 +2269,9 @@ The current connection state ('online', 'offline', or 'degraded')
 ###### Example
 
 ```typescript
-const state = manager.getState()
+const state = manager.getState();
 if (state === 'offline') {
-  console.log('No connection')
+  console.log('No connection');
 }
 ```
 
@@ -2298,10 +2316,10 @@ Cleanup function to unregister the callback
 ```typescript
 const cleanup = manager.onDisconnect(({ state, reason, displayAlert }) => {
   if (state === 'offline') {
-    displayAlert?.('Connection lost. Saving your progress...', { type: 'error' })
-    saveGameState()
+    displayAlert?.('Connection lost. Saving your progress...', { type: 'error' });
+    saveGameState();
   }
-})
+});
 
 // Later: cleanup() to unregister
 ```
@@ -2372,7 +2390,7 @@ Should be called when the client is being destroyed.
 
 `void`
 
-***
+---
 
 ### ConnectionMonitor
 
@@ -2395,15 +2413,15 @@ intermittent failures).
 ```typescript
 const monitor = new ConnectionMonitor({
   baseUrl: 'https://api.playcademy.com',
-  heartbeatInterval: 10000,  // Check every 10s
-  failureThreshold: 2         // Trigger after 2 failures
-})
+  heartbeatInterval: 10000, // Check every 10s
+  failureThreshold: 2 // Trigger after 2 failures
+});
 
 monitor.onChange((state, reason) => {
-  console.log(`Connection: ${state} - ${reason}`)
-})
+  console.log(`Connection: ${state} - ${reason}`);
+});
 
-monitor.start()
+monitor.start();
 ```
 
 #### See
@@ -2460,9 +2478,9 @@ Promise resolving to the current connection state after the check
 ###### Example
 
 ```typescript
-const state = await monitor.checkNow()
+const state = await monitor.checkNow();
 if (state !== 'online') {
-  alert('Please check your internet connection')
+  alert('Please check your internet connection');
 }
 ```
 
@@ -2519,11 +2537,11 @@ Cleanup function to unregister the callback
 
 ```typescript
 const cleanup = monitor.onChange((state, reason) => {
-  console.log(`Connection: ${state}`)
+  console.log(`Connection: ${state}`);
   if (state === 'offline') {
-    showReconnectingUI()
+    showReconnectingUI();
   }
-})
+});
 
 // Later: cleanup() to unregister
 ```
@@ -2561,10 +2579,10 @@ The error from the failed request
 
 ```typescript
 try {
-  await fetch('/api/data')
+  await fetch('/api/data');
 } catch (error) {
-  monitor.reportRequestFailure(error)
-  throw error
+  monitor.reportRequestFailure(error);
+  throw error;
 }
 ```
 
@@ -2590,12 +2608,12 @@ Resets the consecutive failure counter and transitions from 'degraded' to
 
 ```typescript
 try {
-  const result = await fetch('/api/data')
-  monitor.reportRequestSuccess()
-  return result
+  const result = await fetch('/api/data');
+  monitor.reportRequestSuccess();
+  return result;
 } catch (error) {
-  monitor.reportRequestFailure(error)
-  throw error
+  monitor.reportRequestFailure(error);
+  throw error;
 }
 ```
 
@@ -2633,7 +2651,7 @@ Idempotent - safe to call multiple times.
 
 `void`
 
-***
+---
 
 ### PlaycademyClient
 
@@ -2644,7 +2662,7 @@ Provides namespaced access to platform features for games running inside Cademy.
 
 #### Extends
 
-* `PlaycademyBaseClient`
+- `PlaycademyBaseClient`
 
 #### Constructors
 
@@ -2669,7 +2687,7 @@ Defined in: [clients/base.ts:63](https://github.com/superbuilders/playcademy/blo
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.constructor
+PlaycademyBaseClient.constructor;
 ```
 
 #### Properties
@@ -2693,7 +2711,7 @@ isInIframe: boolean;
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.authContext
+PlaycademyBaseClient.authContext;
 ```
 
 ##### authStrategy
@@ -2707,7 +2725,7 @@ Defined in: [clients/base.ts:36](https://github.com/superbuilders/playcademy/blo
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.authStrategy
+PlaycademyBaseClient.authStrategy;
 ```
 
 ##### backend
@@ -2729,8 +2747,8 @@ Defined in: [clients/public.ts:77](https://github.com/superbuilders/playcademy/b
 
 Make requests to your game's custom backend API routes.
 
-* `get(path)`, `post(path, body)`, `put()`, `delete()` - HTTP methods
-* Routes are relative to your game's deployment (e.g., '/hello' → your-game.playcademy.gg/api/hello)
+- `get(path)`, `post(path, body)`, `put()`, `delete()` - HTTP methods
+- Routes are relative to your game's deployment (e.g., '/hello' → your-game.playcademy.gg/api/hello)
 
 ###### delete()
 
@@ -2769,16 +2787,16 @@ Promise resolving to the response data
 ###### Example
 
 ```typescript
-await client.backend.delete('/cache/clear')
+await client.backend.delete('/cache/clear');
 ```
 
 ###### download()
 
 ```ts
 download(
-   path, 
-   method, 
-   body?, 
+   path,
+   method,
+   body?,
 headers?): Promise<Response>;
 ```
 
@@ -2821,15 +2839,17 @@ Promise resolving to the raw fetch Response
 
 ```typescript
 // Download a file
-const response = await client.backend.download('/files?key=my-file.pdf')
-const blob = await response.blob()
-const url = URL.createObjectURL(blob)
+const response = await client.backend.download('/files?key=my-file.pdf');
+const blob = await response.blob();
+const url = URL.createObjectURL(blob);
 
 // Download with POST and custom headers
-const response = await client.backend.download('/files/export', 'POST',
-    { format: 'pdf' },
-    { 'Accept': 'application/pdf' }
-)
+const response = await client.backend.download(
+  '/files/export',
+  'POST',
+  { format: 'pdf' },
+  { Accept: 'application/pdf' }
+);
 ```
 
 ###### get()
@@ -2869,16 +2889,16 @@ Promise resolving to the response data
 ###### Example
 
 ```typescript
-const data = await client.backend.get('/hello')
-console.log(data.message)
+const data = await client.backend.get('/hello');
+console.log(data.message);
 ```
 
 ###### patch()
 
 ```ts
 patch<T>(
-   path, 
-   body?, 
+   path,
+   body?,
 headers?): Promise<T>;
 ```
 
@@ -2920,16 +2940,16 @@ Promise resolving to the response data
 
 ```typescript
 const result = await client.backend.patch('/profile', {
-    displayName: 'NewName'
-})
+  displayName: 'NewName'
+});
 ```
 
 ###### post()
 
 ```ts
 post<T>(
-   path, 
-   body?, 
+   path,
+   body?,
 headers?): Promise<T>;
 ```
 
@@ -2971,17 +2991,17 @@ Promise resolving to the response data
 
 ```typescript
 const result = await client.backend.post('/save', {
-    level: 5,
-    score: 1000
-})
+  level: 5,
+  score: 1000
+});
 ```
 
 ###### put()
 
 ```ts
 put<T>(
-   path, 
-   body?, 
+   path,
+   body?,
 headers?): Promise<T>;
 ```
 
@@ -3023,17 +3043,17 @@ Promise resolving to the response data
 
 ```typescript
 const result = await client.backend.put('/settings', {
-    volume: 0.8
-})
+  volume: 0.8
+});
 ```
 
 ###### request()
 
 ```ts
 request<T>(
-   path, 
-   method, 
-   body?, 
+   path,
+   method,
+   body?,
 headers?): Promise<T>;
 ```
 
@@ -3081,7 +3101,7 @@ Promise resolving to the response data
 ###### Example
 
 ```typescript
-const result = await client.backend.request('/custom', 'OPTIONS')
+const result = await client.backend.request('/custom', 'OPTIONS');
 ```
 
 ###### url()
@@ -3119,16 +3139,16 @@ Complete URL to the backend route
 
 ```typescript
 // Regular function call
-const url1 = client.backend.url('/assets/sprite.png')
-const url2 = client.backend.url(`/assets/${fileKey}`)
+const url1 = client.backend.url('/assets/sprite.png');
+const url2 = client.backend.url(`/assets/${fileKey}`);
 
 // Tagged template literal (recommended)
-const url3 = client.backend.url`/assets/${fileKey}`
+const url3 = client.backend.url`/assets/${fileKey}`;
 
 // Use in JSX/HTML elements
-const imageUrl = client.backend.url`/assets/${sprite.key}`
-const videoUrl = client.backend.url('/videos/intro.mp4')
-const downloadUrl = client.backend.url`/downloads/${file.key}`
+const imageUrl = client.backend.url`/assets/${sprite.key}`;
+const videoUrl = client.backend.url('/videos/intro.mp4');
+const downloadUrl = client.backend.url`/downloads/${file.key}`;
 ```
 
 ##### baseUrl
@@ -3142,7 +3162,7 @@ Defined in: [clients/base.ts:34](https://github.com/superbuilders/playcademy/blo
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.baseUrl
+PlaycademyBaseClient.baseUrl;
 ```
 
 ##### config
@@ -3156,7 +3176,7 @@ Defined in: [clients/base.ts:38](https://github.com/superbuilders/playcademy/blo
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.config
+PlaycademyBaseClient.config;
 ```
 
 ##### connectionManager?
@@ -3170,7 +3190,7 @@ Defined in: [clients/base.ts:43](https://github.com/superbuilders/playcademy/blo
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.connectionManager
+PlaycademyBaseClient.connectionManager;
 ```
 
 ##### credits
@@ -3180,15 +3200,15 @@ credits: {
   add: (amount) => Promise<number>;
   balance: () => Promise<number>;
   spend: (amount) => Promise<number>;
-};
+}
 ```
 
 Defined in: [clients/public.ts:58](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/clients/public.ts#L58)
 
 Playcademy Credits (platform currency) management.
 
-* `get()` - Get user's credit balance
-* `add(amount)` - Award credits to user
+- `get()` - Get user's credit balance
+- `add(amount)` - Award credits to user
 
 ###### add()
 
@@ -3216,8 +3236,8 @@ Promise resolving to the new total balance
 ###### Example
 
 ```typescript
-const newBalance = await client.credits.add(100)
-console.log('New balance after adding 100 credits:', newBalance)
+const newBalance = await client.credits.add(100);
+console.log('New balance after adding 100 credits:', newBalance);
 ```
 
 ###### balance()
@@ -3238,8 +3258,8 @@ Promise resolving to the current credits balance
 ###### Example
 
 ```typescript
-const balance = await client.credits.balance()
-console.log('Current credits:', balance)
+const balance = await client.credits.balance();
+console.log('Current credits:', balance);
 ```
 
 ###### spend()
@@ -3268,8 +3288,8 @@ Promise resolving to the new total balance
 ###### Example
 
 ```typescript
-const newBalance = await client.credits.spend(50)
-console.log('New balance after spending 50 credits:', newBalance)
+const newBalance = await client.credits.spend(50);
+console.log('New balance after spending 50 credits:', newBalance);
 ```
 
 ##### gameId?
@@ -3283,7 +3303,7 @@ Defined in: [clients/base.ts:37](https://github.com/superbuilders/playcademy/blo
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.gameId
+PlaycademyBaseClient.gameId;
 ```
 
 ##### gameUrl?
@@ -3297,7 +3317,7 @@ Defined in: [clients/base.ts:35](https://github.com/superbuilders/playcademy/blo
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.gameUrl
+PlaycademyBaseClient.gameUrl;
 ```
 
 ##### identity
@@ -3305,17 +3325,17 @@ PlaycademyBaseClient.gameUrl
 ```ts
 identity: {
   _getContext: () => {
-     isInIframe: boolean;
+    isInIframe: boolean;
   };
   connect: (options) => Promise<AuthResult>;
-};
+}
 ```
 
 Defined in: [clients/public.ts:26](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/clients/public.ts#L26)
 
 Connect external identity providers to the user's Playcademy account.
 
-* `connect(provider)` - Link Discord, Google, etc. via OAuth popup
+- `connect(provider)` - Link Discord, Google, etc. via OAuth popup
 
 ###### \_getContext()
 
@@ -3373,60 +3393,60 @@ Promise resolving to the connection result
 ```typescript
 // Connect TimeBack identity
 const result = await client.identity.connect({
-    provider: AuthProvider.TIMEBACK,
-    callbackUrl: 'https://myapp.com/api/auth/callback',
-    onStateChange: (state) => {
-        console.log('Connection state:', state.message)
-    }
-})
+  provider: AuthProvider.TIMEBACK,
+  callbackUrl: 'https://myapp.com/api/auth/callback',
+  onStateChange: (state) => {
+    console.log('Connection state:', state.message);
+  }
+});
 
 if (result.success) {
-    console.log('Connected as:', result.user.email)
+  console.log('Connected as:', result.user.email);
 }
 ```
 
 ```typescript
 // Force popup mode even in standalone context
 const result = await client.identity.connect({
-    provider: AuthProvider.TIMEBACK,
-    callbackUrl: 'https://myapp.com/api/auth/callback',
-    mode: 'popup'
-})
+  provider: AuthProvider.TIMEBACK,
+  callbackUrl: 'https://myapp.com/api/auth/callback',
+  mode: 'popup'
+});
 ```
 
 ```typescript
 // Provide custom OAuth configuration for external games
 const result = await client.identity.connect({
-    provider: AuthProvider.TIMEBACK,
-    callbackUrl: 'https://myapp.com/api/auth/callback',
-    oauth: {
-        clientId: 'my-oauth-client-id',
-        // Optional: override default endpoints
-        authorizationEndpoint: 'https://custom-idp.com/oauth2/authorize',
-        tokenEndpoint: 'https://custom-idp.com/oauth2/token',
-        scope: 'openid email profile custom_scope'
-    }
-})
+  provider: AuthProvider.TIMEBACK,
+  callbackUrl: 'https://myapp.com/api/auth/callback',
+  oauth: {
+    clientId: 'my-oauth-client-id',
+    // Optional: override default endpoints
+    authorizationEndpoint: 'https://custom-idp.com/oauth2/authorize',
+    tokenEndpoint: 'https://custom-idp.com/oauth2/token',
+    scope: 'openid email profile custom_scope'
+  }
+});
 ```
 
 ```typescript
 // The SDK automatically includes Playcademy user ID in the OAuth state
 const result = await client.identity.connect({
-    provider: AuthProvider.TIMEBACK,
-    callbackUrl: 'https://myapp.com/api/auth/callback'
-})
+  provider: AuthProvider.TIMEBACK,
+  callbackUrl: 'https://myapp.com/api/auth/callback'
+});
 
 // On your server callback, parse the state to get the user ID:
-import { PlaycademyClient } from '@playcademy/sdk'
+import { PlaycademyClient } from '@playcademy/sdk';
 
 app.get('/api/auth/callback', async (req, res) => {
-    const { csrfToken, data } = PlaycademyClient.identity.parseOAuthState(req.query.state)
-    const playcademyUserId = data?.playcademy_user_id
-    const gameId = data?.game_id
+  const { csrfToken, data } = PlaycademyClient.identity.parseOAuthState(req.query.state);
+  const playcademyUserId = data?.playcademy_user_id;
+  const gameId = data?.game_id;
 
-    // Now you can associate the OAuth user with the Playcademy user
-    await linkAccounts(oauthUserId, playcademyUserId)
-})
+  // Now you can associate the OAuth user with the Playcademy user
+  await linkAccounts(oauthUserId, playcademyUserId);
+});
 ```
 
 ##### initPayload?
@@ -3440,7 +3460,7 @@ Defined in: [clients/base.ts:42](https://github.com/superbuilders/playcademy/blo
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.initPayload
+PlaycademyBaseClient.initPayload;
 ```
 
 ##### internalClientSessionId?
@@ -3454,7 +3474,7 @@ Defined in: [clients/base.ts:40](https://github.com/superbuilders/playcademy/blo
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.internalClientSessionId
+PlaycademyBaseClient.internalClientSessionId;
 ```
 
 ##### listeners
@@ -3468,7 +3488,7 @@ Defined in: [clients/base.ts:39](https://github.com/superbuilders/playcademy/blo
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.listeners
+PlaycademyBaseClient.listeners;
 ```
 
 ##### realtime
@@ -3476,23 +3496,23 @@ PlaycademyBaseClient.listeners
 ```ts
 realtime: {
   token: {
-     get: () => Promise<RealtimeTokenResponse>;
-  };
-};
+    get: () => Promise<RealtimeTokenResponse>;
+  }
+}
 ```
 
 Defined in: [clients/public.ts:70](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/clients/public.ts#L70)
 
 Realtime multiplayer authentication.
 
-* `getToken()` - Get token for WebSocket/realtime connections
+- `getToken()` - Get token for WebSocket/realtime connections
 
 ###### token
 
 ```ts
 token: {
   get: () => Promise<RealtimeTokenResponse>;
-};
+}
 ```
 
 Token sub-namespace for realtime token management
@@ -3516,8 +3536,8 @@ Promise resolving to token response
 
 ```typescript
 // Get a realtime token for WebSocket authentication
-const response = await client.realtime.token.get()
-console.log('Realtime token:', response.token)
+const response = await client.realtime.token.get();
+console.log('Realtime token:', response.token);
 
 // Token is used internally by websocketStore for multiplayer connections
 ```
@@ -3554,10 +3574,10 @@ Defined in: [clients/public.ts:35](https://github.com/superbuilders/playcademy/b
 
 Game runtime lifecycle and asset loading.
 
-* `exit()` - Return to Cademy hub
-* `getGameToken()` - Get short-lived auth token
-* `assets.url()`, `assets.json()`, `assets.fetch()` - Load game assets
-* `on('pause')`, `on('resume')` - Handle visibility changes
+- `exit()` - Return to Cademy hub
+- `getGameToken()` - Get short-lived auth token
+- `assets.url()`, `assets.json()`, `assets.fetch()` - Load game assets
+- `on('pause')`, `on('resume')` - Handle visibility changes
 
 ###### assets
 
@@ -3569,7 +3589,7 @@ assets: {
   json: <T>(path) => Promise<T>;
   text: (path) => Promise<string>;
   url: string;
-};
+}
 ```
 
 Static assets sub-namespace.
@@ -3602,11 +3622,11 @@ Promise resolving to an ArrayBuffer
 
 ```typescript
 // Load binary data
-const buffer = await client.runtime.assets.arrayBuffer('assets/data.bin')
+const buffer = await client.runtime.assets.arrayBuffer('assets/data.bin');
 
 // Load WebAssembly module
-const wasmBuffer = await client.runtime.assets.arrayBuffer('game.wasm')
-const module = await WebAssembly.compile(wasmBuffer)
+const wasmBuffer = await client.runtime.assets.arrayBuffer('game.wasm');
+const module = await WebAssembly.compile(wasmBuffer);
 ```
 
 ###### assets.blob()
@@ -3635,15 +3655,15 @@ Promise resolving to a Blob
 
 ```typescript
 // Load image as blob
-const imageBlob = await client.runtime.assets.blob('images/hero.png')
-const objectUrl = URL.createObjectURL(imageBlob)
-img.src = objectUrl
+const imageBlob = await client.runtime.assets.blob('images/hero.png');
+const objectUrl = URL.createObjectURL(imageBlob);
+img.src = objectUrl;
 ```
 
 ###### assets.fetch()
 
 ```ts
-fetch: (path, options?) => Promise<Response> = fetchAsset;
+fetch: (path, options?) => (Promise<Response> = fetchAsset);
 ```
 
 Fetches a static asset from the game deployment.
@@ -3679,8 +3699,8 @@ Promise resolving to the fetch Response
 ###### Example
 
 ```typescript
-const response = await client.runtime.assets.fetch('data/config.json')
-const data = await response.json()
+const response = await client.runtime.assets.fetch('data/config.json');
+const data = await response.json();
 ```
 
 ###### assets.json()
@@ -3715,8 +3735,8 @@ Promise resolving to the parsed JSON data
 
 ```typescript
 // Load dynamic level data
-const levelData = await client.runtime.assets.json(`levels/level-${id}.json`)
-console.log('Level name:', levelData.name)
+const levelData = await client.runtime.assets.json(`levels/level-${id}.json`);
+console.log('Level name:', levelData.name);
 ```
 
 ###### assets.text()
@@ -3745,8 +3765,8 @@ Promise resolving to the file contents as a string
 
 ```typescript
 // Load text data
-const story = await client.runtime.assets.text('data/story.txt')
-console.log(story)
+const story = await client.runtime.assets.text('data/story.txt');
+console.log(story);
 ```
 
 ###### assets.url()
@@ -3784,15 +3804,15 @@ Complete URL to the CDN asset
 
 ```typescript
 // Regular function call
-const url1 = client.runtime.assets.url('levels/level-5.json')
-const url2 = client.runtime.assets.url(`badges/${badgeType}.png`)
+const url1 = client.runtime.assets.url('levels/level-5.json');
+const url2 = client.runtime.assets.url(`badges/${badgeType}.png`);
 
 // Tagged template literal (recommended for dynamic paths)
-const url3 = client.runtime.assets.url`levels/level-${levelId}.json`
+const url3 = client.runtime.assets.url`levels/level-${levelId}.json`;
 
 // Use in JSX/HTML elements
-img.src = client.runtime.assets.url`badges/${badgeType}.png`
-audio.src = client.runtime.assets.url`sfx/${soundEffect}.wav`
+img.src = client.runtime.assets.url`badges/${badgeType}.png`;
+audio.src = client.runtime.assets.url`sfx/${soundEffect}.wav`;
 ```
 
 ###### exit()
@@ -3814,7 +3834,7 @@ Promise that resolves when exit is complete
 
 ```typescript
 // Clean up and exit the game
-await client.runtime.exit()
+await client.runtime.exit();
 ```
 
 ###### getGameToken()
@@ -3854,10 +3874,10 @@ Promise resolving to game token response
 
 ```typescript
 // Get token without applying it
-const tokenResponse = await client.runtime.getGameToken('game-123')
+const tokenResponse = await client.runtime.getGameToken('game-123');
 
 // Get token and apply it to current client
-const tokenResponse = await client.runtime.getGameToken('game-123', { apply: true })
+const tokenResponse = await client.runtime.getGameToken('game-123', { apply: true });
 ```
 
 ###### getListenerCounts()
@@ -3877,8 +3897,8 @@ Object with listener counts by event type
 ###### Example
 
 ```typescript
-const counts = client.runtime.getListenerCounts()
-console.log(`Active listeners:`, counts)
+const counts = client.runtime.getListenerCounts();
+console.log(`Active listeners:`, counts);
 ```
 
 ###### onForceExit()
@@ -3906,9 +3926,9 @@ Function to call when game must force exit
 
 ```typescript
 client.runtime.onForceExit(() => {
-  game.emergencyCleanup()
+  game.emergencyCleanup();
   // Game should exit immediately after cleanup
-})
+});
 ```
 
 ###### onInit()
@@ -3936,9 +3956,9 @@ Function to call when initialization occurs
 
 ```typescript
 client.runtime.onInit((context) => {
-  console.log(`Game ${context.gameId} initialized`)
-  console.log(`API base URL: ${context.baseUrl}`)
-})
+  console.log(`Game ${context.gameId} initialized`);
+  console.log(`API base URL: ${context.baseUrl}`);
+});
 ```
 
 ###### onOverlay()
@@ -3967,11 +3987,11 @@ Function to call when overlay state changes
 ```typescript
 client.runtime.onOverlay((isVisible) => {
   if (isVisible) {
-    game.showOverlayMode()
+    game.showOverlayMode();
   } else {
-    game.hideOverlayMode()
+    game.hideOverlayMode();
   }
-})
+});
 ```
 
 ###### onPause()
@@ -3999,9 +4019,9 @@ Function to call when game should pause
 
 ```typescript
 client.runtime.onPause(() => {
-  game.pause()
-  audioManager.pauseAll()
-})
+  game.pause();
+  audioManager.pauseAll();
+});
 ```
 
 ###### onResume()
@@ -4029,9 +4049,9 @@ Function to call when game should resume
 
 ```typescript
 client.runtime.onResume(() => {
-  game.resume()
-  audioManager.resumeAll()
-})
+  game.resume();
+  audioManager.resumeAll();
+});
 ```
 
 ###### onTokenRefresh()
@@ -4059,9 +4079,9 @@ Function to call when token is refreshed
 
 ```typescript
 client.runtime.onTokenRefresh(({ token, exp }) => {
-  console.log(`Token refreshed, expires at: ${new Date(exp)}`)
+  console.log(`Token refreshed, expires at: ${new Date(exp)}`);
   // Token is automatically applied to the client
-})
+});
 ```
 
 ###### ready()
@@ -4081,7 +4101,7 @@ Should be called once after game initialization is complete.
 
 ```typescript
 // After game has loaded
-await client.runtime.ready()
+await client.runtime.ready();
 ```
 
 ###### removeAllListeners()
@@ -4101,8 +4121,8 @@ Use this for cleanup when the game is shutting down.
 
 ```typescript
 // Clean up all runtime listeners before exit
-client.runtime.removeAllListeners()
-await client.runtime.exit()
+client.runtime.removeAllListeners();
+await client.runtime.exit();
 ```
 
 ###### removeListener()
@@ -4135,11 +4155,11 @@ The exact handler function that was registered
 ###### Example
 
 ```typescript
-const pauseHandler = () => game.pause()
-client.runtime.onPause(pauseHandler)
+const pauseHandler = () => game.pause();
+client.runtime.onPause(pauseHandler);
 
 // Later, remove the specific handler
-client.runtime.removeListener(MessageEvents.PAUSE, pauseHandler)
+client.runtime.removeListener(MessageEvents.PAUSE, pauseHandler);
 ```
 
 ###### sendTelemetry()
@@ -4180,7 +4200,7 @@ Current memory usage in MB
 client.runtime.sendTelemetry({
   fps: game.getCurrentFPS(),
   mem: performance.memory ? performance.memory.usedJSHeapSize / 1024 / 1024 : 0
-})
+});
 ```
 
 ##### scores
@@ -4188,14 +4208,14 @@ client.runtime.sendTelemetry({
 ```ts
 scores: {
   submit: (gameId, score, metadata?) => Promise<ScoreSubmission>;
-};
+}
 ```
 
 Defined in: [clients/public.ts:64](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/clients/public.ts#L64)
 
 Game score submission and leaderboards.
 
-* `submit(gameId, score, metadata?)` - Record a game score
+- `submit(gameId, score, metadata?)` - Record a game score
 
 ###### submit()
 
@@ -4238,8 +4258,8 @@ Promise resolving to the created score record
 const scoreRecord = await client.scores.submit('game-123', 1250, {
   level: 5,
   difficulty: 'hard'
-})
-console.log('Score submitted:', scoreRecord.id)
+});
+console.log('Score submitted:', scoreRecord.id);
 ```
 
 ##### timeback
@@ -4260,16 +4280,16 @@ TimeBack integration for activity tracking and user context.
 
 User context (cached from init, refreshable):
 
-* `user.role` - User's role (student, parent, teacher, etc.)
-* `user.enrollments` - Courses the player is enrolled in for this game
-* `user.organizations` - Schools/districts the player belongs to
-* `user.fetch()` - Refresh user context from server
+- `user.role` - User's role (student, parent, teacher, etc.)
+- `user.enrollments` - Courses the player is enrolled in for this game
+- `user.organizations` - Schools/districts the player belongs to
+- `user.fetch()` - Refresh user context from server
 
 Activity tracking:
 
-* `startActivity(metadata)` - Begin tracking an activity
-* `pauseActivity()` / `resumeActivity()` - Pause/resume timer
-* `endActivity(scoreData)` - Submit activity results to TimeBack
+- `startActivity(metadata)` - Begin tracking an activity
+- `pauseActivity()` / `resumeActivity()` - Pause/resume timer
+- `endActivity(scoreData)` - Submit activity results to TimeBack
 
 ###### endActivity()
 
@@ -4306,21 +4326,21 @@ Error if startActivity was not called first
 await client.timeback.endActivity({
   correctQuestions: 8,
   totalQuestions: 10
-})
+});
 
 // Report mastery only
 await client.timeback.endActivity({
   correctQuestions: 8,
   totalQuestions: 10,
   masteredUnits: 1
-})
+});
 
 // Override XP
 await client.timeback.endActivity({
   correctQuestions: 8,
   totalQuestions: 10,
   xpAwarded: 15
-})
+});
 ```
 
 ###### pauseActivity()
@@ -4344,14 +4364,14 @@ Error if no activity is in progress or if already paused
 ###### Example
 
 ```typescript
-client.timeback.startActivity({ activityId: 'math-quiz-1' })
+client.timeback.startActivity({ activityId: 'math-quiz-1' });
 // ... student starts quiz ...
 
 // Student needs a break
-client.timeback.pauseActivity()
+client.timeback.pauseActivity();
 
 // ... student returns ...
-client.timeback.resumeActivity()
+client.timeback.resumeActivity();
 ```
 
 ###### resumeActivity()
@@ -4374,10 +4394,10 @@ Error if no activity is in progress or if not currently paused
 ###### Example
 
 ```typescript
-client.timeback.startActivity({ activityId: 'math-quiz-1' })
-client.timeback.pauseActivity()
+client.timeback.startActivity({ activityId: 'math-quiz-1' });
+client.timeback.pauseActivity();
 // ... break time ...
-client.timeback.resumeActivity()
+client.timeback.resumeActivity();
 // ... student continues quiz ...
 ```
 
@@ -4408,14 +4428,14 @@ Activity metadata (only activityId required)
 // Minimal - most common
 client.timeback.startActivity({
   activityId: 'level-1-quiz'
-})
+});
 // Auto-derives: activityName "Level 1 Quiz"
 
 // With custom name override
 client.timeback.startActivity({
   activityId: 'level-1-quiz',
   activityName: 'Advanced Arithmetic Challenge'
-})
+});
 ```
 
 ###### user
@@ -4433,14 +4453,14 @@ Access cached data via properties, or call `fetch()` for fresh data.
 
 ```typescript
 // Access cached data (from init)
-const role = client.timeback.user.role
-const enrollments = client.timeback.user.enrollments
+const role = client.timeback.user.role;
+const enrollments = client.timeback.user.enrollments;
 
 // Fetch fresh data from server (cached for 5 min)
-const fresh = await client.timeback.user.fetch()
+const fresh = await client.timeback.user.fetch();
 
 // Force refresh bypassing cache
-const forced = await client.timeback.user.fetch({ force: true })
+const forced = await client.timeback.user.fetch({ force: true });
 ```
 
 ###### Returns
@@ -4452,23 +4472,23 @@ const forced = await client.timeback.user.fetch({ force: true })
 ```ts
 users: {
   inventory: {
-     add: (identifier, qty) => Promise<InventoryMutationResponse>;
-     get: () => Promise<InventoryItemWithItem[]>;
-     has: (identifier, minQuantity) => Promise<boolean>;
-     quantity: (identifier) => Promise<number>;
-     remove: (identifier, qty) => Promise<InventoryMutationResponse>;
-  };
+    add: (identifier, qty) => Promise<InventoryMutationResponse>;
+    get: () => Promise<InventoryItemWithItem[]>;
+    has: (identifier, minQuantity) => Promise<boolean>;
+    quantity: (identifier) => Promise<number>;
+    remove: (identifier, qty) => Promise<InventoryMutationResponse>;
+  }
   me: () => Promise<AuthenticatedUser>;
-};
+}
 ```
 
 Defined in: [clients/base.ts:361](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/clients/base.ts#L361)
 
 Current user data and inventory management.
 
-* `me()` - Get authenticated user profile
-* `inventory.get()` - List user's items
-* `inventory.add(slug, qty)` - Award items to user
+- `me()` - Get authenticated user profile
+- `inventory.get()` - List user's items
+- `inventory.add(slug, qty)` - Award items to user
 
 ###### inventory
 
@@ -4479,7 +4499,7 @@ inventory: {
   has: (identifier, minQuantity) => Promise<boolean>;
   quantity: (identifier) => Promise<number>;
   remove: (identifier, qty) => Promise<InventoryMutationResponse>;
-};
+}
 ```
 
 Inventory management methods for the current user.
@@ -4518,12 +4538,12 @@ Promise resolving to mutation response with new total
 
 ```typescript
 // Using slug
-const result = await client.users.inventory.add('gold-coin', 100)
+const result = await client.users.inventory.add('gold-coin', 100);
 
 // Using UUID
-const result = await client.users.inventory.add('550e8400-e29b-41d4-a716-446655440000', 100)
+const result = await client.users.inventory.add('550e8400-e29b-41d4-a716-446655440000', 100);
 
-console.log('New total:', result.newTotal)
+console.log('New total:', result.newTotal);
 ```
 
 ###### inventory.get()
@@ -4543,10 +4563,10 @@ Promise resolving to array of inventory items with item details
 ###### Example
 
 ```typescript
-const inventory = await client.users.inventory.get()
-inventory.forEach(item => {
-  console.log(`${item.item.name}: ${item.quantity}`)
-})
+const inventory = await client.users.inventory.get();
+inventory.forEach((item) => {
+  console.log(`${item.item.name}: ${item.quantity}`);
+});
 ```
 
 ###### inventory.has()
@@ -4581,12 +4601,12 @@ Promise resolving to true if user has enough of the item
 ###### Example
 
 ```typescript
-const hasKey = await client.users.inventory.has('gold-coin')
-const hasEnoughGold = await client.users.inventory.has('gold-coin', 100)
-const hasPotion = await client.users.inventory.has('uuid-123-456', 5)
+const hasKey = await client.users.inventory.has('gold-coin');
+const hasEnoughGold = await client.users.inventory.has('gold-coin', 100);
+const hasPotion = await client.users.inventory.has('uuid-123-456', 5);
 
 if (hasKey && hasEnoughGold) {
-  console.log('Can enter premium dungeon!')
+  console.log('Can enter premium dungeon!');
 }
 ```
 
@@ -4616,9 +4636,9 @@ Promise resolving to the current quantity (0 if not owned)
 ###### Example
 
 ```typescript
-const qty = await client.users.inventory.quantity('health-potion')
-const qty2 = await client.users.inventory.quantity('uuid-123-456')
-console.log('Health potions:', qty)
+const qty = await client.users.inventory.quantity('health-potion');
+const qty2 = await client.users.inventory.quantity('uuid-123-456');
+console.log('Health potions:', qty);
 ```
 
 ###### inventory.remove()
@@ -4655,12 +4675,12 @@ Promise resolving to mutation response with new total
 
 ```typescript
 // Using slug
-const result = await client.users.inventory.remove('HEALTH_POTION', 1)
+const result = await client.users.inventory.remove('HEALTH_POTION', 1);
 
 // Using UUID
-const result = await client.users.inventory.remove('uuid-456-789', 1)
+const result = await client.users.inventory.remove('uuid-456-789', 1);
 
-console.log('Remaining:', result.newTotal)
+console.log('Remaining:', result.newTotal);
 ```
 
 ###### me()
@@ -4680,16 +4700,16 @@ Promise resolving to user profile data including auth provider info
 ###### Example
 
 ```typescript
-const user = await client.users.me()
-console.log('Username:', user.username)
-console.log('Email:', user.email)
-console.log('Has Timeback Account:', user.hasTimebackAccount)
+const user = await client.users.me();
+console.log('Username:', user.username);
+console.log('Email:', user.email);
+console.log('Has Timeback Account:', user.hasTimebackAccount);
 ```
 
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.users
+PlaycademyBaseClient.users;
 ```
 
 ##### identity
@@ -4764,23 +4784,23 @@ Object containing the CSRF token and optional custom data
 
 ```typescript
 // In your server callback endpoint
-import { PlaycademyClient } from '@playcademy/sdk'
+import { PlaycademyClient } from '@playcademy/sdk';
 
 app.get('/api/auth/callback', async (req, res) => {
-    const { csrfToken, data } = PlaycademyClient.identity.parseOAuthState(req.query.state)
+  const { csrfToken, data } = PlaycademyClient.identity.parseOAuthState(req.query.state);
 
-    // Validate CSRF token
-    if (!isValidCsrf(csrfToken)) {
-        return res.status(403).send('Invalid state')
-    }
+  // Validate CSRF token
+  if (!isValidCsrf(csrfToken)) {
+    return res.status(403).send('Invalid state');
+  }
 
-    // Access Playcademy user ID if available
-    const playcademyUserId = data?.playcademy_user_id
-    const gameId = data?.game_id
+  // Access Playcademy user ID if available
+  const playcademyUserId = data?.playcademy_user_id;
+  const gameId = data?.game_id;
 
-    // Exchange code for tokens...
-    // Link accounts...
-})
+  // Exchange code for tokens...
+  // Link accounts...
+});
 ```
 
 ##### init()
@@ -4798,16 +4818,16 @@ Works in both iframe mode (production/development) and standalone mode (local de
 
 This is the recommended way to initialize the SDK as it automatically:
 
-* Detects the runtime environment (iframe vs standalone)
-* Configures the client with the appropriate context
-* Sets up event listeners for token refresh
-* Exposes the client for debugging in development mode
+- Detects the runtime environment (iframe vs standalone)
+- Configures the client with the appropriate context
+- Sets up event listeners for token refresh
+- Exposes the client for debugging in development mode
 
 ###### Type Parameters
 
 ###### T
 
-`T` *extends* [`PlaycademyClient`](./README.mdx#playcademyclient) = [`PlaycademyClient`](./README.mdx#playcademyclient)
+`T` _extends_ [`PlaycademyClient`](./README.mdx#playcademyclient) = [`PlaycademyClient`](./README.mdx#playcademyclient)
 
 ###### Parameters
 
@@ -4851,10 +4871,10 @@ Error if not running in a browser context
 
 ```typescript
 // Default initialization
-const client = await PlaycademyClient.init()
+const client = await PlaycademyClient.init();
 
 // With custom base URL
-const client = await PlaycademyClient.init({ baseUrl: 'https://custom.api.com' })
+const client = await PlaycademyClient.init({ baseUrl: 'https://custom.api.com' });
 ```
 
 ##### login()
@@ -4910,18 +4930,18 @@ PlaycademyError if authentication fails or network error occurs
 
 ```typescript
 // Preferred approach:
-const client = new PlaycademyClient({ baseUrl: '/api' })
+const client = new PlaycademyClient({ baseUrl: '/api' });
 const result = await client.auth.login({
   email: 'user@example.com',
   password: 'password'
-})
+});
 
 // Legacy approach (still works):
 try {
-  const response = await PlaycademyClient.login('/api', 'user@example.com', 'password')
-  const client = new PlaycademyClient({ token: response.token })
+  const response = await PlaycademyClient.login('/api', 'user@example.com', 'password');
+  const client = new PlaycademyClient({ token: response.token });
 } catch (error) {
-  console.error('Login failed:', error.message)
+  console.error('Login failed:', error.message);
 }
 ```
 
@@ -4944,7 +4964,7 @@ Ensures a gameId is available, throwing an error if not.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient._ensureGameId
+PlaycademyBaseClient._ensureGameId;
 ```
 
 ##### \_setAuthContext()
@@ -4974,7 +4994,7 @@ Sets the authentication context for the client.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient._setAuthContext
+PlaycademyBaseClient._setAuthContext;
 ```
 
 ##### checkConnection()
@@ -4994,7 +5014,7 @@ Manually triggers a connection check immediately.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.checkConnection
+PlaycademyBaseClient.checkConnection;
 ```
 
 ##### emit()
@@ -5011,7 +5031,7 @@ Emits an event to all registered listeners.
 
 ###### E
 
-`E` *extends* keyof `ClientEvents`
+`E` _extends_ keyof `ClientEvents`
 
 ###### Parameters
 
@@ -5030,7 +5050,7 @@ Emits an event to all registered listeners.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.emit
+PlaycademyBaseClient.emit;
 ```
 
 ##### getBaseUrl()
@@ -5050,7 +5070,7 @@ Gets the effective base URL for API requests.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.getBaseUrl
+PlaycademyBaseClient.getBaseUrl;
 ```
 
 ##### getConnectionState()
@@ -5070,7 +5090,7 @@ Gets the current connection state.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.getConnectionState
+PlaycademyBaseClient.getConnectionState;
 ```
 
 ##### getGameBackendUrl()
@@ -5090,7 +5110,7 @@ Gets the effective game backend URL for integration requests.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.getGameBackendUrl
+PlaycademyBaseClient.getGameBackendUrl;
 ```
 
 ##### getToken()
@@ -5110,7 +5130,7 @@ Gets the current authentication token.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.getToken
+PlaycademyBaseClient.getToken;
 ```
 
 ##### getTokenType()
@@ -5130,7 +5150,7 @@ Gets the current token type.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.getTokenType
+PlaycademyBaseClient.getTokenType;
 ```
 
 ##### isAuthenticated()
@@ -5150,7 +5170,7 @@ Checks if the client has a valid API token.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.isAuthenticated
+PlaycademyBaseClient.isAuthenticated;
 ```
 
 ##### on()
@@ -5167,7 +5187,7 @@ Registers an event listener for client events.
 
 ###### E
 
-`E` *extends* keyof `ClientEvents`
+`E` _extends_ keyof `ClientEvents`
 
 ###### Parameters
 
@@ -5186,7 +5206,7 @@ Registers an event listener for client events.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.on
+PlaycademyBaseClient.on;
 ```
 
 ##### onAuthChange()
@@ -5212,7 +5232,7 @@ Registers a callback to be called when authentication state changes.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.onAuthChange
+PlaycademyBaseClient.onAuthChange;
 ```
 
 ##### onDisconnect()
@@ -5244,7 +5264,7 @@ Registers a callback to be called when connection issues are detected.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.onDisconnect
+PlaycademyBaseClient.onDisconnect;
 ```
 
 ##### ping()
@@ -5264,15 +5284,15 @@ Simple ping method for testing connectivity.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.ping
+PlaycademyBaseClient.ping;
 ```
 
 ##### request()
 
 ```ts
 protected request<T>(
-   path, 
-   method, 
+   path,
+   method,
 options?): Promise<T>;
 ```
 
@@ -5317,17 +5337,17 @@ Makes an authenticated HTTP request to the platform API.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.request
+PlaycademyBaseClient.request;
 ```
 
 ##### requestGameBackend()
 
 ```ts
 protected requestGameBackend<T>(
-   path, 
-   method, 
-   body?, 
-   headers?, 
+   path,
+   method,
+   body?,
+   headers?,
 raw?): Promise<T>;
 ```
 
@@ -5370,7 +5390,7 @@ Makes an authenticated HTTP request to the game's backend Worker.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.requestGameBackend
+PlaycademyBaseClient.requestGameBackend;
 ```
 
 ##### setToken()
@@ -5400,10 +5420,10 @@ Sets the authentication token for API requests.
 ###### Inherited from
 
 ```ts
-PlaycademyBaseClient.setToken
+PlaycademyBaseClient.setToken;
 ```
 
-***
+---
 
 ### PlaycademyError
 
@@ -5413,7 +5433,7 @@ Base error class for Cademy SDK specific errors.
 
 #### Extends
 
-* `Error`
+- `Error`
 
 #### Constructors
 
@@ -5438,7 +5458,7 @@ Defined in: [core/errors.ts:5](https://github.com/superbuilders/playcademy/blob/
 ###### Overrides
 
 ```ts
-Error.constructor
+Error.constructor;
 ```
 
 ## Interfaces
@@ -5491,7 +5511,7 @@ Defined in: [core/errors.ts:240](https://github.com/superbuilders/playcademy/blo
 
 HTTP status code
 
-***
+---
 
 ### ConnectionMonitorConfig
 
@@ -5565,7 +5585,7 @@ Defined in: [core/connection/types.ts:27](https://github.com/superbuilders/playc
 
 How long to wait for heartbeat response in milliseconds (default: 5000)
 
-***
+---
 
 ### ConnectionStatePayload
 
@@ -5587,12 +5607,12 @@ Defined in: [types/events.ts:98](https://github.com/superbuilders/playcademy/blo
 ##### state
 
 ```ts
-state: "online" | "offline" | "degraded";
+state: 'online' | 'offline' | 'degraded';
 ```
 
 Defined in: [types/events.ts:97](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/types/events.ts#L97)
 
-***
+---
 
 ### DisconnectContext
 
@@ -5645,7 +5665,7 @@ Reason for the disconnect
 ##### state
 
 ```ts
-state: "offline" | "degraded";
+state: 'offline' | 'degraded';
 ```
 
 Defined in: [types/client.ts:31](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/types/client.ts#L31)
@@ -5662,7 +5682,7 @@ Defined in: [types/client.ts:35](https://github.com/superbuilders/playcademy/blo
 
 Timestamp when disconnect was detected
 
-***
+---
 
 ### DisplayAlertPayload
 
@@ -5701,7 +5721,7 @@ optional duration: number;
 optional type: "error" | "info" | "warning";
 ```
 
-***
+---
 
 ### ErrorResponseBody
 
@@ -5758,27 +5778,27 @@ optional message: string;
 ### ApiErrorCode
 
 ```ts
-type ApiErrorCode = 
-  | "BAD_REQUEST"
-  | "UNAUTHORIZED"
-  | "FORBIDDEN"
-  | "ACCESS_DENIED"
-  | "NOT_FOUND"
-  | "METHOD_NOT_ALLOWED"
-  | "CONFLICT"
-  | "ALREADY_EXISTS"
-  | "GONE"
-  | "PRECONDITION_FAILED"
-  | "PAYLOAD_TOO_LARGE"
-  | "VALIDATION_FAILED"
-  | "TOO_MANY_REQUESTS"
-  | "RATE_LIMITED"
-  | "EXPIRED"
-  | "INTERNAL"
-  | "INTERNAL_ERROR"
-  | "NOT_IMPLEMENTED"
-  | "SERVICE_UNAVAILABLE"
-  | "TIMEOUT"
+type ApiErrorCode =
+  | 'BAD_REQUEST'
+  | 'UNAUTHORIZED'
+  | 'FORBIDDEN'
+  | 'ACCESS_DENIED'
+  | 'NOT_FOUND'
+  | 'METHOD_NOT_ALLOWED'
+  | 'CONFLICT'
+  | 'ALREADY_EXISTS'
+  | 'GONE'
+  | 'PRECONDITION_FAILED'
+  | 'PAYLOAD_TOO_LARGE'
+  | 'VALIDATION_FAILED'
+  | 'TOO_MANY_REQUESTS'
+  | 'RATE_LIMITED'
+  | 'EXPIRED'
+  | 'INTERNAL'
+  | 'INTERNAL_ERROR'
+  | 'NOT_IMPLEMENTED'
+  | 'SERVICE_UNAVAILABLE'
+  | 'TIMEOUT'
   | string;
 ```
 
@@ -5787,60 +5807,60 @@ Defined in: [core/errors.ts:15](https://github.com/superbuilders/playcademy/blob
 Error codes returned by the API.
 These map to specific error types and HTTP status codes.
 
-***
+---
 
 ### ConnectionState
 
 ```ts
-type ConnectionState = "online" | "offline" | "degraded";
+type ConnectionState = 'online' | 'offline' | 'degraded';
 ```
 
 Defined in: [core/connection/types.ts:14](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/core/connection/types.ts#L14)
 
 Possible connection states.
 
-* **online**: Connection is stable and healthy
-* **offline**: Complete loss of network connectivity
-* **degraded**: Connection is slow or experiencing intermittent issues
+- **online**: Connection is stable and healthy
+- **offline**: Complete loss of network connectivity
+- **degraded**: Connection is slow or experiencing intermittent issues
 
-***
+---
 
 ### DevUploadEvent
 
 ```ts
-type DevUploadEvent = 
+type DevUploadEvent =
   | {
-  type: "init";
-}
+      type: 'init';
+    }
   | {
-  loaded: number;
-  percent: number;
-  total: number;
-  type: "s3Progress";
-}
+      loaded: number;
+      percent: number;
+      total: number;
+      type: 's3Progress';
+    }
   | {
-  type: "finalizeStart";
-}
+      type: 'finalizeStart';
+    }
   | {
-  currentFileLabel?: string;
-  percent: number;
-  type: "finalizeProgress";
-}
+      currentFileLabel?: string;
+      percent: number;
+      type: 'finalizeProgress';
+    }
   | {
-  message: string;
-  type: "finalizeStatus";
-}
+      message: string;
+      type: 'finalizeStatus';
+    }
   | {
-  type: "complete";
-}
+      type: 'complete';
+    }
   | {
-  type: "close";
-};
+      type: 'close';
+    };
 ```
 
 Defined in: [namespaces/platform/dev.types.ts:49](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/sdk/src/namespaces/platform/dev.types.ts#L49)
 
-***
+---
 
 ### DevUploadHooks
 
@@ -5885,7 +5905,7 @@ Defined in: [namespaces/platform/dev.types.ts:59](https://github.com/superbuilde
 
 `void`
 
-***
+---
 
 ### DisconnectHandler()
 
@@ -5926,44 +5946,44 @@ of the application.
 
 **Why a Singleton?**:
 
-* Ensures all parts of the app use the same messaging instance
-* Prevents conflicts between multiple messaging systems
-* Simplifies the API - no need to pass instances around
-* Maintains consistent event listener management
+- Ensures all parts of the app use the same messaging instance
+- Prevents conflicts between multiple messaging systems
+- Simplifies the API - no need to pass instances around
+- Maintains consistent event listener management
 
 **Usage in Different Contexts**:
 
 **In Games**:
 
 ```typescript
-import { messaging, MessageEvents } from '@playcademy/sdk'
+import { messaging, MessageEvents } from '@playcademy/sdk';
 
 // Tell parent we're ready
-messaging.send(MessageEvents.READY, undefined)
+messaging.send(MessageEvents.READY, undefined);
 
 // Listen for pause/resume
-messaging.listen(MessageEvents.PAUSE, () => game.pause())
-messaging.listen(MessageEvents.RESUME, () => game.resume())
+messaging.listen(MessageEvents.PAUSE, () => game.pause());
+messaging.listen(MessageEvents.RESUME, () => game.resume());
 ```
 
 **In Parent Shell**:
 
 ```typescript
-import { messaging, MessageEvents } from '@playcademy/sdk'
+import { messaging, MessageEvents } from '@playcademy/sdk';
 
 // Send initialization data to game
-messaging.send(MessageEvents.INIT, { baseUrl, token, gameId })
+messaging.send(MessageEvents.INIT, { baseUrl, token, gameId });
 
 // Listen for game events
-messaging.listen(MessageEvents.EXIT, () => closeGame())
-messaging.listen(MessageEvents.READY, () => showGame())
+messaging.listen(MessageEvents.EXIT, () => closeGame());
+messaging.listen(MessageEvents.READY, () => showGame());
 ```
 
 **Automatic Transport Selection**:
 The messaging system automatically chooses the right transport method:
 
-* Uses postMessage when game is in iframe sending to parent
-* Uses CustomEvent for local development and parent-to-game communication
+- Uses postMessage when game is in iframe sending to parent
+- Uses CustomEvent for local development and parent-to-game communication
 
 **Type Safety**:
 All message sending and receiving is fully type-safe with TypeScript.
@@ -5995,15 +6015,14 @@ Useful for displaying errors to users in a friendly way.
 
 ```typescript
 try {
-  await client.shop.purchase(itemId)
+  await client.shop.purchase(itemId);
 } catch (error) {
-  const info = extractApiErrorInfo(error)
+  const info = extractApiErrorInfo(error);
   if (info) {
-    showToast(`Error: ${info.message}`)
+    showToast(`Error: ${info.message}`);
   }
 }
 ```
-
 
 # @playcademy/vite-plugin
 
@@ -6017,18 +6036,18 @@ This plugin integrates Playcademy's development sandbox and build tools into you
 
 The Playcademy Vite plugin streamlines app development by providing:
 
-* **Development Sandbox**: Automatically starts a local Playcademy API server during development.
-* **Manifest Generation**: Creates required `playcademy.manifest.json` files for platform deployment
-* **Build Optimization**: Configures Vite settings for optimal Playcademy platform compatibility
-* **Deployment Packaging**: Optionally creates zip archives ready for platform upload
+- **Development Sandbox**: Automatically starts a local Playcademy API server during development.
+- **Manifest Generation**: Creates required `playcademy.manifest.json` files for platform deployment
+- **Build Optimization**: Configures Vite settings for optimal Playcademy platform compatibility
+- **Deployment Packaging**: Optionally creates zip archives ready for platform upload
 
 ### Key Benefits
 
-* **Zero-Config Development**: Works out of the box with sensible defaults
-* **Hot Reload Integration**: Seamless development experience with Vite's hot module replacement
-* **Platform Compatibility**: Ensures builds work correctly on the Playcademy platform
-* **Type Safety**: Full TypeScript support with comprehensive type definitions
-* **Flexible Configuration**: Extensive options for customizing both development and build processes
+- **Zero-Config Development**: Works out of the box with sensible defaults
+- **Hot Reload Integration**: Seamless development experience with Vite's hot module replacement
+- **Platform Compatibility**: Ensures builds work correctly on the Playcademy platform
+- **Type Safety**: Full TypeScript support with comprehensive type definitions
+- **Flexible Configuration**: Extensive options for customizing both development and build processes
 
 ## Installation
 
@@ -6053,15 +6072,15 @@ pnpm add -D @playcademy/vite-plugin
 Add the plugin to your `vite.config.ts`:
 
 ```typescript
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
 
-import { playcademy } from '@playcademy/vite-plugin'
+import { playcademy } from '@playcademy/vite-plugin';
 
 export default defineConfig({
-    plugins: [
-        playcademy(), // Uses all defaults
-    ],
-})
+  plugins: [
+    playcademy() // Uses all defaults
+  ]
+});
 ```
 
 Start development:
@@ -6072,34 +6091,34 @@ bun dev
 
 The plugin will:
 
-* Start the sandbox server at `http://localhost:4321/api`
-* Enable API integration for your app
-* Provide hot reload for rapid development
+- Start the sandbox server at `http://localhost:4321/api`
+- Enable API integration for your app
+- Provide hot reload for rapid development
 
 ## Configuration
 
 ### Basic Configuration
 
 ```typescript
-import { playcademy } from '@playcademy/vite-plugin'
+import { playcademy } from '@playcademy/vite-plugin';
 
 export default defineConfig({
-    plugins: [
-        playcademy({
-            export: {
-                autoZip: true, // Create deployment zip (enabled by default)
-            },
-            sandbox: {
-                autoStart: true, // Start sandbox automatically
-                verbose: false, // Enable debug logging
-                logLevel: 'info', // Log level (debug, info, warn, error)
-                seed: true, // Seed database with demo data
-                recreateDb: false, // Recreate database on each start
-                memoryOnly: false, // Use in-memory database
-            },
-        }),
-    ],
-})
+  plugins: [
+    playcademy({
+      export: {
+        autoZip: true // Create deployment zip (enabled by default)
+      },
+      sandbox: {
+        autoStart: true, // Start sandbox automatically
+        verbose: false, // Enable debug logging
+        logLevel: 'info', // Log level (debug, info, warn, error)
+        seed: true, // Seed database with demo data
+        recreateDb: false, // Recreate database on each start
+        memoryOnly: false // Use in-memory database
+      }
+    })
+  ]
+});
 ```
 
 ### Disabling Auto-Zip
@@ -6108,31 +6127,31 @@ By default, the plugin creates a deployment archive. To disable:
 
 ```typescript
 export default defineConfig({
-    plugins: [
-        playcademy({
-            export: {
-                autoZip: false, // Disable automatic zip creation
-            },
-        }),
-    ],
-})
+  plugins: [
+    playcademy({
+      export: {
+        autoZip: false // Disable automatic zip creation
+      }
+    })
+  ]
+});
 ```
 
 ### Custom Sandbox Configuration
 
 ```typescript
 export default defineConfig({
-    plugins: [
-        playcademy({
-            sandbox: {
-                autoStart: false, // Disable auto-start
-                url: 'http://localhost:8080', // Custom port
-                verbose: true, // Enable verbose logging
-                logLevel: 'debug', // Set log level (debug, info, warn, error)
-            },
-        }),
-    ],
-})
+  plugins: [
+    playcademy({
+      sandbox: {
+        autoStart: false, // Disable auto-start
+        url: 'http://localhost:8080', // Custom port
+        verbose: true, // Enable verbose logging
+        logLevel: 'debug' // Set log level (debug, info, warn, error)
+      }
+    })
+  ]
+});
 ```
 
 ## Plugin Options
@@ -6146,8 +6165,8 @@ export default defineConfig({
 
 **Mode Options:**
 
-* `'platform'`: Full Playcademy experience with sandbox server, backend bundling, and shell wrapper (recommended)
-* `'standalone'`: Backend bundling only, no platform features
+- `'platform'`: Full Playcademy experience with sandbox server, backend bundling, and shell wrapper (recommended)
+- `'standalone'`: Backend bundling only, no platform features
 
 ### Export Options (`export`)
 
@@ -6203,50 +6222,50 @@ Configuration for TimeBack integration testing during local development. Set to 
 
 ```typescript
 export default defineConfig({
-    plugins: [
-        playcademy({
-            timeback: {
-                // All courses from playcademy.config.js enrolled by default with mock IDs
-                role: 'student', // Test as student (default)
-            },
-        }),
-    ],
-})
+  plugins: [
+    playcademy({
+      timeback: {
+        // All courses from playcademy.config.js enrolled by default with mock IDs
+        role: 'student' // Test as student (default)
+      }
+    })
+  ]
+});
 
 // Override specific courses
 export default defineConfig({
-    plugins: [
-        playcademy({
-            timeback: {
-                courses: {
-                    'FastMath:3': 'mock', // Mock enrollment for grade 3
-                    'FastMath:4': null, // Exclude from enrollment (test partial)
-                    'Science:5': 'real-course-id-123', // Real TimeBack course
-                },
-            },
-        }),
-    ],
-})
+  plugins: [
+    playcademy({
+      timeback: {
+        courses: {
+          'FastMath:3': 'mock', // Mock enrollment for grade 3
+          'FastMath:4': null, // Exclude from enrollment (test partial)
+          'Science:5': 'real-course-id-123' // Real TimeBack course
+        }
+      }
+    })
+  ]
+});
 
 // Full real TimeBack integration
 export default defineConfig({
-    plugins: [
-        playcademy({
-            timeback: {
-                id: 'real-student-sourced-id',
-                organization: {
-                    id: 'real-org-id',
-                    name: 'Springfield Elementary',
-                    type: 'school',
-                },
-                courses: {
-                    'FastMath:3': 'real-course-id-g3',
-                    'FastMath:4': 'real-course-id-g4',
-                },
-            },
-        }),
-    ],
-})
+  plugins: [
+    playcademy({
+      timeback: {
+        id: 'real-student-sourced-id',
+        organization: {
+          id: 'real-org-id',
+          name: 'Springfield Elementary',
+          type: 'school'
+        },
+        courses: {
+          'FastMath:3': 'real-course-id-g3',
+          'FastMath:4': 'real-course-id-g4'
+        }
+      }
+    })
+  ]
+});
 ```
 
 ## CLI Hotkeys
@@ -6268,10 +6287,10 @@ During development, the plugin provides keyboard shortcuts in the terminal:
 
 During `bun dev`, the plugin:
 
-* Starts the sandbox server (if enabled)
-* Provides API simulation
-* Enables hot reload for your code
-* Seamlessly wraps your app in the Playcademy environment
+- Starts the sandbox server (if enabled)
+- Provides API simulation
+- Enables hot reload for your code
+- Seamlessly wraps your app in the Playcademy environment
 
 Console output:
 
@@ -6295,29 +6314,29 @@ The plugin uses the `Sec-Fetch-Dest` header to intelligently detect whether a re
 
 ```tsx
 <Router>
-    <Route path="/" component={Home} />
-    <Route path="/game" component={Game} />
-    <Route path="/settings" component={Settings} />
+  <Route path="/" component={Home} />
+  <Route path="/game" component={Game} />
+  <Route path="/settings" component={Settings} />
 </Router>
 ```
 
 **Runtime asset loading**: If your app loads assets dynamically at runtime (files that Vite can't analyze at build time), use the SDK's CDN helpers:
 
 ```typescript
-import { PlaycademyClient } from '@playcademy/sdk'
+import { PlaycademyClient } from '@playcademy/sdk';
 
-const client = await PlaycademyClient.init()
+const client = await PlaycademyClient.init();
 
 // Load dynamic JSON data (e.g., level selected by user)
-const levelData = await client.runtime.assets.json`levels/level-${levelId}.json`
+const levelData = await client.runtime.assets.json`levels/level-${levelId}.json`;
 
 // Load images dynamically using tagged template literals
-img.src = client.runtime.assets.url`badges/${badgeType}.png`
-audio.src = client.runtime.assets.url`sfx/${soundEffect}.wav`
+img.src = client.runtime.assets.url`badges/${badgeType}.png`;
+audio.src = client.runtime.assets.url`sfx/${soundEffect}.wav`;
 
 // Or use regular function calls
-const data = await client.runtime.assets.fetch('data/config.json')
-const blob = await client.runtime.assets.blob('images/hero.png')
+const data = await client.runtime.assets.fetch('data/config.json');
+const blob = await client.runtime.assets.blob('images/hero.png');
 ```
 
 These helpers automatically resolve to the correct asset URLs in production and relative paths in local development.
@@ -6326,10 +6345,10 @@ These helpers automatically resolve to the correct asset URLs in production and 
 
 During `bun run build`, the plugin:
 
-* Generates `playcademy.manifest.json` in `dist/`
-* Generates `.vite/manifest.json` for optimal asset loading
-* Creates deployment zip (if `autoZip: true`)
-* Optimizes build for platform deployment
+- Generates `playcademy.manifest.json` in `dist/`
+- Generates `.vite/manifest.json` for optimal asset loading
+- Creates deployment zip (if `autoZip: true`)
+- Optimizes build for platform deployment
 
 Console output:
 
@@ -6350,9 +6369,9 @@ The plugin generates `dist/playcademy.manifest.json`:
 
 ```json
 {
-    "version": "1",
-    "platform": "web",
-    "createdAt": "2024-01-01T12:00:00.000Z"
+  "version": "1",
+  "platform": "web",
+  "createdAt": "2024-01-01T12:00:00.000Z"
 }
 ```
 
@@ -6393,18 +6412,18 @@ bun run pub
 
 ### Runtime Dependencies
 
-* **archiver**: Zip file creation for deployment packages
-* **picocolors**: Terminal color output for logging
+- **archiver**: Zip file creation for deployment packages
+- **picocolors**: Terminal color output for logging
 
 ### Development Dependencies
 
-* **@playcademy/sandbox**: Development sandbox server
-* **@types/archiver**: TypeScript definitions for archiver
-* **yocto-spinner**: Progress indicators for build operations
+- **@playcademy/sandbox**: Development sandbox server
+- **@types/archiver**: TypeScript definitions for archiver
+- **yocto-spinner**: Progress indicators for build operations
 
 ### Peer Dependencies
 
-* **typescript**: TypeScript compiler (v5+)
+- **typescript**: TypeScript compiler (v5+)
 
 ## Common Use Cases
 
@@ -6413,8 +6432,8 @@ bun run pub
 ```typescript
 // Minimal configuration for most web games
 export default defineConfig({
-    plugins: [playcademy()],
-})
+  plugins: [playcademy()]
+});
 ```
 
 ### Testing with Clean Database
@@ -6422,14 +6441,14 @@ export default defineConfig({
 ```typescript
 // Start with a fresh database on each dev server restart
 export default defineConfig({
-    plugins: [
-        playcademy({
-            sandbox: {
-                recreateDb: true, // Recreate database on each start
-            },
-        }),
-    ],
-})
+  plugins: [
+    playcademy({
+      sandbox: {
+        recreateDb: true // Recreate database on each start
+      }
+    })
+  ]
+});
 ```
 
 ### In-Memory Database for CI
@@ -6437,14 +6456,14 @@ export default defineConfig({
 ```typescript
 // Use in-memory database for fast, ephemeral testing
 export default defineConfig({
-    plugins: [
-        playcademy({
-            sandbox: {
-                memoryOnly: true, // Database in RAM only
-            },
-        }),
-    ],
-})
+  plugins: [
+    playcademy({
+      sandbox: {
+        memoryOnly: true // Database in RAM only
+      }
+    })
+  ]
+});
 ```
 
 ### Godot Export
@@ -6452,15 +6471,15 @@ export default defineConfig({
 ```typescript
 // Configuration for Godot HTML5 exports
 export default defineConfig({
-    plugins: [
-        playcademy({
-            export: {
-                platform: 'godot',
-                entryPoint: 'game.html',
-            },
-        }),
-    ],
-})
+  plugins: [
+    playcademy({
+      export: {
+        platform: 'godot',
+        entryPoint: 'game.html'
+      }
+    })
+  ]
+});
 ```
 
 ### Mode-Based Configuration
@@ -6468,14 +6487,14 @@ export default defineConfig({
 ```typescript
 // Different settings for development vs production
 export default defineConfig(({ mode }) => ({
-    plugins: [
-        playcademy({
-            sandbox: {
-                verbose: mode === 'development',
-            },
-        }),
-    ],
-}))
+  plugins: [
+    playcademy({
+      sandbox: {
+        verbose: mode === 'development'
+      }
+    })
+  ]
+}));
 ```
 
 ### TimeBack Integration
@@ -6483,19 +6502,19 @@ export default defineConfig(({ mode }) => ({
 ```typescript
 // Test TimeBack enrollments and role-based features
 export default defineConfig({
-    plugins: [
-        playcademy({
-            timeback: {
-                // id defaults to auto-generated mock ID
-                courses: {
-                    'FastMath:3': 'mock',
-                    'FastMath:4': 'mock',
-                },
-                role: 'student',
-            },
-        }),
-    ],
-})
+  plugins: [
+    playcademy({
+      timeback: {
+        // id defaults to auto-generated mock ID
+        courses: {
+          'FastMath:3': 'mock',
+          'FastMath:4': 'mock'
+        },
+        role: 'student'
+      }
+    })
+  ]
+});
 ```
 
 During development, press `t` in the terminal to cycle through roles (student → parent → teacher → administrator → guardian) and test different permission levels. The browser reloads automatically.
@@ -6506,15 +6525,15 @@ During development, press `t` in the terminal to cycle through roles (student �
 
 **Manifest not generated**
 
-* Ensure plugin is properly configured in `vite.config.ts`
-* Check for build errors in console output
-* Verify the build completes successfully
+- Ensure plugin is properly configured in `vite.config.ts`
+- Check for build errors in console output
+- Verify the build completes successfully
 
 **Zip file not created**
 
-* Auto-zip is enabled by default - check that build completed without errors
-* Look for zip in `.playcademy/` directory
-* If you previously disabled it, remove `autoZip: false` from export options
+- Auto-zip is enabled by default - check that build completed without errors
+- Look for zip in `.playcademy/` directory
+- If you previously disabled it, remove `autoZip: false` from export options
 
 ### Debug Mode
 
@@ -6522,10 +6541,10 @@ Enable verbose logging for troubleshooting:
 
 ```typescript
 playcademy({
-    sandbox: {
-        verbose: true,
-    },
-})
+  sandbox: {
+    verbose: true
+  }
+});
 ```
 
 ## Interfaces
@@ -6578,7 +6597,7 @@ Game/project name (platform mode only)
 ##### sandbox?
 
 ```ts
-optional sandbox: 
+optional sandbox:
   | {
   enabled: true;
   port: number;
@@ -6621,7 +6640,7 @@ enrolledCount: number;
 ###### mode
 
 ```ts
-mode: "mock" | "local" | "remote";
+mode: 'mock' | 'local' | 'remote';
 ```
 
 ##### version
@@ -6634,7 +6653,7 @@ Defined in: [types/internal.ts:172](https://github.com/superbuilders/playcademy/
 
 Plugin version
 
-***
+---
 
 ### CliDevServerOptions
 
@@ -6684,7 +6703,7 @@ viteConfig: ResolvedConfig;
 
 Defined in: [types/internal.ts:126](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L126)
 
-***
+---
 
 ### CliServerManager
 
@@ -6719,7 +6738,7 @@ Defined in: [types/internal.ts:116](https://github.com/superbuilders/playcademy/
 ```ts
 server: {
   dispose: () => Promise<void>;
-};
+}
 ```
 
 Defined in: [types/internal.ts:113](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L113)
@@ -6746,7 +6765,7 @@ Defined in: [types/internal.ts:117](https://github.com/superbuilders/playcademy/
 
 `void`
 
-***
+---
 
 ### HotkeyOptions
 
@@ -6772,7 +6791,7 @@ viteConfig: ResolvedConfig;
 
 Defined in: [types/internal.ts:163](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L163)
 
-***
+---
 
 ### PlatformModeOptions
 
@@ -6817,7 +6836,7 @@ Defined in: [types/internal.ts:145](https://github.com/superbuilders/playcademy/
 ##### logLevel
 
 ```ts
-logLevel: "debug" | "info" | "warn" | "error";
+logLevel: 'debug' | 'info' | 'warn' | 'error';
 ```
 
 Defined in: [types/internal.ts:139](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L139)
@@ -6873,7 +6892,7 @@ Defined in: [types/internal.ts:136](https://github.com/superbuilders/playcademy/
 ##### timeback?
 
 ```ts
-optional timeback: 
+optional timeback:
   | false
   | PlaycademyTimebackOptions;
 ```
@@ -6888,7 +6907,7 @@ verbose: boolean;
 
 Defined in: [types/internal.ts:138](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L138)
 
-***
+---
 
 ### PlaycademyDisplayOptions
 
@@ -6914,18 +6933,18 @@ Hide the Playcademy badge in the corner during development.
 ###### Default
 
 ```ts
-false
+false;
 ```
 
 ###### Example
 
 ```ts
 display: {
-  hideBadge: true // Hide the badge
+  hideBadge: true; // Hide the badge
 }
 ```
 
-***
+---
 
 ### PlaycademyExportOptions
 
@@ -6953,7 +6972,7 @@ all files needed for deployment (frontend assets + backend bundle).
 ###### Default
 
 ```ts
-true
+true;
 ```
 
 ###### Example
@@ -6964,7 +6983,7 @@ export: {
 }
 ```
 
-***
+---
 
 ### PlaycademyOutputData
 
@@ -7006,7 +7025,7 @@ optional zipSizeKb: string;
 
 Defined in: [types/internal.ts:57](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L57)
 
-***
+---
 
 ### PlaycademyPluginOptions
 
@@ -7021,7 +7040,7 @@ development and build.
 
 ```ts
 // vite.config.ts
-import { playcademy } from '@playcademy/vite-plugin'
+import { playcademy } from '@playcademy/vite-plugin';
 
 export default defineConfig({
   plugins: [
@@ -7036,7 +7055,7 @@ export default defineConfig({
       }
     })
   ]
-})
+});
 ```
 
 #### Properties
@@ -7060,7 +7079,7 @@ config file path when using non-standard project structures.
 ```ts
 // When running from a client/ subdirectory with config in root
 {
-  configPath: '../playcademy.config.js'
+  configPath: '../playcademy.config.js';
 }
 ```
 
@@ -7081,7 +7100,7 @@ Control visual elements during development.
 ```ts
 {
   display: {
-    hideBadge: true
+    hideBadge: true;
   }
 }
 ```
@@ -7118,22 +7137,22 @@ Defined in: [types/options.ts:352](https://github.com/superbuilders/playcademy/b
 
 Plugin operation mode.
 
-* `'platform'`: Full development experience with sandbox server and shell (recommended)
-* `'standalone'`: Backend bundling only, no platform features
+- `'platform'`: Full development experience with sandbox server and shell (recommended)
+- `'standalone'`: Backend bundling only, no platform features
 
 Most games should use `'platform'` mode.
 
 ###### Default
 
 ```ts
-'platform'
+'platform';
 ```
 
 ###### Example
 
 ```ts
 {
-  mode: 'standalone' // For testing backend in isolation
+  mode: 'standalone'; // For testing backend in isolation
 }
 ```
 
@@ -7163,7 +7182,7 @@ The sandbox provides a local Playcademy platform environment for development.
 ##### timeback?
 
 ```ts
-optional timeback: 
+optional timeback:
   | false
   | PlaycademyTimebackOptions;
 ```
@@ -7188,7 +7207,7 @@ timeback: {
 
 Set to `false` to explicitly disable Timeback even if configured in playcademy.config.
 
-***
+---
 
 ### PlaycademySandboxOptions
 
@@ -7216,14 +7235,14 @@ Set to `false` if you want to start the sandbox server manually.
 ###### Default
 
 ```ts
-true
+true;
 ```
 
 ###### Example
 
 ```ts
 sandbox: {
-  autoStart: false // Start sandbox manually
+  autoStart: false; // Start sandbox manually
 }
 ```
 
@@ -7238,7 +7257,7 @@ Defined in: [types/options.ts:186](https://github.com/superbuilders/playcademy/b
 Custom path for the database file.
 
 Specifies where the SQLite database file should be stored.
-If not provided, defaults to a path based on node\_modules location.
+If not provided, defaults to a path based on node_modules location.
 
 Special value `':memory:'` creates an in-memory database
 (equivalent to `memoryOnly: true`).
@@ -7247,13 +7266,13 @@ Special value `':memory:'` creates an in-memory database
 
 ```ts
 sandbox: {
-  databasePath: './my-game-sandbox.db'
+  databasePath: './my-game-sandbox.db';
 }
 ```
 
 ```ts
 sandbox: {
-  databasePath: ':memory:' // In-memory database
+  databasePath: ':memory:'; // In-memory database
 }
 ```
 
@@ -7269,22 +7288,22 @@ Log level for the sandbox server.
 
 Controls the verbosity of sandbox server logs:
 
-* `'debug'`: Very detailed logs (all operations)
-* `'info'`: Standard operational logs
-* `'warn'`: Warnings only
-* `'error'`: Errors only
+- `'debug'`: Very detailed logs (all operations)
+- `'info'`: Standard operational logs
+- `'warn'`: Warnings only
+- `'error'`: Errors only
 
 ###### Default
 
 ```ts
-'info'
+'info';
 ```
 
 ###### Example
 
 ```ts
 sandbox: {
-  logLevel: 'debug' // Show all debug info
+  logLevel: 'debug'; // Show all debug info
 }
 ```
 
@@ -7304,14 +7323,14 @@ Faster but non-persistent. Useful for testing and CI environments.
 ###### Default
 
 ```ts
-false
+false;
 ```
 
 ###### Example
 
 ```ts
 sandbox: {
-  memoryOnly: true // Database in RAM only
+  memoryOnly: true; // Database in RAM only
 }
 ```
 
@@ -7334,14 +7353,14 @@ during development.
 ###### Default
 
 ```ts
-false
+false;
 ```
 
 ###### Example
 
 ```ts
 sandbox: {
-  recreateDb: true // Fresh database on every restart
+  recreateDb: true; // Fresh database on every restart
 }
 ```
 
@@ -7361,14 +7380,14 @@ for testing. Disable if you want to start with an empty database.
 ###### Default
 
 ```ts
-true
+true;
 ```
 
 ###### Example
 
 ```ts
 sandbox: {
-  seed: false // Start with empty database
+  seed: false; // Start with empty database
 }
 ```
 
@@ -7390,7 +7409,7 @@ is auto-assigned.
 
 ```ts
 sandbox: {
-  url: 'http://localhost:8788'
+  url: 'http://localhost:8788';
 }
 ```
 
@@ -7410,18 +7429,18 @@ Equivalent to setting `logLevel: 'debug'`.
 ###### Default
 
 ```ts
-false
+false;
 ```
 
 ###### Example
 
 ```ts
 sandbox: {
-  verbose: true
+  verbose: true;
 }
 ```
 
-***
+---
 
 ### PlaycademyTimebackOptions
 
@@ -7480,10 +7499,10 @@ Defined in: [types/options.ts:267](https://github.com/superbuilders/playcademy/b
 Course enrollment overrides. By default, all courses from playcademy.config.js
 are enrolled with mock IDs.
 
-* Omit entirely: Use all courses from config with mock IDs
-* `'mock'` or omit key: Use mock ID for that course
-* Real string: Use that course ID
-* `null` or `false`: Exclude from enrollment
+- Omit entirely: Use all courses from config with mock IDs
+- `'mock'` or omit key: Use mock ID for that course
+- Real string: Use that course ID
+- `null` or `false`: Exclude from enrollment
 
 ##### id?
 
@@ -7499,7 +7518,7 @@ Set to a real student sourcedId for testing against real Timeback.
 ##### organization?
 
 ```ts
-optional organization: 
+optional organization:
   | "mock"
   | {
   id?: string;
@@ -7561,7 +7580,7 @@ Defined in: [types/options.ts:240](https://github.com/superbuilders/playcademy/b
 User role for testing. Defaults to 'student'.
 Use this to test parent/teacher views of your game.
 
-***
+---
 
 ### PluginContext
 
@@ -7611,7 +7630,7 @@ viteConfig: null | ResolvedConfig;
 
 Defined in: [types/internal.ts:44](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L44)
 
-***
+---
 
 ### ProjectInfo
 
@@ -7661,7 +7680,7 @@ version: string;
 
 Defined in: [types/internal.ts:91](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L91)
 
-***
+---
 
 ### ResolvedPluginOptions
 
@@ -7706,7 +7725,7 @@ Defined in: [types/internal.ts:35](https://github.com/superbuilders/playcademy/b
 ##### logLevel
 
 ```ts
-logLevel: "debug" | "info" | "warn" | "error";
+logLevel: 'debug' | 'info' | 'warn' | 'error';
 ```
 
 Defined in: [types/internal.ts:30](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L30)
@@ -7762,7 +7781,7 @@ Defined in: [types/internal.ts:28](https://github.com/superbuilders/playcademy/b
 ##### timeback?
 
 ```ts
-optional timeback: 
+optional timeback:
   | false
   | PlaycademyTimebackOptions;
 ```
@@ -7777,7 +7796,7 @@ verbose: boolean;
 
 Defined in: [types/internal.ts:29](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L29)
 
-***
+---
 
 ### SandboxManager
 
@@ -7857,7 +7876,7 @@ optional timebackMode: null | "mock" | "local" | "remote";
 
 Defined in: [types/internal.ts:104](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L104)
 
-***
+---
 
 ### StandaloneModeOptions
 
@@ -7883,7 +7902,7 @@ optional configPath: string;
 
 Defined in: [types/internal.ts:156](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L156)
 
-***
+---
 
 ### TimebackCourseConfig
 
@@ -7933,7 +7952,7 @@ optional totalXp: null | number;
 
 Defined in: [types/internal.ts:67](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L67)
 
-***
+---
 
 ### TimebackPluginContext
 
@@ -7972,17 +7991,17 @@ User overrides from vite.config.ts plugin options
 ### PlatformRoleOverride
 
 ```ts
-type PlatformRoleOverride = typeof PLATFORM_ROLES[number];
+type PlatformRoleOverride = (typeof PLATFORM_ROLES)[number];
 ```
 
 Defined in: [types/internal.ts:18](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L18)
 
-***
+---
 
 ### PlaycademyMode
 
 ```ts
-type PlaycademyMode = "platform" | "standalone";
+type PlaycademyMode = 'platform' | 'standalone';
 ```
 
 Defined in: [types/options.ts:14](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/options.ts#L14)
@@ -7991,43 +8010,43 @@ Plugin operation mode
 
 Controls how the Vite plugin operates during development:
 
-* `'platform'`: Full Playcademy platform experience with sandbox server, backend bundling, and shell wrapper (default)
-* `'standalone'`: Backend only, no sandbox or shell
+- `'platform'`: Full Playcademy platform experience with sandbox server, backend bundling, and shell wrapper (default)
+- `'standalone'`: Backend only, no sandbox or shell
 
 #### Default
 
 ```ts
-'platform'
+'platform';
 ```
 
-***
+---
 
 ### TimebackRoleOverride
 
 ```ts
-type TimebackRoleOverride = typeof TIMEBACK_ROLES[number];
+type TimebackRoleOverride = (typeof TIMEBACK_ROLES)[number];
 ```
 
 Defined in: [types/internal.ts:12](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L12)
 
 ## Variables
 
-### PLATFORM\_ROLES
+### PLATFORM_ROLES
 
 ```ts
-const PLATFORM_ROLES: readonly ["player", "developer", "admin"];
+const PLATFORM_ROLES: readonly ['player', 'developer', 'admin'];
 ```
 
 Defined in: [types/internal.ts:17](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L17)
 
 Platform roles that can be cycled through in dev mode
 
-***
+---
 
-### TIMEBACK\_ROLES
+### TIMEBACK_ROLES
 
 ```ts
-const TIMEBACK_ROLES: readonly ["student", "parent", "teacher", "administrator"];
+const TIMEBACK_ROLES: readonly ['student', 'parent', 'teacher', 'administrator'];
 ```
 
 Defined in: [types/internal.ts:11](https://github.com/superbuilders/playcademy/blob/90cc220c1c3e278efed896a876784ef03cbbbd85/packages/vite-plugin/src/types/internal.ts#L11)
@@ -8048,9 +8067,9 @@ Playcademy Vite Plugin
 
 Provides:
 
-* Auto-starting sandbox server during development
-* Hijacking dev server to serve Playcademy loader environment
-* Build-time manifest generation and optional zip packaging
+- Auto-starting sandbox server during development
+- Hijacking dev server to serve Playcademy loader environment
+- Build-time manifest generation and optional zip packaging
 
 #### Parameters
 
@@ -8061,7 +8080,6 @@ Provides:
 #### Returns
 
 `Plugin`
-
 
 # Introduction
 
@@ -8249,6 +8267,7 @@ Timeback provides eight core APIs for building educational applications:
         </td>
       </tr>
     </tbody>
+
   </table>
 </div>
 
@@ -8276,6 +8295,7 @@ Timeback provides eight core APIs for building educational applications:
     <span className="mt-2 text-sm text-slate-600 dark:text-slate-300">
       Use Timeback's APIs directly for complete control of your data flow and infrastructure.
     </span>
+
   </a>
 
   <a href="/timeback/use-playcademy" className="group relative overflow-hidden rounded-2xl p-[3px] shadow-xl transition hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
@@ -8297,6 +8317,7 @@ Timeback provides eight core APIs for building educational applications:
         Learn more →
       </span>
     </div>
+
   </a>
 </div>
 
@@ -8315,7 +8336,6 @@ Timeback provides eight core APIs for building educational applications:
       }
     `}
 </style>
-
 
 # Starter Pack
 
@@ -8336,8 +8356,7 @@ Each API has different endpoints, data models, and use cases. Knowing where to s
 You'll use **OneRoster** and **Caliper** for most of your work, so building familiarity with them is where we'll start.
 
 <Tabs items={['OneRoster', 'Caliper']}>
-  <Tab value="OneRoster">
-    ### What OneRoster Manages \[!toc]
+<Tab value="OneRoster"> ### What OneRoster Manages \[!toc]
 
     | Resource        | Purpose                              |
     | --------------- | ------------------------------------ |
@@ -8353,6 +8372,7 @@ You'll use **OneRoster** and **Caliper** for most of your work, so building fami
     <Card title="Courses & Enrollments" href="/timeback/concepts/courses-and-enrollments">
       Learn how courses and enrollments work
     </Card>
+
   </Tab>
 
   <Tab value="Caliper">
@@ -8368,6 +8388,7 @@ You'll use **OneRoster** and **Caliper** for most of your work, so building fami
     <Card title="Activities & XP" href="/timeback/concepts/activities-and-xp">
       Learn how activity tracking works
     </Card>
+
   </Tab>
 </Tabs>
 
@@ -8378,24 +8399,28 @@ You'll use **OneRoster** and **Caliper** for most of your work, so building fami
     ### Create Course Structure
 
     Use [**OneRoster**](/timeback/api-reference/oneroster) to create a course, add components (units/lessons), and attach resources.
+
   </Step>
 
   <Step>
     ### Enroll Students
 
     Use [**OneRoster**](/timeback/api-reference/oneroster) (or [**EduBridge**](/timeback/api-reference/edubridge)) to enroll students in the course, giving them access to content.
+
   </Step>
 
   <Step>
     ### Track Learning
 
     Use [**Caliper**](/timeback/api-reference/caliper) to track when students start and complete activities in real-time.
+
   </Step>
 
   <Step>
     ### Store Results
 
     Use [**OneRoster**](/timeback/api-reference/oneroster) to store final scores, XP, and mastery data in assessment results.
+
   </Step>
 </Steps>
 
@@ -8404,8 +8429,7 @@ This pattern repeats across nearly everything you build on Timeback.
 ## Additional APIs
 
 <Tabs items={['EduBridge', 'QTI', 'PowerPath', 'CASE', 'OpenBadge', 'CLR']}>
-  <Tab value="EduBridge">
-    ### What EduBridge Does \[!toc]
+<Tab value="EduBridge"> ### What EduBridge Does \[!toc]
 
     Provides convenience layer on top of OneRoster.
 
@@ -8421,6 +8445,7 @@ This pattern repeats across nearly everything you build on Timeback.
     <Card title="EduBridge API Reference" href="/timeback/api-reference/edubridge">
       Explore detailed EduBridge documentation
     </Card>
+
   </Tab>
 
   <Tab value="QTI">
@@ -8440,6 +8465,7 @@ This pattern repeats across nearly everything you build on Timeback.
     <Card title="QTI API Reference" href="/timeback/api-reference/qti">
       Explore detailed QTI documentation
     </Card>
+
   </Tab>
 
   <Tab value="PowerPath">
@@ -8459,6 +8485,7 @@ This pattern repeats across nearly everything you build on Timeback.
     <Card title="PowerPath API Reference" href="/timeback/api-reference/powerpath">
       Explore detailed PowerPath documentation
     </Card>
+
   </Tab>
 
   <Tab value="CASE">
@@ -8478,6 +8505,7 @@ This pattern repeats across nearly everything you build on Timeback.
     <Card title="CASE API Reference" href="/timeback/api-reference/case">
       Explore detailed CASE documentation
     </Card>
+
   </Tab>
 
   <Tab value="OpenBadge">
@@ -8497,6 +8525,7 @@ This pattern repeats across nearly everything you build on Timeback.
     <Card title="OpenBadge API Reference" href="/timeback/api-reference/open-badges">
       Explore detailed OpenBadge documentation
     </Card>
+
   </Tab>
 
   <Tab value="CLR">
@@ -8516,6 +8545,7 @@ This pattern repeats across nearly everything you build on Timeback.
     <Card title="CLR API Reference" href="/timeback/api-reference/clr">
       Explore detailed CLR documentation
     </Card>
+
   </Tab>
 </Tabs>
 
@@ -8528,18 +8558,21 @@ Every API request requires OAuth 2.0 authentication through a central service.
     ### Request Credentials
 
     Contact the Timeback team to get your **Client ID** and **Client Secret** for staging or production.
+
   </Step>
 
   <Step>
     ### Generate Access Token
 
     Exchange your credentials for an access token using the OAuth 2.0 client credentials flow.
+
   </Step>
 
   <Step>
     ### Use Token in Requests
 
     Include the access token in all API requests. Tokens expire after 1 hour, so refresh as needed.
+
   </Step>
 </Steps>
 
@@ -8574,6 +8607,7 @@ Understanding the APIs is one thing; seeing them work in concert is another. Bel
     3. **Resources**: Actual learning materials: videos, quizzes, articles
     4. **Classes**: Specific offerings: `MathApp: Grade 5 - Winter 2025`
     5. **Enrollments**: Which students can access which classes
+
   </Step>
 
   <Step>
@@ -8587,6 +8621,7 @@ Understanding the APIs is one thing; seeing them work in concert is another. Bel
     * **Course Progress**: "What is the student's progress in `MathApp: Grade 5`?"
 
     This tells you what activities to show and what the student is allowed to attempt.
+
   </Step>
 
   <Step>
@@ -8595,6 +8630,7 @@ Understanding the APIs is one thing; seeing them work in concert is another. Bel
     The student clicks "Start" on an activity.
 
     Track the start time in the client to calculate elapsed time. Nothing is sent to Timeback yet.
+
   </Step>
 
   <Step>
@@ -8608,6 +8644,7 @@ Understanding the APIs is one thing; seeing them work in concert is another. Bel
     2. **`TimeSpentEvent`**: Tracks active/inactive/waste time
 
     These events power real-time analytics and dashboards.
+
   </Step>
 
   <Step>
@@ -8622,6 +8659,7 @@ Understanding the APIs is one thing; seeing them work in concert is another. Bel
     3. **Metadata**: Additional context (accuracy, attempt number, etc.)
 
     This updates the official gradebook accessible to teachers, students, and administrators.
+
   </Step>
 </Steps>
 
@@ -8644,7 +8682,6 @@ Understanding the APIs is one thing; seeing them work in concert is another. Bel
     Learn how to build Timeback-native apps on Playcademy
   </Card>
 </div>
-
 
 # Use Playcademy
 
@@ -8684,6 +8721,7 @@ Direct Timeback integration requires managing OAuth, courses, events, and gradeb
         <TerminalBlock command="playcademy timeback init" simple />
       </Tab>
     </Tabs>
+
   </Step>
 
   <Step>
@@ -8701,10 +8739,12 @@ Direct Timeback integration requires managing OAuth, courses, events, and gradeb
       '  Grade 3 (Math): course-abc123',
       '  Grade 4 (Math): course-def456',
       '  Grade 5 (Math): course-ghi789',
-  ]}
-    />
+
+]}
+/>
 
     This creates courses, classes, and the necessary OneRoster structure automatically.
+
   </Step>
 
   <Step>
@@ -8732,6 +8772,7 @@ Direct Timeback integration requires managing OAuth, courses, events, and gradeb
         totalQuestions: 10,
     })
     ```
+
   </Step>
 </Steps>
 
@@ -8746,9 +8787,10 @@ Use our platform to bridge the gap between your game and the classroom.
     Start Building
   </CTAButton>
 
-  <CTAButton href={config.discordInviteUrl} variant="secondary" icon={<DiscordIcon />}>
-    Join Discord
-  </CTAButton>
+<CTAButton href={config.discordInviteUrl} variant="secondary" icon={<DiscordIcon />}>
+Join Discord
+</CTAButton>
+
 </div>
 
 ## What's Next?
@@ -8779,7 +8821,6 @@ Use our platform to bridge the gap between your game and the classroom.
   </Card>
 </Cards>
 
-
 # Grade 1
 
 ## Overview
@@ -8790,122 +8831,121 @@ Grade 1 mathematics deepens understanding of addition and subtraction within 20,
   * **Big ideas**: Addition and subtraction within 20, place value to 120, early measurement and
     time, and reasoning about shapes.
 
-  * **What changes from Kindergarten**: More structured work
-    with equations, larger numbers, and interpreting simple data displays.
+- **What changes from Kindergarten**: More structured work
+  with equations, larger numbers, and interpreting simple data displays.
 
-  * **How to use this page**: Skim the Standards Index below, then jump into the domains that match the skills
-    your game or activity targets.
-</Callout>
+- **How to use this page**: Skim the Standards Index below, then jump into the domains that match the skills
+  your game or activity targets.
+  </Callout>
 
 ## Standards Index
 
 **1.G — Geometry**
 
-* [1.G.A — Reason with shapes and their attributes](#1-g-a)
+- [1.G.A — Reason with shapes and their attributes](#1-g-a)
 
 **1.MD — Measurement and Data**
 
-* [1.MD.A — Measure lengths indirectly and by iterating length units](#1-md-a)
-* [1.MD.B — Tell and write time](#1-md-b)
-* [1.MD.C — Represent and interpret data](#1-md-c)
+- [1.MD.A — Measure lengths indirectly and by iterating length units](#1-md-a)
+- [1.MD.B — Tell and write time](#1-md-b)
+- [1.MD.C — Represent and interpret data](#1-md-c)
 
 **1.NBT — Number and Operations in Base Ten**
 
-* [1.NBT.A — Extend the counting sequence](#1-nbt-a)
-* [1.NBT.B — Understand place value](#1-nbt-b)
-* [1.NBT.C — Use place value understanding and properties of operations to add and subtract](#1-nbt-c)
+- [1.NBT.A — Extend the counting sequence](#1-nbt-a)
+- [1.NBT.B — Understand place value](#1-nbt-b)
+- [1.NBT.C — Use place value understanding and properties of operations to add and subtract](#1-nbt-c)
 
 **1.OA — Operations and Algebraic Thinking**
 
-* [1.OA.A — Represent and solve problems involving addition and subtraction](#1-oa-a)
-* [1.OA.B — Understand and apply properties of operations and the relationship between addition and subtraction](#1-oa-b)
-* [1.OA.C — Add and subtract within 20](#1-oa-c)
-* [1.OA.D — Work with addition and subtraction equations](#1-oa-d)
+- [1.OA.A — Represent and solve problems involving addition and subtraction](#1-oa-a)
+- [1.OA.B — Understand and apply properties of operations and the relationship between addition and subtraction](#1-oa-b)
+- [1.OA.C — Add and subtract within 20](#1-oa-c)
+- [1.OA.D — Work with addition and subtraction equations](#1-oa-d)
 
 ## Learning Standards
 
 <Callout type="tip" title="Reading the standards">
   * Each **bold code** (for example, `1.OA.1`) is a specific standard.
 
-  * Use the **TOC on the
-    right** or the **Standards Index** above to jump directly to the domain you care about.
+- Use the **TOC on the
+  right** or the **Standards Index** above to jump directly to the domain you care about.
 
-  * Treat this section as a reference: scan for the domains and codes that align with your lesson or
-    game mechanics.
-</Callout>
+- Treat this section as a reference: scan for the domains and codes that align with your lesson or
+  game mechanics.
+  </Callout>
 
 ### 1.G — Geometry
 
 #### 1.G.A — Reason with shapes and their attributes.
 
-* **1.G.1**: Distinguish between defining attributes (e.g., triangles are closed and three-sided) versus non-defining attributes (e.g., color, orientation, overall size); build and draw shapes to possess defining attributes.
-* **1.G.2**: Compose two-dimensional shapes (rectangles, squares, trapezoids, triangles, half-circles, and quarter-circles) or three-dimensional shapes (cubes, right rectangular prisms, right circular cones, and right circular cylinders) to create a composite shape, and compose new shapes from the composite shape. (Students do not need to learn formal names such as “right rectangular prism.”)
-* **1.G.3**: Partition circles and rectangles into two and four equal shares, describe the shares using the words halves, fourths, and quarters, and use the phrases half of, fourth of, and quarter of. Describe the whole as two of, or four of the shares. Understand for these examples that decomposing into more equal shares creates smaller shares.
+- **1.G.1**: Distinguish between defining attributes (e.g., triangles are closed and three-sided) versus non-defining attributes (e.g., color, orientation, overall size); build and draw shapes to possess defining attributes.
+- **1.G.2**: Compose two-dimensional shapes (rectangles, squares, trapezoids, triangles, half-circles, and quarter-circles) or three-dimensional shapes (cubes, right rectangular prisms, right circular cones, and right circular cylinders) to create a composite shape, and compose new shapes from the composite shape. (Students do not need to learn formal names such as “right rectangular prism.”)
+- **1.G.3**: Partition circles and rectangles into two and four equal shares, describe the shares using the words halves, fourths, and quarters, and use the phrases half of, fourth of, and quarter of. Describe the whole as two of, or four of the shares. Understand for these examples that decomposing into more equal shares creates smaller shares.
 
 ### 1.MD — Measurement and Data
 
 #### 1.MD.A — Measure lengths indirectly and by iterating length units.
 
-* **1.MD.1**: Order three objects by length
-* **1.MD.2**: Express the length of an object as a whole number of length units, by laying multiple copies of a shorter object (the length unit) end to end; understand that the length measurement of an object is the number of same-size length units that span it with no gaps or overlaps. (Limit to contexts where the object being measured is spanned by a whole number of length units with no gaps or overlaps.)
+- **1.MD.1**: Order three objects by length
+- **1.MD.2**: Express the length of an object as a whole number of length units, by laying multiple copies of a shorter object (the length unit) end to end; understand that the length measurement of an object is the number of same-size length units that span it with no gaps or overlaps. (Limit to contexts where the object being measured is spanned by a whole number of length units with no gaps or overlaps.)
 
 #### 1.MD.B — Tell and write time.
 
-* **1.MD.3**: Tell and write time in hours and half-hours using analog and digital clocks.
+- **1.MD.3**: Tell and write time in hours and half-hours using analog and digital clocks.
 
 #### 1.MD.C — Represent and interpret data.
 
-* **1.MD.4**: Organize, represent, and interpret data with up to three categories; ask and answer questions about the total number of data points, how many in each category, and how many more or less are in one category than in another.
+- **1.MD.4**: Organize, represent, and interpret data with up to three categories; ask and answer questions about the total number of data points, how many in each category, and how many more or less are in one category than in another.
 
 ### 1.NBT — Number and Operations in Base Ten
 
 #### 1.NBT.A — Extend the counting sequence.
 
-* **1.NBT.1**: Count to 120, starting at any number less than 120. In this range, read and write numerals and represent a number of objects with a written numeral.
+- **1.NBT.1**: Count to 120, starting at any number less than 120. In this range, read and write numerals and represent a number of objects with a written numeral.
 
 #### 1.NBT.B — Understand place value.
 
-* **1.NBT.2**: Understand that the two digits of a two-digit number represent amounts of tens and ones. Understand the following as special cases:
-  * a) 10 can be thought of as a bundle of ten ones—called a “ten.”
-  * b) The numbers from 11 to 19 are composed of a ten and one, two, three, four, five, six, seven, eight, or nine ones.
-  * c) The numbers 10, 20, 30, 40, 50, 60, 70, 80, 90 refer to one, two, three, four, five, six, seven, eight, or nine tens (and 0 ones).
-* **1.NBT.3**: Compare two two-digit numbers based on meanings of the tens and ones digits, recording the results of comparisons with the symbols `>`, `=`, and `<`.
+- **1.NBT.2**: Understand that the two digits of a two-digit number represent amounts of tens and ones. Understand the following as special cases:
+  - a) 10 can be thought of as a bundle of ten ones—called a “ten.”
+  - b) The numbers from 11 to 19 are composed of a ten and one, two, three, four, five, six, seven, eight, or nine ones.
+  - c) The numbers 10, 20, 30, 40, 50, 60, 70, 80, 90 refer to one, two, three, four, five, six, seven, eight, or nine tens (and 0 ones).
+- **1.NBT.3**: Compare two two-digit numbers based on meanings of the tens and ones digits, recording the results of comparisons with the symbols `>`, `=`, and `<`.
 
 #### 1.NBT.C — Use place value understanding and properties of operations to add and subtract.
 
-* **1.NBT.4**: Add within 100, including adding a two-digit number and a one-digit number, and adding a two-digit number and a multiple of 10, using concrete models or drawings and strategies based on place value, properties of operations, and/or the relationship between addition and subtraction; relate the strategy to a written method and explain the reasoning used. Understand that in adding two-digit numbers, one adds tens and tens, ones and ones; and sometimes it is necessary to compose a ten.
-* **1.NBT.5**: Given a two-digit number, mentally find 10 more or 10 less than the number, without having to count; explain the reasoning used.
-* **1.NBT.6**: Subtract multiples of 10 in the range 10–90 from multiples of 10 in the range 10–90 (positive or zero differences), using concrete models or drawings and strategies based on place value, properties of operations, and/or the relationship between addition and subtraction; relate the strategy to a written method and explain the reasoning used.
+- **1.NBT.4**: Add within 100, including adding a two-digit number and a one-digit number, and adding a two-digit number and a multiple of 10, using concrete models or drawings and strategies based on place value, properties of operations, and/or the relationship between addition and subtraction; relate the strategy to a written method and explain the reasoning used. Understand that in adding two-digit numbers, one adds tens and tens, ones and ones; and sometimes it is necessary to compose a ten.
+- **1.NBT.5**: Given a two-digit number, mentally find 10 more or 10 less than the number, without having to count; explain the reasoning used.
+- **1.NBT.6**: Subtract multiples of 10 in the range 10–90 from multiples of 10 in the range 10–90 (positive or zero differences), using concrete models or drawings and strategies based on place value, properties of operations, and/or the relationship between addition and subtraction; relate the strategy to a written method and explain the reasoning used.
 
 ### 1.OA — Operations and Algebraic Thinking
 
 #### 1.OA.A — Represent and solve problems involving addition and subtraction.
 
-* **1.OA.1**: Use addition and subtraction within 20 to solve word problems involving situations of adding to, taking from, putting together, taking apart, and comparing, with unknowns in all positions, e.g., by using objects, drawings, and equations with a symbol for the unknown number to represent the problem.
-* **1.OA.2**: Solve word problems that call for addition of three whole numbers whose sum is less than or equal to 20, e.g., by using objects, drawings, and equations with a symbol for the unknown number to represent the problem.
+- **1.OA.1**: Use addition and subtraction within 20 to solve word problems involving situations of adding to, taking from, putting together, taking apart, and comparing, with unknowns in all positions, e.g., by using objects, drawings, and equations with a symbol for the unknown number to represent the problem.
+- **1.OA.2**: Solve word problems that call for addition of three whole numbers whose sum is less than or equal to 20, e.g., by using objects, drawings, and equations with a symbol for the unknown number to represent the problem.
 
 #### 1.OA.B — Understand and apply properties of operations and the relationship between addition and subtraction.
 
-* **1.OA.3**: Apply properties of operations as strategies to add and subtract. Examples: If 8 + 3 = 11 is known, then 3 + 8 = 11 is also known (commutative property of addition). To add 2 + 6 + 4, the second two numbers can be added to make a ten, so 2 + 6 + 4 = 2 + 10 = 12 (associative property of addition).
-* **1.OA.4**: Understand subtraction as an unknown-addend problem. For example, subtract 10 – 8 by finding the number that makes 10 when added to 8.
+- **1.OA.3**: Apply properties of operations as strategies to add and subtract. Examples: If 8 + 3 = 11 is known, then 3 + 8 = 11 is also known (commutative property of addition). To add 2 + 6 + 4, the second two numbers can be added to make a ten, so 2 + 6 + 4 = 2 + 10 = 12 (associative property of addition).
+- **1.OA.4**: Understand subtraction as an unknown-addend problem. For example, subtract 10 – 8 by finding the number that makes 10 when added to 8.
 
 #### 1.OA.C — Add and subtract within 20.
 
-* **1.OA.5**: Relate counting to addition and subtraction (e.g., by counting on 2 to add 2).
-* **1.OA.6**: Add and subtract within 20, demonstrating fluency for addition and subtraction within 10. Use strategies such as counting on; making ten (e.g., 8 + 6 = 8 + 2 + 4 = 10 + 4 = 14); decomposing a number leading to a ten (e.g., 13 – 4 = 13 – 3 – 1 = 10 – 1 = 9); using the relationship between addition and subtraction (e.g., knowing that 8 + 4 = 12, one knows 12 – 8 = 4); and creating equivalent but easier or known sums (e.g., adding 6 + 7 by creating the known equivalent 6 + 6 + 1 = 12 + 1 = 13).
+- **1.OA.5**: Relate counting to addition and subtraction (e.g., by counting on 2 to add 2).
+- **1.OA.6**: Add and subtract within 20, demonstrating fluency for addition and subtraction within 10. Use strategies such as counting on; making ten (e.g., 8 + 6 = 8 + 2 + 4 = 10 + 4 = 14); decomposing a number leading to a ten (e.g., 13 – 4 = 13 – 3 – 1 = 10 – 1 = 9); using the relationship between addition and subtraction (e.g., knowing that 8 + 4 = 12, one knows 12 – 8 = 4); and creating equivalent but easier or known sums (e.g., adding 6 + 7 by creating the known equivalent 6 + 6 + 1 = 12 + 1 = 13).
 
 #### 1.OA.D — Work with addition and subtraction equations.
 
-* **1.OA.7**: Understand the meaning of the equal sign, and determine if equations involving addition and subtraction are true or false. For example, which of the following equations are true and which are false? 6 = 6, 7 = 8 – 1, 5 + 2 = 2 + 5, 4 + 1 = 5 + 2.
-* **1.OA.8**: Determine the unknown whole number in an addition or subtraction equation relating three whole numbers. For example, determine the unknown number that makes the equation true in each of the equations 8 + ? = 11, 5 = □ – 3, 6 + 6 = □.
+- **1.OA.7**: Understand the meaning of the equal sign, and determine if equations involving addition and subtraction are true or false. For example, which of the following equations are true and which are false? 6 = 6, 7 = 8 – 1, 5 + 2 = 2 + 5, 4 + 1 = 5 + 2.
+- **1.OA.8**: Determine the unknown whole number in an addition or subtraction equation relating three whole numbers. For example, determine the unknown number that makes the equation true in each of the equations 8 + ? = 11, 5 = □ – 3, 6 + 6 = □.
 
 ## Domains Covered
 
-* Geometry (1.G)
-* Measurement and Data (1.MD)
-* Number and Operations in Base Ten (1.NBT)
-* Operations and Algebraic Thinking (1.OA)
-
+- Geometry (1.G)
+- Measurement and Data (1.MD)
+- Number and Operations in Base Ten (1.NBT)
+- Operations and Algebraic Thinking (1.OA)
 
 # Grade 2
 
@@ -8917,25 +8957,25 @@ Grade 2 mathematics extends place value to three-digit numbers, builds fluency w
 
 **2.G — Geometry**
 
-* [2.G.A — Reason with shapes and their attributes](#2-g-a)
+- [2.G.A — Reason with shapes and their attributes](#2-g-a)
 
 **2.MD — Measurement and Data**
 
-* [2.MD.A — Measure and estimate lengths in standard units](#2-md-a)
-* [2.MD.B — Represent and interpret data](#2-md-b)
-* [2.MD.C — Relate addition and subtraction to length](#2-md-c)
-* [2.MD.D — Work with time and money](#2-md-d)
+- [2.MD.A — Measure and estimate lengths in standard units](#2-md-a)
+- [2.MD.B — Represent and interpret data](#2-md-b)
+- [2.MD.C — Relate addition and subtraction to length](#2-md-c)
+- [2.MD.D — Work with time and money](#2-md-d)
 
 **2.NBT — Number and Operations in Base Ten**
 
-* [2.NBT.A — Understand place value](#2-nbt-a)
-* [2.NBT.B — Use place value understanding and properties of operations to add and subtract](#2-nbt-b)
+- [2.NBT.A — Understand place value](#2-nbt-a)
+- [2.NBT.B — Use place value understanding and properties of operations to add and subtract](#2-nbt-b)
 
 **2.OA — Operations and Algebraic Thinking**
 
-* [2.OA.A — Represent and solve problems involving addition and subtraction](#2-oa-a)
-* [2.OA.B — Add and subtract within 20](#2-oa-b)
-* [2.OA.C — Work with equal groups of objects to gain foundations for multiplication](#2-oa-c)
+- [2.OA.A — Represent and solve problems involving addition and subtraction](#2-oa-a)
+- [2.OA.B — Add and subtract within 20](#2-oa-b)
+- [2.OA.C — Work with equal groups of objects to gain foundations for multiplication](#2-oa-c)
 
 ## Learning Standards
 
@@ -8943,75 +8983,74 @@ Grade 2 mathematics extends place value to three-digit numbers, builds fluency w
 
 #### 2.G.A — Reason with shapes and their attributes.
 
-* **2.G.1**: Recognize and draw shapes having specified attributes, such as a given number of angles or a given number of equal faces. Identify triangles, quadrilaterals, pentagons, hexagons, and cubes. (Sizes are compared directly or visually, not compared by measuring.)
-* **2.G.2**: Partition a rectangle into rows and columns of same-size squares and count to find the total number of them.
-* **2.G.3**: Partition circles and rectangles into two, three, or four equal shares, describe the shares using the words halves, thirds, half of, a third of, etc., and describe the whole as two halves, three thirds, four fourths. Recognize that equal shares of identical wholes need not have the same shape.
+- **2.G.1**: Recognize and draw shapes having specified attributes, such as a given number of angles or a given number of equal faces. Identify triangles, quadrilaterals, pentagons, hexagons, and cubes. (Sizes are compared directly or visually, not compared by measuring.)
+- **2.G.2**: Partition a rectangle into rows and columns of same-size squares and count to find the total number of them.
+- **2.G.3**: Partition circles and rectangles into two, three, or four equal shares, describe the shares using the words halves, thirds, half of, a third of, etc., and describe the whole as two halves, three thirds, four fourths. Recognize that equal shares of identical wholes need not have the same shape.
 
 ### 2.MD — Measurement and Data
 
 #### 2.MD.A — Measure and estimate lengths in standard units.
 
-* **2.MD.1**: Measure the length of an object by selecting and using appropriate tools such as rulers, yardsticks, meter sticks, and measuring tapes.
-* **2.MD.2**: Measure the length of an object twice, using length units of different lengths for the two measurements; describe how the two measurements relate to the size of the unit chosen.
-* **2.MD.3**: Estimate lengths using units of inches, feet, centimeters, and meters.
-* **2.MD.4**: Measure to determine how much longer one object is than another, expressing the length difference in terms of a standard length unit.
+- **2.MD.1**: Measure the length of an object by selecting and using appropriate tools such as rulers, yardsticks, meter sticks, and measuring tapes.
+- **2.MD.2**: Measure the length of an object twice, using length units of different lengths for the two measurements; describe how the two measurements relate to the size of the unit chosen.
+- **2.MD.3**: Estimate lengths using units of inches, feet, centimeters, and meters.
+- **2.MD.4**: Measure to determine how much longer one object is than another, expressing the length difference in terms of a standard length unit.
 
 #### 2.MD.B — Represent and interpret data.
 
-* **2.MD.10**: Draw a picture graph and a bar graph (with single-unit scale) to represent a data set with up to four categories. Solve simple put-together, take-apart, and compare problems using information presented in a bar graph.
-* **2.MD.9**: Generate measurement data by measuring lengths of several objects to the nearest whole unit, or by making repeated measurements of the same object. Show the measurements by making a line plot, where the horizontal scale is marked off in whole-number units.
+- **2.MD.10**: Draw a picture graph and a bar graph (with single-unit scale) to represent a data set with up to four categories. Solve simple put-together, take-apart, and compare problems using information presented in a bar graph.
+- **2.MD.9**: Generate measurement data by measuring lengths of several objects to the nearest whole unit, or by making repeated measurements of the same object. Show the measurements by making a line plot, where the horizontal scale is marked off in whole-number units.
 
 #### 2.MD.C — Relate addition and subtraction to length.
 
-* **2.MD.5**: Use addition and subtraction within 100 to solve word problems involving lengths that are given in the same units, e.g., by using drawings (such as drawings of rulers) and equations with a symbol for the unknown number to represent the problem.
-* **2.MD.6**: Represent whole numbers as lengths from 0 on a number line diagram with equally spaced points corresponding to the numbers 0, 1, 2, ..., and represent whole-number sums and differences within 100 on a number line diagram.
+- **2.MD.5**: Use addition and subtraction within 100 to solve word problems involving lengths that are given in the same units, e.g., by using drawings (such as drawings of rulers) and equations with a symbol for the unknown number to represent the problem.
+- **2.MD.6**: Represent whole numbers as lengths from 0 on a number line diagram with equally spaced points corresponding to the numbers 0, 1, 2, ..., and represent whole-number sums and differences within 100 on a number line diagram.
 
 #### 2.MD.D — Work with time and money.
 
-* **2.MD.7**: Tell and write time from analog and digital clocks to the nearest five minutes, using a.m. and p.m.
-* **2.MD.8**: Solve word problems involving dollar bills, quarters, dimes, nickels, and pennies, using $ and ¢ symbols appropriately. Example: If you have 2 dimes and 3 pennies, how many cents do you have?
+- **2.MD.7**: Tell and write time from analog and digital clocks to the nearest five minutes, using a.m. and p.m.
+- **2.MD.8**: Solve word problems involving dollar bills, quarters, dimes, nickels, and pennies, using $ and ¢ symbols appropriately. Example: If you have 2 dimes and 3 pennies, how many cents do you have?
 
 ### 2.NBT — Number and Operations in Base Ten
 
 #### 2.NBT.A — Understand place value.
 
-* **2.NBT.1**: Understand that the three digits of a three-digit number represent amounts of hundreds, tens, and ones (e.g., 706 equals 7 hundreds, 0 tens, and 6 ones). Understand the following as special cases:
-  * a) 100 can be thought of as a bundle of ten tens—called a “hundred.”
-  * b) The numbers 100, 200, 300, 400, 500, 600, 700, 800, 900 refer to one, two, three, four, five, six, seven, eight, or nine hundreds (and 0 tens and 0 ones).
-* **2.NBT.2**: Count within 1000; skip-count by 5s, 10s, and 100s.
-* **2.NBT.3**: Read and write numbers to 1000 using base-ten numerals, number names, and expanded form.
-* **2.NBT.4**: Compare two three-digit numbers based on meanings of the hundreds, tens, and ones digits, using >, =, and \< symbols to record the results of comparisons.
+- **2.NBT.1**: Understand that the three digits of a three-digit number represent amounts of hundreds, tens, and ones (e.g., 706 equals 7 hundreds, 0 tens, and 6 ones). Understand the following as special cases:
+  - a) 100 can be thought of as a bundle of ten tens—called a “hundred.”
+  - b) The numbers 100, 200, 300, 400, 500, 600, 700, 800, 900 refer to one, two, three, four, five, six, seven, eight, or nine hundreds (and 0 tens and 0 ones).
+- **2.NBT.2**: Count within 1000; skip-count by 5s, 10s, and 100s.
+- **2.NBT.3**: Read and write numbers to 1000 using base-ten numerals, number names, and expanded form.
+- **2.NBT.4**: Compare two three-digit numbers based on meanings of the hundreds, tens, and ones digits, using >, =, and \< symbols to record the results of comparisons.
 
 #### 2.NBT.B — Use place value understanding and properties of operations to add and subtract.
 
-* **2.NBT.5**: Fluently add and subtract within 100 using strategies based on place value, properties of operations, and/or the relationship between addition and subtraction.
-* **2.NBT.6**: Add up to four two-digit numbers using strategies based on place value and properties of operations.
-* **2.NBT.7**: Add and subtract within 1000, using concrete models or drawings and strategies based on place value, properties of operations, and/or the relationship between addition and subtraction; relate the strategy to a written method. Understand that in adding or subtracting three-digit numbers, one adds or subtracts hundreds and hundreds, tens and tens, ones and ones; and sometimes it is necessary to compose or decompose tens or hundreds.
-* **2.NBT.8**: Mentally add 10 or 100 to a given number 100–900, and mentally subtract 10 or 100 from a given number 100–900.
-* **2.NBT.9**: Explain why addition and subtraction strategies work, using place value and the properties of operations.
+- **2.NBT.5**: Fluently add and subtract within 100 using strategies based on place value, properties of operations, and/or the relationship between addition and subtraction.
+- **2.NBT.6**: Add up to four two-digit numbers using strategies based on place value and properties of operations.
+- **2.NBT.7**: Add and subtract within 1000, using concrete models or drawings and strategies based on place value, properties of operations, and/or the relationship between addition and subtraction; relate the strategy to a written method. Understand that in adding or subtracting three-digit numbers, one adds or subtracts hundreds and hundreds, tens and tens, ones and ones; and sometimes it is necessary to compose or decompose tens or hundreds.
+- **2.NBT.8**: Mentally add 10 or 100 to a given number 100–900, and mentally subtract 10 or 100 from a given number 100–900.
+- **2.NBT.9**: Explain why addition and subtraction strategies work, using place value and the properties of operations.
 
 ### 2.OA — Operations and Algebraic Thinking
 
 #### 2.OA.A — Represent and solve problems involving addition and subtraction.
 
-* **2.OA.1**: Use addition and subtraction within 100 to solve one- and two-step word problems involving situations of adding to, taking from, putting together, taking apart, and comparing, with unknowns in all positions, e.g., by using drawings and equations with a symbol for the unknown number to represent the problem.
+- **2.OA.1**: Use addition and subtraction within 100 to solve one- and two-step word problems involving situations of adding to, taking from, putting together, taking apart, and comparing, with unknowns in all positions, e.g., by using drawings and equations with a symbol for the unknown number to represent the problem.
 
 #### 2.OA.B — Add and subtract within 20.
 
-* **2.OA.2**: Fluently add and subtract within 20 using mental strategies. By end of 2, know from memory all sums of two one-digit numbers.
+- **2.OA.2**: Fluently add and subtract within 20 using mental strategies. By end of 2, know from memory all sums of two one-digit numbers.
 
 #### 2.OA.C — Work with equal groups of objects to gain foundations for multiplication.
 
-* **2.OA.3**: Determine whether a group of objects (up to 20) has an odd or even number of members, e.g., by pairing objects or counting them by 2s; write an equation to express an even number as a sum of two equal addends.
-* **2.OA.4**: Use addition to find the total number of objects arranged in rectangular arrays with up to 5 rows and up to 5 columns
+- **2.OA.3**: Determine whether a group of objects (up to 20) has an odd or even number of members, e.g., by pairing objects or counting them by 2s; write an equation to express an even number as a sum of two equal addends.
+- **2.OA.4**: Use addition to find the total number of objects arranged in rectangular arrays with up to 5 rows and up to 5 columns
 
 ## Domains Covered
 
-* Geometry (2.G)
-* Measurement and Data (2.MD)
-* Number and Operations in Base Ten (2.NBT)
-* Operations and Algebraic Thinking (2.OA)
-
+- Geometry (2.G)
+- Measurement and Data (2.MD)
+- Number and Operations in Base Ten (2.NBT)
+- Operations and Algebraic Thinking (2.OA)
 
 # Grade 3
 
@@ -9023,29 +9062,29 @@ Grade 3 mathematics marks a major shift with the introduction of multiplication,
 
 **3.G — Geometry**
 
-* [3.G.A — Reason with shapes and their attributes](#3-g-a)
+- [3.G.A — Reason with shapes and their attributes](#3-g-a)
 
 **3.MD — Measurement and Data**
 
-* [3.MD.A — Solve problems involving measurement and estimation of intervals of time, liquid volumes, and masses of objects](#3-md-a)
-* [3.MD.B — Represent and interpret data](#3-md-b)
-* [3.MD.C — Geometric measurement: understand concepts of area and relate area to multiplication and to addition](#3-md-c)
-* [3.MD.D — Geometric measurement: recognize perimeter as an attribute of plane figures and distinguish between linear and area measures](#3-md-d)
+- [3.MD.A — Solve problems involving measurement and estimation of intervals of time, liquid volumes, and masses of objects](#3-md-a)
+- [3.MD.B — Represent and interpret data](#3-md-b)
+- [3.MD.C — Geometric measurement: understand concepts of area and relate area to multiplication and to addition](#3-md-c)
+- [3.MD.D — Geometric measurement: recognize perimeter as an attribute of plane figures and distinguish between linear and area measures](#3-md-d)
 
 **3.NBT — Number and Operations in Base Ten**
 
-* [3.NBT.A — Use place value understanding and properties of operations to perform multi-digit arithmetic](#3-nbt-a)
+- [3.NBT.A — Use place value understanding and properties of operations to perform multi-digit arithmetic](#3-nbt-a)
 
 **3.NF — Number and Operations—Fractions**
 
-* [3.NF.A — Develop understanding of fractions as numbers](#3-nf-a)
+- [3.NF.A — Develop understanding of fractions as numbers](#3-nf-a)
 
 **3.OA — Operations and Algebraic Thinking**
 
-* [3.OA.A — Represent and solve problems involving multiplication and division](#3-oa-a)
-* [3.OA.B — Understand properties of multiplication and the relationship between multiplication and division](#3-oa-b)
-* [3.OA.C — Multiply and divide within 100](#3-oa-c)
-* [3.OA.D — Solve problems involving the four operations, and identify and explain patterns in arithmetic](#3-oa-d)
+- [3.OA.A — Represent and solve problems involving multiplication and division](#3-oa-a)
+- [3.OA.B — Understand properties of multiplication and the relationship between multiplication and division](#3-oa-b)
+- [3.OA.C — Multiply and divide within 100](#3-oa-c)
+- [3.OA.D — Solve problems involving the four operations, and identify and explain patterns in arithmetic](#3-oa-d)
 
 ## Learning Standards
 
@@ -9053,88 +9092,87 @@ Grade 3 mathematics marks a major shift with the introduction of multiplication,
 
 #### 3.G.A — Reason with shapes and their attributes.
 
-* **3.G.1**: Understand that shapes in different categories (e.g., rhombuses, rectangles, and others) may share attributes (e.g., having four sides), and that the shared attributes can define a larger category (e.g., quadrilaterals). Recognize rhombuses, rectangles, and squares as examples of quadrilaterals, and draw examples of quadrilaterals that do not belong to any of these subcategories.
-* **3.G.2**: Partition shapes into parts with equal areas. Express the area of each part as a unit fraction of the whole. For example, partition a shape into 4 parts with equal area, and describe the area of each part as 1/4 of the area of the shape.
+- **3.G.1**: Understand that shapes in different categories (e.g., rhombuses, rectangles, and others) may share attributes (e.g., having four sides), and that the shared attributes can define a larger category (e.g., quadrilaterals). Recognize rhombuses, rectangles, and squares as examples of quadrilaterals, and draw examples of quadrilaterals that do not belong to any of these subcategories.
+- **3.G.2**: Partition shapes into parts with equal areas. Express the area of each part as a unit fraction of the whole. For example, partition a shape into 4 parts with equal area, and describe the area of each part as 1/4 of the area of the shape.
 
 ### 3.MD — Measurement and Data
 
 #### 3.MD.A — Solve problems involving measurement and estimation of intervals of time, liquid volumes, and masses of objects.
 
-* **3.MD.1**: Tell and write time to the nearest minute and measure time intervals in minutes. Solve word problems involving addition and subtraction of time intervals in minutes, e.g., by representing the problem on a number line diagram.
-* **3.MD.2**: Measure and estimate liquid volumes and masses of objects using standard units of grams (g), kilograms (kg), and liters (l). Add, subtract, multiply, or divide to solve one-step word problems involving masses or volumes that are given in the same units, e.g., by using drawings (such as a beaker with a measurement scale) to represent the problem. (Excludes compound units and multiplicative comparison problems.)
+- **3.MD.1**: Tell and write time to the nearest minute and measure time intervals in minutes. Solve word problems involving addition and subtraction of time intervals in minutes, e.g., by representing the problem on a number line diagram.
+- **3.MD.2**: Measure and estimate liquid volumes and masses of objects using standard units of grams (g), kilograms (kg), and liters (l). Add, subtract, multiply, or divide to solve one-step word problems involving masses or volumes that are given in the same units, e.g., by using drawings (such as a beaker with a measurement scale) to represent the problem. (Excludes compound units and multiplicative comparison problems.)
 
 #### 3.MD.B — Represent and interpret data.
 
-* **3.MD.3**: Draw a scaled picture graph and a scaled bar graph to represent a data set with several categories. Solve one- and two-step “how many more” and “how many less” problems using information presented in scaled bar graphs. For example, draw a bar graph in which each square in the bar graph might represent 5 pets.
-* **3.MD.4**: Generate measurement data by measuring lengths using rulers marked with halves and fourths of an inch. Show the data by making a line plot, where the horizontal scale is marked off in appropriate units—whole numbers, halves, or quarters.
+- **3.MD.3**: Draw a scaled picture graph and a scaled bar graph to represent a data set with several categories. Solve one- and two-step “how many more” and “how many less” problems using information presented in scaled bar graphs. For example, draw a bar graph in which each square in the bar graph might represent 5 pets.
+- **3.MD.4**: Generate measurement data by measuring lengths using rulers marked with halves and fourths of an inch. Show the data by making a line plot, where the horizontal scale is marked off in appropriate units—whole numbers, halves, or quarters.
 
 #### 3.MD.C — Geometric measurement: understand concepts of area and relate area to multiplication and to addition.
 
-* **3.MD.5**: Recognize area as an attribute of plane figures and understand concepts of area measurement.
-  * a) A square with side length 1 unit, called “a unit square,” is said to have “one square unit” of area, and can be used to measure area.
-  * b) A plane figure which can be covered without gaps or overlaps by n unit squares is said to have an area of n square units.
-* **3.MD.6**: Measure areas by counting unit squares (square cm, square m, square in, square ft, and improvised units).
-* **3.MD.7**: Relate area to the operations of multiplication and addition.
-  * a) Find the area of a rectangle with whole-number side lengths by tiling it, and show that the area is the same as would be found by multiplying the side lengths.
-  * b) Multiply side lengths to find areas of rectangles with whole-number side lengths in the context of solving real world and mathematical problems, and represent whole-number products as rectangular areas in mathematical reasoning.
-  * c) Use tiling to show in a concrete case that the area of a rectangle with whole-number side lengths a and b + c is the sum of a × b and a × c. Use area models to represent the distributive property in mathematical reasoning.
-  * d) Recognize area as additive. Find areas of rectilinear figures by decomposing them into non-overlapping rectangles and adding the areas of the non-overlapping parts, applying this technique to solve real world problems.
+- **3.MD.5**: Recognize area as an attribute of plane figures and understand concepts of area measurement.
+  - a) A square with side length 1 unit, called “a unit square,” is said to have “one square unit” of area, and can be used to measure area.
+  - b) A plane figure which can be covered without gaps or overlaps by n unit squares is said to have an area of n square units.
+- **3.MD.6**: Measure areas by counting unit squares (square cm, square m, square in, square ft, and improvised units).
+- **3.MD.7**: Relate area to the operations of multiplication and addition.
+  - a) Find the area of a rectangle with whole-number side lengths by tiling it, and show that the area is the same as would be found by multiplying the side lengths.
+  - b) Multiply side lengths to find areas of rectangles with whole-number side lengths in the context of solving real world and mathematical problems, and represent whole-number products as rectangular areas in mathematical reasoning.
+  - c) Use tiling to show in a concrete case that the area of a rectangle with whole-number side lengths a and b + c is the sum of a × b and a × c. Use area models to represent the distributive property in mathematical reasoning.
+  - d) Recognize area as additive. Find areas of rectilinear figures by decomposing them into non-overlapping rectangles and adding the areas of the non-overlapping parts, applying this technique to solve real world problems.
 
 #### 3.MD.D — Geometric measurement: recognize perimeter as an attribute of plane figures and distinguish between linear and area measures.
 
-* **3.MD.8**: Solve real world and mathematical problems involving perimeters of polygons, including finding the perimeter given the side lengths, finding an unknown side length, and exhibiting rectangles with the same perimeter and different areas or with the same area and different perimeters.
+- **3.MD.8**: Solve real world and mathematical problems involving perimeters of polygons, including finding the perimeter given the side lengths, finding an unknown side length, and exhibiting rectangles with the same perimeter and different areas or with the same area and different perimeters.
 
 ### 3.NBT — Number and Operations in Base Ten
 
 #### 3.NBT.A — Use place value understanding and properties of operations to perform multi-digit arithmetic.
 
-* **3.NBT.1**: Use place value understanding to round whole numbers to the nearest 10 or 100.
-* **3.NBT.2**: Fluently add and subtract within 1000 using strategies and algorithms based on place value, properties of operations, and/or the relationship between addition and subtraction.
-* **3.NBT.3**: Multiply one-digit whole numbers by multiples of 10 in the range 10–90 (e.g., 9 × 80, 5 × 60) using strategies based on place value and properties of operations.
+- **3.NBT.1**: Use place value understanding to round whole numbers to the nearest 10 or 100.
+- **3.NBT.2**: Fluently add and subtract within 1000 using strategies and algorithms based on place value, properties of operations, and/or the relationship between addition and subtraction.
+- **3.NBT.3**: Multiply one-digit whole numbers by multiples of 10 in the range 10–90 (e.g., 9 × 80, 5 × 60) using strategies based on place value and properties of operations.
 
 ### 3.NF — Number and Operations—Fractions
 
 #### 3.NF.A — Develop understanding of fractions as numbers.
 
-* **3.NF.1**: Understand a fraction 1/b as the quantity formed by 1 part when a whole is partitioned into b equal parts; understand a fraction a/b as the quantity formed by a parts of size 1/b.
-* **3.NF.2**: Understand a fraction as a number on the number line
-* **3.NF.3**: Explain equivalence of fractions in special cases, and compare fractions by reasoning about their size.
-  * a) Understand two fractions as equivalent (equal) if they are the same size, or the same point on a number line.
-  * b) Recognize and generate simple equivalent fractions, e.g., 1/2 = 2/4, 4/6 = 2/3. Explain why the fractions are equivalent, e.g., by using a visual fraction model.
-  * c) Express whole numbers as fractions, and recognize fractions that are equivalent to whole numbers. Examples: Express 3 in the form 3 = 3/1; recognize that 6/1 = 6; locate 4/4 and 1 at the same point of a number line diagram.
-  * d) Compare two fractions with the same numerator or the same denominator by reasoning about their size. Recognize that comparisons are valid only when the two fractions refer to the same whole. Record the results of comparisons with the symbols `>`, `=`, or `<`, and justify the conclusions, e.g., by using a visual fraction model.
+- **3.NF.1**: Understand a fraction 1/b as the quantity formed by 1 part when a whole is partitioned into b equal parts; understand a fraction a/b as the quantity formed by a parts of size 1/b.
+- **3.NF.2**: Understand a fraction as a number on the number line
+- **3.NF.3**: Explain equivalence of fractions in special cases, and compare fractions by reasoning about their size.
+  - a) Understand two fractions as equivalent (equal) if they are the same size, or the same point on a number line.
+  - b) Recognize and generate simple equivalent fractions, e.g., 1/2 = 2/4, 4/6 = 2/3. Explain why the fractions are equivalent, e.g., by using a visual fraction model.
+  - c) Express whole numbers as fractions, and recognize fractions that are equivalent to whole numbers. Examples: Express 3 in the form 3 = 3/1; recognize that 6/1 = 6; locate 4/4 and 1 at the same point of a number line diagram.
+  - d) Compare two fractions with the same numerator or the same denominator by reasoning about their size. Recognize that comparisons are valid only when the two fractions refer to the same whole. Record the results of comparisons with the symbols `>`, `=`, or `<`, and justify the conclusions, e.g., by using a visual fraction model.
 
 ### 3.OA — Operations and Algebraic Thinking
 
 #### 3.OA.A — Represent and solve problems involving multiplication and division.
 
-* **3.OA.1**: Interpret products of whole numbers, e.g., interpret 5 × 7 as the total number of objects in 5 groups of 7 objects each. For example, describe a context in which a total number of objects can be expressed as 5 × 7.
-* **3.OA.2**: Interpret whole-number quotients of whole numbers, e.g., interpret 56 ÷ 8 as the number of objects in each share when 56 objects are partitioned equally into 8 shares, or as a number of shares when 56 objects are partitioned into equal shares of 8 objects each. For example, describe a context in which a number of shares or a number of groups can be expressed as 56 ÷ 8.
-* **3.OA.3**: Use multiplication and division within 100 to solve word problems in situations involving equal groups, arrays, and measurement quantities, e.g., by using drawings and equations with a symbol for the unknown number to represent the problem.
-* **3.OA.4**: Determine the unknown whole number in a multiplication or division equation relating three whole numbers. For example, determine the unknown number that makes the equation true in each of the equations 8 × ? = 48, 5 = □ ÷ 3, 6 × 6 = ?.
+- **3.OA.1**: Interpret products of whole numbers, e.g., interpret 5 × 7 as the total number of objects in 5 groups of 7 objects each. For example, describe a context in which a total number of objects can be expressed as 5 × 7.
+- **3.OA.2**: Interpret whole-number quotients of whole numbers, e.g., interpret 56 ÷ 8 as the number of objects in each share when 56 objects are partitioned equally into 8 shares, or as a number of shares when 56 objects are partitioned into equal shares of 8 objects each. For example, describe a context in which a number of shares or a number of groups can be expressed as 56 ÷ 8.
+- **3.OA.3**: Use multiplication and division within 100 to solve word problems in situations involving equal groups, arrays, and measurement quantities, e.g., by using drawings and equations with a symbol for the unknown number to represent the problem.
+- **3.OA.4**: Determine the unknown whole number in a multiplication or division equation relating three whole numbers. For example, determine the unknown number that makes the equation true in each of the equations 8 × ? = 48, 5 = □ ÷ 3, 6 × 6 = ?.
 
 #### 3.OA.B — Understand properties of multiplication and the relationship between multiplication and division.
 
-* **3.OA.5**: Apply properties of operations as strategies to multiply and divide. Examples: If 6 × 4 = 24 is known, then 4 × 6 = 24 is also known (commutative property of multiplication). 3 × 5 × 2 can be found by 3 × 5 = 15, then 15 × 2 = 30, or by 5 × 2 = 10, then 3 × 10 = 30 (associative property of multiplication). Knowing that 8 × 5 = 40 and 8 × 2 = 16, one can find 8 × 7 as 8 × (5 + 2) = (8 × 5) + (8 × 2) = 40 + 16 = 56 (distributive property).
-* **3.OA.6**: Understand division as an unknown-factor problem. For example, find 32 ÷ 8 by finding the number that makes 32 when multiplied by 8.
+- **3.OA.5**: Apply properties of operations as strategies to multiply and divide. Examples: If 6 × 4 = 24 is known, then 4 × 6 = 24 is also known (commutative property of multiplication). 3 × 5 × 2 can be found by 3 × 5 = 15, then 15 × 2 = 30, or by 5 × 2 = 10, then 3 × 10 = 30 (associative property of multiplication). Knowing that 8 × 5 = 40 and 8 × 2 = 16, one can find 8 × 7 as 8 × (5 + 2) = (8 × 5) + (8 × 2) = 40 + 16 = 56 (distributive property).
+- **3.OA.6**: Understand division as an unknown-factor problem. For example, find 32 ÷ 8 by finding the number that makes 32 when multiplied by 8.
 
 #### 3.OA.C — Multiply and divide within 100.
 
-* **3.OA.7**: Fluently multiply and divide within 100, using strategies such as the relationship between multiplication and division (e.g., knowing that 8 × 5 = 40, one knows 40 ÷ 5 = 8) or properties of operations. By the end of 3, know from memory all products of two one-digit numbers.
+- **3.OA.7**: Fluently multiply and divide within 100, using strategies such as the relationship between multiplication and division (e.g., knowing that 8 × 5 = 40, one knows 40 ÷ 5 = 8) or properties of operations. By the end of 3, know from memory all products of two one-digit numbers.
 
 #### 3.OA.D — Solve problems involving the four operations, and identify and explain patterns in arithmetic.
 
-* **3.OA.8**: Solve two-step word problems using the four operations. Represent these problems using equations with a letter standing for the unknown quantity. Assess the reasonableness of answers using mental computation and estimation strategies including rounding.
-* **3.OA.9**: Identify arithmetic patterns (including patterns in the addition table or multiplication table), and explain them using properties of operations. For example, observe that 4 times a number is always even, and explain why 4 times a number can be decomposed into two equal addends.
+- **3.OA.8**: Solve two-step word problems using the four operations. Represent these problems using equations with a letter standing for the unknown quantity. Assess the reasonableness of answers using mental computation and estimation strategies including rounding.
+- **3.OA.9**: Identify arithmetic patterns (including patterns in the addition table or multiplication table), and explain them using properties of operations. For example, observe that 4 times a number is always even, and explain why 4 times a number can be decomposed into two equal addends.
 
 ## Domains Covered
 
-* Geometry (3.G)
-* Measurement and Data (3.MD)
-* Number and Operations in Base Ten (3.NBT)
-* Number and Operations—Fractions (3.NF)
-* Operations and Algebraic Thinking (3.OA)
-
+- Geometry (3.G)
+- Measurement and Data (3.MD)
+- Number and Operations in Base Ten (3.NBT)
+- Number and Operations—Fractions (3.NF)
+- Operations and Algebraic Thinking (3.OA)
 
 # Grade 4
 
@@ -9146,30 +9184,30 @@ Grade 4 mathematics deepens understanding of multi-digit operations, factors and
 
 **4.G — Geometry**
 
-* [4.G.A — Draw and identify lines and angles, and classify shapes by properties of their lines and angles](#4-g-a)
+- [4.G.A — Draw and identify lines and angles, and classify shapes by properties of their lines and angles](#4-g-a)
 
 **4.MD — Measurement and Data**
 
-* [4.MD.A — Solve problems involving measurement and conversion of measurements from a larger unit to a smaller unit](#4-md-a)
-* [4.MD.B — Represent and interpret data](#4-md-b)
-* [4.MD.C — Geometric measurement: understand concepts of angle and measure angles](#4-md-c)
+- [4.MD.A — Solve problems involving measurement and conversion of measurements from a larger unit to a smaller unit](#4-md-a)
+- [4.MD.B — Represent and interpret data](#4-md-b)
+- [4.MD.C — Geometric measurement: understand concepts of angle and measure angles](#4-md-c)
 
 **4.NBT — Number and Operations in Base Ten**
 
-* [4.NBT.A — Generalize place value understanding for multi-digit whole numbers](#4-nbt-a)
-* [4.NBT.B — Use place value understanding and properties of operations to perform multi-digit arithmetic](#4-nbt-b)
+- [4.NBT.A — Generalize place value understanding for multi-digit whole numbers](#4-nbt-a)
+- [4.NBT.B — Use place value understanding and properties of operations to perform multi-digit arithmetic](#4-nbt-b)
 
 **4.NF — Number and Operations—Fractions**
 
-* [4.NF.A — Extend understanding of fraction equivalence and ordering](#4-nf-a)
-* [4.NF.B — Build fractions from unit fractions by applying and extending previous understandings of operations on whole numbers](#4-nf-b)
-* [4.NF.C — Understand decimal notation for fractions, and compare decimal fractions](#4-nf-c)
+- [4.NF.A — Extend understanding of fraction equivalence and ordering](#4-nf-a)
+- [4.NF.B — Build fractions from unit fractions by applying and extending previous understandings of operations on whole numbers](#4-nf-b)
+- [4.NF.C — Understand decimal notation for fractions, and compare decimal fractions](#4-nf-c)
 
 **4.OA — Operations and Algebraic Thinking**
 
-* [4.OA.A — Use the four operations with whole numbers to solve problems](#4-oa-a)
-* [4.OA.B — Gain familiarity with factors and multiples](#4-oa-b)
-* [4.OA.C — Generate and analyze patterns](#4-oa-c)
+- [4.OA.A — Use the four operations with whole numbers to solve problems](#4-oa-a)
+- [4.OA.B — Gain familiarity with factors and multiples](#4-oa-b)
+- [4.OA.C — Generate and analyze patterns](#4-oa-c)
 
 ## Learning Standards
 
@@ -9177,93 +9215,92 @@ Grade 4 mathematics deepens understanding of multi-digit operations, factors and
 
 #### 4.G.A — Draw and identify lines and angles, and classify shapes by properties of their lines and angles.
 
-* **4.G.1**: Draw points, lines, line segments, rays, angles (right, acute, obtuse), and perpendicular and parallel lines. Identify these in two-dimensional figures.
-* **4.G.2**: Classify two-dimensional figures based on the presence or absence of parallel or perpendicular lines, or the presence or absence of angles of a specified size. Recognize right triangles as a category, and identify right triangles.
-* **4.G.3**: Recognize a line of symmetry for a two-dimensional figure as a line across the figure such that the figure can be folded along the line into matching parts. Identify line-symmetric figures and draw lines of symmetry.
+- **4.G.1**: Draw points, lines, line segments, rays, angles (right, acute, obtuse), and perpendicular and parallel lines. Identify these in two-dimensional figures.
+- **4.G.2**: Classify two-dimensional figures based on the presence or absence of parallel or perpendicular lines, or the presence or absence of angles of a specified size. Recognize right triangles as a category, and identify right triangles.
+- **4.G.3**: Recognize a line of symmetry for a two-dimensional figure as a line across the figure such that the figure can be folded along the line into matching parts. Identify line-symmetric figures and draw lines of symmetry.
 
 ### 4.MD — Measurement and Data
 
 #### 4.MD.A — Solve problems involving measurement and conversion of measurements from a larger unit to a smaller unit.
 
-* **4.MD.1**: Know relative sizes of measurement units within one system of units including km, m, cm; kg, g; lb, oz.; l, ml; hr, min, sec. Within a single system of measurement, express measurements in a larger unit in terms of a smaller unit. Record measurement equivalents in a two‑column table. For example, know that 1 ft is 12 times as long as 1 in. Express the length of a 4 ft snake as 48 in. Generate a conversion table for feet and inches listing the number pairs (1, 12), (2, 24), (3, 36), ...
-* **4.MD.2**: Use the four operations to solve word problems involving distances, intervals of time, liquid volumes, masses of objects, and money, including problems involving simple fractions or decimals, and problems that require expressing measurements given in a larger unit in terms of a smaller unit. Represent measurement quantities using diagrams such as number line diagrams that feature a measurement scale.
-* **4.MD.3**: Apply the area and perimeter formulas for rectangles in real world and mathematical problems. For example, find the width of a rectangular room given the area of the flooring and the length, by viewing the area formula as a multiplication equation with an unknown factor.
+- **4.MD.1**: Know relative sizes of measurement units within one system of units including km, m, cm; kg, g; lb, oz.; l, ml; hr, min, sec. Within a single system of measurement, express measurements in a larger unit in terms of a smaller unit. Record measurement equivalents in a two‑column table. For example, know that 1 ft is 12 times as long as 1 in. Express the length of a 4 ft snake as 48 in. Generate a conversion table for feet and inches listing the number pairs (1, 12), (2, 24), (3, 36), ...
+- **4.MD.2**: Use the four operations to solve word problems involving distances, intervals of time, liquid volumes, masses of objects, and money, including problems involving simple fractions or decimals, and problems that require expressing measurements given in a larger unit in terms of a smaller unit. Represent measurement quantities using diagrams such as number line diagrams that feature a measurement scale.
+- **4.MD.3**: Apply the area and perimeter formulas for rectangles in real world and mathematical problems. For example, find the width of a rectangular room given the area of the flooring and the length, by viewing the area formula as a multiplication equation with an unknown factor.
 
 #### 4.MD.B — Represent and interpret data.
 
-* **4.MD.4**: Make a line plot to display a data set of measurements in fractions of a unit (1/2, 1/4, 1/8). Solve problems involving addition and subtraction of fractions by using information presented in line plots. For example, from a line plot find and interpret the difference in length between the longest and shortest specimens in an insect collection.
+- **4.MD.4**: Make a line plot to display a data set of measurements in fractions of a unit (1/2, 1/4, 1/8). Solve problems involving addition and subtraction of fractions by using information presented in line plots. For example, from a line plot find and interpret the difference in length between the longest and shortest specimens in an insect collection.
 
 #### 4.MD.C — Geometric measurement: understand concepts of angle and measure angles.
 
-* **4.MD.5**: Recognize angles as geometric shapes that are formed wherever two rays share a common endpoint, and understand concepts of angle measurement:
-  * a) An angle is measured with reference to a circle with its center at the common endpoint of the rays, by considering the fraction of the circular arc between the points where the two rays intersect the circle. An angle that turns through 1/360 of a circle is called a “one‑degree angle,” and can be used to measure angles.
-  * b) An angle that turns through n one‑degree angles is said to have an angle measure of n degrees.
-* **4.MD.6**: Measure angles in whole-number degrees using a protractor. Sketch angles of specified measure.
-* **4.MD.7**: Recognize angle measure as additive. When an angle is decomposed into non-overlapping parts, the angle measure of the whole is the sum of the angle measures of the parts. Solve addition and subtraction problems to find unknown angles on a diagram in real world and mathematical problems, e.g., by using an equation with a symbol for the unknown angle measure.
+- **4.MD.5**: Recognize angles as geometric shapes that are formed wherever two rays share a common endpoint, and understand concepts of angle measurement:
+  - a) An angle is measured with reference to a circle with its center at the common endpoint of the rays, by considering the fraction of the circular arc between the points where the two rays intersect the circle. An angle that turns through 1/360 of a circle is called a “one‑degree angle,” and can be used to measure angles.
+  - b) An angle that turns through n one‑degree angles is said to have an angle measure of n degrees.
+- **4.MD.6**: Measure angles in whole-number degrees using a protractor. Sketch angles of specified measure.
+- **4.MD.7**: Recognize angle measure as additive. When an angle is decomposed into non-overlapping parts, the angle measure of the whole is the sum of the angle measures of the parts. Solve addition and subtraction problems to find unknown angles on a diagram in real world and mathematical problems, e.g., by using an equation with a symbol for the unknown angle measure.
 
 ### 4.NBT — Number and Operations in Base Ten
 
 #### 4.NBT.A — Generalize place value understanding for multi-digit whole numbers.
 
-* **4.NBT.1**: Recognize that in a multi-digit whole number, a digit in one place represents ten times what it represents in the place to its right. For example, recognize that 700 ÷ 70 = 10 by applying concepts of place value and division.
-* **4.NBT.2**: Read and write multi-digit whole numbers using base-ten numerals, number names, and expanded form. Compare two multi-digit numbers based on meanings of the digits in each place, using >, =, and \< symbols to record the results of comparisons.
-* **4.NBT.3**: Use place value understanding to round multi-digit whole numbers to any place.
+- **4.NBT.1**: Recognize that in a multi-digit whole number, a digit in one place represents ten times what it represents in the place to its right. For example, recognize that 700 ÷ 70 = 10 by applying concepts of place value and division.
+- **4.NBT.2**: Read and write multi-digit whole numbers using base-ten numerals, number names, and expanded form. Compare two multi-digit numbers based on meanings of the digits in each place, using >, =, and \< symbols to record the results of comparisons.
+- **4.NBT.3**: Use place value understanding to round multi-digit whole numbers to any place.
 
 #### 4.NBT.B — Use place value understanding and properties of operations to perform multi-digit arithmetic.
 
-* **4.NBT.4**: Fluently add and subtract multi-digit whole numbers using the standard algorithm.
-* **4.NBT.5**: Multiply a whole number of up to four digits by a one-digit whole number, and multiply two two-digit numbers, using strategies based on place value and the properties of operations. Illustrate and explain the calculation by using equations, rectangular arrays, and/or area models.
-* **4.NBT.6**: Find whole-number quotients and remainders with up to four-digit dividends and one-digit divisors, using strategies based on place value, the properties of operations, and/or the relationship between multiplication and division. Illustrate and explain the calculation by using equations, rectangular arrays, and/or area models.
+- **4.NBT.4**: Fluently add and subtract multi-digit whole numbers using the standard algorithm.
+- **4.NBT.5**: Multiply a whole number of up to four digits by a one-digit whole number, and multiply two two-digit numbers, using strategies based on place value and the properties of operations. Illustrate and explain the calculation by using equations, rectangular arrays, and/or area models.
+- **4.NBT.6**: Find whole-number quotients and remainders with up to four-digit dividends and one-digit divisors, using strategies based on place value, the properties of operations, and/or the relationship between multiplication and division. Illustrate and explain the calculation by using equations, rectangular arrays, and/or area models.
 
 ### 4.NF — Number and Operations—Fractions
 
 #### 4.NF.A — Extend understanding of fraction equivalence and ordering.
 
-* **4.NF.1**: Explain why a fraction a/b is equivalent to a fraction (n × a)/(n × b) by using visual fraction models, with attention to how the number and size of the parts differ even though the two fractions themselves are the same size. Use this principle to recognize and generate equivalent fractions.
-* **4.NF.2**: Compare two fractions with different numerators and different denominators, e.g., by creating common denominators or numerators, or by comparing to a benchmark fraction such as 1/2. Recognize that comparisons are valid only when the two fractions refer to the same whole. Record the results of comparisons with symbols `>`, `=`, or `<`, and justify the conclusions, e.g., by using a visual fraction model.
+- **4.NF.1**: Explain why a fraction a/b is equivalent to a fraction (n × a)/(n × b) by using visual fraction models, with attention to how the number and size of the parts differ even though the two fractions themselves are the same size. Use this principle to recognize and generate equivalent fractions.
+- **4.NF.2**: Compare two fractions with different numerators and different denominators, e.g., by creating common denominators or numerators, or by comparing to a benchmark fraction such as 1/2. Recognize that comparisons are valid only when the two fractions refer to the same whole. Record the results of comparisons with symbols `>`, `=`, or `<`, and justify the conclusions, e.g., by using a visual fraction model.
 
 #### 4.NF.B — Build fractions from unit fractions by applying and extending previous understandings of operations on whole numbers.
 
-* **4.NF.3**: Understand a fraction a/b with a > 1 as a sum of fractions 1/b.
-  * a) Understand addition and subtraction of fractions as joining and separating parts referring to the same whole.
-  * b) Decompose a fraction into a sum of fractions with the same denominator in more than one way, recording each decomposition by an equation. Justify decompositions, e.g., by using a visual fraction model. Examples: 3/8 = 1/8 + 1/8 + 1/8 ; 3/8 = 1/8 + 2/8 ; 2 1/8 = 1 + 1 + 1/8 = 8/8 + 8/8 + 1/8.
-  * c) Add and subtract mixed numbers with like denominators, e.g., by replacing each mixed number with an equivalent fraction, and/or by using properties of operations and the relationship between addition and subtraction.
-  * d) Solve word problems involving addition and subtraction of fractions referring to the same whole and having like denominators, e.g., by using visual fraction models and equations to represent the problem.
-* **4.NF.4**: Apply and extend previous understandings of multiplication to multiply a fraction by a whole number.
-  * a) Understand a fraction a/b as a multiple of 1/b. For example, use a visual fraction model to represent 5/4 as the product 5 × (1/4), recording the conclusion by the equation 5/4 = 5 × (1/4).
-  * b) Understand a multiple of a/b as a multiple of 1/b, and use this understanding to multiply a fraction by a whole number. For example, use a visual fraction model to express 3 × (2/5) as 6 × (1/5), recognizing this product as 6/5. (In general, n × (a/b) = (n × a)/b.)
-  * c) Solve word problems involving multiplication of a fraction by a whole number, e.g., by using visual fraction models and equations to represent the problem. For example, if each person at a party will eat 3/8 of a pound of roast beef, and there will be 5 people at the party, how many pounds of roast beef will be needed? Between what two whole numbers does your answer lie?
+- **4.NF.3**: Understand a fraction a/b with a > 1 as a sum of fractions 1/b.
+  - a) Understand addition and subtraction of fractions as joining and separating parts referring to the same whole.
+  - b) Decompose a fraction into a sum of fractions with the same denominator in more than one way, recording each decomposition by an equation. Justify decompositions, e.g., by using a visual fraction model. Examples: 3/8 = 1/8 + 1/8 + 1/8 ; 3/8 = 1/8 + 2/8 ; 2 1/8 = 1 + 1 + 1/8 = 8/8 + 8/8 + 1/8.
+  - c) Add and subtract mixed numbers with like denominators, e.g., by replacing each mixed number with an equivalent fraction, and/or by using properties of operations and the relationship between addition and subtraction.
+  - d) Solve word problems involving addition and subtraction of fractions referring to the same whole and having like denominators, e.g., by using visual fraction models and equations to represent the problem.
+- **4.NF.4**: Apply and extend previous understandings of multiplication to multiply a fraction by a whole number.
+  - a) Understand a fraction a/b as a multiple of 1/b. For example, use a visual fraction model to represent 5/4 as the product 5 × (1/4), recording the conclusion by the equation 5/4 = 5 × (1/4).
+  - b) Understand a multiple of a/b as a multiple of 1/b, and use this understanding to multiply a fraction by a whole number. For example, use a visual fraction model to express 3 × (2/5) as 6 × (1/5), recognizing this product as 6/5. (In general, n × (a/b) = (n × a)/b.)
+  - c) Solve word problems involving multiplication of a fraction by a whole number, e.g., by using visual fraction models and equations to represent the problem. For example, if each person at a party will eat 3/8 of a pound of roast beef, and there will be 5 people at the party, how many pounds of roast beef will be needed? Between what two whole numbers does your answer lie?
 
 #### 4.NF.C — Understand decimal notation for fractions, and compare decimal fractions.
 
-* **4.NF.5**: Express a fraction with denominator 10 as an equivalent fraction with denominator 100, and use this technique to add two fractions with respective denominators 10 and 100. For example, express 3/10 as 30/100, and add 3/10 + 4/100 = 34/100.
-* **4.NF.6**: Use decimal notation for fractions with denominators 10 or 100. For example, rewrite 0.62 as 62/100; describe a length as 0.62 meters; locate 0.62 on a number line diagram.
-* **4.NF.7**: Compare two decimals to hundredths by reasoning about their size. Recognize that comparisons are valid only when the two decimals refer to the same whole. Record the results of comparisons with the symbols `>`, `=`, or `<`, and justify the conclusions, e.g., by using a visual model.
+- **4.NF.5**: Express a fraction with denominator 10 as an equivalent fraction with denominator 100, and use this technique to add two fractions with respective denominators 10 and 100. For example, express 3/10 as 30/100, and add 3/10 + 4/100 = 34/100.
+- **4.NF.6**: Use decimal notation for fractions with denominators 10 or 100. For example, rewrite 0.62 as 62/100; describe a length as 0.62 meters; locate 0.62 on a number line diagram.
+- **4.NF.7**: Compare two decimals to hundredths by reasoning about their size. Recognize that comparisons are valid only when the two decimals refer to the same whole. Record the results of comparisons with the symbols `>`, `=`, or `<`, and justify the conclusions, e.g., by using a visual model.
 
 ### 4.OA — Operations and Algebraic Thinking
 
 #### 4.OA.A — Use the four operations with whole numbers to solve problems.
 
-* **4.OA.1**: Interpret a multiplication equation as a comparison, e.g., interpret 35 = 5 × 7 as a statement that 35 is 5 times as many as 7 and 7 times as many as 5. Represent verbal statements of multiplicative comparisons as multiplication equations.
-* **4.OA.2**: Multiply or divide to solve word problems involving multiplicative comparison, e.g., by using drawings and equations with a symbol for the unknown number to represent the problem, distinguishing multiplicative comparison from additive comparison.
-* **4.OA.3**: Solve multistep word problems posed with whole numbers and having whole-number answers using the four operations, including problems in which remainders must be interpreted. Represent these problems using equations with a letter standing for the unknown quantity. Assess the reasonableness of answers using mental computation and estimation strategies including rounding.
+- **4.OA.1**: Interpret a multiplication equation as a comparison, e.g., interpret 35 = 5 × 7 as a statement that 35 is 5 times as many as 7 and 7 times as many as 5. Represent verbal statements of multiplicative comparisons as multiplication equations.
+- **4.OA.2**: Multiply or divide to solve word problems involving multiplicative comparison, e.g., by using drawings and equations with a symbol for the unknown number to represent the problem, distinguishing multiplicative comparison from additive comparison.
+- **4.OA.3**: Solve multistep word problems posed with whole numbers and having whole-number answers using the four operations, including problems in which remainders must be interpreted. Represent these problems using equations with a letter standing for the unknown quantity. Assess the reasonableness of answers using mental computation and estimation strategies including rounding.
 
 #### 4.OA.B — Gain familiarity with factors and multiples.
 
-* **4.OA.4**: Find all factor pairs for a whole number in the range 1–100. Recognize that a whole number is a multiple of each of its factors. Determine whether a given whole number in the range 1–100 is a multiple of a given one-digit number. Determine whether a given whole number in the range 1–100 is prime or composite.
+- **4.OA.4**: Find all factor pairs for a whole number in the range 1–100. Recognize that a whole number is a multiple of each of its factors. Determine whether a given whole number in the range 1–100 is a multiple of a given one-digit number. Determine whether a given whole number in the range 1–100 is prime or composite.
 
 #### 4.OA.C — Generate and analyze patterns.
 
-* **4.OA.5**: Generate a number or shape pattern that follows a given rule. Identify apparent features of the pattern that were not explicit in the rule itself. For example, given the rule “Add 3” and the starting number 1, generate terms in the resulting sequence and observe that the terms appear to alternate between odd and even numbers. Explain informally why the numbers will continue to alternate in this way.
+- **4.OA.5**: Generate a number or shape pattern that follows a given rule. Identify apparent features of the pattern that were not explicit in the rule itself. For example, given the rule “Add 3” and the starting number 1, generate terms in the resulting sequence and observe that the terms appear to alternate between odd and even numbers. Explain informally why the numbers will continue to alternate in this way.
 
 ## Domains Covered
 
-* Geometry (4.G)
-* Measurement and Data (4.MD)
-* Number and Operations in Base Ten (4.NBT)
-* Number and Operations—Fractions (4.NF)
-* Operations and Algebraic Thinking (4.OA)
-
+- Geometry (4.G)
+- Measurement and Data (4.MD)
+- Number and Operations in Base Ten (4.NBT)
+- Number and Operations—Fractions (4.NF)
+- Operations and Algebraic Thinking (4.OA)
 
 # Grade 5
 
@@ -9275,29 +9312,29 @@ Grade 5 mathematics emphasizes fluency with decimal operations, full fraction op
 
 **5.G — Geometry**
 
-* [5.G.A — Graph points on the coordinate plane to solve real-world and mathematical problems](#5-g-a)
-* [5.G.B — Classify two-dimensional figures into categories based on their properties](#5-g-b)
+- [5.G.A — Graph points on the coordinate plane to solve real-world and mathematical problems](#5-g-a)
+- [5.G.B — Classify two-dimensional figures into categories based on their properties](#5-g-b)
 
 **5.MD — Measurement and Data**
 
-* [5.MD.A — Convert like measurement units within a given measurement system](#5-md-a)
-* [5.MD.B — Represent and interpret data](#5-md-b)
-* [5.MD.C — Geometric measurement: understand concepts of volume and relate volume to multiplication and to addition](#5-md-c)
+- [5.MD.A — Convert like measurement units within a given measurement system](#5-md-a)
+- [5.MD.B — Represent and interpret data](#5-md-b)
+- [5.MD.C — Geometric measurement: understand concepts of volume and relate volume to multiplication and to addition](#5-md-c)
 
 **5.NBT — Number and Operations in Base Ten**
 
-* [5.NBT.A — Understand the place value system](#5-nbt-a)
-* [5.NBT.B — Perform operations with multi-digit whole numbers and with decimals to hundredths](#5-nbt-b)
+- [5.NBT.A — Understand the place value system](#5-nbt-a)
+- [5.NBT.B — Perform operations with multi-digit whole numbers and with decimals to hundredths](#5-nbt-b)
 
 **5.NF — Number and Operations—Fractions**
 
-* [5.NF.A — Use equivalent fractions as a strategy to add and subtract fractions](#5-nf-a)
-* [5.NF.B — Apply and extend previous understandings of multiplication and division to multiply and divide fractions](#5-nf-b)
+- [5.NF.A — Use equivalent fractions as a strategy to add and subtract fractions](#5-nf-a)
+- [5.NF.B — Apply and extend previous understandings of multiplication and division to multiply and divide fractions](#5-nf-b)
 
 **5.OA — Operations and Algebraic Thinking**
 
-* [5.OA.A — Write and interpret numerical expressions](#5-oa-a)
-* [5.OA.B — Analyze patterns and relationships](#5-oa-b)
+- [5.OA.A — Write and interpret numerical expressions](#5-oa-a)
+- [5.OA.B — Analyze patterns and relationships](#5-oa-b)
 
 ## Learning Standards
 
@@ -9305,91 +9342,90 @@ Grade 5 mathematics emphasizes fluency with decimal operations, full fraction op
 
 #### 5.G.A — Graph points on the coordinate plane to solve real-world and mathematical problems.
 
-* **5.G.1**: Use a pair of perpendicular number lines, called axes, to define a coordinate system, with the intersection of the lines (the origin) arranged to coincide with the 0 on each line and a given point in the plane located by using an ordered pair of numbers, called its coordinates. Understand that the first number indicates how far to travel from the origin in the direction of one axis, and the second number indicates how far to travel in the direction of the second axis, with the convention that the names of the two axes and the coordinates correspond (e.g., x‑axis and x‑coordinate, y‑axis and y‑coordinate).
-* **5.G.2**: Represent real world and mathematical problems by graphing points in the first quadrant of the coordinate plane, and interpret coordinate values of points in the context of the situation.
+- **5.G.1**: Use a pair of perpendicular number lines, called axes, to define a coordinate system, with the intersection of the lines (the origin) arranged to coincide with the 0 on each line and a given point in the plane located by using an ordered pair of numbers, called its coordinates. Understand that the first number indicates how far to travel from the origin in the direction of one axis, and the second number indicates how far to travel in the direction of the second axis, with the convention that the names of the two axes and the coordinates correspond (e.g., x‑axis and x‑coordinate, y‑axis and y‑coordinate).
+- **5.G.2**: Represent real world and mathematical problems by graphing points in the first quadrant of the coordinate plane, and interpret coordinate values of points in the context of the situation.
 
 #### 5.G.B — Classify two-dimensional figures into categories based on their properties.
 
-* **5.G.3**: Understand that attributes belonging to a category of two—dimensional figures also belong to all subcategories of that category. For example, all rectangles have four right angles and squares are rectangles, so all squares have four right angles.
-* **5.G.4**: Classify two—dimensional figures in a hierarchy based on properties.
+- **5.G.3**: Understand that attributes belonging to a category of two—dimensional figures also belong to all subcategories of that category. For example, all rectangles have four right angles and squares are rectangles, so all squares have four right angles.
+- **5.G.4**: Classify two—dimensional figures in a hierarchy based on properties.
 
 ### 5.MD — Measurement and Data
 
 #### 5.MD.A — Convert like measurement units within a given measurement system.
 
-* **5.MD.1**: Convert among different-sized standard measurement units within a given measurement system (e.g., convert 5 cm to 0.05 m), and use these conversions in solving multi-step, real world problems.
+- **5.MD.1**: Convert among different-sized standard measurement units within a given measurement system (e.g., convert 5 cm to 0.05 m), and use these conversions in solving multi-step, real world problems.
 
 #### 5.MD.B — Represent and interpret data.
 
-* **5.MD.2**: Make a line plot to display a data set of measurements in fractions of a unit (1/2, 1/4, 1/8). Use operations on fractions for this grade to solve problems involving information presented in line plots. For example, given different measurements of liquid in identical beakers, find the amount of liquid each beaker would contain if the total amount in all the beakers were redistributed equally.
+- **5.MD.2**: Make a line plot to display a data set of measurements in fractions of a unit (1/2, 1/4, 1/8). Use operations on fractions for this grade to solve problems involving information presented in line plots. For example, given different measurements of liquid in identical beakers, find the amount of liquid each beaker would contain if the total amount in all the beakers were redistributed equally.
 
 #### 5.MD.C — Geometric measurement: understand concepts of volume and relate volume to multiplication and to addition.
 
-* **5.MD.3**: Recognize volume as an attribute of solid figures and understand concepts of volume measurement.
+- **5.MD.3**: Recognize volume as an attribute of solid figures and understand concepts of volume measurement.
   -a) A cube with side length 1 unit, called a “unit cube,” is said to have “one cubic unit” of volume, and can be used to measure volume.
-  * b) A solid figure which can be packed without gaps or overlaps using n unit cubes is said to have a volume of n cubic units.
-* **5.MD.4**: Measure volumes by counting unit cubes, using cubic cm, cubic in, cubic ft, and improvised units.
-* **5.MD.5**: Relate volume to the operations of multiplication and addition and solve real world and mathematical problems involving volume.
-  * a) Find the volume of a right rectangular prism with whole-number side lengths by packing it with unit cubes, and show that the volume is the same as would be found by multiplying the edge lengths, equivalently by multiplying the height by the area of the base. Represent threefold whole-number products as volumes, e.g., to represent the associative property of multiplication.
-  * b) Apply the formulas V = l × w × h and V = b × h for rectangular prisms to find volumes of right rectangular prisms with whole-number edge lengths in the context of solving real world and mathematical problems.
-  * c) Recognize volume as additive. Find volumes of solid figures composed of two non‑overlapping right rectangular prisms by adding the volumes of the non‑overlapping parts, applying this technique to solve real world problems.
+  - b) A solid figure which can be packed without gaps or overlaps using n unit cubes is said to have a volume of n cubic units.
+- **5.MD.4**: Measure volumes by counting unit cubes, using cubic cm, cubic in, cubic ft, and improvised units.
+- **5.MD.5**: Relate volume to the operations of multiplication and addition and solve real world and mathematical problems involving volume.
+  - a) Find the volume of a right rectangular prism with whole-number side lengths by packing it with unit cubes, and show that the volume is the same as would be found by multiplying the edge lengths, equivalently by multiplying the height by the area of the base. Represent threefold whole-number products as volumes, e.g., to represent the associative property of multiplication.
+  - b) Apply the formulas V = l × w × h and V = b × h for rectangular prisms to find volumes of right rectangular prisms with whole-number edge lengths in the context of solving real world and mathematical problems.
+  - c) Recognize volume as additive. Find volumes of solid figures composed of two non‑overlapping right rectangular prisms by adding the volumes of the non‑overlapping parts, applying this technique to solve real world problems.
 
 ### 5.NBT — Number and Operations in Base Ten
 
 #### 5.NBT.A — Understand the place value system.
 
-* **5.NBT.1**: Recognize that in a multi-digit number, a digit in one place represents 10 times as much as it represents in the place to its right and 1/10 of what it represents in the place to its left.
-* **5.NBT.2**: Explain patterns in the number of zeros of the product when multiplying a number by powers of 10, and explain patterns in the placement of the decimal point when a decimal is multiplied or divided by a power of 10. Use whole-number exponents to denote powers of 10.
-* **5.NBT.3**: Read, write, and compare decimals to thousandths.
-  * a) Read and write decimals to thousandths using base-ten numerals, number names, and expanded form, e.g., 347.392 = 3 × 100 + 4 × 10 + 7 × 1 + 3 × (1/10) + 9 × (1/100) + 2 × (1/1000).
-  * b) Compare two decimals to thousandths based on meanings of the digits in each place, using >, =, and \< symbols to record the results of comparisons.
-* **5.NBT.4**: Use place value understanding to round decimals to any place.
+- **5.NBT.1**: Recognize that in a multi-digit number, a digit in one place represents 10 times as much as it represents in the place to its right and 1/10 of what it represents in the place to its left.
+- **5.NBT.2**: Explain patterns in the number of zeros of the product when multiplying a number by powers of 10, and explain patterns in the placement of the decimal point when a decimal is multiplied or divided by a power of 10. Use whole-number exponents to denote powers of 10.
+- **5.NBT.3**: Read, write, and compare decimals to thousandths.
+  - a) Read and write decimals to thousandths using base-ten numerals, number names, and expanded form, e.g., 347.392 = 3 × 100 + 4 × 10 + 7 × 1 + 3 × (1/10) + 9 × (1/100) + 2 × (1/1000).
+  - b) Compare two decimals to thousandths based on meanings of the digits in each place, using >, =, and \< symbols to record the results of comparisons.
+- **5.NBT.4**: Use place value understanding to round decimals to any place.
 
 #### 5.NBT.B — Perform operations with multi-digit whole numbers and with decimals to hundredths.
 
-* **5.NBT.5**: Fluently multiply multi-digit whole numbers using the standard algorithm.
-* **5.NBT.6**: Find whole-number quotients of whole numbers with up to four-digit dividends and two-digit divisors, using strategies based on place value, the properties of operations, and/or the relationship between multiplication and division. Illustrate and explain the calculation by using equations, rectangular arrays, and/or area models.
-* **5.NBT.7**: Add, subtract, multiply, and divide decimals to hundredths, using concrete models or drawings and strategies based on place value, properties of operations, and/or the relationship between addition and subtraction; relate the strategy to a written method and explain the reasoning used.
+- **5.NBT.5**: Fluently multiply multi-digit whole numbers using the standard algorithm.
+- **5.NBT.6**: Find whole-number quotients of whole numbers with up to four-digit dividends and two-digit divisors, using strategies based on place value, the properties of operations, and/or the relationship between multiplication and division. Illustrate and explain the calculation by using equations, rectangular arrays, and/or area models.
+- **5.NBT.7**: Add, subtract, multiply, and divide decimals to hundredths, using concrete models or drawings and strategies based on place value, properties of operations, and/or the relationship between addition and subtraction; relate the strategy to a written method and explain the reasoning used.
 
 ### 5.NF — Number and Operations—Fractions
 
 #### 5.NF.A — Use equivalent fractions as a strategy to add and subtract fractions.
 
-* **5.NF.1**: Add and subtract fractions with unlike denominators (including mixed numbers) by replacing given fractions with equivalent fractions in such a way as to produce an equivalent sum or difference of fractions with like denominators. For example, 2/3 + 5/4 = 8/12 + 15/12 = 23/12. (In general, a/b + c/d = (ad + bc)/bd.)
-* **5.NF.2**: Solve word problems involving addition and subtraction of fractions referring to the same whole, including cases of unlike denominators, e.g., by using visual fraction models or equations to represent the problem. Use benchmark fractions and number sense of fractions to estimate mentally and assess the reasonableness of answers. For example, recognize an incorrect result 2/5 + 1/2 = 3/7, by observing that 3/7 \< 1/2.
+- **5.NF.1**: Add and subtract fractions with unlike denominators (including mixed numbers) by replacing given fractions with equivalent fractions in such a way as to produce an equivalent sum or difference of fractions with like denominators. For example, 2/3 + 5/4 = 8/12 + 15/12 = 23/12. (In general, a/b + c/d = (ad + bc)/bd.)
+- **5.NF.2**: Solve word problems involving addition and subtraction of fractions referring to the same whole, including cases of unlike denominators, e.g., by using visual fraction models or equations to represent the problem. Use benchmark fractions and number sense of fractions to estimate mentally and assess the reasonableness of answers. For example, recognize an incorrect result 2/5 + 1/2 = 3/7, by observing that 3/7 \< 1/2.
 
 #### 5.NF.B — Apply and extend previous understandings of multiplication and division to multiply and divide fractions.
 
-* **5.NF.3**: Interpret a fraction as division of the numerator by the denominator (a/b = a ÷ b). Solve word problems involving division of whole numbers leading to answers in the form of fractions or mixed numbers, e.g., by using visual fraction models or equations to represent the problem. For example, interpret 3/4 as the result of dividing 3 by 4, noting that 3/4 multiplied by 4 equals 3, and that when 3 wholes are shared equally among 4 people each person has a share of size 3/4. If 9 people want to share a 50‑pound sack of rice equally by weight, how many pounds of rice should each person get? Between what two whole numbers does your answer lie?
-* **5.NF.4**: Apply and extend previous understandings of multiplication to multiply a fraction or whole number by a fraction. a) Interpret the product (a/b) × q as a parts of a partition of q into b equal parts; equivalently, as the result of a sequence of operations a × q ÷ b. For example, use a visual fraction model to show (2/3) × 4 = 8/3, and create a story context for this equation. Do the same with (2/3) × (4/5) = 8/15. (In general, (a/b) × (c/d) = ac/bd.) b) Find the area of a rectangle with fractional side lengths by tiling it with unit squares of the appropriate unit fraction side lengths, and show that the area is the same as would be found by multiplying the side lengths. Multiply fractional side lengths to find areas of rectangles, and represent fraction products as rectangular areas.
-* **5.NF.5**: Interpret multiplication as scaling (resizing), by:
-  * a) Comparing the size of a product to the size of one factor on the basis of the size of the other factor, without performing the indicated multiplication.
-  * b) Explaining why multiplying a given number by a fraction greater than 1 results in a product greater than the given number (recognizing multiplication by whole numbers greater than 1 as a familiar case); explaining why multiplying a given number by a fraction less than 1 results in a product smaller than the given number; and relating the principle of fraction equivalence a/b = (n×a)/(n×b) to the effect of multiplying a/b by 1.
-* **5.NF.6**: Solve real world problems involving multiplication of fractions and mixed numbers, e.g., by using visual fraction models or equations to represent the problem.
-* **5.NF.7**: Apply and extend previous understandings of division to divide unit fractions by whole numbers and whole numbers by unit fractions.
-  * a) Interpret division of a unit fraction by a non-zero whole number, and compute such quotients. For example, create a story context for (1/3) ÷ 4, and use a visual fraction model to show the quotient. Use the relationship between multiplication and division to explain that (1/3) ÷ 4 = 1/12 because (1/12) × 4 = 1/3.
-  * b) Interpret division of a whole number by a unit fraction, and compute such quotients. For example, create a story context for 4 ÷ (1/5), and use a visual fraction model to show the quotient. Use the relationship between multiplication and division to explain that 4 ÷ (1/5) = 20 because 20 × (1/5) = 4.
-  * c) Solve real world problems involving division of unit fractions by non-zero whole numbers and division of whole numbers by unit fractions, e.g., by using visual fraction models and equations to represent the problem. For example, how much chocolate will each person get if 3 people share 1/2 lb of chocolate equally? How many 1/3‑cup servings are in 2 cups of raisins?
+- **5.NF.3**: Interpret a fraction as division of the numerator by the denominator (a/b = a ÷ b). Solve word problems involving division of whole numbers leading to answers in the form of fractions or mixed numbers, e.g., by using visual fraction models or equations to represent the problem. For example, interpret 3/4 as the result of dividing 3 by 4, noting that 3/4 multiplied by 4 equals 3, and that when 3 wholes are shared equally among 4 people each person has a share of size 3/4. If 9 people want to share a 50‑pound sack of rice equally by weight, how many pounds of rice should each person get? Between what two whole numbers does your answer lie?
+- **5.NF.4**: Apply and extend previous understandings of multiplication to multiply a fraction or whole number by a fraction. a) Interpret the product (a/b) × q as a parts of a partition of q into b equal parts; equivalently, as the result of a sequence of operations a × q ÷ b. For example, use a visual fraction model to show (2/3) × 4 = 8/3, and create a story context for this equation. Do the same with (2/3) × (4/5) = 8/15. (In general, (a/b) × (c/d) = ac/bd.) b) Find the area of a rectangle with fractional side lengths by tiling it with unit squares of the appropriate unit fraction side lengths, and show that the area is the same as would be found by multiplying the side lengths. Multiply fractional side lengths to find areas of rectangles, and represent fraction products as rectangular areas.
+- **5.NF.5**: Interpret multiplication as scaling (resizing), by:
+  - a) Comparing the size of a product to the size of one factor on the basis of the size of the other factor, without performing the indicated multiplication.
+  - b) Explaining why multiplying a given number by a fraction greater than 1 results in a product greater than the given number (recognizing multiplication by whole numbers greater than 1 as a familiar case); explaining why multiplying a given number by a fraction less than 1 results in a product smaller than the given number; and relating the principle of fraction equivalence a/b = (n×a)/(n×b) to the effect of multiplying a/b by 1.
+- **5.NF.6**: Solve real world problems involving multiplication of fractions and mixed numbers, e.g., by using visual fraction models or equations to represent the problem.
+- **5.NF.7**: Apply and extend previous understandings of division to divide unit fractions by whole numbers and whole numbers by unit fractions.
+  - a) Interpret division of a unit fraction by a non-zero whole number, and compute such quotients. For example, create a story context for (1/3) ÷ 4, and use a visual fraction model to show the quotient. Use the relationship between multiplication and division to explain that (1/3) ÷ 4 = 1/12 because (1/12) × 4 = 1/3.
+  - b) Interpret division of a whole number by a unit fraction, and compute such quotients. For example, create a story context for 4 ÷ (1/5), and use a visual fraction model to show the quotient. Use the relationship between multiplication and division to explain that 4 ÷ (1/5) = 20 because 20 × (1/5) = 4.
+  - c) Solve real world problems involving division of unit fractions by non-zero whole numbers and division of whole numbers by unit fractions, e.g., by using visual fraction models and equations to represent the problem. For example, how much chocolate will each person get if 3 people share 1/2 lb of chocolate equally? How many 1/3‑cup servings are in 2 cups of raisins?
 
 ### 5.OA — Operations and Algebraic Thinking
 
 #### 5.OA.A — Write and interpret numerical expressions.
 
-* **5.OA.1**: Use parentheses, brackets, or braces in numerical expressions, and evaluate expressions with these symbols.
-* **5.OA.2**: Write simple expressions that record calculations with numbers, and interpret numerical expressions without evaluating them. For example, express the calculation “add 8 and 7, then multiply by 2” as 2 × (8 + 7). Recognize that 3 × (18932 + 921) is three times as large as 18932 + 921, without having to calculate the indicated sum or product.
+- **5.OA.1**: Use parentheses, brackets, or braces in numerical expressions, and evaluate expressions with these symbols.
+- **5.OA.2**: Write simple expressions that record calculations with numbers, and interpret numerical expressions without evaluating them. For example, express the calculation “add 8 and 7, then multiply by 2” as 2 × (8 + 7). Recognize that 3 × (18932 + 921) is three times as large as 18932 + 921, without having to calculate the indicated sum or product.
 
 #### 5.OA.B — Analyze patterns and relationships.
 
-* **5.OA.3**: Generate two numerical patterns using two given rules. Identify apparent relationships between corresponding terms. Form ordered pairs consisting of corresponding terms from the two patterns, and graph the ordered pairs on a coordinate plane. For example, given the rule “Add 3” and the starting number 0, and given the rule “Add 6” and the starting number 0, generate terms in the resulting sequences, and observe that the terms in one sequence are twice the corresponding terms in the other sequence. Explain informally why this is so.
+- **5.OA.3**: Generate two numerical patterns using two given rules. Identify apparent relationships between corresponding terms. Form ordered pairs consisting of corresponding terms from the two patterns, and graph the ordered pairs on a coordinate plane. For example, given the rule “Add 3” and the starting number 0, and given the rule “Add 6” and the starting number 0, generate terms in the resulting sequences, and observe that the terms in one sequence are twice the corresponding terms in the other sequence. Explain informally why this is so.
 
 ## Domains Covered
 
-* Geometry (5.G)
-* Measurement and Data (5.MD)
-* Number and Operations in Base Ten (5.NBT)
-* Number and Operations—Fractions (5.NF)
-* Operations and Algebraic Thinking (5.OA)
-
+- Geometry (5.G)
+- Measurement and Data (5.MD)
+- Number and Operations in Base Ten (5.NBT)
+- Number and Operations—Fractions (5.NF)
+- Operations and Algebraic Thinking (5.OA)
 
 # Grade 6
 
@@ -9401,28 +9437,28 @@ Grade 6 mathematics introduces ratios, proportional relationships, division of f
 
 **6.EE — Expressions and Equations**
 
-* [6.EE.A — Apply and extend previous understandings of arithmetic to algebraic expressions](#6-ee-a)
-* [6.EE.B — Reason about and solve one-variable equations and inequalities](#6-ee-b)
-* [6.EE.C — Represent and analyze quantitative relationships between dependent and independent variables](#6-ee-c)
+- [6.EE.A — Apply and extend previous understandings of arithmetic to algebraic expressions](#6-ee-a)
+- [6.EE.B — Reason about and solve one-variable equations and inequalities](#6-ee-b)
+- [6.EE.C — Represent and analyze quantitative relationships between dependent and independent variables](#6-ee-c)
 
 **6.G — Geometry**
 
-* [6.G.A — Solve real‑world and mathematical problems involving area, surface area, and volume](#6-g-a)
+- [6.G.A — Solve real‑world and mathematical problems involving area, surface area, and volume](#6-g-a)
 
 **6.NS — The Number System**
 
-* [6.NS.A — Apply and extend previous understandings of multiplication and division to divide fractions by fractions](#6-ns-a)
-* [6.NS.B — Compute fluently with multi-digit numbers and find common factors and multiples](#6-ns-b)
-* [6.NS.C — Apply and extend previous understandings of numbers to the system of rational numbers](#6-ns-c)
+- [6.NS.A — Apply and extend previous understandings of multiplication and division to divide fractions by fractions](#6-ns-a)
+- [6.NS.B — Compute fluently with multi-digit numbers and find common factors and multiples](#6-ns-b)
+- [6.NS.C — Apply and extend previous understandings of numbers to the system of rational numbers](#6-ns-c)
 
 **6.RP — Ratios and Proportional Relationships**
 
-* [6.RP.A — Understand ratio concepts and use ratio reasoning to solve problems](#6-rp-a)
+- [6.RP.A — Understand ratio concepts and use ratio reasoning to solve problems](#6-rp-a)
 
 **6.SP — Statistics and Probability**
 
-* [6.SP.A — Develop understanding of statistical variability](#6-sp-a)
-* [6.SP.B — Summarize and describe distributions](#6-sp-b)
+- [6.SP.A — Develop understanding of statistical variability](#6-sp-a)
+- [6.SP.B — Summarize and describe distributions](#6-sp-b)
 
 ## Learning Standards
 
@@ -9430,93 +9466,92 @@ Grade 6 mathematics introduces ratios, proportional relationships, division of f
 
 #### 6.EE.A — Apply and extend previous understandings of arithmetic to algebraic expressions.
 
-* **6.EE.1**: Write and evaluate numerical expressions involving whole-number exponents.
-* **6.EE.2**: Write, read, and evaluate expressions in which letters stand for numbers.
-  * a) Write expressions that record operations with numbers and with letters standing for numbers. For example, express the calculation “Subtract y from 5” as 5 – y.
-  * b) Identify parts of an expression using mathematical terms (sum, term, product, factor, quotient, coefficient); view one or more parts of an expression as a single entity. For example, describe the expression 2(8 + 7) as a product of two factors; view (8 + 7) as both a single entity and a sum of two terms.
-  * c) Evaluate expressions at specific values of their variables. Include expressions that arise from formulas used in real‑world problems. Perform arithmetic operations, including those involving whole‑number exponents, in the conventional order when there are no parentheses to specify a particular order (Order of Operations). For example, use the formulas V = s^3 and A = 6s^2 to find the volume and surface area of a cube with sides of length s = 1/2.
-* **6.EE.3**: Apply the properties of operations to generate equivalent expressions. For example, apply the distributive property to the expression 3(2 + x) to produce the equivalent expression 6 + 3x; apply the distributive property to the expression 24x + 18y to produce the equivalent expression 6(4x + 3y); apply properties of operations to y + y + y to produce the equivalent expression 3y.
-* **6.EE.4**: Identify when two expressions are equivalent (i.e., when the two expressions name the same number regardless of which value is substituted into them). For example, the expressions y + y + y and 3y are equivalent because they name the same number regardless of which number y stands for.
+- **6.EE.1**: Write and evaluate numerical expressions involving whole-number exponents.
+- **6.EE.2**: Write, read, and evaluate expressions in which letters stand for numbers.
+  - a) Write expressions that record operations with numbers and with letters standing for numbers. For example, express the calculation “Subtract y from 5” as 5 – y.
+  - b) Identify parts of an expression using mathematical terms (sum, term, product, factor, quotient, coefficient); view one or more parts of an expression as a single entity. For example, describe the expression 2(8 + 7) as a product of two factors; view (8 + 7) as both a single entity and a sum of two terms.
+  - c) Evaluate expressions at specific values of their variables. Include expressions that arise from formulas used in real‑world problems. Perform arithmetic operations, including those involving whole‑number exponents, in the conventional order when there are no parentheses to specify a particular order (Order of Operations). For example, use the formulas V = s^3 and A = 6s^2 to find the volume and surface area of a cube with sides of length s = 1/2.
+- **6.EE.3**: Apply the properties of operations to generate equivalent expressions. For example, apply the distributive property to the expression 3(2 + x) to produce the equivalent expression 6 + 3x; apply the distributive property to the expression 24x + 18y to produce the equivalent expression 6(4x + 3y); apply properties of operations to y + y + y to produce the equivalent expression 3y.
+- **6.EE.4**: Identify when two expressions are equivalent (i.e., when the two expressions name the same number regardless of which value is substituted into them). For example, the expressions y + y + y and 3y are equivalent because they name the same number regardless of which number y stands for.
 
 #### 6.EE.B — Reason about and solve one-variable equations and inequalities.
 
-* **6.EE.5**: Understand solving an equation or inequality as a process of answering a question: which values from a specified set, if any, make the equation or inequality true? Use substitution to determine whether a given number in a specified set makes an equation or inequality true.
-* **6.EE.6**: Use variables to represent numbers and write expressions when solving a real‑world or mathematical problem; understand that a variable can represent an unknown number, or, depending on the purpose at hand, any number in a specified set.
-* **6.EE.7**: Solve real‑world and mathematical problems by writing and solving equations of the form x + p = q and px = q for cases in which p, q and x are all nonnegative rational numbers.
-* **6.EE.8**: Write an inequality of the form x > c or x \< c to represent a constraint or condition in a real‑world or mathematical problem. Recognize that inequalities of the form x > c or x \< c have infinitely many solutions
+- **6.EE.5**: Understand solving an equation or inequality as a process of answering a question: which values from a specified set, if any, make the equation or inequality true? Use substitution to determine whether a given number in a specified set makes an equation or inequality true.
+- **6.EE.6**: Use variables to represent numbers and write expressions when solving a real‑world or mathematical problem; understand that a variable can represent an unknown number, or, depending on the purpose at hand, any number in a specified set.
+- **6.EE.7**: Solve real‑world and mathematical problems by writing and solving equations of the form x + p = q and px = q for cases in which p, q and x are all nonnegative rational numbers.
+- **6.EE.8**: Write an inequality of the form x > c or x \< c to represent a constraint or condition in a real‑world or mathematical problem. Recognize that inequalities of the form x > c or x \< c have infinitely many solutions
 
 #### 6.EE.C — Represent and analyze quantitative relationships between dependent and independent variables.
 
-* **6.EE.9**: Use variables to represent two quantities in a real‑world problem that change in relationship to one another; write an equation to express one quantity, thought of as the dependent variable, in terms of the other quantity, thought of as the independent variable. Analyze the relationship between the dependent and independent variables using graphs and tables, and relate these to the equation. For example, in a problem involving motion at constant speed, list and graph ordered pairs of distances and times, and write the equation d = 65t to represent the relationship between distance and time.
+- **6.EE.9**: Use variables to represent two quantities in a real‑world problem that change in relationship to one another; write an equation to express one quantity, thought of as the dependent variable, in terms of the other quantity, thought of as the independent variable. Analyze the relationship between the dependent and independent variables using graphs and tables, and relate these to the equation. For example, in a problem involving motion at constant speed, list and graph ordered pairs of distances and times, and write the equation d = 65t to represent the relationship between distance and time.
 
 ### 6.G — Geometry
 
 #### 6.G.A — Solve real‑world and mathematical problems involving area, surface area, and volume.
 
-* **6.G.1**: Find the area of right triangles, other triangles, special quadrilaterals, and polygons by composing into rectangles or decomposing into triangles and other shapes; apply these techniques in the context of solving real‑world and mathematical problems.
-* **6.G.2**: Find the volume of a right rectangular prism with fractional edge lengths by packing it with unit cubes of the appropriate unit fraction edge lengths, and show that the volume is the same as would be found by multiplying the edge lengths of the prism. Apply the formulas V = lwh and V = bh to find volumes of right rectangular prisms with fractional edge lengths in the context of solving real‑world and mathematical problems.
-* **6.G.3**: Draw polygons in the coordinate plane given coordinates for the vertices
-* **6.G.4**: Represent three‑dimensional figures using nets made up of rectangles and triangles, and use the nets to find the surface area of these figures. Apply these techniques in the context of solving real‑world and mathematical problems.
+- **6.G.1**: Find the area of right triangles, other triangles, special quadrilaterals, and polygons by composing into rectangles or decomposing into triangles and other shapes; apply these techniques in the context of solving real‑world and mathematical problems.
+- **6.G.2**: Find the volume of a right rectangular prism with fractional edge lengths by packing it with unit cubes of the appropriate unit fraction edge lengths, and show that the volume is the same as would be found by multiplying the edge lengths of the prism. Apply the formulas V = lwh and V = bh to find volumes of right rectangular prisms with fractional edge lengths in the context of solving real‑world and mathematical problems.
+- **6.G.3**: Draw polygons in the coordinate plane given coordinates for the vertices
+- **6.G.4**: Represent three‑dimensional figures using nets made up of rectangles and triangles, and use the nets to find the surface area of these figures. Apply these techniques in the context of solving real‑world and mathematical problems.
 
 ### 6.NS — The Number System
 
 #### 6.NS.A — Apply and extend previous understandings of multiplication and division to divide fractions by fractions.
 
-* **6.NS.1**: Interpret and compute quotients of fractions, and solve word problems involving division of fractions by fractions, e.g., by using visual fraction models and equations to represent the problem. For example, create a story context for (2/3) ÷ (3/4) and use a visual fraction model to show the quotient; use the relationship between multiplication and division to explain that (2/3) ÷ (3/4) = 8/9 because 3/4 of 8/9 is 2/3. (In general, (a/b) ÷ (c/d) = ad/bc.) How much chocolate will each person get if 3 people share 1/2 lb of chocolate equally? How many 3/4‑cup servings are in 2/3 of a cup of yogurt? How wide is a rectangular strip of land with length 3/4 mi and area 1/2 square mi?
+- **6.NS.1**: Interpret and compute quotients of fractions, and solve word problems involving division of fractions by fractions, e.g., by using visual fraction models and equations to represent the problem. For example, create a story context for (2/3) ÷ (3/4) and use a visual fraction model to show the quotient; use the relationship between multiplication and division to explain that (2/3) ÷ (3/4) = 8/9 because 3/4 of 8/9 is 2/3. (In general, (a/b) ÷ (c/d) = ad/bc.) How much chocolate will each person get if 3 people share 1/2 lb of chocolate equally? How many 3/4‑cup servings are in 2/3 of a cup of yogurt? How wide is a rectangular strip of land with length 3/4 mi and area 1/2 square mi?
 
 #### 6.NS.B — Compute fluently with multi-digit numbers and find common factors and multiples.
 
-* **6.NS.2**: Fluently divide multi-digit numbers using the standard algorithm.
-* **6.NS.3**: Fluently add, subtract, multiply, and divide multi-digit decimals using the standard algorithm for each operation.
-* **6.NS.4**: Find the greatest common factor of two whole numbers less than or equal to 100 and the least common multiple of two whole numbers less than or equal to 12. Use the distributive property to express a sum of two whole numbers 1–100 with a common factor as a multiple of a sum of two whole numbers with no common factor. For example, express 36 + 8 as 4(9 + 2).
+- **6.NS.2**: Fluently divide multi-digit numbers using the standard algorithm.
+- **6.NS.3**: Fluently add, subtract, multiply, and divide multi-digit decimals using the standard algorithm for each operation.
+- **6.NS.4**: Find the greatest common factor of two whole numbers less than or equal to 100 and the least common multiple of two whole numbers less than or equal to 12. Use the distributive property to express a sum of two whole numbers 1–100 with a common factor as a multiple of a sum of two whole numbers with no common factor. For example, express 36 + 8 as 4(9 + 2).
 
 #### 6.NS.C — Apply and extend previous understandings of numbers to the system of rational numbers.
 
-* **6.NS.5**: Understand that positive and negative numbers are used together to describe quantities having opposite directions or values (e.g., temperature above/below zero, elevation above/below sea level, credits/debits, positive/negative electric charge); use positive and negative numbers to represent quantities in real‑world contexts, explaining the meaning of 0 in each situation.
-* **6.NS.6**: Understand a rational number as a point on the number line. Extend number line diagrams and coordinate axes familiar from previous grades to represent points on the line and in the plane with negative number coordinates.
-  * a) Recognize opposite signs of numbers as indicating locations on opposite sides of 0 on the number line; recognize that the opposite of the opposite of a number is the number itself, e.g., –(–3) = 3, and that 0 is its own opposite.
-  * b) Understand signs of numbers in ordered pairs as indicating locations in quadrants of the coordinate plane; recognize that when two ordered pairs differ only by signs, the locations of the points are related by reflections across one or both axes.
-  * c) Find and position integers and other rational numbers on a horizontal or vertical number line diagram; find and position pairs of integers and other rational numbers on a coordinate plane.
-* **6.NS.7**: Understand ordering and absolute value of rational numbers.
-  * a) Interpret statements of inequality as statements about the relative position of two numbers on a number line diagram. For example, interpret –3 > –7 as a statement that –3 is located to the right of –7 on a number line oriented from left to right.
-  * b) Write, interpret, and explain statements of order for rational numbers in real‑world contexts. For example, write –3 °C > –7 °C to express the fact that –3 °C is warmer than –7 °C.
-  * c) Understand the absolute value of a rational number as its distance from 0 on the number line; interpret absolute value as magnitude for a positive or negative quantity in a real‑world situation. For example, for an account balance of –30 dollars, write |–30| = 30 to describe the size of the debt in dollars.
-  * d) Distinguish comparisons of absolute value from statements about order. For example, recognize that an account balance less than –30 dollars represents a debt greater than 30 dollars.
-* **6.NS.8**: Solve real‑world and mathematical problems by graphing points in all four quadrants of the coordinate plane. Include use of coordinates and absolute value to find distances between points with the same first coordinate or the same second coordinate.
+- **6.NS.5**: Understand that positive and negative numbers are used together to describe quantities having opposite directions or values (e.g., temperature above/below zero, elevation above/below sea level, credits/debits, positive/negative electric charge); use positive and negative numbers to represent quantities in real‑world contexts, explaining the meaning of 0 in each situation.
+- **6.NS.6**: Understand a rational number as a point on the number line. Extend number line diagrams and coordinate axes familiar from previous grades to represent points on the line and in the plane with negative number coordinates.
+  - a) Recognize opposite signs of numbers as indicating locations on opposite sides of 0 on the number line; recognize that the opposite of the opposite of a number is the number itself, e.g., –(–3) = 3, and that 0 is its own opposite.
+  - b) Understand signs of numbers in ordered pairs as indicating locations in quadrants of the coordinate plane; recognize that when two ordered pairs differ only by signs, the locations of the points are related by reflections across one or both axes.
+  - c) Find and position integers and other rational numbers on a horizontal or vertical number line diagram; find and position pairs of integers and other rational numbers on a coordinate plane.
+- **6.NS.7**: Understand ordering and absolute value of rational numbers.
+  - a) Interpret statements of inequality as statements about the relative position of two numbers on a number line diagram. For example, interpret –3 > –7 as a statement that –3 is located to the right of –7 on a number line oriented from left to right.
+  - b) Write, interpret, and explain statements of order for rational numbers in real‑world contexts. For example, write –3 °C > –7 °C to express the fact that –3 °C is warmer than –7 °C.
+  - c) Understand the absolute value of a rational number as its distance from 0 on the number line; interpret absolute value as magnitude for a positive or negative quantity in a real‑world situation. For example, for an account balance of –30 dollars, write |–30| = 30 to describe the size of the debt in dollars.
+  - d) Distinguish comparisons of absolute value from statements about order. For example, recognize that an account balance less than –30 dollars represents a debt greater than 30 dollars.
+- **6.NS.8**: Solve real‑world and mathematical problems by graphing points in all four quadrants of the coordinate plane. Include use of coordinates and absolute value to find distances between points with the same first coordinate or the same second coordinate.
 
 ### 6.RP — Ratios and Proportional Relationships
 
 #### 6.RP.A — Understand ratio concepts and use ratio reasoning to solve problems.
 
-* **6.RP.1**: Understand the concept of a ratio and use ratio language to describe a ratio relationship between two quantities. For example, “The ratio of wings to beaks in the bird house at the zoo was 2:1, because for every 2 wings there was 1 beak.” “For every vote candidate A received, candidate C received nearly three votes.”
-* **6.RP.2**: Understand the concept of a unit rate a/b associated with a ratio a:b with b ≠ 0, and use rate language in the context of a ratio relationship. For example, “This recipe has a ratio of 3 cups of flour to 4 cups of sugar, so there is 3/4 cup of flour for each cup of sugar.” “We paid $75 for 15 hamburgers, which is a rate of $5 per hamburger.” (Expectations for unit rates in this grade are limited to non‑complex fractions.)
-* **6.RP.3**: Use ratio and rate reasoning to solve real‑world and mathematical problems, e.g., by reasoning about tables of equivalent ratios, tape diagrams, double number line diagrams, or equations. a) Make tables of equivalent ratios relating quantities with whole-number measurements, find missing values in the tables, and plot the pairs of values on the coordinate plane. Use tables to compare ratios. b) Solve unit rate problems including those involving unit pricing and constant speed. For example, if it took 7 hours to mow 4 lawns, then at that rate, how many lawns could be mowed in 35 hours? At what rate were lawns being mowed? c) Find a percent of a quantity as a rate per 100 (e.g., 30% of a quantity means 30/100 times the quantity); solve problems involving finding the whole, given a part and the percent. d) Use ratio reasoning to convert measurement units; manipulate and transform units appropriately when multiplying or dividing quantities.
+- **6.RP.1**: Understand the concept of a ratio and use ratio language to describe a ratio relationship between two quantities. For example, “The ratio of wings to beaks in the bird house at the zoo was 2:1, because for every 2 wings there was 1 beak.” “For every vote candidate A received, candidate C received nearly three votes.”
+- **6.RP.2**: Understand the concept of a unit rate a/b associated with a ratio a:b with b ≠ 0, and use rate language in the context of a ratio relationship. For example, “This recipe has a ratio of 3 cups of flour to 4 cups of sugar, so there is 3/4 cup of flour for each cup of sugar.” “We paid $75 for 15 hamburgers, which is a rate of $5 per hamburger.” (Expectations for unit rates in this grade are limited to non‑complex fractions.)
+- **6.RP.3**: Use ratio and rate reasoning to solve real‑world and mathematical problems, e.g., by reasoning about tables of equivalent ratios, tape diagrams, double number line diagrams, or equations. a) Make tables of equivalent ratios relating quantities with whole-number measurements, find missing values in the tables, and plot the pairs of values on the coordinate plane. Use tables to compare ratios. b) Solve unit rate problems including those involving unit pricing and constant speed. For example, if it took 7 hours to mow 4 lawns, then at that rate, how many lawns could be mowed in 35 hours? At what rate were lawns being mowed? c) Find a percent of a quantity as a rate per 100 (e.g., 30% of a quantity means 30/100 times the quantity); solve problems involving finding the whole, given a part and the percent. d) Use ratio reasoning to convert measurement units; manipulate and transform units appropriately when multiplying or dividing quantities.
 
 ### 6.SP — Statistics and Probability
 
 #### 6.SP.A — Develop understanding of statistical variability.
 
-* **6.SP.1**: Recognize a statistical question as one that anticipates variability in the data related to the question and accounts for it in the answers. For example, “How old am I?” is not a statistical question, but “How old are the students in my school?” is a statistical question because one anticipates variability in students’ ages.
-* **6.SP.2**: Understand that a set of data collected to answer a statistical question has a distribution which can be described by its center, spread, and overall shape.
-* **6.SP.3**: Recognize that a measure of center for a numerical data set summarizes all of its values with a single number, while a measure of variation describes how its values vary with a single number.
+- **6.SP.1**: Recognize a statistical question as one that anticipates variability in the data related to the question and accounts for it in the answers. For example, “How old am I?” is not a statistical question, but “How old are the students in my school?” is a statistical question because one anticipates variability in students’ ages.
+- **6.SP.2**: Understand that a set of data collected to answer a statistical question has a distribution which can be described by its center, spread, and overall shape.
+- **6.SP.3**: Recognize that a measure of center for a numerical data set summarizes all of its values with a single number, while a measure of variation describes how its values vary with a single number.
 
 #### 6.SP.B — Summarize and describe distributions.
 
-* **6.SP.4**: Display numerical data in plots on a number line, including dot plots, histograms, and box plots.
-* **6.SP.5**: Summarize numerical data sets in relation to their context, such as by:
-  * a) Reporting the number of observations.
-  * b) Describing the nature of the attribute under investigation, including how it was measured and its units of measurement.
-  * c) Giving quantitative measures of center (median and/or mean) and variability (interquartile range and/or mean absolute deviation), as well as describing any overall pattern and any striking deviations from the overall pattern with reference to the context in which the data were gathered.
-  * d) Relating the choice of measures of center and variability to the shape of the data distribution and the context in which the data were gathered.
+- **6.SP.4**: Display numerical data in plots on a number line, including dot plots, histograms, and box plots.
+- **6.SP.5**: Summarize numerical data sets in relation to their context, such as by:
+  - a) Reporting the number of observations.
+  - b) Describing the nature of the attribute under investigation, including how it was measured and its units of measurement.
+  - c) Giving quantitative measures of center (median and/or mean) and variability (interquartile range and/or mean absolute deviation), as well as describing any overall pattern and any striking deviations from the overall pattern with reference to the context in which the data were gathered.
+  - d) Relating the choice of measures of center and variability to the shape of the data distribution and the context in which the data were gathered.
 
 ## Domains Covered
 
-* Expressions and Equations (6.EE)
-* Geometry (6.G)
-* Ratios and Proportional Relationships (6.RP)
-* Statistics and Probability (6.SP)
-* The Number System (6.NS)
-
+- Expressions and Equations (6.EE)
+- Geometry (6.G)
+- Ratios and Proportional Relationships (6.RP)
+- Statistics and Probability (6.SP)
+- The Number System (6.NS)
 
 # K-6 Math
 
@@ -9579,9 +9614,9 @@ The documented K-6 math curriculum is organized chronologically by grade level, 
 
 ## Curriculum Sources
 
-* **Common Core State Standards (CCSS-M)** - Primary standards framework
-* **1EdTech CASE Network** - Competency and standards exchange
-* **Additional sources** - Supplementary curriculum frameworks and research
+- **Common Core State Standards (CCSS-M)** - Primary standards framework
+- **1EdTech CASE Network** - Competency and standards exchange
+- **Additional sources** - Supplementary curriculum frameworks and research
 
 ## Documentation Purpose
 
@@ -9591,7 +9626,6 @@ This documentation serves multiple purposes:
 2. **Platform Development** - Guide feature development for math-specific tools and data structures
 3. **Curriculum Alignment** - Ensure Playcademy content aligns with educational standards
 4. **Stakeholder Communication** - Provide clear curriculum overview for educators, partners, and the team
-
 
 # Kindergarten
 
@@ -9603,27 +9637,27 @@ Kindergarten mathematics focuses on foundational concepts of counting, number re
 
 **K.CC — Counting and Cardinality**
 
-* [K.CC.A — Know number names and the count sequence](#k-cc-a)
-* [K.CC.B — Count to tell the number of objects](#k-cc-b)
-* [K.CC.C — Compare numbers](#k-cc-c)
+- [K.CC.A — Know number names and the count sequence](#k-cc-a)
+- [K.CC.B — Count to tell the number of objects](#k-cc-b)
+- [K.CC.C — Compare numbers](#k-cc-c)
 
 **K.G — Geometry**
 
-* [K.G.A — Identify and describe shapes (squares, circles, triangles, rectangles, hexagons, cubes, cones, cylinders, and spheres)](#k-g-a)
-* [K.G.B — Analyze, compare, create, and compose shapes](#k-g-b)
+- [K.G.A — Identify and describe shapes (squares, circles, triangles, rectangles, hexagons, cubes, cones, cylinders, and spheres)](#k-g-a)
+- [K.G.B — Analyze, compare, create, and compose shapes](#k-g-b)
 
 **K.MD — Measurement and Data**
 
-* [K.MD.A — Describe and compare measurable attributes](#k-md-a)
-* [K.MD.B — Classify objects and count the number of objects in categories](#k-md-b)
+- [K.MD.A — Describe and compare measurable attributes](#k-md-a)
+- [K.MD.B — Classify objects and count the number of objects in categories](#k-md-b)
 
 **K.NBT — Number and Operations in Base Ten**
 
-* [K.NBT.A — Work with numbers 11–19 to gain foundations for place value](#k-nbt-a)
+- [K.NBT.A — Work with numbers 11–19 to gain foundations for place value](#k-nbt-a)
 
 **K.OA — Operations and Algebraic Thinking**
 
-* [K.OA.A — Understand addition as putting together and adding to, and understand subtraction as taking apart and taking from](#k-oa-a)
+- [K.OA.A — Understand addition as putting together and adding to, and understand subtraction as taking apart and taking from](#k-oa-a)
 
 ## Learning Standards
 
@@ -9631,73 +9665,72 @@ Kindergarten mathematics focuses on foundational concepts of counting, number re
 
 #### K.CC.A — Know number names and the count sequence.
 
-* **K.CC.1**: Count to 100 by ones and by tens.
-* **K.CC.2**: Count forward beginning from a given number within the known sequence (instead of having to begin at 1).
-* **K.CC.3**: Write numbers from 0 to 20. Represent a number of objects with a written numeral 0–20 (with 0 representing a count of no objects).
+- **K.CC.1**: Count to 100 by ones and by tens.
+- **K.CC.2**: Count forward beginning from a given number within the known sequence (instead of having to begin at 1).
+- **K.CC.3**: Write numbers from 0 to 20. Represent a number of objects with a written numeral 0–20 (with 0 representing a count of no objects).
 
 #### K.CC.B — Count to tell the number of objects.
 
-* **K.CC.4**: Understand the relationship between numbers and quantities; connect counting to cardinality.
-  * a) When counting objects, say the number names in the standard order, pairing each object with one and only one number name and each number name with one and only one object.
-  * b) Understand that the last number name said tells the number of objects counted. The number of objects is the same regardless of their arrangement or the order in which they were counted.
-  * c) Understand that each successive number name refers to a quantity that is one larger.
+- **K.CC.4**: Understand the relationship between numbers and quantities; connect counting to cardinality.
+  - a) When counting objects, say the number names in the standard order, pairing each object with one and only one number name and each number name with one and only one object.
+  - b) Understand that the last number name said tells the number of objects counted. The number of objects is the same regardless of their arrangement or the order in which they were counted.
+  - c) Understand that each successive number name refers to a quantity that is one larger.
 
-- **K.CC.5**: Count to answer “how many?” questions about as many as 20 things arranged in a line, a rectangular array, or a circle, or as many as 10 things in a scattered configuration; given a number from 1–20, count out that many objects.
+* **K.CC.5**: Count to answer “how many?” questions about as many as 20 things arranged in a line, a rectangular array, or a circle, or as many as 10 things in a scattered configuration; given a number from 1–20, count out that many objects.
 
 #### K.CC.C — Compare numbers.
 
-* **K.CC.6**: Identify whether the number of objects in one group is greater than, less than, or equal to the number of objects in another group, e.g., by using matching and counting strategies. (Include groups with up to ten objects.)
-* **K.CC.7**: Compare two numbers between 1 and 10 presented as written numerals.
+- **K.CC.6**: Identify whether the number of objects in one group is greater than, less than, or equal to the number of objects in another group, e.g., by using matching and counting strategies. (Include groups with up to ten objects.)
+- **K.CC.7**: Compare two numbers between 1 and 10 presented as written numerals.
 
 ### K.G — Geometry
 
 #### K.G.A — Identify and describe shapes (squares, circles, triangles, rectangles, hexagons, cubes, cones, cylinders, and spheres).
 
-* **K.G.1**: Describe objects in the environment using names of shapes, and describe the relative positions of these objects using terms such as above, below, beside, in front of, behind, and next to.
-* **K.G.2**: Correctly name shapes regardless of their orientations or overall size.
-* **K.G.3**: Identify shapes as two-dimensional (lying in a plane, “flat”) or three-dimensional (“solid”).
+- **K.G.1**: Describe objects in the environment using names of shapes, and describe the relative positions of these objects using terms such as above, below, beside, in front of, behind, and next to.
+- **K.G.2**: Correctly name shapes regardless of their orientations or overall size.
+- **K.G.3**: Identify shapes as two-dimensional (lying in a plane, “flat”) or three-dimensional (“solid”).
 
 #### K.G.B — Analyze, compare, create, and compose shapes.
 
-* **K.G.4**: Analyze and compare two- and three-dimensional shapes, in different sizes and orientations, using informal language to describe their similarities, differences, parts (e.g., number of sides and vertices/“corners”) and other attributes (e.g., having sides of equal length).
-* **K.G.5**: Model shapes in the world by building shapes from components (e.g., sticks and clay balls) and drawing shapes.
-* **K.G.6**: Compose simple shapes to form larger shapes. For example, “Can you join these two triangles with full sides touching to make a rectangle?”
+- **K.G.4**: Analyze and compare two- and three-dimensional shapes, in different sizes and orientations, using informal language to describe their similarities, differences, parts (e.g., number of sides and vertices/“corners”) and other attributes (e.g., having sides of equal length).
+- **K.G.5**: Model shapes in the world by building shapes from components (e.g., sticks and clay balls) and drawing shapes.
+- **K.G.6**: Compose simple shapes to form larger shapes. For example, “Can you join these two triangles with full sides touching to make a rectangle?”
 
 ### K.MD — Measurement and Data
 
 #### K.MD.A — Describe and compare measurable attributes.
 
-* **K.MD.1**: Describe measurable attributes of objects, such as length or weight. Describe several measurable attributes of a single object.
-* **K.MD.2**: Directly compare two objects with a measurable attribute in common, to see which object has “more of”/“less of” the attribute, and describe the difference. For example, directly compare the heights of two children and describe one child as taller/shorter.
+- **K.MD.1**: Describe measurable attributes of objects, such as length or weight. Describe several measurable attributes of a single object.
+- **K.MD.2**: Directly compare two objects with a measurable attribute in common, to see which object has “more of”/“less of” the attribute, and describe the difference. For example, directly compare the heights of two children and describe one child as taller/shorter.
 
 #### K.MD.B — Classify objects and count the number of objects in categories.
 
-* **K.MD.3**: Classify objects into given categories
+- **K.MD.3**: Classify objects into given categories
 
 ### K.NBT — Number and Operations in Base Ten
 
 #### K.NBT.A — Work with numbers 11–19 to gain foundations for place value.
 
-* **K.NBT.1**: Compose and decompose numbers from 11 to 19 into ten ones and some further ones, e.g., by using objects or drawings, and record each composition or decomposition by a drawing or equation (e.g., 18 = 10 + 8); understand that these numbers are composed of ten ones and one, two, three, four, five, six, seven, eight, or nine ones.
+- **K.NBT.1**: Compose and decompose numbers from 11 to 19 into ten ones and some further ones, e.g., by using objects or drawings, and record each composition or decomposition by a drawing or equation (e.g., 18 = 10 + 8); understand that these numbers are composed of ten ones and one, two, three, four, five, six, seven, eight, or nine ones.
 
 ### K.OA — Operations and Algebraic Thinking
 
 #### K.OA.A — Understand addition as putting together and adding to, and understand subtraction as taking apart and taking from.
 
-* **K.OA.1**: Represent addition and subtraction with objects, fingers, mental images, drawings, sounds (e.g., claps), acting out situations, verbal explanations, expressions, or equations.
-* **K.OA.2**: Solve addition and subtraction word problems, and add and subtract within 10, e.g., by using objects or drawings to represent the problem.
-* **K.OA.3**: Decompose numbers less than or equal to 10 into pairs in more than one way, e.g., by using objects or drawings, and record each decomposition by a drawing or equation (e.g., 5 = 2 + 3 and 5 = 4 + 1).
-* **K.OA.4**: For any number from 1 to 9, find the number that makes 10 when added to the given number, e.g., by using objects or drawings, and record the answer with a drawing or equation.
-* **K.OA.5**: Fluently add and subtract within 5.
+- **K.OA.1**: Represent addition and subtraction with objects, fingers, mental images, drawings, sounds (e.g., claps), acting out situations, verbal explanations, expressions, or equations.
+- **K.OA.2**: Solve addition and subtraction word problems, and add and subtract within 10, e.g., by using objects or drawings to represent the problem.
+- **K.OA.3**: Decompose numbers less than or equal to 10 into pairs in more than one way, e.g., by using objects or drawings, and record each decomposition by a drawing or equation (e.g., 5 = 2 + 3 and 5 = 4 + 1).
+- **K.OA.4**: For any number from 1 to 9, find the number that makes 10 when added to the given number, e.g., by using objects or drawings, and record the answer with a drawing or equation.
+- **K.OA.5**: Fluently add and subtract within 5.
 
 ## Domains Covered
 
-* Counting and Cardinality (K.CC)
-* Geometry (K.G)
-* Measurement and Data (K.MD)
-* Number and Operations in Base Ten (K.NBT)
-* Operations and Algebraic Thinking (K.OA)
-
+- Counting and Cardinality (K.CC)
+- Geometry (K.G)
+- Measurement and Data (K.MD)
+- Number and Operations in Base Ten (K.NBT)
+- Operations and Algebraic Thinking (K.OA)
 
 # Standards Reference
 
@@ -9709,23 +9742,23 @@ This page provides a complete chronological reference of all K-6 Common Core Sta
 
 The table below shows all K-6 Common Core State Standards for Mathematics organized chronologically from Kindergarten through 6th grade. Each standard is listed with:
 
-* **Grade Level** - K through 6
-* **Domain Code** - Official CCSS domain identifier (e.g., K.CC, 3.NF)
-* **Domain Name** - Full domain name
-* **Cluster Code** - Cluster identifier (e.g., K.CC.A, 3.NF.A) *Note: cluster letters are a community convention, not official CCSS notation*
-* **Cluster Description** - Brief description of the cluster grouping
-* **Standard Code** - Individual standard identifier (e.g., K.CC.1, 3.NF.2)
-* **Standard Text** - Full text of the standard including subparts
-* **Coverage** - Current implementation status in Playcademy
-* **Available Tests** - MasteryTrack assessments that include this standard (see [Test Availability](/academics/k6-math/test-availability))
+- **Grade Level** - K through 6
+- **Domain Code** - Official CCSS domain identifier (e.g., K.CC, 3.NF)
+- **Domain Name** - Full domain name
+- **Cluster Code** - Cluster identifier (e.g., K.CC.A, 3.NF.A) _Note: cluster letters are a community convention, not official CCSS notation_
+- **Cluster Description** - Brief description of the cluster grouping
+- **Standard Code** - Individual standard identifier (e.g., K.CC.1, 3.NF.2)
+- **Standard Text** - Full text of the standard including subparts
+- **Coverage** - Current implementation status in Playcademy
+- **Available Tests** - MasteryTrack assessments that include this standard (see [Test Availability](/academics/k6-math/test-availability))
 
 For detailed information about each standard, including games, implementation notes, and learning objectives, see the individual grade-level sections.
 
 ## Complete CCSS Standards Table
 
 <CsvTable
-  src="/data/academics/ccss_math_k_to_6.csv"
-  columnConfig={{
+src="/data/academics/ccss_math_k_to_6.csv"
+columnConfig={{
       domain_name: { minWidth: '200px' },
       standard_text: { minWidth: '500px' },
       coverage: { minWidth: '110px' },
@@ -9737,13 +9770,12 @@ For detailed information about each standard, including games, implementation no
 
 All 170 K-6 CCSS Math standards are covered by standardized assessments available through MasteryTrack. See the [Test Availability](/academics/k6-math/test-availability) page for:
 
-* Complete test inventory by grade
-* Test-to-standard mappings
-* Assignment instructions via MasteryTrack API
-* Quality control status (QCed vs not QCed tests)
+- Complete test inventory by grade
+- Test-to-standard mappings
+- Assignment instructions via MasteryTrack API
+- Quality control status (QCed vs not QCed tests)
 
 **Note:** Comprehensive tests (Alpha Standardized Math, Alpha Math STAAR) cover all standards for their grade level. Unit tests (Athena) cover specific subsets.
-
 
 # Test Availability
 
@@ -9777,7 +9809,7 @@ Pre/post unit assessments targeting specific clusters within each grade (Grades 
 
 ### Comprehensive Tests
 
-| Test Name                         | timeback\_id                | Standards Covered  | Type   |
+| Test Name                         | timeback_id                 | Standards Covered  | Type   |
 | --------------------------------- | --------------------------- | ------------------ | ------ |
 | **Alpha Standardized Math G0.1**  | `_6807af0e30300b249b627989` | All 15 K standards | QCed ✓ |
 | **Alpha Standardized Math G0.3**  | `_683485b1b99f1230eeee81b9` | All 15 K standards | QCed ✓ |
@@ -9787,7 +9819,7 @@ Pre/post unit assessments targeting specific clusters within each grade (Grades 
 
 **Not QCed (use with caution):**
 
-* Alpha Standardized Math G0.2, G0.6, G0.7, G0.8, G0.9 (subject: Math-notqced)
+- Alpha Standardized Math G0.2, G0.6, G0.7, G0.8, G0.9 (subject: Math-notqced)
 
 ### Standards Covered
 
@@ -9796,13 +9828,13 @@ Pre/post unit assessments targeting specific clusters within each grade (Grades 
     Counting and Cardinality (K.CC)
   </summary>
 
-  * [K.CC.1](/academics/k6-math/kindergarten#k-cc-a) - Count to 100
-  * [K.CC.2](/academics/k6-math/kindergarten#k-cc-a) - Count forward from given number
-  * [K.CC.3](/academics/k6-math/kindergarten#k-cc-a) - Write numbers 0-20
-  * [K.CC.4](/academics/k6-math/kindergarten#k-cc-b) - Counting and cardinality
-  * [K.CC.5](/academics/k6-math/kindergarten#k-cc-b) - Count to answer "how many?"
-  * [K.CC.6](/academics/k6-math/kindergarten#k-cc-c) - Compare groups
-  * [K.CC.7](/academics/k6-math/kindergarten#k-cc-c) - Compare numbers 1-10
+- [K.CC.1](/academics/k6-math/kindergarten#k-cc-a) - Count to 100
+- [K.CC.2](/academics/k6-math/kindergarten#k-cc-a) - Count forward from given number
+- [K.CC.3](/academics/k6-math/kindergarten#k-cc-a) - Write numbers 0-20
+- [K.CC.4](/academics/k6-math/kindergarten#k-cc-b) - Counting and cardinality
+- [K.CC.5](/academics/k6-math/kindergarten#k-cc-b) - Count to answer "how many?"
+- [K.CC.6](/academics/k6-math/kindergarten#k-cc-c) - Compare groups
+- [K.CC.7](/academics/k6-math/kindergarten#k-cc-c) - Compare numbers 1-10
 </details>
 
 <details>
@@ -9810,11 +9842,11 @@ Pre/post unit assessments targeting specific clusters within each grade (Grades 
     Operations and Algebraic Thinking (K.OA)
   </summary>
 
-  * [K.OA.1](/academics/k6-math/kindergarten#k-oa-a) - Represent addition and subtraction
-  * [K.OA.2](/academics/k6-math/kindergarten#k-oa-a) - Solve addition and subtraction word problems within 10
-  * [K.OA.3](/academics/k6-math/kindergarten#k-oa-a) - Decompose numbers ≤10
-  * [K.OA.4](/academics/k6-math/kindergarten#k-oa-a) - Make 10
-  * **[K.OA.5](/academics/k6-math/kindergarten#k-oa-a) - Fluently add and subtract within 5**
+- [K.OA.1](/academics/k6-math/kindergarten#k-oa-a) - Represent addition and subtraction
+- [K.OA.2](/academics/k6-math/kindergarten#k-oa-a) - Solve addition and subtraction word problems within 10
+- [K.OA.3](/academics/k6-math/kindergarten#k-oa-a) - Decompose numbers ≤10
+- [K.OA.4](/academics/k6-math/kindergarten#k-oa-a) - Make 10
+- **[K.OA.5](/academics/k6-math/kindergarten#k-oa-a) - Fluently add and subtract within 5**
 </details>
 
 <details>
@@ -9822,16 +9854,16 @@ Pre/post unit assessments targeting specific clusters within each grade (Grades 
     Other Domains
   </summary>
 
-  * Geometry (K.G.1-6)
-  * Measurement and Data (K.MD.1-3)
-  * Number and Operations in Base Ten (K.NBT.1)
+- Geometry (K.G.1-6)
+- Measurement and Data (K.MD.1-3)
+- Number and Operations in Base Ten (K.NBT.1)
 </details>
 
 ## Grade 1 Tests (10 available)
 
 ### Comprehensive Tests
 
-| Test Name                         | timeback\_id                | Standards Covered        | Type   |
+| Test Name                         | timeback_id                 | Standards Covered        | Type   |
 | --------------------------------- | --------------------------- | ------------------------ | ------ |
 | **Alpha Standardized Math G1.9**  | `_681c16180e5463c75f6e297c` | All 21 Grade 1 standards | QCed ✓ |
 | **Alpha Standardized Math G1.13** | `_677e2777237f5f6883b0dd88` | All 21 Grade 1 standards | QCed ✓ |
@@ -9842,15 +9874,15 @@ Pre/post unit assessments targeting specific clusters within each grade (Grades 
 
 ### Key Standards
 
-* **[1.OA.6](/academics/k6-math/grade-1#1-oa-c) - Add and subtract within 20, fluent within 10**
-* [1.NBT.4](/academics/k6-math/grade-1#1-nbt-c) - Add within 100
-* [1.OA.1-2](/academics/k6-math/grade-1#1-oa-a) - Solve word problems
+- **[1.OA.6](/academics/k6-math/grade-1#1-oa-c) - Add and subtract within 20, fluent within 10**
+- [1.NBT.4](/academics/k6-math/grade-1#1-nbt-c) - Add within 100
+- [1.OA.1-2](/academics/k6-math/grade-1#1-oa-a) - Solve word problems
 
 ## Grade 2 Tests (10 available)
 
 ### Comprehensive Tests
 
-| Test Name                        | timeback\_id                | Standards Covered        | Type   |
+| Test Name                        | timeback_id                 | Standards Covered        | Type   |
 | -------------------------------- | --------------------------- | ------------------------ | ------ |
 | **Alpha Standardized Math 2.8**  | `_67c655bb6097695e9c0b1718` | All 26 Grade 2 standards | QCed ✓ |
 | **Alpha Standardized Math 2.9**  | `_67df0e45c52aeff89c83c7e8` | All 26 Grade 2 standards | QCed ✓ |
@@ -9862,15 +9894,15 @@ Pre/post unit assessments targeting specific clusters within each grade (Grades 
 
 ### Key Standards
 
-* **[2.OA.2](/academics/k6-math/grade-2#2-oa-b) - Fluently add/subtract within 20, know all sums of two one-digit numbers**
-* [2.NBT.5](/academics/k6-math/grade-2#2-nbt-b) - Fluently add/subtract within 100
-* [2.OA.1](/academics/k6-math/grade-2#2-oa-a) - Solve word problems
+- **[2.OA.2](/academics/k6-math/grade-2#2-oa-b) - Fluently add/subtract within 20, know all sums of two one-digit numbers**
+- [2.NBT.5](/academics/k6-math/grade-2#2-nbt-b) - Fluently add/subtract within 100
+- [2.OA.1](/academics/k6-math/grade-2#2-oa-a) - Solve word problems
 
 ## Grade 3 Tests (31 available)
 
 ### Comprehensive Tests
 
-| Test Name                        | timeback\_id                | Standards Covered        | Type   |
+| Test Name                        | timeback_id                 | Standards Covered        | Type   |
 | -------------------------------- | --------------------------- | ------------------------ | ------ |
 | **Alpha Standardized Math G3.4** | `_6654efd13f1f5d00080b05f6` | All 25 Grade 3 standards | QCed ✓ |
 | **Alpha Math STAAR G3.2018**     | `_6821ed249a766e188151a30e` | All 25 Grade 3 standards | QCed ✓ |
@@ -9888,16 +9920,16 @@ Pre/post unit assessments targeting specific clusters within each grade (Grades 
 
 ### Key Standards
 
-* **[3.OA.7](/academics/k6-math/grade-3#3-oa-c) - Fluently multiply and divide within 100, know all products of one-digit numbers**
-* [3.NF.1-3](/academics/k6-math/grade-3#3-nf-a) - Understand fractions as numbers
-* [3.NBT.2](/academics/k6-math/grade-3#3-nbt-a) - Fluently add/subtract within 1000
-* [3.MD.5-8](/academics/k6-math/grade-3#3-md-c) - Area and perimeter
+- **[3.OA.7](/academics/k6-math/grade-3#3-oa-c) - Fluently multiply and divide within 100, know all products of one-digit numbers**
+- [3.NF.1-3](/academics/k6-math/grade-3#3-nf-a) - Understand fractions as numbers
+- [3.NBT.2](/academics/k6-math/grade-3#3-nbt-a) - Fluently add/subtract within 1000
+- [3.MD.5-8](/academics/k6-math/grade-3#3-md-c) - Area and perimeter
 
 ## Grade 4 Tests (20 available)
 
 ### Comprehensive Tests
 
-| Test Name                    | timeback\_id                | Standards Covered        | Type   |
+| Test Name                    | timeback_id                 | Standards Covered        | Type   |
 | ---------------------------- | --------------------------- | ------------------------ | ------ |
 | **Alpha Math STAAR G4.1**    | `_67e2e255154239458b0c3de7` | All 28 Grade 4 standards | QCed ✓ |
 | **Alpha Math STAAR G4.2**    | `_649ed7ed55615f0008c0d690` | All 28 Grade 4 standards | QCed ✓ |
@@ -9915,16 +9947,16 @@ Pre/post unit assessments targeting specific clusters within each grade (Grades 
 
 ### Key Standards
 
-* [4.NF.1-7](/academics/k6-math/grade-4#4-nf-a) - Fraction equivalence, operations, decimals
-* [4.NBT.4](/academics/k6-math/grade-4#4-nbt-b) - Fluently add/subtract multi-digit
-* [4.NBT.5-6](/academics/k6-math/grade-4#4-nbt-b) - Multiply and divide multi-digit
-* [4.MD.5-7](/academics/k6-math/grade-4#4-md-c) - Angle measurement
+- [4.NF.1-7](/academics/k6-math/grade-4#4-nf-a) - Fraction equivalence, operations, decimals
+- [4.NBT.4](/academics/k6-math/grade-4#4-nbt-b) - Fluently add/subtract multi-digit
+- [4.NBT.5-6](/academics/k6-math/grade-4#4-nbt-b) - Multiply and divide multi-digit
+- [4.MD.5-7](/academics/k6-math/grade-4#4-md-c) - Angle measurement
 
 ## Grade 5 Tests (12 available)
 
 ### Comprehensive Tests
 
-| Test Name                    | timeback\_id                | Standards Covered        | Type   |
+| Test Name                    | timeback_id                 | Standards Covered        | Type   |
 | ---------------------------- | --------------------------- | ------------------------ | ------ |
 | **Alpha Math STAAR G5.2017** | `_6570d6b970798700082a4897` | All 26 Grade 5 standards | QCed ✓ |
 | **Alpha Math STAAR G5.2018** | `_681a6694b60a76739ee58c8c` | All 26 Grade 5 standards | QCed ✓ |
@@ -9940,16 +9972,16 @@ Pre/post unit assessments targeting specific clusters within each grade (Grades 
 
 ### Key Standards
 
-* [5.NF.1-7](/academics/k6-math/grade-5#5-nf-a) - Add, subtract, multiply, divide fractions
-* [5.NBT.5-7](/academics/k6-math/grade-5#5-nbt-b) - Operations with decimals
-* [5.MD.3-5](/academics/k6-math/grade-5#5-md-c) - Volume measurement
-* [5.OA.1-2](/academics/k6-math/grade-5#5-oa-a) - Numerical expressions
+- [5.NF.1-7](/academics/k6-math/grade-5#5-nf-a) - Add, subtract, multiply, divide fractions
+- [5.NBT.5-7](/academics/k6-math/grade-5#5-nbt-b) - Operations with decimals
+- [5.MD.3-5](/academics/k6-math/grade-5#5-md-c) - Volume measurement
+- [5.OA.1-2](/academics/k6-math/grade-5#5-oa-a) - Numerical expressions
 
 ## Grade 6 Tests (12 available)
 
 ### Comprehensive Tests
 
-| Test Name                        | timeback\_id                | Standards Covered        | Type   |
+| Test Name                        | timeback_id                 | Standards Covered        | Type   |
 | -------------------------------- | --------------------------- | ------------------------ | ------ |
 | **Alpha Standardized Math G6.1** | `_67e2bee4903ea01c022ff128` | All 29 Grade 6 standards | QCed ✓ |
 | **Alpha Math STAAR G6.2017**     | `_66adc39a90c5b800098bd071` | All 29 Grade 6 standards | QCed ✓ |
@@ -9966,11 +9998,11 @@ Pre/post unit assessments targeting specific clusters within each grade (Grades 
 
 ### Key Standards
 
-* [6.RP.1-3](/academics/k6-math/grade-6#6-rp-a) - Ratios and proportional relationships
-* [6.NS.1-8](/academics/k6-math/grade-6#6-ns-a) - The number system (fractions, decimals, negatives)
-* [6.EE.1-9](/academics/k6-math/grade-6#6-ee-a) - Expressions and equations
-* [6.G.1-4](/academics/k6-math/grade-6#6-g-a) - Geometry
-* [6.SP.1-5](/academics/k6-math/grade-6#6-sp-a) - Statistics and probability
+- [6.RP.1-3](/academics/k6-math/grade-6#6-rp-a) - Ratios and proportional relationships
+- [6.NS.1-8](/academics/k6-math/grade-6#6-ns-a) - The number system (fractions, decimals, negatives)
+- [6.EE.1-9](/academics/k6-math/grade-6#6-ee-a) - Expressions and equations
+- [6.G.1-4](/academics/k6-math/grade-6#6-g-a) - Geometry
+- [6.SP.1-5](/academics/k6-math/grade-6#6-sp-a) - Statistics and probability
 
 ## Using This Data - INCOMPLETE
 
@@ -10001,15 +10033,15 @@ See the [Standards Reference](/academics/k6-math/reference) for complete listing
 
 **High Confidence (62 tests):**
 
-* Alpha Standardized Math tests (comprehensive, grade-level)
-* Alpha Math STAAR tests (comprehensive, grade-level)
-* Alpha Math Spark tests (comprehensive, grade-level)
+- Alpha Standardized Math tests (comprehensive, grade-level)
+- Alpha Math STAAR tests (comprehensive, grade-level)
+- Alpha Math Spark tests (comprehensive, grade-level)
 
 These tests are mapped to ALL standards for their grade based on test series naming and purpose.
 
 **Low Confidence (43 tests):**
 
-* Athena unit tests (unit-specific, inferred mapping)
+- Athena unit tests (unit-specific, inferred mapping)
 
 These mappings are INFERRED from unit numbers and typical CCSS curriculum sequencing. **Requires QC validation** with actual test content.
 
@@ -10032,7 +10064,6 @@ Tests marked "Not QCed" have `subject: "Math-notqced"` and may contain unsupport
 
 **Total Coverage:** All 170 K-6 CCSS Math standards have at least one comprehensive test available.
 
-
 # Authentication
 
 ## Overview
@@ -10052,7 +10083,7 @@ The recommended way to authenticate is with browser-based SSO:
 <Callout title="SSO Authentication">
   This opens your browser for authentication with Timeback.
 
-  Once complete, your credentials are stored securely on your device.
+Once complete, your credentials are stored securely on your device.
 </Callout>
 
 ### Email and Password
@@ -10070,10 +10101,10 @@ This will be followed by a prompt for your password.
 <Callout type="warn" title="Security">
   Avoid putting passwords directly in commands when possible.
 
-  The interactive prompt is more secure.
+The interactive prompt is more secure.
 </Callout>
 
-***
+---
 
 ## Authentication Profiles
 
@@ -10099,7 +10130,7 @@ Use a profile for commands:
   Set `PLAYCADEMY_PROFILE=work` to use a profile for all commands without the flag.
 </Callout>
 
-***
+---
 
 ## Environment-Aware Authentication
 
@@ -10130,15 +10161,15 @@ When you run commands, the CLI uses the credentials for the current environment.
 **Example workflow:**
 
 <TerminalBlock
-  command={[
-      'playcademy login',
-      'playcademy deploy  # Uses staging credentials',
-      'playcademy login --env production',
-      'playcademy deploy --env production  # Uses production credentials',
-  ]}
+command={[
+'playcademy login',
+'playcademy deploy # Uses staging credentials',
+'playcademy login --env production',
+'playcademy deploy --env production # Uses production credentials',
+]}
 />
 
-***
+---
 
 ## Checking Authentication Status
 
@@ -10150,30 +10181,30 @@ View your authentication status:
 
 Shows:
 
-* User ID and email
-* Developer status
-* Current environment
-* Active profile
+- User ID and email
+- Developer status
+- Current environment
+- Active profile
 
 **Example output:**
 
 <TerminalBlock
-  command={'playcademy me'}
-  output={[
-      '✔ User information retrieved from staging',
-      '  ID: ...',
-      '  Email: dev@example.com',
-      '  Environment: staging',
-      '  Role: developer',
-      '  Developer Status: approved',
-  ]}
+command={'playcademy me'}
+output={[
+'✔ User information retrieved from staging',
+' ID: ...',
+' Email: dev@example.com',
+' Environment: staging',
+' Role: developer',
+' Developer Status: approved',
+]}
 />
 
 ### List Profiles
 
 See all stored profiles across environments:
 
-<TerminalBlock command={['playcademy profiles list', 'playcademy profiles  # Alias']} />
+<TerminalBlock command={['playcademy profiles list', 'playcademy profiles # Alias']} />
 
 Shows profiles for both staging and production:
 
@@ -10196,7 +10227,7 @@ Shows profiles for both staging and production:
 └─────────┴───────────────────┘
 ```
 
-***
+---
 
 ## Logging Out
 
@@ -10212,23 +10243,23 @@ Shows profiles for both staging and production:
 
 <TerminalBlock command={['playcademy logout --env production', 'playcademy logout work --env production']} />
 
-***
+---
 
 ## Managing Profiles
 
 ### Remove a Profile
 
-<TerminalBlock command={['playcademy profiles remove work', 'playcademy profiles rm work  # Alias']} />
+<TerminalBlock command={['playcademy profiles remove work', 'playcademy profiles rm work # Alias']} />
 
 ### Remove All Profiles
 
-<TerminalBlock command={['playcademy profiles reset', 'playcademy profiles clear  # Alias']} />
+<TerminalBlock command={['playcademy profiles reset', 'playcademy profiles clear # Alias']} />
 
 <Callout type="warn" title="Be Warned">
   This removes all profiles across all environments.
 </Callout>
 
-***
+---
 
 ## Common Workflows
 
@@ -10237,12 +10268,12 @@ Shows profiles for both staging and production:
 If you have separate personal and work accounts:
 
 <TerminalBlock
-  command={[
-      'playcademy login --profile personal',
-      'playcademy login --profile work',
-      'playcademy deploy --profile personal',
-      'playcademy deploy --profile work',
-  ]}
+command={[
+'playcademy login --profile personal',
+'playcademy login --profile work',
+'playcademy deploy --profile personal',
+'playcademy deploy --profile work',
+]}
 />
 
 ### Staging and Production
@@ -10250,15 +10281,15 @@ If you have separate personal and work accounts:
 Deploy to staging for testing, production for release:
 
 <TerminalBlock
-  command={[
-      'playcademy login  # Staging',
-      'playcademy login --env production',
-      'playcademy deploy # Staging',
-      'playcademy deploy --env production',
-  ]}
+command={[
+'playcademy login # Staging',
+'playcademy login --env production',
+'playcademy deploy # Staging',
+'playcademy deploy --env production',
+]}
 />
 
-***
+---
 
 ## API Key Authentication
 
@@ -10271,10 +10302,10 @@ API keys are shown once only after successfully running `playcademy login`.
 <Callout type="tip" title="When to Use API Keys">
   API keys are designed for automated deployments (GitHub Actions, CI/CD).
 
-  For local development, use `playcademy login`.
+For local development, use `playcademy login`.
 </Callout>
 
-***
+---
 
 ## What's Next?
 
@@ -10296,7 +10327,6 @@ API keys are shown once only after successfully running `playcademy login`.
   </Card>
 </Cards>
 
-
 # Commands
 
 import { DiscordIcon } from '@/components/svg-icons'
@@ -10313,13 +10343,13 @@ This is a comprehensive reference of all available Playcademy CLI commands organ
 Authenticate with your Playcademy account.
 
 <TerminalBlock
-  command={[
-      'playcademy login',
-      'playcademy login --sso                        # Browser-based SSO',
-      'playcademy login --env production             # Login to production',
-      'playcademy login -e user@email.com            # Prompts for password',
-      'playcademy login -e user@email.com -p mypass  # Non-interactive',
-  ]}
+command={[
+'playcademy login',
+'playcademy login --sso # Browser-based SSO',
+'playcademy login --env production # Login to production',
+'playcademy login -e user@email.com # Prompts for password',
+'playcademy login -e user@email.com -p mypass # Non-interactive',
+]}
 />
 
 **Options:**
@@ -10336,11 +10366,11 @@ Authenticate with your Playcademy account.
 Remove stored credentials.
 
 <TerminalBlock
-  command={[
-      'playcademy logout               # Logout from default profile',
-      'playcademy logout work          # Logout from named profile',
-      'playcademy logout --env production',
-  ]}
+command={[
+'playcademy logout # Logout from default profile',
+'playcademy logout work # Logout from named profile',
+'playcademy logout --env production',
+]}
 />
 
 **Arguments:**
@@ -10363,10 +10393,10 @@ Display current user information and authentication status.
 
 Shows your:
 
-* User ID and email
-* Developer status
-* Current environment
-* Active profile
+- User ID and email
+- Developer status
+- Current environment
+- Active profile
 
 **Options:**
 
@@ -10379,11 +10409,11 @@ Shows your:
 List all stored authentication profiles across all environments.
 
 <TerminalBlock
-  command={[
-      'playcademy profiles       # Defaults to list',
-      'playcademy profiles list',
-      'playcademy profiles ls    # Alias',
-  ]}
+command={[
+'playcademy profiles # Defaults to list',
+'playcademy profiles list',
+'playcademy profiles ls # Alias',
+]}
 />
 
 ### `profiles remove`
@@ -10391,12 +10421,12 @@ List all stored authentication profiles across all environments.
 Remove a specific authentication profile.
 
 <TerminalBlock
-  command={[
-      'playcademy profiles remove            # Remove default profile',
-      'playcademy profiles remove work       # Remove named profile',
-      'playcademy profiles rm work           # Alias',
-      'playcademy profiles remove --env production work',
-  ]}
+command={[
+'playcademy profiles remove # Remove default profile',
+'playcademy profiles remove work # Remove named profile',
+'playcademy profiles rm work # Alias',
+'playcademy profiles remove --env production work',
+]}
 />
 
 **Arguments:**
@@ -10415,11 +10445,11 @@ Remove a specific authentication profile.
 
 Remove all authentication profiles across all environments.
 
-<TerminalBlock command={['playcademy profiles reset', 'playcademy profiles clear   # Alias']} />
+<TerminalBlock command={['playcademy profiles reset', 'playcademy profiles clear # Alias']} />
 
 Requires confirmation before removing all profiles.
 
-***
+---
 
 ## Developer Access
 
@@ -10428,12 +10458,12 @@ Requires confirmation before removing all profiles.
 Start the local backend development server.
 
 <TerminalBlock
-  command={[
-      'playcademy dev',
-      'playcademy dev --port 9000      # Custom port',
-      'playcademy dev --no-reload      # Disable hot reload',
-      'playcademy dev --no-logger      # Disable request logging',
-  ]}
+command={[
+'playcademy dev',
+'playcademy dev --port 9000 # Custom port',
+'playcademy dev --no-reload # Disable hot reload',
+'playcademy dev --no-logger # Disable request logging',
+]}
 />
 
 **Options:**
@@ -10455,7 +10485,7 @@ Apply for developer status to deploy your project.
 Approval is typically granted within 8 hours. Check your status with `playcademy dev status`.
 
 <CTAButton href={config.discordInviteUrl} variant="secondary" icon={<DiscordIcon />}>
-  Need help? Join our Discord
+Need help? Join our Discord
 </CTAButton>
 
 **Options:**
@@ -10472,9 +10502,9 @@ Check your current developer status.
 
 Shows whether your developer application is:
 
-* `none` - Not applied yet
-* `pending` - Application submitted, awaiting review
-* `approved` - Developer access granted
+- `none` - Not applied yet
+- `pending` - Application submitted, awaiting review
+- `approved` - Developer access granted
 
 **Options:**
 
@@ -10482,7 +10512,7 @@ Shows whether your developer application is:
 | :------------ | :--------------------------------------------------------------------- |
 | `--env <env>` | Environment to check developer status from (`staging` or `production`) |
 
-***
+---
 
 ## Project Setup
 
@@ -10491,7 +10521,7 @@ Shows whether your developer application is:
 The fastest way to start a new Playcademy project.
 
 <PackageManagerTabs
-  commands={{
+commands={{
       bun: 'bun create playcademy my-app',
       npm: 'npm create playcademy my-app',
       pnpm: 'pnpm create playcademy my-app',
@@ -10509,7 +10539,7 @@ The fastest way to start a new Playcademy project.
 
 Initialize Playcademy in an **existing** project (adds config to current directory).
 
-<TerminalBlock command={['playcademy init', 'playcademy init --force    # Overwrite existing config']} />
+<TerminalBlock command={['playcademy init', 'playcademy init --force # Overwrite existing config']} />
 
 <Callout type="info" title="When to Use init vs create">
   * Use **`create playcademy`** to start a brand new project from scratch
@@ -10522,7 +10552,7 @@ Initialize Playcademy in an **existing** project (adds config to current directo
 | :-------------- | :------------------------------------ |
 | `-f`, `--force` | Overwrite existing configuration file |
 
-***
+---
 
 ## Timeback
 
@@ -10543,36 +10573,36 @@ Prompts for Timeback configuration (subjects, grades) and updates your `playcade
 Configures Timeback resources for your project.
 
 <TerminalBlock
-  command={[
-      'playcademy timeback setup',
-      'playcademy timeback setup --dry-run    # Preview without making changes',
-      'playcademy timeback setup -v           # Verbose output',
-      'playcademy timeback setup --env production',
-  ]}
+command={[
+'playcademy timeback setup',
+'playcademy timeback setup --dry-run # Preview without making changes',
+'playcademy timeback setup -v # Verbose output',
+'playcademy timeback setup --env production',
+]}
 />
 
 Requires Timeback configuration in your `playcademy.config.js`:
 
 ```js title="playcademy.config.js"
 export default {
-    name: 'My Project',
-    integrations: {
-        timeback: {
-            courses: [
-                {
-                    subject: 'Math',
-                    grade: 3,
-                    metadata: {
-                        metrics: {
-                            totalXp: 1000, // REQUIRED before running setup
-                        },
-                    },
-                },
-                // ... other courses
-            ],
-        },
-    },
-}
+  name: 'My Project',
+  integrations: {
+    timeback: {
+      courses: [
+        {
+          subject: 'Math',
+          grade: 3,
+          metadata: {
+            metrics: {
+              totalXp: 1000 // REQUIRED before running setup
+            }
+          }
+        }
+        // ... other courses
+      ]
+    }
+  }
+};
 ```
 
 <Callout type="warning" title="Required: totalXp">
@@ -10593,11 +10623,11 @@ export default {
 Verify Timeback resources are correctly configured.
 
 <TerminalBlock
-  command={[
-      'playcademy timeback verify',
-      'playcademy timeback verify -v          # Verbose output',
-      'playcademy timeback verify --env production',
-  ]}
+command={[
+'playcademy timeback verify',
+'playcademy timeback verify -v # Verbose output',
+'playcademy timeback verify --env production',
+]}
 />
 
 Checks that all OneRoster resources (course, classes, academic session, etc.) exist and are properly linked.
@@ -10614,11 +10644,11 @@ Checks that all OneRoster resources (course, classes, academic session, etc.) ex
 Update Timeback integration configuration.
 
 <TerminalBlock
-  command={[
-      'playcademy timeback update',
-      'playcademy timeback update -v          # Verbose output',
-      'playcademy timeback update --env production',
-  ]}
+command={[
+'playcademy timeback update',
+'playcademy timeback update -v # Verbose output',
+'playcademy timeback update --env production',
+]}
 />
 
 Updates OneRoster resources to match your current `playcademy.config.js` settings.
@@ -10648,7 +10678,7 @@ Deletes OneRoster resources but preserves your project on Playcademy.
 | :------------ | :-------------------------------------------------------------- |
 | `--env <env>` | Environment to remove Timeback from (`staging` or `production`) |
 
-***
+---
 
 ## Database
 
@@ -10669,11 +10699,11 @@ Scaffolds database files (schema, types, Drizzle config) and updates your `packa
 Print the full database schema
 
 <TerminalBlock
-  command={[
-      'playcademy db schema            # Pretty-printed output',
-      'playcademy db schema --raw      # Raw SQL (for piping to files)',
-      'playcademy db schema --full     # Include full schema hash',
-  ]}
+command={[
+'playcademy db schema # Pretty-printed output',
+'playcademy db schema --raw # Raw SQL (for piping to files)',
+'playcademy db schema --full # Include full schema hash',
+]}
 />
 
 **Options:**
@@ -10698,12 +10728,12 @@ Useful for reviewing schema changes before deploying.
 Reset database (deletes all data and recreates from schema).
 
 <TerminalBlock
-  command={[
-      'playcademy db reset  # Local',
-      'playcademy db reset -f  # Local, skip confirmation',
-      'playcademy db reset --remote  # Reset staging',
-      'playcademy db reset --remote --env production  # Reset production',
-  ]}
+command={[
+'playcademy db reset # Local',
+'playcademy db reset -f # Local, skip confirmation',
+'playcademy db reset --remote # Reset staging',
+'playcademy db reset --remote --env production # Reset production',
+]}
 />
 
 **Options:**
@@ -10718,10 +10748,10 @@ Reset database (deletes all data and recreates from schema).
 <Callout type="warn" title="Destructive Operation">
   Remote reset requires two confirmations:
 
-  1. Yes/no prompt
-  2. Type the project slug to confirm
+1. Yes/no prompt
+2. Type the project slug to confirm
 
-  All data will be deleted!
+All data will be deleted!
 </Callout>
 
 ### `db seed`
@@ -10729,15 +10759,15 @@ Reset database (deletes all data and recreates from schema).
 Seed database with initial data (resets by default).
 
 <TerminalBlock
-  command={[
-      'playcademy db seed  # Local: reset and seed',
-      'playcademy db seed --no-reset  # Local: seed without reset',
-      'playcademy db seed custom-seed.ts  # Use custom seed file',
-      'playcademy db seed --remote  # Remote: reset and seed staging',
-      'playcademy db seed --remote --no-reset  # Remote: seed without reset',
-      'playcademy db seed --remote -f  # Skip secrets sync check',
-      'playcademy db seed --remote --env production  # Production',
-  ]}
+command={[
+'playcademy db seed # Local: reset and seed',
+'playcademy db seed --no-reset # Local: seed without reset',
+'playcademy db seed custom-seed.ts # Use custom seed file',
+'playcademy db seed --remote # Remote: reset and seed staging',
+'playcademy db seed --remote --no-reset # Remote: seed without reset',
+'playcademy db seed --remote -f # Skip secrets sync check',
+'playcademy db seed --remote --env production # Production',
+]}
 />
 
 **Arguments:**
@@ -10759,10 +10789,10 @@ Seed database with initial data (resets by default).
 <Callout type="warn" title="Are you sure?">
   Remote seeding with reset will drop all tables and delete all of your data
 
-  See [Database Integration Guide](/platform/integrations/database#seeding) for seed file documentation.
+See [Database Integration Guide](/platform/integrations/database#seeding) for seed file documentation.
 </Callout>
 
-***
+---
 
 ## KV Storage
 
@@ -10783,12 +10813,12 @@ Updates your `playcademy.config.js` to enable KV storage.
 List all keys in your local KV namespace.
 
 <TerminalBlock
-  command={[
-      'playcademy kv list          # Formatted output',
-      'playcademy kv ls            # Alias',
-      'playcademy kv list --raw    # One key per line',
-      'playcademy kv list --json   # JSON array',
-  ]}
+command={[
+'playcademy kv list # Formatted output',
+'playcademy kv ls # Alias',
+'playcademy kv list --raw # One key per line',
+'playcademy kv list --json # JSON array',
+]}
 />
 
 **Options:**
@@ -10805,11 +10835,11 @@ List all keys in your local KV namespace.
 Get the value for a specific key.
 
 <TerminalBlock
-  command={[
-      'playcademy kv get user:demo-user:state          # Pretty-printed output',
-      'playcademy kv get config:theme --raw            # Raw value only',
-      'playcademy kv get user:123 --json               # Force JSON output',
-  ]}
+command={[
+'playcademy kv get user:demo-user:state # Pretty-printed output',
+'playcademy kv get config:theme --raw # Raw value only',
+'playcademy kv get user:123 --json # Force JSON output',
+]}
 />
 
 **Arguments:**
@@ -10832,11 +10862,11 @@ Get the value for a specific key.
 Set a key-value pair.
 
 <TerminalBlock
-  command={[
-      'playcademy kv set config:theme "dark"                       # String value',
-      'playcademy kv set user:123 \'{"score":100,"level":5}\'        # JSON data',
-      'playcademy kv set template:email --file templates/email.html # From file',
-  ]}
+command={[
+'playcademy kv set config:theme "dark" # String value',
+'playcademy kv set user:123 \'{"score":100,"level":5}\' # JSON data',
+'playcademy kv set template:email --file templates/email.html # From file',
+]}
 />
 
 **Arguments:**
@@ -10861,11 +10891,11 @@ Set a key-value pair.
 Delete a specific key.
 
 <TerminalBlock
-  command={[
-      'playcademy kv delete user:123',
-      'playcademy kv del cache:temp    # Alias',
-      'playcademy kv rm session:old    # Alias',
-  ]}
+command={[
+'playcademy kv delete user:123',
+'playcademy kv del cache:temp # Alias',
+'playcademy kv rm session:old # Alias',
+]}
 />
 
 **Arguments:**
@@ -10890,11 +10920,11 @@ Delete a specific key.
 Clear all keys from the local KV namespace.
 
 <TerminalBlock
-  command={[
-      'playcademy kv clear          # Asks for confirmation',
-      'playcademy kv clear --force  # Skip confirmation',
-      'playcademy kv clear -f       # Short flag',
-  ]}
+command={[
+'playcademy kv clear # Asks for confirmation',
+'playcademy kv clear --force # Skip confirmation',
+'playcademy kv clear -f # Short flag',
+]}
 />
 
 Removes all keys after confirmation. Use with caution in development.
@@ -10914,10 +10944,10 @@ Removes all keys after confirmation. Use with caution in development.
 Inspect metadata and value for a specific key.
 
 <TerminalBlock
-  command={[
-      'playcademy kv inspect user:demo-user:state',
-      'playcademy kv inspect config:theme --json',
-  ]}
+command={[
+'playcademy kv inspect user:demo-user:state',
+'playcademy kv inspect config:theme --json',
+]}
 />
 
 Shows key size, type (JSON or String), and the value.
@@ -10942,19 +10972,19 @@ Shows key size, type (JSON or String), and the value.
 Show statistics about your local KV namespace.
 
 <TerminalBlock
-  command={[
-      'playcademy kv stats',
-      'playcademy kv stats --json   # JSON output',
-      'playcademy kv stats --raw    # Total key count only',
-  ]}
+command={[
+'playcademy kv stats',
+'playcademy kv stats --json # JSON output',
+'playcademy kv stats --raw # Total key count only',
+]}
 />
 
 Displays:
 
-* Total number of keys
-* Total storage size
-* Largest key with size
-* Keys grouped by prefix
+- Total number of keys
+- Total storage size
+- Largest key with size
+- Keys grouped by prefix
 
 **Options:**
 
@@ -10970,11 +11000,11 @@ Displays:
 Seed KV namespace with key-value pairs from a JSON file.
 
 <TerminalBlock
-  command={[
-      'playcademy kv seed seeds/kv.json           # Seed from file',
-      'playcademy kv seed seeds/kv.json --replace # Clear existing keys first',
-      'playcademy kv seed seeds/kv.json --force   # Skip overwrite confirmation',
-  ]}
+command={[
+'playcademy kv seed seeds/kv.json # Seed from file',
+'playcademy kv seed seeds/kv.json --replace # Clear existing keys first',
+'playcademy kv seed seeds/kv.json --force # Skip overwrite confirmation',
+]}
 />
 
 Useful for populating test data during development.
@@ -11000,12 +11030,12 @@ Useful for populating test data during development.
 
 ```json
 {
-    "user:demo-user:state": {
-        "score": 100,
-        "level": 1
-    },
-    "config:theme": "dark",
-    "highscore:global": "1000"
+  "user:demo-user:state": {
+    "score": 100,
+    "level": 1
+  },
+  "config:theme": "dark",
+  "highscore:global": "1000"
 }
 ```
 
@@ -11019,7 +11049,7 @@ Useful for populating test data during development.
   stored in `.playcademy/kv/`.
 </Callout>
 
-***
+---
 
 ## Bucket Storage
 
@@ -11040,16 +11070,16 @@ Updates your `playcademy.config.js` to enable bucket storage.
 List files in your bucket (local or remote).
 
 <TerminalBlock
-  command={[
-      'playcademy bucket list  # Formatted table output',
-      'playcademy bucket ls  # Alias',
-      'playcademy bucket list --prefix images/  # Filter by prefix',
-      'playcademy bucket list --remote  # Remote staging',
-      'playcademy bucket list --remote --env production  # Remote production',
-      'playcademy bucket list --remote --prefix screenshots/  # Remote with prefix',
-      'playcademy bucket list --raw  # Keys only, one per line',
-      'playcademy bucket list --json  # JSON array',
-  ]}
+command={[
+'playcademy bucket list # Formatted table output',
+'playcademy bucket ls # Alias',
+'playcademy bucket list --prefix images/ # Filter by prefix',
+'playcademy bucket list --remote # Remote staging',
+'playcademy bucket list --remote --env production # Remote production',
+'playcademy bucket list --remote --prefix screenshots/ # Remote with prefix',
+'playcademy bucket list --raw # Keys only, one per line',
+'playcademy bucket list --json # JSON array',
+]}
 />
 
 **Options:**
@@ -11067,14 +11097,14 @@ List files in your bucket (local or remote).
 Download a file or get file metadata (local or remote).
 
 <TerminalBlock
-  command={[
-      'playcademy bucket get screenshot.png  # Show metadata',
-      'playcademy bucket get screenshot.png -o local.png  # Download to file',
-      'playcademy bucket get config.json -o backup.json --remote  # Remote staging',
-      'playcademy bucket get data.json -o prod-data.json --remote --env production  # Production',
-      'playcademy bucket get data.json --raw  # Output to stdout',
-      'playcademy bucket get screenshot.png --json  # Metadata as JSON',
-  ]}
+command={[
+'playcademy bucket get screenshot.png # Show metadata',
+'playcademy bucket get screenshot.png -o local.png # Download to file',
+'playcademy bucket get config.json -o backup.json --remote # Remote staging',
+'playcademy bucket get data.json -o prod-data.json --remote --env production # Production',
+'playcademy bucket get data.json --raw # Output to stdout',
+'playcademy bucket get screenshot.png --json # Metadata as JSON',
+]}
 />
 
 **Arguments:**
@@ -11098,12 +11128,12 @@ Download a file or get file metadata (local or remote).
 Upload a file to bucket (local or remote).
 
 <TerminalBlock
-  command={[
-      'playcademy bucket put screenshot.png ./local.png  # Upload locally',
-      'playcademy bucket put data.json ./data.json  # Upload JSON',
-      'playcademy bucket put config.json ./config.json --remote  # Remote staging',
-      'playcademy bucket put banner.png ./assets/banner.png --remote --env production  # Production',
-  ]}
+command={[
+'playcademy bucket put screenshot.png ./local.png # Upload locally',
+'playcademy bucket put data.json ./data.json # Upload JSON',
+'playcademy bucket put config.json ./config.json --remote # Remote staging',
+'playcademy bucket put banner.png ./assets/banner.png --remote --env production # Production',
+]}
 />
 
 **Arguments:**
@@ -11127,13 +11157,13 @@ Upload a file to bucket (local or remote).
 Delete a file from bucket (local or remote).
 
 <TerminalBlock
-  command={[
-      'playcademy bucket delete screenshot.png  # Local',
-      'playcademy bucket del temp.json  # Alias',
-      'playcademy bucket rm old-file.png  # Alias',
-      'playcademy bucket delete temp-file.json --remote  # Remote staging',
-      'playcademy bucket delete old-asset.png --remote --env production  # Production',
-  ]}
+command={[
+'playcademy bucket delete screenshot.png # Local',
+'playcademy bucket del temp.json # Alias',
+'playcademy bucket rm old-file.png # Alias',
+'playcademy bucket delete temp-file.json --remote # Remote staging',
+'playcademy bucket delete old-asset.png --remote --env production # Production',
+]}
 />
 
 **Arguments:**
@@ -11156,27 +11186,27 @@ Delete a file from bucket (local or remote).
 Upload all files from a directory to bucket.
 
 <TerminalBlock
-  command={[
-      'playcademy bucket bulk ./assets  # Local',
-      'playcademy bucket bulk ./images --prefix project-assets/  # With prefix',
-      'playcademy bucket bulk ./assets --remote  # Remote staging',
-      'playcademy bucket bulk ./dist --remote --env production --prefix v1.0/  # Production',
-      'playcademy bucket bulk ./assets --dry-run  # Preview locally',
-      'playcademy bucket bulk ./assets --dry-run --remote  # Preview remote',
-  ]}
+command={[
+'playcademy bucket bulk ./assets # Local',
+'playcademy bucket bulk ./images --prefix project-assets/ # With prefix',
+'playcademy bucket bulk ./assets --remote # Remote staging',
+'playcademy bucket bulk ./dist --remote --env production --prefix v1.0/ # Production',
+'playcademy bucket bulk ./assets --dry-run # Preview locally',
+'playcademy bucket bulk ./assets --dry-run --remote # Preview remote',
+]}
 />
 
 <Callout type="info" title="How Directory Paths Work">
   The source directory name is automatically stripped from uploaded keys:
 
-  <TerminalBlock
-    command={['playcademy bucket bulk ./assets', 'playcademy bucket bulk ./assets --prefix assets']}
-    output={[
-      '# → Uploaded as: images/logo.png',
-      '# To include the directory name, use --prefix:',
-      '# → Uploaded as: assets/images/logo.png',
-  ]}
-  />
+<TerminalBlock
+command={['playcademy bucket bulk ./assets', 'playcademy bucket bulk ./assets --prefix assets']}
+output={[
+'# → Uploaded as: images/logo.png',
+'# To include the directory name, use --prefix:',
+'# → Uploaded as: assets/images/logo.png',
+]}
+/>
 </Callout>
 
 <Callout type="tip" title="Ignore Patterns">
@@ -11207,16 +11237,16 @@ Upload all files from a directory to bucket.
 <Callout type="info" title="Remote Operations">
   All bucket commands support `--remote` to work with deployed storage.
 
-  See [Bucket Integration Guide](/platform/integrations/bucket) for more details.
+See [Bucket Integration Guide](/platform/integrations/bucket) for more details.
 </Callout>
 
 <Callout type="warn" title="Environment Isolation">
   A separate bucket is provisioned for both staging and production environments.
 
-  Use `--env production` to access `production` storage (omitting = `staging`).
+Use `--env production` to access `production` storage (omitting = `staging`).
 </Callout>
 
-***
+---
 
 ## Secrets
 
@@ -11228,9 +11258,9 @@ Push secrets from your local `.env` file to the remote environment.
 
 Shows a diff preview before applying changes:
 
-* **Added**: Secrets in `.env` that don't exist on remote
-* **Updated**: Secrets whose values have changed since last push
-* **Removed**: Secrets on remote that aren't in `.env`
+- **Added**: Secrets in `.env` that don't exist on remote
+- **Updated**: Secrets whose values have changed since last push
+- **Removed**: Secrets on remote that aren't in `.env`
 
 **Options:**
 
@@ -11245,11 +11275,11 @@ See [Secrets Guide](/platform/cli/secrets) for complete workflow.
 List all configured secrets on remote (keys only, values are never shown).
 
 <TerminalBlock
-  command={[
-      'playcademy secrets list',
-      'playcademy secrets ls              # Alias',
-      'playcademy secrets list --env production',
-  ]}
+command={[
+'playcademy secrets list',
+'playcademy secrets ls # Alias',
+'playcademy secrets list --env production',
+]}
 />
 
 **Options:**
@@ -11258,47 +11288,47 @@ List all configured secrets on remote (keys only, values are never shown).
 | :------------ | :----------------------------------------------------------- |
 | `--env <env>` | Environment to list secrets from (`staging` or `production`) |
 
-***
+---
 
 ## Custom Domains
 
 ### `domain add`
 
 <TerminalBlock
-  command={[
-      'playcademy domain add my-project.com',
-      'playcademy domain add my-project.com --env production',
-  ]}
+command={[
+'playcademy domain add my-project.com',
+'playcademy domain add my-project.com --env production',
+]}
 />
 
 **What it does:**
 
-* Creates custom hostname with automatic SSL provisioning
-* Returns DNS validation records
+- Creates custom hostname with automatic SSL provisioning
+- Returns DNS validation records
 
 **Example output:**
 
 <TerminalBlock
-  command={'playcademy domain add my-project.com'}
-  output={[
-      '  Add Custom Domain to My Project',
-      '  ✓ Custom domain added: my-project.com',
-      '  DNS Records Required',
-      '  Add these DNS records to my-project.com at your domain registrar:',
-      '  1. Ownership Verification (TXT):',
-      '     Name:  _cf-custom-hostname.my-project.com',
-      '     Value: abc123...',
-      '  2. SSL Certificate Validation (TXT):',
-      '     Name:  _acme-challenge.my-project.com',
-      '     Value: xyz789...',
-      '  3. Traffic Routing (CNAME):',
-      '     Name:  my-project.com',
-      '     Value: playcademy.gg',
-      '  Next Steps',
-      '  1. Add the DNS records shown above to your domain registrar',
-      '  2. Run \`playcademy domain verify my-project.com\` to check validation status',
-      '  Custom domain will be active once all DNS records are validated.',
-  ]}
+command={'playcademy domain add my-project.com'}
+output={[
+' Add Custom Domain to My Project',
+' ✓ Custom domain added: my-project.com',
+' DNS Records Required',
+' Add these DNS records to my-project.com at your domain registrar:',
+' 1. Ownership Verification (TXT):',
+' Name: _cf-custom-hostname.my-project.com',
+' Value: abc123...',
+' 2. SSL Certificate Validation (TXT):',
+' Name: _acme-challenge.my-project.com',
+' Value: xyz789...',
+' 3. Traffic Routing (CNAME):',
+' Name: my-project.com',
+' Value: playcademy.gg',
+' Next Steps',
+' 1. Add the DNS records shown above to your domain registrar',
+' 2. Run \`playcademy domain verify my-project.com\` to check validation status',
+' Custom domain will be active once all DNS records are validated.',
+]}
 />
 
 **Options:**
@@ -11312,11 +11342,11 @@ List all configured secrets on remote (keys only, values are never shown).
 List all custom domains for your project.
 
 <TerminalBlock
-  command={[
-      'playcademy domain list',
-      'playcademy domain ls   # Alias',
-      'playcademy domain list --env production',
-  ]}
+command={[
+'playcademy domain list',
+'playcademy domain ls # Alias',
+'playcademy domain list --env production',
+]}
 />
 
 Shows all configured custom domains with their validation status.
@@ -11334,11 +11364,11 @@ Shows all configured custom domains with their validation status.
 Check custom domain validation status.
 
 <TerminalBlock
-  command={[
-      'playcademy domain verify my-project.com',
-      'playcademy domain status my-project.com   # Alias',
-      'playcademy domain verify my-project.com --env production',
-  ]}
+command={[
+'playcademy domain verify my-project.com',
+'playcademy domain status my-project.com # Alias',
+'playcademy domain verify my-project.com --env production',
+]}
 />
 
 Checks the current validation status and displays any pending DNS records.
@@ -11362,11 +11392,11 @@ Checks the current validation status and displays any pending DNS records.
 Remove a custom domain from your project.
 
 <TerminalBlock
-  command={[
-      'playcademy domain delete my-project.com',
-      'playcademy domain rm my-project.com -f    # Alias, skip confirmation',
-      'playcademy domain delete my-project.com --env production',
-  ]}
+command={[
+'playcademy domain delete my-project.com',
+'playcademy domain rm my-project.com -f # Alias, skip confirmation',
+'playcademy domain delete my-project.com --env production',
+]}
 />
 
 Removes the custom hostname and SSL certificate.
@@ -11391,7 +11421,7 @@ Removes the custom hostname and SSL certificate.
   validation status.
 </Callout>
 
-***
+---
 
 ## Vite Plugin
 
@@ -11405,11 +11435,11 @@ Installs `@playcademy/vite-plugin` and configures it in your `vite.config.ts`.
 
 **What it does:**
 
-* Installs `@playcademy/vite-plugin` (if not already installed)
-* Updates existing `vite.config.ts` or creates a new one
-* Adds the `playcademy()` plugin to your Vite configuration
+- Installs `@playcademy/vite-plugin` (if not already installed)
+- Updates existing `vite.config.ts` or creates a new one
+- Adds the `playcademy()` plugin to your Vite configuration
 
-***
+---
 
 ## Custom Routes
 
@@ -11425,7 +11455,7 @@ Scaffolds a `server/api/` directory with a sample route and updates your config 
   Use this if you didn't enable the custom routes integration during `playcademy init`
 </Callout>
 
-***
+---
 
 ## Development
 
@@ -11434,12 +11464,12 @@ Scaffolds a `server/api/` directory with a sample route and updates your config 
 Start the local backend development server.
 
 <TerminalBlock
-  command={[
-      'playcademy dev',
-      'playcademy dev --port 9000      # Custom port',
-      'playcademy dev --no-reload      # Disable hot reload',
-      'playcademy dev --no-logger      # Disable request logging',
-  ]}
+command={[
+'playcademy dev',
+'playcademy dev --port 9000 # Custom port',
+'playcademy dev --no-reload # Disable hot reload',
+'playcademy dev --no-logger # Disable request logging',
+]}
 />
 
 **Options:**
@@ -11452,7 +11482,7 @@ Start the local backend development server.
 
 See [Development Guide](/platform/cli/development) for details.
 
-***
+---
 
 ## Deployment
 
@@ -11461,14 +11491,14 @@ See [Development Guide](/platform/cli/development) for details.
 Deploy your project to Playcademy.
 
 <TerminalBlock
-  command={[
-      'playcademy deploy',
-      'playcademy deploy --env production     # Deploy to production',
-      'playcademy deploy --backend            # Force backend deployment',
-      'playcademy deploy --no-backend         # Skip backend deployment',
-      'playcademy deploy --dry-run            # Validate without deploying',
-      'playcademy deploy -v                   # Verbose output',
-  ]}
+command={[
+'playcademy deploy',
+'playcademy deploy --env production # Deploy to production',
+'playcademy deploy --backend # Force backend deployment',
+'playcademy deploy --no-backend # Skip backend deployment',
+'playcademy deploy --dry-run # Validate without deploying',
+'playcademy deploy -v # Verbose output',
+]}
 />
 
 **Options:**
@@ -11495,7 +11525,7 @@ Deploy your project to Playcademy.
 
 See [Deployment Guide](/platform/cli/deployment) for the complete workflow.
 
-***
+---
 
 ## Project Management
 
@@ -11504,11 +11534,11 @@ See [Deployment Guide](/platform/cli/deployment) for the complete workflow.
 List all your deployed projects.
 
 <TerminalBlock
-  command={[
-      'playcademy projects list',
-      'playcademy projects ls              # Alias',
-      'playcademy projects list --env production',
-  ]}
+command={[
+'playcademy projects list',
+'playcademy projects ls # Alias',
+'playcademy projects list --env production',
+]}
 />
 
 Shows project name, slug, platform, type, and version.
@@ -11524,12 +11554,12 @@ Shows project name, slug, platform, type, and version.
 Delete a deployed project.
 
 <TerminalBlock
-  command={[
-      'playcademy projects delete              # Interactive selection',
-      'playcademy projects delete my-project   # Delete by slug',
-      'playcademy projects rm my-project -f    # Alias, skip confirmation',
-      'playcademy projects delete my-project --env production',
-  ]}
+command={[
+'playcademy projects delete # Interactive selection',
+'playcademy projects delete my-project # Delete by slug',
+'playcademy projects rm my-project -f # Alias, skip confirmation',
+'playcademy projects delete my-project --env production',
+]}
 />
 
 **Arguments:**
@@ -11550,10 +11580,10 @@ Delete a deployed project.
 <Callout type="warn" title="Permanent Action">
   Deleting a project removes it from Playcademy permanently.
 
-  This cannot be undone.
+This cannot be undone.
 </Callout>
 
-***
+---
 
 ## Logs
 
@@ -11567,12 +11597,12 @@ There are two ways to use this command:
 2. **Anywhere**: Run `playcademy logs <slug>` with an explicit slug (useful for admins or tailing other projects)
 
 <TerminalBlock
-  command={[
-      'playcademy logs                      # Uses config file for slug',
-      'playcademy logs my-project           # Explicit slug',
-      'playcademy logs --env production     # Production environment',
-      'playcademy logs --history            # Include recent log history',
-  ]}
+command={[
+'playcademy logs # Uses config file for slug',
+'playcademy logs my-project # Explicit slug',
+'playcademy logs --env production # Production environment',
+'playcademy logs --history # Include recent log history',
+]}
 />
 
 **Arguments:**
@@ -11591,25 +11621,25 @@ There are two ways to use this command:
 **Example output:**
 
 <TerminalBlock
-  command={'playcademy logs my-project # or cd my-project && playcademy logs'}
-  output={[
-      '✔ Connected to staging logs for "my-project"',
-      '',
-      '✦ Press ctrl+c to stop',
-      '',
-      '10:39:51 AM GET /api/hello 200 OK',
-      '10:39:52 AM POST /api/validate-answer 200 OK',
-      '10:39:53 AM WARN [MyService]: Cache miss for user:123',
-  ]}
+command={'playcademy logs my-project # or cd my-project && playcademy logs'}
+output={[
+'✔ Connected to staging logs for "my-project"',
+'',
+'✦ Press ctrl+c to stop',
+'',
+'10:39:51 AM GET /api/hello 200 OK',
+'10:39:52 AM POST /api/validate-answer 200 OK',
+'10:39:53 AM WARN [MyService]: Cache miss for user:123',
+]}
 />
 
 <Callout type="tip" title="Log History">
   By default, only new logs are streamed.
 
-  Use `--history` to include recent logs from before you connected.
+Use `--history` to include recent logs from before you connected.
 </Callout>
 
-***
+---
 
 ## Debug Commands
 
@@ -11618,20 +11648,20 @@ There are two ways to use this command:
 Bundle and inspect the backend code.
 
 <TerminalBlock
-  command={[
-      'playcademy debug bundle',
-      'playcademy debug bundle --minify         # Minified output',
-      'playcademy debug bundle --sourcemap      # Include source maps',
-      'playcademy debug bundle -o bundle.js     # Custom output path',
-  ]}
+command={[
+'playcademy debug bundle',
+'playcademy debug bundle --minify # Minified output',
+'playcademy debug bundle --sourcemap # Include source maps',
+'playcademy debug bundle -o bundle.js # Custom output path',
+]}
 />
 
 Generates the backend bundle and shows:
 
-* Bundle size
-* Registered custom routes
-* Built-in integration routes
-* Configuration details
+- Bundle size
+- Registered custom routes
+- Built-in integration routes
+- Configuration details
 
 Useful for debugging bundling issues or inspecting what gets deployed.
 
@@ -11643,7 +11673,7 @@ Useful for debugging bundling issues or inspecting what gets deployed.
 | `--minify`              | Minify the output                                          |
 | `--sourcemap`           | Include source maps                                        |
 
-***
+---
 
 ## Environment Variables
 
@@ -11669,7 +11699,7 @@ PLAYCADEMY_PROFILE=work playcademy deploy
 PLAYCADEMY_API_TOKEN=your-api-key playcademy projects list
 ```
 
-***
+---
 
 ## Global Options
 
@@ -11682,7 +11712,7 @@ These options work with most commands:
 | `--verbose` | Enable detailed logging |
 | `--debug`   | Show debug information  |
 
-***
+---
 
 ## What's Next?
 
@@ -11704,7 +11734,6 @@ These options work with most commands:
   </Card>
 </Cards>
 
-
 # Deployment
 
 ## Overview
@@ -11719,14 +11748,14 @@ The `playcademy deploy` command handles the complete deployment workflow using o
   <img src="/diagrams/deployment-diagram-dark.svg" alt="Deployment process diagram showing developer, CLI, platform API, and edge infrastructure (dark mode)" className="w-full hidden dark:block border-none" />
 </div>
 
-***
+---
 
 ## Quick Start
 
 <Tabs items={['Staging', 'Production']}>
-  <Tab value="Staging">
-    <TerminalBlock command="playcademy deploy" simple />
-  </Tab>
+<Tab value="Staging">
+<TerminalBlock command="playcademy deploy" simple />
+</Tab>
 
   <Tab value="Production">
     <TerminalBlock command="playcademy deploy --env production" simple />
@@ -11737,7 +11766,7 @@ The `playcademy deploy` command handles the complete deployment workflow using o
   The CLI deploys to staging by default to prevent inadvertent production deployments.
 </Callout>
 
-***
+---
 
 ## Prerequisites
 
@@ -11746,12 +11775,14 @@ The `playcademy deploy` command handles the complete deployment workflow using o
     ### Authenticate
 
     Run [`playcademy login`](/platform/cli/commands#login) if you haven't already authenticated with your Playcademy account.
+
   </Step>
 
   <Step>
     ### Initialize Your Project
 
     Run [`playcademy init`](/platform/cli/commands#init) to create your configuration file if you haven't already.
+
   </Step>
 
   <Step>
@@ -11763,9 +11794,10 @@ The `playcademy deploy` command handles the complete deployment workflow using o
       npm: 'npm run build # or whatever your build command is',
       pnpm: 'pnpm run build # or whatever your build command is',
       yarn: 'yarn run build # or whatever your build command is',
-  }}
-    />
-  </Step>
+
+}}
+/>
+</Step>
 
   <Step>
     ### Create Deployment Package
@@ -11776,10 +11808,11 @@ The `playcademy deploy` command handles the complete deployment workflow using o
       If you're using [`@playcademy/vite-plugin`](/platform/vite-plugin), the zip file is created
       automatically during build.
     </Callout>
+
   </Step>
 </Steps>
 
-***
+---
 
 ## Specifying Build Path
 
@@ -11797,6 +11830,7 @@ You can specify the build path in three ways:
         buildPath: '.playcademy/my-project.zip',
     }
     ```
+
   </Step>
 
   <Step>
@@ -11805,6 +11839,7 @@ You can specify the build path in three ways:
     Pass the build path as a flag:
 
     <TerminalBlock command="playcademy deploy --build ./dist/my-project.zip" />
+
   </Step>
 
   <Step>
@@ -11821,12 +11856,13 @@ You can specify the build path in three ways:
       '  Status: Not deployed',
       '',
       '? Path to project zip file: .playcademy/my-project.zip',
-  ]}
-    />
-  </Step>
+
+]}
+/>
+</Step>
 </Steps>
 
-***
+---
 
 ## Backend Deployment
 
@@ -11844,11 +11880,11 @@ Deployment behavior is determined by the following factors:
 **Examples:**
 
 <TerminalBlock
-  command={[
-      'playcademy deploy  # Deploy normally (backend changes included if changes detected)',
-      'playcademy deploy --force-backend  # Force backend deployment (when no changes detected)',
-      'playcademy deploy --no-backend  # Skip backend (only deploy frontend changes)',
-  ]}
+command={[
+'playcademy deploy # Deploy normally (backend changes included if changes detected)',
+'playcademy deploy --force-backend # Force backend deployment (when no changes detected)',
+'playcademy deploy --no-backend # Skip backend (only deploy frontend changes)',
+]}
 />
 
 ### Backend URLs
@@ -11860,7 +11896,7 @@ After deployment, your backend is available at:
 | **Staging**    | `https://your-project-staging.playcademy.gg` |
 | **Production** | `https://your-project.playcademy.gg`         |
 
-***
+---
 
 ## Environments
 
@@ -11894,7 +11930,7 @@ Staging allows you to:
   Staging and production are 100% isolated. Deploying to staging doesn't affect production.
 </Callout>
 
-***
+---
 
 ## Change Detection
 
@@ -11942,21 +11978,21 @@ Changes detected:
 ✔ Update My Project to a new version? Yes
 ```
 
-***
+---
 
 ## Interactive Prompts
 
 If required information is missing, the CLI prompts you:
 
 <TerminalBlock
-  command={'playcademy deploy'}
-  output={[
-      'Current Configuration:',
-      '  Name:   My Project',
-      '  Status: Not deployed',
-      '? Path to project zip file: ./dist/project.zip',
-      '? Deploy this project? Yes',
-  ]}
+command={'playcademy deploy'}
+output={[
+'Current Configuration:',
+' Name: My Project',
+' Status: Not deployed',
+'? Path to project zip file: ./dist/project.zip',
+'? Deploy this project? Yes',
+]}
 />
 
 ### Skipping Prompts
@@ -11964,17 +12000,17 @@ If required information is missing, the CLI prompts you:
 Provide all information via config or flags for non-interactive deployments:
 
 <TerminalBlock
-  command={[
-      [
-          'playcademy deploy \\',
-          '  --name "My Project" \\',
-          '  --build ./dist/project.zip \\',
-          '  --env staging',
-      ],
-  ]}
+command={[
+[
+'playcademy deploy \\',
+' --name "My Project" \\',
+' --build ./dist/project.zip \\',
+' --env staging',
+],
+]}
 />
 
-***
+---
 
 ## Dry Run
 
@@ -11998,7 +12034,7 @@ Deployment Plan (Dry Run)
 ✦ Dry run complete
 ```
 
-***
+---
 
 ## Command Options
 
@@ -12023,7 +12059,7 @@ Full deployment command reference:
 
 See [Commands Reference](/platform/cli/commands#deploy) for complete details.
 
-***
+---
 
 ## Secrets Integration
 
@@ -12064,7 +12100,7 @@ If your project uses integrations that require secrets (like authentication), th
 
 Add the missing secret to your `.env` file and redeploy.
 
-***
+---
 
 ## Updating Your Project
 
@@ -12072,7 +12108,7 @@ Made changes? Redeploy anytime:
 
 <TerminalBlock command={['bun run build', 'playcademy deploy']} addPrefix={true} />
 
-***
+---
 
 ## Observability
 
@@ -12081,20 +12117,20 @@ Made changes? Redeploy anytime:
 After deploying, stream real-time logs from your application:
 
 <TerminalBlock
-  command={'playcademy logs # or cd my-project && playcademy logs'}
-  output={[
-      '✔ Connected to staging logs for "my-project"',
-      '',
-      '  Press ctrl+c to stop',
-      '',
-      '10:39:51 AM GET /api/hello 200 OK',
-      '10:39:52 AM POST /api/validate-answer 200 OK',
-  ]}
+command={'playcademy logs # or cd my-project && playcademy logs'}
+output={[
+'✔ Connected to staging logs for "my-project"',
+'',
+' Press ctrl+c to stop',
+'',
+'10:39:51 AM GET /api/hello 200 OK',
+'10:39:52 AM POST /api/validate-answer 200 OK',
+]}
 />
 
 See [`playcademy logs`](/platform/cli/commands#logs) for more information.
 
-***
+---
 
 ## What's Next?
 
@@ -12116,7 +12152,6 @@ See [`playcademy logs`](/platform/cli/commands#logs) for more information.
   </Card>
 </Cards>
 
-
 # Development
 
 ## Overview
@@ -12129,24 +12164,24 @@ It includes routes for integrations — like Timeback — out of the box.
   The `@playcademy/vite-plugin` package automatically starts `playcademy dev` for you when you run
   `bun dev`.
 
-  It is **highly recommended** to use the [Vite Plugin](/platform/vite-plugin) instead of the CLI dev server.
+It is **highly recommended** to use the [Vite Plugin](/platform/vite-plugin) instead of the CLI dev server.
 </Callout>
 
 ## Starting the Dev Server
 
 <TerminalBlock
-  command="playcademy dev"
-  output={[
-      '✔ Project API started: http://localhost:8788/api',
-      '',
-      '/health GET',
-      '/api/hello GET, POST',
-      '',
-      '✦ Press ctrl+c to stop',
-  ]}
+command="playcademy dev"
+output={[
+'✔ Project API started: http://localhost:8788/api',
+'',
+'/health GET',
+'/api/hello GET, POST',
+'',
+'✦ Press ctrl+c to stop',
+]}
 />
 
-***
+---
 
 ## Local Development
 
@@ -12162,7 +12197,7 @@ In addition, the server automatically discovers and registers:
 2. **Custom routes**: Any routes in your `server/api/` directory
 3. **Integration routes**: Timeback (+ more to come)
 
-***
+---
 
 ## Custom API Routes
 
@@ -12172,7 +12207,7 @@ Routes are simple TypeScript files that export HTTP method handlers:
 
 ```typescript title="server/api/hello.ts"
 export async function GET(c: Context) {
-    return c.json({ message: 'Hello from backend!' })
+  return c.json({ message: 'Hello from backend!' });
 }
 ```
 
@@ -12181,7 +12216,7 @@ export async function GET(c: Context) {
   on creating and structuring routes.
 </Callout>
 
-***
+---
 
 ## Hot Reloading
 
@@ -12209,18 +12244,18 @@ The dev server automatically reloads when you:
 2. Changes to `node_modules`
 3. Changes outside the project directory
 
-***
+---
 
 ## Server Options
 
 Customize the dev server behavior:
 
 <TerminalBlock
-  command={[
-      'playcademy dev --port 9000',
-      'playcademy dev --no-reload',
-      'playcademy dev --no-logger',
-  ]}
+command={[
+'playcademy dev --port 9000',
+'playcademy dev --no-reload',
+'playcademy dev --no-logger',
+]}
 />
 
 | Option        | Default   | Description                    |
@@ -12229,7 +12264,7 @@ Customize the dev server behavior:
 | `--no-reload` | (enabled) | Disable hot module replacement |
 | `--no-logger` | (enabled) | Disable HTTP request logging   |
 
-***
+---
 
 ## Integrations in Development
 
@@ -12238,17 +12273,17 @@ Customize the dev server behavior:
 <Callout type="warn" title="Timeback Disabled (locally)">
   Timeback routes are **disabled** in local development.
 
-  This is temporary until a local Timeback environment is available.
+This is temporary until a local Timeback environment is available.
 
-  Calls to Timeback endpoints return `503` with a helpful error message.
+Calls to Timeback endpoints return `503` with a helpful error message.
 
-  **How to test out your Timeback integration:**
+**How to test out your Timeback integration:**
 
-  * Deploy your project to staging with `playcademy deploy --env staging`
-  * Mock Timeback calls in your frontend code
-</Callout>
+- Deploy your project to staging with `playcademy deploy --env staging`
+- Mock Timeback calls in your frontend code
+  </Callout>
 
-***
+---
 
 ## Debugging
 
@@ -12276,7 +12311,7 @@ The dev server displays all registered routes on startup:
   /api/users/:userId              GET
 ```
 
-***
+---
 
 ## What's Next?
 
@@ -12298,17 +12333,16 @@ The dev server displays all registered routes on startup:
   </Card>
 </Cards>
 
-
 # CLI
 
 ## Overview
 
 The `playcademy` command-line interface provides everything you need to:
 
-* **Initialize** projects with configuration and integrations
-* **Develop** using a local backend server with hot reload
-* **Deploy** projects to production or staging environments
-* **Manage** your projects, authentication, and integrations
+- **Initialize** projects with configuration and integrations
+- **Develop** using a local backend server with hot reload
+- **Deploy** projects to production or staging environments
+- **Manage** your projects, authentication, and integrations
 
 <div className="w-full max-w-5xl my-6 rounded-xl overflow-hidden">
   <img src="/diagrams/cli-overview-diagram.svg" alt="CLI workflow showing authentication, initialization, integrations, development, and deployment" className="w-full block dark:hidden border-none" />
@@ -12321,7 +12355,7 @@ The `playcademy` command-line interface provides everything you need to:
 The fastest way to create a new project:
 
 <PackageManagerTabs
-  commands={{
+commands={{
       bun: 'bun create playcademy my-app',
       npm: 'npm create playcademy my-app',
       pnpm: 'pnpm create playcademy my-app',
@@ -12336,7 +12370,7 @@ This scaffolds a project using your chosen project type (Vite or Godot).
 Run commands using a package runner without installation:
 
 <PackageManagerTabs
-  commands={{
+commands={{
       bun: 'bunx playcademy --help',
       npm: 'npx playcademy --help',
       pnpm: 'pnpm dlx playcademy --help',
@@ -12347,17 +12381,17 @@ Run commands using a package runner without installation:
 <Callout type="info" title="Want to install globally?">
   You can also install the CLI globally:
 
-  <PackageManagerTabs
-    commands={{
+<PackageManagerTabs
+commands={{
       bun: 'bun add -g playcademy',
       npm: 'npm install -g playcademy',
       pnpm: 'pnpm add -g playcademy',
       yarn: 'yarn global add playcademy',
   }}
-  />
+/>
 </Callout>
 
-***
+---
 
 ## Key Concepts
 
@@ -12380,11 +12414,11 @@ The CLI uses `playcademy.config.js` (or `.json`) to store your project's metadat
 
 ```js title="playcademy.config.js"
 export default {
-    name: 'My Project',
-    description: 'A fun educational project',
-    emoji: '🎮',
-    // other config
-}
+  name: 'My Project',
+  description: 'A fun educational project',
+  emoji: '🎮'
+  // other config
+};
 ```
 
 This file is created as a consequence of running [`playcademy init`](/platform/cli/commands#project-init).
@@ -12394,12 +12428,12 @@ This file is created as a consequence of running [`playcademy init`](/platform/c
 The CLI supports multiple authentication profiles and keeps staging/production credentials separate.
 
 <TerminalBlock
-  command={[
-      'playcademy login # defaults to staging',
-      'playcademy login --env production # log in to production',
-      'playcademy login --profile work # save to named profile',
-      'playcademy deploy --profile work # deploy to named profile',
-  ]}
+command={[
+'playcademy login # defaults to staging',
+'playcademy login --env production # log in to production',
+'playcademy login --profile work # save to named profile',
+'playcademy deploy --profile work # deploy to named profile',
+]}
 />
 
 **This allows you to:**
@@ -12417,17 +12451,17 @@ Deploy to different environments for testing and production.
 | **Production** | `--env production` | Live projects for users  |
 
 <TerminalBlock
-  command={[
-      'playcademy deploy # deploy to staging',
-      'playcademy deploy --env production # deploy to production',
-  ]}
+command={[
+'playcademy deploy # deploy to staging',
+'playcademy deploy --env production # deploy to production',
+]}
 />
 
 <Callout type="tip" title="Staging is Default">
   The CLI uses staging as a safe default
 </Callout>
 
-***
+---
 
 ## Command Categories
 
@@ -12436,12 +12470,12 @@ Deploy to different environments for testing and production.
 These commands help you set up and authenticate:
 
 <TerminalBlock
-  command={[
-      'playcademy login              # Authenticate with Playcademy',
-      'playcademy me                 # View your account info',
-      'playcademy dev apply          # Apply for developer status',
-      'playcademy init               # Initialize project configuration',
-  ]}
+command={[
+'playcademy login # Authenticate with Playcademy',
+'playcademy me # View your account info',
+'playcademy dev apply # Apply for developer status',
+'playcademy init # Initialize project configuration',
+]}
 />
 
 ### Development
@@ -12449,11 +12483,11 @@ These commands help you set up and authenticate:
 Run your project backend locally with hot reload:
 
 <TerminalBlock
-  command={[
-      'playcademy dev                # Start backend dev server (port 8788)',
-      'playcademy dev --port 9000    # Use custom port',
-      'playcademy dev --no-reload    # Disable hot reload',
-  ]}
+command={[
+'playcademy dev # Start backend dev server (port 8788)',
+'playcademy dev --port 9000 # Use custom port',
+'playcademy dev --no-reload # Disable hot reload',
+]}
 />
 
 See [Development](/platform/cli/development) for details.
@@ -12463,12 +12497,12 @@ See [Development](/platform/cli/development) for details.
 Deploy your project to the Playcademy platform:
 
 <TerminalBlock
-  command={[
-      'playcademy deploy                    # Deploy to staging (default)',
-      'playcademy deploy --env production   # Deploy to production',
-      'playcademy deploy --dry-run          # Validate without deploying',
-      'playcademy deploy --no-backend       # Skip backend deployment',
-  ]}
+command={[
+'playcademy deploy # Deploy to staging (default)',
+'playcademy deploy --env production # Deploy to production',
+'playcademy deploy --dry-run # Validate without deploying',
+'playcademy deploy --no-backend # Skip backend deployment',
+]}
 />
 
 See [Deployment](/platform/cli/deployment) for the complete workflow.
@@ -12478,11 +12512,11 @@ See [Deployment](/platform/cli/deployment) for the complete workflow.
 List and manage your deployed projects:
 
 <TerminalBlock
-  command={[
-      'playcademy projects list           # List all your projects',
-      'playcademy projects delete         # Delete a project (interactive)',
-      'playcademy projects delete [slug]  # Delete by slug',
-  ]}
+command={[
+'playcademy projects list # List all your projects',
+'playcademy projects delete # Delete a project (interactive)',
+'playcademy projects delete [slug] # Delete by slug',
+]}
 />
 
 See [Project Management](/platform/cli/commands#project-management) for details.
@@ -12492,24 +12526,24 @@ See [Project Management](/platform/cli/commands#project-management) for details.
 Add backend features to your project:
 
 <TerminalBlock
-  command={[
-      'playcademy timeback init      # Add Timeback to project',
-      'playcademy timeback setup     # Set up Timeback resources',
-      'playcademy timeback verify    # Verify configuration',
-      'playcademy db init            # Add database to project',
-      'playcademy db diff            # Show schema changes',
-      'playcademy db reset           # Reset local database',
-      'playcademy kv init            # Add KV to project',
-      'playcademy kv list            # List local KV keys',
-      'playcademy api init           # Add custom routes to project',
-  ]}
+command={[
+'playcademy timeback init # Add Timeback to project',
+'playcademy timeback setup # Set up Timeback resources',
+'playcademy timeback verify # Verify configuration',
+'playcademy db init # Add database to project',
+'playcademy db diff # Show schema changes',
+'playcademy db reset # Reset local database',
+'playcademy kv init # Add KV to project',
+'playcademy kv list # List local KV keys',
+'playcademy api init # Add custom routes to project',
+]}
 />
 
 <Callout type="tip" title="Learn More">
   Check out the [integration guides](/platform/integrations) for details.
 </Callout>
 
-***
+---
 
 ## Getting Help
 
@@ -12518,11 +12552,11 @@ Add backend features to your project:
 Get help for any command:
 
 <TerminalBlock
-  command={[
-      'playcademy --help              # List all commands',
-      'playcademy deploy --help       # Help for specific command',
-      'playcademy timeback --help     # Help for command group',
-  ]}
+command={[
+'playcademy --help # List all commands',
+'playcademy deploy --help # Help for specific command',
+'playcademy timeback --help # Help for command group',
+]}
 />
 
 ### Verbose Output
@@ -12530,13 +12564,13 @@ Get help for any command:
 Enable detailed logging for debugging:
 
 <TerminalBlock
-  command={[
-      'playcademy deploy --verbose    # Show detailed logs',
-      'playcademy deploy --debug      # Show debug information',
-  ]}
+command={[
+'playcademy deploy --verbose # Show detailed logs',
+'playcademy deploy --debug # Show debug information',
+]}
 />
 
-***
+---
 
 ## What's Next?
 
@@ -12558,7 +12592,6 @@ Enable detailed logging for debugging:
   </Card>
 </Cards>
 
-
 # Secrets
 
 ## Overview
@@ -12576,10 +12609,10 @@ API keys, signing secrets, and credentials that should never be committed to ver
 <Callout type="warn" title="Never Commit Secrets">
   Secrets should never be committed to version control or exposed to the client.
 
-  Store them in your `.env` file which should be gitignored.
+Store them in your `.env` file which should be gitignored.
 </Callout>
 
-***
+---
 
 ## The `.env` File
 
@@ -12608,18 +12641,19 @@ Make sure `.env` files are listed in your `.gitignore`:
 .env.development
 ```
 
-***
+---
 
 ## Accessing Secrets
 
 Access secrets in your [custom routes](/platform/integrations/custom-routes) via `c.env.secrets`:
 
 <Tabs items={["External API", "Message Signing", "Webhook Verification"]}>
-  <Tab value="External API">
-    ```typescript title="server/api/ai-prompt.ts"
-    export async function POST(c: Context) {
-        const headers = new Headers()
-        const apiKey = c.env.secrets.OPENAI_API_KEY
+<Tab value="External API">
+
+````typescript title="server/api/ai-prompt.ts"
+export async function POST(c: Context) {
+const headers = new Headers()
+const apiKey = c.env.secrets.OPENAI_API_KEY
 
         if (!apiKey) {
             return c.json({ error: 'API key not configured' }, 500)
@@ -12642,6 +12676,7 @@ Access secrets in your [custom routes](/platform/integrations/custom-routes) via
         return c.json(await response.json())
     }
     ```
+
   </Tab>
 
   <Tab value="Message Signing">
@@ -12662,6 +12697,7 @@ Access secrets in your [custom routes](/platform/integrations/custom-routes) via
         return c.json({ message, signature: signatureHex })
     }
     ```
+
   </Tab>
 
   <Tab value="Webhook Verification">
@@ -12675,6 +12711,7 @@ Access secrets in your [custom routes](/platform/integrations/custom-routes) via
         return c.json({ received: true, isValid }, isValid ? 200 : 401)
     }
     ```
+
   </Tab>
 </Tabs>
 
@@ -12682,16 +12719,16 @@ The CLI automatically generates local types, giving you autocomplete and compile
 
 ```typescript title="server/api/example.ts"
 export async function POST(c: Context) {
-    // ✅ Autocomplete suggests: OPENAI_API_KEY, STRIPE_SECRET, etc.
-    // ✅ TypeScript knows these exist and are strings
-    const apiKey = c.env.secrets.OPENAI_API_KEY
+	// ✅ Autocomplete suggests: OPENAI_API_KEY, STRIPE_SECRET, etc.
+	// ✅ TypeScript knows these exist and are strings
+	const apiKey = c.env.secrets.OPENAI_API_KEY;
 
-    // ❌ TypeScript error: Property 'TYPO_KEY' doesn't exist
-    const oops = c.env.secrets.TYPO_KEY
+	// ❌ TypeScript error: Property 'TYPO_KEY' doesn't exist
+	const oops = c.env.secrets.TYPO_KEY;
 }
-```
+````
 
-***
+---
 
 ## Deploying Secrets
 
@@ -12702,16 +12739,16 @@ If secrets are the only change, the CLI pushes them without redeploying your cod
 <Callout type="info" title="Alternative Commands">
   If you need to push secrets without deploying, use the dedicated commands:
 
-  <TerminalBlock command={['playcademy secrets push', 'playcademy secrets list']} />
+<TerminalBlock command={['playcademy secrets push', 'playcademy secrets list']} />
 
-  Both commands accept `--env production` to target production.
+Both commands accept `--env production` to target production.
 </Callout>
 
 ### Removing Secrets
 
 Delete a secret from your `.env` file and deploy. The CLI will remove it from remote.
 
-***
+---
 
 ## Database Seeding
 
@@ -12729,7 +12766,7 @@ If your seed script doesn't need secrets, you can skip the sync check:
 
 The `--force` flag skips the secrets sync prompt but still passes your local `.env` secrets to the seed worker.
 
-***
+---
 
 ## What's Next?
 
@@ -12751,10 +12788,7 @@ The `--force` flag skips the secrets sync prompt but still passes your local `.e
   </Card>
 </Cards>
 
-
 # Godot Development
-
-
 
 ## Overview
 
@@ -12766,7 +12800,7 @@ Integrate your Godot projects with the Playcademy platform using our Godot toolc
   <img src="/diagrams/godot-overview-diagram-dark.svg" alt="Godot integration architecture showing setup and runtime phases (dark mode)" className="w-full hidden dark:block border-none" />
 </div>
 
-***
+---
 
 ## Installation
 
@@ -12781,6 +12815,7 @@ Install the Playcademy asset bundle from the Godot AssetLib and configure your p
     3. Install the bundle
 
     This adds `addons/playcademy/` to your project.
+
   </Step>
 
   <Step>
@@ -12790,6 +12825,7 @@ Install the Playcademy asset bundle from the Godot AssetLib and configure your p
 
     * **Playcademy Backend** (for local development servers)
     * **Playcademy Manifest Exporter** (for deployment)
+
   </Step>
 
   <Step>
@@ -12799,12 +12835,13 @@ Install the Playcademy asset bundle from the Godot AssetLib and configure your p
     2. Click the folder icon and navigate to `res://addons/playcademy/sdk/playcademy_sdk.gd`
     3. Name it [`PlaycademySdk`](#playcademysdk) (this is the name you'll use in your code)
     4. Click `+ Add`
+
   </Step>
 </Steps>
 
 <Video src="/videos/godot-setup/video.mp4" title="Godot SDK Setup" caption="Watch the complete setup process from installing the asset bundle to configuring plugins" />
 
-***
+---
 
 ## Need a Backend?
 
@@ -12861,6 +12898,7 @@ Playcademy fills this gap with production-ready server infrastructure.
     <a href="/platform/integrations/custom-routes">
       Learn More →
     </a>
+
   </div>
 </Callout>
 
@@ -12878,10 +12916,12 @@ You can opt into server-side functionality using the [Playcademy CLI](/platform/
       npm: 'npx playcademy init # Select integrations when prompted',
       pnpm: 'pnpm dlx playcademy init # Select integrations when prompted',
       yarn: 'yarn dlx playcademy init # Select integrations when prompted',
-  }}
-    />
+
+}}
+/>
 
     This creates a `playcademy.config.json` with your project metadata.
+
   </Step>
 
   <Step>
@@ -12896,9 +12936,10 @@ You can opt into server-side functionality using the [Playcademy CLI](/platform/
       'playcademy auth init  # User accounts',
       'playcademy kv init  # Key-value storage',
       'playcademy api init  # Custom routes',
-  ]}
-    />
-  </Step>
+
+]}
+/>
+</Step>
 
   <Step>
     ### Playcademy Backend Plugin
@@ -12910,17 +12951,18 @@ You can opt into server-side functionality using the [Playcademy CLI](/platform/
     <div className="max-w-3xl">
             <img alt="Playcademy Backend Plugin in Godot" src={__img0} placeholder="blur" />
     </div>
+
   </Step>
 </Steps>
 
-***
+---
 
 ## Pre-configured Project
 
 The fastest way to start a new Godot project with Playcademy:
 
 <PackageManagerTabs
-  commands={{
+commands={{
       bun: 'bun create playcademy my-godot-app',
       npm: 'npm create playcademy my-godot-app',
       pnpm: 'pnpm create playcademy my-godot-app',
@@ -12932,9 +12974,9 @@ When prompted, select **Godot** as your project type.
 
 This scaffolds a project with:
 
-* Playcademy addon pre-installed in `addons/playcademy/`
-* Sample scenes and scripts demonstrating fundamentals
-* `playcademy.config.json` configured for your project
+- Playcademy addon pre-installed in `addons/playcademy/`
+- Sample scenes and scripts demonstrating fundamentals
+- `playcademy.config.json` configured for your project
 
 Open the project folder in Godot and run `Main.tscn` to see the SDK in action.
 
@@ -12943,11 +12985,11 @@ Open the project folder in Godot and run `Main.tscn` to see the SDK in action.
 
   <TerminalBlock command="playcademy init" />
 
-  This adds the config file but won't install the addon automatically.
-  See the [Installation](#installation) section for manual addon setup.
+This adds the config file but won't install the addon automatically.
+See the [Installation](#installation) section for manual addon setup.
 </Callout>
 
-***
+---
 
 ## Local Development
 
@@ -12959,7 +13001,7 @@ The **Playcademy Backend** plugin automatically starts local development servers
 <Callout type="tip" title="Just Like the Vite Plugin">
   The `Playcademy Backend` plugin does for Godot what [`@playcademy/vite-plugin`](/platform/vite-plugin) does for Vite projects.
 
-  In other words, it automatically manages local development infrastructure.
+In other words, it automatically manages local development infrastructure.
 </Callout>
 
 ### Project Settings
@@ -13015,12 +13057,12 @@ Set a course to "Not Enrolled" to test how your app behaves when a student is en
 <Callout type="info" title="Testing Different Roles">
   Change the `role` setting to test how your app behaves for different Timeback user types during development.
 
-  For example, set `role` to `parent` to preview the parent experience, or `teacher` to test teacher-specific features.
+For example, set `role` to `parent` to preview the parent experience, or `teacher` to test teacher-specific features.
 
-  **Note:** After changing Timeback settings, click **Reset Database** in the Playcademy dock to apply changes.
+**Note:** After changing Timeback settings, click **Reset Database** in the Playcademy dock to apply changes.
 </Callout>
 
-***
+---
 
 ## `PlaycademySdk`
 
@@ -13051,7 +13093,7 @@ func _on_sdk_init_failed(error: String):
     printerr("SDK failed:", error)
 ```
 
-***
+---
 
 ## Core Namespaces
 
@@ -13129,7 +13171,7 @@ PlaycademySdk.runtime.ready()
 PlaycademySdk.runtime.exit()
 ```
 
-***
+---
 
 ## Integration Namespaces
 
@@ -13161,14 +13203,14 @@ PlaycademySdk.timeback.end_activity(score_data)
 <Callout type="info" title="Auto-filled Metadata">
   The SDK automatically fills in metadata from your project config:
 
-  * **`activityName`**: Derived from `activityId` (`math-quiz-1` → `Math Quiz 1`)
-  * **`appName`**: From `playcademy.config.json`'s `name` field
-  * **`sensorUrl`**: Your deployed project URL
+- **`activityName`**: Derived from `activityId` (`math-quiz-1` → `Math Quiz 1`)
+- **`appName`**: From `playcademy.config.json`'s `name` field
+- **`sensorUrl`**: Your deployed project URL
 
-  You can override any of these by providing them explicitly in `start_activity()`.
+You can override any of these by providing them explicitly in `start_activity()`.
 </Callout>
 
-***
+---
 
 #### User Context \[!toc]
 
@@ -13229,7 +13271,7 @@ var orgs = PlaycademySdk.timeback.user.organizations
 <Callout type="info" title="App-Scoped">
   Like enrollments, organizations are app-scoped.
 
-  Only organizations associated with the user's enrollments for your project are included.
+Only organizations associated with the user's enrollments for your project are included.
 </Callout>
 
 ##### `user.fetch()`
@@ -13245,10 +13287,10 @@ Emits `user_fetch_succeeded` or `user_fetch_failed` signals. See [Timeback Signa
 <Callout type="tip" title="When to Fetch">
   The user context is initialized when the SDK loads.
 
-  Use `fetch()` if you need the latest data (e.g. after a user might have been enrolled in a new course mid-session).
+Use `fetch()` if you need the latest data (e.g. after a user might have been enrolled in a new course mid-session).
 </Callout>
 
-***
+---
 
 #### `start_activity`
 
@@ -13295,7 +13337,7 @@ PlaycademySdk.timeback.start_activity(custom_activity)
 <Callout type="tip" title="Course Routing">
   The `grade` and `subject` fields determine which [OneRoster](/timeback/api-reference/oneroster) course receives the activity data.
 
-  Ensure these match a course in your `playcademy.config.json` Timeback configuration.
+Ensure these match a course in your `playcademy.config.json` Timeback configuration.
 </Callout>
 
 #### `end_activity`
@@ -13347,28 +13389,28 @@ PlaycademySdk.timeback.end_activity(score_with_custom_xp)
 <Callout type="info" title="When to Report Mastery">
   Send `masteredUnits: 1` when the student completes a discrete learning unit in your app:
 
-  * **Level-based:** Student completes a level, stage, or world
-  * **Rank-based:** Student earns a rank, tier, or badge
-  * **Skills-based:** Student masters a skill, competency, or standard
-  * **Module-based:** Student completes a module, quiz, or chapter
+- **Level-based:** Student completes a level, stage, or world
+- **Rank-based:** Student earns a rank, tier, or badge
+- **Skills-based:** Student masters a skill, competency, or standard
+- **Module-based:** Student completes a module, quiz, or chapter
 
-  The platform tracks cumulative mastery and calculates completion automatically based on your [mastery configuration](/platform/integrations/timeback#progress).
+The platform tracks cumulative mastery and calculates completion automatically based on your [mastery configuration](/platform/integrations/timeback#progress).
 </Callout>
 
 <Callout type="info" title="XP Calculation">
   By default, XP is calculated as:
 
-  **Base XP** = Active time in minutes × Accuracy multiplier
+**Base XP** = Active time in minutes × Accuracy multiplier
 
-  | Accuracy | Multiplier | Example (10 min)                    |
-  | :------- | :--------- | :---------------------------------- |
-  | 100%     | 1.25×      | 10 min × 1.25 = **12.5 XP**         |
-  | 80-99%   | 1.0×       | 10 min × 1.0 = **10 XP**            |
-  | \< 80%   | 0×         | **0 XP** (mastery not demonstrated) |
+| Accuracy | Multiplier | Example (10 min)                    |
+| :------- | :--------- | :---------------------------------- |
+| 100%     | 1.25×      | 10 min × 1.25 = **12.5 XP**         |
+| 80-99%   | 1.0×       | 10 min × 1.0 = **10 XP**            |
+| \< 80%   | 0×         | **0 XP** (mastery not demonstrated) |
 
-  Base rate: **1 minute of active learning = 1 XP**
+Base rate: **1 minute of active learning = 1 XP**
 
-  Re-attempts earn diminishing XP: 50% on 1st re-attempt, 25% on 2nd, 0% on 3rd+.
+Re-attempts earn diminishing XP: 50% on 1st re-attempt, 25% on 2nd, 0% on 3rd+.
 </Callout>
 
 #### `pause_activity`
@@ -13406,12 +13448,12 @@ PlaycademySdk.timeback.end_activity({
 <Callout type="tip" title="When to Pause">
   Pause when:
 
-  * Tutorial/instruction screens
-  * Showing hints or explanations
-  * Waiting for external resources to load
-  * Any non-active learning time
+- Tutorial/instruction screens
+- Showing hints or explanations
+- Waiting for external resources to load
+- Any non-active learning time
 
-  This ensures XP reflects actual learning time.
+This ensures XP reflects actual learning time.
 </Callout>
 
 #### `resume_activity`
@@ -13431,7 +13473,7 @@ PlaycademySdk.timeback.resume_activity()
 <Callout type="warning" title="Must Call start_activity First">
   You must call `start_activity()` before using `pause_activity()` or `resume_activity()`.
 
-  Calling these methods without an active activity will trigger a failure signal.
+Calling these methods without an active activity will trigger a failure signal.
 </Callout>
 
 #### Timeback Signals \[!toc]
@@ -13491,18 +13533,18 @@ These methods connect to the server-side routes you create in your `server/api/`
 
 Learn more about [custom routes](/platform/integrations/custom-routes).
 
-***
+---
 
 #### `request`
 
 Make HTTP requests to your custom backend routes.
 
 <Tabs items={["Basic GET", "POST with Body", "PUT/DELETE", "Error Handling"]}>
-  <Tab value="Basic GET">
-    ```gdscript
-    # Connect signal
-    func _ready():
-        PlaycademySdk.backend.request_succeeded.connect(_on_data_received)
+<Tab value="Basic GET">
+
+````gdscript # Connect signal
+func \_ready():
+PlaycademySdk.backend.request_succeeded.connect(\_on_data_received)
 
     # Make GET request
     func fetch_player_stats():
@@ -13515,6 +13557,7 @@ Make HTTP requests to your custom backend routes.
         var level = response.get("level", 1)
         update_ui(score, level)
     ```
+
   </Tab>
 
   <Tab value="POST with Body">
@@ -13540,6 +13583,7 @@ Make HTTP requests to your custom backend routes.
         else:
             show_incorrect_feedback()
     ```
+
   </Tab>
 
   <Tab value="PUT/DELETE">
@@ -13565,6 +13609,7 @@ Make HTTP requests to your custom backend routes.
     func _on_backend_success(response: Dictionary):
         print("Operation completed:", response)
     ```
+
   </Tab>
 
   <Tab value="Error Handling">
@@ -13594,6 +13639,7 @@ Make HTTP requests to your custom backend routes.
         # Maybe retry or fallback to local save
         save_to_local_storage(app_data)
     ```
+
   </Tab>
 </Tabs>
 
@@ -13607,11 +13653,11 @@ Make HTTP requests to your custom backend routes.
 
 **Supported Methods:**
 
-* `GET` - Retrieve data
-* `POST` - Create or submit data
-* `PUT` - Update data
-* `PATCH` - Partial update
-* `DELETE` - Remove data
+- `GET` - Retrieve data
+- `POST` - Create or submit data
+- `PUT` - Update data
+- `PATCH` - Partial update
+- `DELETE` - Remove data
 
 #### Backend Signals \[!toc]
 
@@ -13631,7 +13677,7 @@ func _on_backend_succeeded(response: Dictionary):
 
 func _on_backend_failed(error: String):
     printerr("Backend request failed:", error)
-```
+````
 
 **Available Signals:**
 
@@ -13643,18 +13689,18 @@ func _on_backend_failed(error: String):
 <Callout type="tip" title="Custom Routes">
   To create backend routes, add files to your `server/api/` directory:
 
-  ```typescript title="server/api/hello.ts"
-  export default defineRoute({
-      GET: async (req, ctx) => {
-          return { message: 'Hello from backend!' }
-      },
-  })
-  ```
+```typescript title="server/api/hello.ts"
+export default defineRoute({
+  GET: async (req, ctx) => {
+    return { message: 'Hello from backend!' };
+  }
+});
+```
 
-  See [Custom Routes](/platform/integrations/custom-routes) for complete documentation.
+See [Custom Routes](/platform/integrations/custom-routes) for complete documentation.
 </Callout>
 
-***
+---
 
 ## Export and Deploy
 
@@ -13669,6 +13715,7 @@ The CLI can automatically export and deploy your Godot project.
     1. Go to `Project → Export...`
     2. Add `Web (Runnable)` preset
     3. Set `Custom HTML Shell` to: `res://addons/playcademy/shell.html`
+
   </Step>
 
   <Step>
@@ -13689,12 +13736,13 @@ The CLI can automatically export and deploy your Godot project.
       The CLI finds your Godot executable and runs the export headlessly; no need to manually export
       from the editor!
     </Callout>
+
   </Step>
 </Steps>
 
 See [CLI Deployment](/platform/cli/deployment) for complete deployment documentation.
 
-***
+---
 
 ## Signal Reference
 
@@ -13737,11 +13785,11 @@ All SDK methods use signals for responses:
 <Callout type="info" title="Integration Signals">
   For Timeback and Backend API signals, see their respective sections:
 
-  * [Timeback Signals](#timeback-signals-toc)
-  * [Backend Signals](#backend-signals-toc)
-</Callout>
+- [Timeback Signals](#timeback-signals-toc)
+- [Backend Signals](#backend-signals-toc)
+  </Callout>
 
-***
+---
 
 ## What's Next?
 
@@ -13763,14 +13811,13 @@ All SDK methods use signals for responses:
   </Card>
 </Cards>
 
-
 # Platform Guides
 
 ## Overview
 
 Choose your development platform and follow the step-by-step integration guide.
 
-***
+---
 
 ## Available Guides
 
@@ -13788,7 +13835,6 @@ Choose your development platform and follow the step-by-step integration guide.
   </Card>
 </Cards>
 
-
 # Unity Development
 
 ## Coming Soon
@@ -13797,11 +13843,10 @@ Unity integration documentation is coming soon.
 
 For now, check out:
 
-* [Godot Integration](/platform/guides/godot) - Similar workflow for game engines
-* [Web Development](/platform/guides/web) - For browser-based projects
+- [Godot Integration](/platform/guides/godot) - Similar workflow for game engines
+- [Web Development](/platform/guides/web) - For browser-based projects
 
 Questions? Reach out to the team!
-
 
 # Web Development
 
@@ -13812,7 +13857,7 @@ Build web-based projects for Playcademy using JavaScript, TypeScript, and modern
 <Callout type="info" title="New to Playcademy?">
   This guide assumes familiarity with the platform.
 
-  If this is your first time, start with [Quick Start](/platform/quickstart).
+If this is your first time, start with [Quick Start](/platform/quickstart).
 </Callout>
 
 ## Templates
@@ -13824,7 +13869,7 @@ Get started quickly with pre-configured project templates.
 Minimal setup with vanilla JavaScript:
 
 <PackageManagerTabs
-  commands={{
+commands={{
       bun: [
           'bunx tiged superbuilders/playcademy-vite-template-js my-project',
           'cd my-project',
@@ -13863,7 +13908,7 @@ Minimal setup with vanilla JavaScript:
 Type-safe development with TypeScript:
 
 <PackageManagerTabs
-  commands={{
+commands={{
       bun: [
           'bunx tiged superbuilders/playcademy-vite-template-ts my-project',
           'cd my-project',
@@ -13893,16 +13938,16 @@ Type-safe development with TypeScript:
 
 **Includes:**
 
-* Full TypeScript configuration
-* Type-safe SDK usage examples
-* Modern build tooling
+- Full TypeScript configuration
+- Type-safe SDK usage examples
+- Modern build tooling
 
 ### React + TypeScript Template
 
 React-based projects with hooks and components:
 
 <PackageManagerTabs
-  commands={{
+commands={{
       bun: [
           'bunx tiged superbuilders/playcademy-vite-template-react my-project',
           'cd my-project',
@@ -13930,7 +13975,7 @@ React-based projects with hooks and components:
   }}
 />
 
-***
+---
 
 ## Integrating with Existing Projects
 
@@ -13948,14 +13993,16 @@ If you already have a Vite project:
       npm: ['npm install', 'npx playcademy init', 'npx playcademy vite config'],
       pnpm: ['pnpm install', 'pnpm dlx playcademy init', 'pnpm dlx playcademy vite config'],
       yarn: ['yarn install', 'yarn dlx playcademy init', 'yarn dlx playcademy vite config'],
-  }}
-    />
+
+}}
+/>
 
     This will:
 
     1. Install project dependencies
     2. Create `playcademy.config.js`
     3. Install and configure [`@playcademy/vite-plugin`](/platform/vite-plugin)
+
   </Step>
 
   <Step>
@@ -13966,6 +14013,7 @@ If you already have a Vite project:
 
     const client = await PlaycademyClient.init()
     ```
+
   </Step>
 </Steps>
 
@@ -13979,17 +14027,17 @@ If you already have a Vite project:
 <Callout type="warn" title="Coming Soon">
   Full-stack framework integrations (Next.js, Remix, SvelteKit, etc.) are coming soon.
 
-  These frameworks bring their own backends, so integration requires:
+These frameworks bring their own backends, so integration requires:
 
-  * Browser SDK for frontend ([`@playcademy/sdk`](/platform/sdk/browser))
-  * Server SDK for backend ([`@playcademy/sdk/server`](/platform/sdk/server))
+- Browser SDK for frontend ([`@playcademy/sdk`](/platform/sdk/browser))
+- Server SDK for backend ([`@playcademy/sdk/server`](/platform/sdk/server))
 
-  We're working on framework-specific packages (think: `@playcademy/svelte`) to make this easier.
+We're working on framework-specific packages (think: `@playcademy/svelte`) to make this easier.
 
-  For now, we recommend using Vite (with [@playcademy/vite-plugin](/platform/vite-plugin)) for the best developer experience.
+For now, we recommend using Vite (with [@playcademy/vite-plugin](/platform/vite-plugin)) for the best developer experience.
 </Callout>
 
-***
+---
 
 ## What's Next?
 
@@ -14010,7 +14058,6 @@ If you already have a Vite project:
     Add educational tracking and XP rewards.
   </Card>
 </Cards>
-
 
 # Authentication
 
@@ -14033,15 +14080,15 @@ This authentication integration is **optional**. Add it based on your needs.
 | Account settings & user management        | **Yes** (Requires authentication integration) |
 
 <CTAButton href={config.discordInviteUrl} variant="secondary" icon={<DiscordIcon />}>
-  Need help? Ask us on Discord
+Need help? Ask us on Discord
 </CTAButton>
 
 ## Getting Started
 
 <Tabs items={["New Project", "Existing Project"]}>
-  <Tab value="New Project">
-    <TerminalBlock command={'playcademy init  # Select "Yes" for Database, then "Yes" for Authentication'} simple />
-  </Tab>
+<Tab value="New Project">
+<TerminalBlock command={'playcademy init # Select "Yes" for Database, then "Yes" for Authentication'} simple />
+</Tab>
 
   <Tab value="Existing Project">
     <TerminalBlock command="playcademy auth init" simple />
@@ -14075,6 +14122,7 @@ This scaffolds a complete authentication setup:
     </Folder>
 
     <File name=".env.example" />
+
   </Folder>
 </Files>
 
@@ -14093,10 +14141,10 @@ BETTER_AUTH_SECRET=your-secret-here
 <Callout type="warn" title="Required Secret">
   `BETTER_AUTH_SECRET` must be at least 32 characters and generated with high entropy.
 
-  The dev server will fail to start without it.
+The dev server will fail to start without it.
 </Callout>
 
-***
+---
 
 ## How It Works
 
@@ -14110,6 +14158,7 @@ The authentication integration provides dual-mode authentication that works both
 
     * Platform provides a JWT token that's exchanged for a Better Auth session
     * No login UI required; authentication is seamless
+
   </Step>
 
   <Step>
@@ -14119,10 +14168,11 @@ The authentication integration provides dual-mode authentication that works both
 
     * Email/password, GitHub OAuth, or Google OAuth
     * You build the login UI using your own components
+
   </Step>
 </Steps>
 
-***
+---
 
 ## Authentication Configuration
 
@@ -14130,58 +14180,58 @@ The CLI creates `server/lib/auth.ts` with your Better Auth configuration:
 
 ```typescript title="server/lib/auth.ts"
 export function getAuth(c: Context) {
-    const db = getDb(c.env.DB)
+  const db = getDb(c.env.DB);
 
-    return betterAuth({
-        database: drizzleAdapter(db, { provider: 'sqlite' }),
+  return betterAuth({
+    database: drizzleAdapter(db, { provider: 'sqlite' }),
 
-        trustedOrigins: ['http://localhost:5173'],
+    trustedOrigins: ['http://localhost:5173'],
 
-        emailAndPassword: { enabled: true },
+    emailAndPassword: { enabled: true },
 
-        plugins: [playcademy()],
+    plugins: [playcademy()],
 
-        advanced: {
-            defaultCookieAttributes: {
-                sameSite: 'none',
-                secure: true,
-                path: '/',
-            },
-        },
-    })
+    advanced: {
+      defaultCookieAttributes: {
+        sameSite: 'none',
+        secure: true,
+        path: '/'
+      }
+    }
+  });
 }
 ```
 
 This configuration is fully customizable; you can add/remove providers and adjust settings as you see fit.
 
-***
+---
 
 ## Using Authentication in Routes
 
 Access the authenticated user via `c.get('user')`:
 
 ```typescript title="server/api/save-progress.ts"
-import type { User } from '../lib/auth'
+import type { User } from '../lib/auth';
 
 export async function POST(c: Context) {
-    const user = c.get('user') as User | undefined
+  const user = c.get('user') as User | undefined;
 
-    if (!user) {
-        return c.json({ error: 'Authentication required' }, 401)
-    }
+  if (!user) {
+    return c.json({ error: 'Authentication required' }, 401);
+  }
 
-    // user.id is the Better Auth user ID
-    // user.playcademyUserId links to platform identity (if launched from Playcademy)
-    const { level, score } = await c.req.json()
+  // user.id is the Better Auth user ID
+  // user.playcademyUserId links to platform identity (if launched from Playcademy)
+  const { level, score } = await c.req.json();
 
-    // Save progress for this user...
-    return c.json({ success: true })
+  // Save progress for this user...
+  return c.json({ success: true });
 }
 ```
 
 The CLI creates a sample protected route at `server/api/sample/protected.ts` demonstrating this pattern.
 
-***
+---
 
 ## Frontend Usage
 
@@ -14191,13 +14241,13 @@ Integrating authentication into your frontend requires:
 2. Adding the Playcademy plugin to the auth client
 
 ```typescript title="src/lib/auth.ts"
-import { createAuthClient } from 'better-auth/react'
+import { createAuthClient } from 'better-auth/react';
 
-import { playcademy } from '@playcademy/better-auth/client'
+import { playcademy } from '@playcademy/better-auth/client';
 
 export const authClient = createAuthClient({
-    plugins: [playcademy()],
-})
+  plugins: [playcademy()]
+});
 ```
 
 Use it in your components:
@@ -14221,16 +14271,16 @@ export function App() {
 }
 ```
 
-***
+---
 
 ## Adding Authentication Strategies
 
 ### Email/Password
 
 <Tabs items={["During Init", "Add Later"]}>
-  <Tab value="During Init">
-    <TerminalBlock command={'playcademy init  # Select Email/password in auth strategies'} simple />
-  </Tab>
+<Tab value="During Init">
+<TerminalBlock command={'playcademy init # Select Email/password in auth strategies'} simple />
+</Tab>
 
   <Tab value="Add Later">
     <TerminalBlock command="playcademy auth add email" simple />
@@ -14242,9 +14292,9 @@ export function App() {
 Add GitHub or Google OAuth:
 
 <Tabs items={["During Init", "Add Later"]}>
-  <Tab value="During Init">
-    <TerminalBlock command={'playcademy init  # Select GitHub OAuth or Google OAuth'} simple />
-  </Tab>
+<Tab value="During Init">
+<TerminalBlock command={'playcademy init # Select GitHub OAuth or Google OAuth'} simple />
+</Tab>
 
   <Tab value="Add Later">
     <TerminalBlock command={['playcademy auth add github', 'playcademy auth add google']} simple />
@@ -14256,6 +14306,7 @@ Add GitHub or Google OAuth:
     ### Create OAuth App
 
     Create an OAuth app in the GitHub/Google developer console.
+
   </Step>
 
   <Step>
@@ -14268,6 +14319,7 @@ Add GitHub or Google OAuth:
     GITHUB_CLIENT_ID=your_client_id
     GITHUB_CLIENT_SECRET=your_client_secret
     ```
+
   </Step>
 
   <Step>
@@ -14278,6 +14330,7 @@ Add GitHub or Google OAuth:
     <TerminalBlock command="playcademy secrets push" simple />
 
     See [Secrets Management](/platform/cli/secrets) for more details.
+
   </Step>
 
   <Step>
@@ -14288,16 +14341,18 @@ Add GitHub or Google OAuth:
     ```
     https://your-project.playcademy.gg/api/auth/callback/github
     ```
+
   </Step>
 
   <Step>
     ### Deploy
 
     <TerminalBlock command="playcademy deploy" simple />
+
   </Step>
 </Steps>
 
-***
+---
 
 ## Database Schema
 
@@ -14312,61 +14367,63 @@ The auth schema includes four tables:
    */
   import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
-  export const user = sqliteTable('user', {
-      id: text('id').primaryKey(),
-      name: text('name').notNull(),
-      email: text('email').notNull().unique(),
-      emailVerified: integer('emailVerified').notNull(),
-      image: text('image'),
-      createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
-      updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
+export const user = sqliteTable('user', {
+id: text('id').primaryKey(),
+name: text('name').notNull(),
+email: text('email').notNull().unique(),
+emailVerified: integer('emailVerified').notNull(),
+image: text('image'),
+createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
+updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
 
       // Platform linkage: Links this user to a Playcademy platform identity
       // When users launch from Playcademy, their platform identity
       // is verified and linked to a Better Auth session via this field
       playcademyUserId: text('playcademy_user_id').unique(),
-  })
 
-  export const session = sqliteTable('session', {
-      id: text('id').primaryKey(),
-      expiresAt: integer('expiresAt', { mode: 'timestamp' }).notNull(),
-      token: text('token').notNull().unique(),
-      createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
-      updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
-      ipAddress: text('ipAddress'),
-      userAgent: text('userAgent'),
-      userId: text('userId')
-          .notNull()
-          .references(() => user.id, { onDelete: 'cascade' }),
-  })
+})
 
-  export const account = sqliteTable('account', {
-      id: text('id').primaryKey(),
-      accountId: text('accountId').notNull(),
-      providerId: text('providerId').notNull(),
-      userId: text('userId')
-          .notNull()
-          .references(() => user.id, { onDelete: 'cascade' }),
-      accessToken: text('accessToken'),
-      refreshToken: text('refreshToken'),
-      idToken: text('idToken'),
-      accessTokenExpiresAt: integer('accessTokenExpiresAt', { mode: 'timestamp' }),
-      refreshTokenExpiresAt: integer('refreshTokenExpiresAt', { mode: 'timestamp' }),
-      scope: text('scope'),
-      password: text('password'),
-      createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
-      updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
-  })
+export const session = sqliteTable('session', {
+id: text('id').primaryKey(),
+expiresAt: integer('expiresAt', { mode: 'timestamp' }).notNull(),
+token: text('token').notNull().unique(),
+createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
+updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
+ipAddress: text('ipAddress'),
+userAgent: text('userAgent'),
+userId: text('userId')
+.notNull()
+.references(() => user.id, { onDelete: 'cascade' }),
+})
 
-  export const verification = sqliteTable('verification', {
-      id: text('id').primaryKey(),
-      identifier: text('identifier').notNull(),
-      value: text('value').notNull(),
-      expiresAt: integer('expiresAt', { mode: 'timestamp' }).notNull(),
-      createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
-      updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
-  })
-  ```
+export const account = sqliteTable('account', {
+id: text('id').primaryKey(),
+accountId: text('accountId').notNull(),
+providerId: text('providerId').notNull(),
+userId: text('userId')
+.notNull()
+.references(() => user.id, { onDelete: 'cascade' }),
+accessToken: text('accessToken'),
+refreshToken: text('refreshToken'),
+idToken: text('idToken'),
+accessTokenExpiresAt: integer('accessTokenExpiresAt', { mode: 'timestamp' }),
+refreshTokenExpiresAt: integer('refreshTokenExpiresAt', { mode: 'timestamp' }),
+scope: text('scope'),
+password: text('password'),
+createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
+updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
+})
+
+export const verification = sqliteTable('verification', {
+id: text('id').primaryKey(),
+identifier: text('identifier').notNull(),
+value: text('value').notNull(),
+expiresAt: integer('expiresAt', { mode: 'timestamp' }).notNull(),
+createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
+updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
+})
+
+````
 </CollapsibleCode>
 
 ### Adding Custom User Fields
@@ -14375,20 +14432,20 @@ Extend the user table with project-specific fields:
 
 ```typescript title="server/db/schema/auth.ts"
 export const user = sqliteTable('user', {
-    // ... standard Better Auth fields ...
+  // ... standard Better Auth fields ...
 
-    // Add custom fields
-    level: integer('level').default(1),
-    xp: integer('xp').default(0),
-    avatar: text('avatar'),
+  // Add custom fields
+  level: integer('level').default(1),
+  xp: integer('xp').default(0),
+  avatar: text('avatar'),
 })
-```
+````
 
 Then push your schema:
 
 <TerminalBlock command="bun db:push" />
 
-***
+---
 
 ## What's Next?
 
@@ -14410,7 +14467,6 @@ Then push your schema:
   </Card>
 </Cards>
 
-
 # Bucket Storage
 
 ## Overview
@@ -14427,9 +14483,9 @@ Add scalable object storage to your project backend for files and assets.
 ## Getting Started
 
 <Tabs items={["New Project", "Existing Project"]}>
-  <Tab value="New Project">
-    <TerminalBlock command={'playcademy init  # Select "Yes" for bucket storage'} simple />
-  </Tab>
+<Tab value="New Project">
+<TerminalBlock command={'playcademy init # Select "Yes" for bucket storage'} simple />
+</Tab>
 
   <Tab value="Existing Project">
     <TerminalBlock command="playcademy bucket init" simple />
@@ -14439,10 +14495,10 @@ Add scalable object storage to your project backend for files and assets.
 <Callout type="warn" title="Not a Database">
   Bucket storage is for files and binary data, not structured data.
 
-  For structured data with queries, use the [Database integration](/platform/integrations/database) instead.
+For structured data with queries, use the [Database integration](/platform/integrations/database) instead.
 </Callout>
 
-***
+---
 
 ## Bucket Management
 
@@ -14471,11 +14527,11 @@ Start your dev server to use bucket storage locally:
 Once your local dev server is running, you can upload files to your bucket using the CLI:
 
 <TerminalBlock
-  command={[
-      'playcademy bucket put test.png ./screenshot.png  # Upload file',
-      'playcademy bucket list  # See uploaded files',
-      'playcademy bucket get test.png -o downloaded.png  # Download file',
-  ]}
+command={[
+'playcademy bucket put test.png ./screenshot.png # Upload file',
+'playcademy bucket list # See uploaded files',
+'playcademy bucket get test.png -o downloaded.png # Download file',
+]}
 />
 
 ### Remote Operations
@@ -14483,26 +14539,27 @@ Once your local dev server is running, you can upload files to your bucket using
 Add `--remote` to work with your deployed app's bucket:
 
 <TerminalBlock
-  command={[
-      'playcademy bucket list --remote  # Staging',
-      'playcademy bucket list --remote --env production  # Production',
-      'playcademy bucket put config.json ./config.json --remote  # Upload to staging',
-      'playcademy bucket bulk ./assets --remote  # Bulk upload to staging',
-  ]}
+command={[
+'playcademy bucket list --remote # Staging',
+'playcademy bucket list --remote --env production # Production',
+'playcademy bucket put config.json ./config.json --remote # Upload to staging',
+'playcademy bucket bulk ./assets --remote # Bulk upload to staging',
+]}
 />
 
-***
+---
 
 ## Using Bucket Storage
 
 Access bucket storage via `c.env.BUCKET` in your API routes:
 
 <Tabs items={["Upload File", "Download File", "List Files", "Delete File"]}>
-  <Tab value="Upload File">
-    ```typescript title="server/api/upload.ts"
-    export async function PUT(c: Context): Promise<Response> {
-        const fileKey = c.req.query('key')
-        const body = await c.req.arrayBuffer()
+<Tab value="Upload File">
+
+````typescript title="server/api/upload.ts"
+export async function PUT(c: Context): Promise<Response> {
+const fileKey = c.req.query('key')
+const body = await c.req.arrayBuffer()
 
         if (!fileKey || !body) {
             return c.json({ error: 'Missing file key or body' }, 400)
@@ -14521,6 +14578,7 @@ Access bucket storage via `c.env.BUCKET` in your API routes:
         })
     }
     ```
+
   </Tab>
 
   <Tab value="Download File">
@@ -14546,6 +14604,7 @@ Access bucket storage via `c.env.BUCKET` in your API routes:
         })
     }
     ```
+
   </Tab>
 
   <Tab value="List Files">
@@ -14568,6 +14627,7 @@ Access bucket storage via `c.env.BUCKET` in your API routes:
         })
     }
     ```
+
   </Tab>
 
   <Tab value="Delete File">
@@ -14587,6 +14647,7 @@ Access bucket storage via `c.env.BUCKET` in your API routes:
         })
     }
     ```
+
   </Tab>
 </Tabs>
 
@@ -14599,7 +14660,7 @@ Access bucket storage via `c.env.BUCKET` in your API routes:
 | `delete(key)`         | Delete a file   | `await c.env.BUCKET.delete('file.png')`       |
 | `list(options?)`      | List files      | `await c.env.BUCKET.list({ prefix: 'img/' })` |
 
-***
+---
 
 ## Common Use Cases
 
@@ -14702,15 +14763,16 @@ A common pattern is to serve bucket files through a catchall route:
       }
       ```
     </Tab>
+
   </Tabs>
 </CollapsibleCode>
 
 **Frontend Usage:**
 
 <Tabs items={["Display Image", "Upload File", "Delete File", "Download File"]}>
-  <Tab value="Display Image">
-    ```tsx title="src/components/ImageDisplay.tsx"
-    import { PlaycademyClient } from '@playcademy/sdk'
+<Tab value="Display Image">
+```tsx title="src/components/ImageDisplay.tsx"
+import { PlaycademyClient } from '@playcademy/sdk'
 
     const client = await PlaycademyClient.init()
 
@@ -14720,6 +14782,7 @@ A common pattern is to serve bucket files through a catchall route:
         return <img src={imageUrl} alt="User upload" />
     }
     ```
+
   </Tab>
 
   <Tab value="Upload File">
@@ -14742,6 +14805,7 @@ A common pattern is to serve bucket files through a catchall route:
         return response.data // { key, name, size, uploaded }
     }
     ```
+
   </Tab>
 
   <Tab value="Delete File">
@@ -14754,6 +14818,7 @@ A common pattern is to serve bucket files through a catchall route:
         await client.backend.delete(`/files/${fileKey}`)
     }
     ```
+
   </Tab>
 
   <Tab value="Download File">
@@ -14775,15 +14840,16 @@ A common pattern is to serve bucket files through a catchall route:
         window.URL.revokeObjectURL(url)
     }
     ```
+
   </Tab>
 </Tabs>
 
 <Callout type="tip" title="Why This Pattern?">
   The catchall route (`[...path].ts`) lets you serve files with clean URLs like `/api/files/images/logo.png`
 
-  Compare this to the alternative of using a query parameter: `/api/download?key=images/logo.png`.
+Compare this to the alternative of using a query parameter: `/api/download?key=images/logo.png`.
 
-  Perfect for serving user-generated content, static assets, or any files stored in your bucket.
+Perfect for serving user-generated content, static assets, or any files stored in your bucket.
 </Callout>
 
 ### Screenshot Upload
@@ -14792,19 +14858,19 @@ Allow players to upload screenshots:
 
 ```typescript title="server/api/screenshot.ts"
 export async function POST(c: Context) {
-    const userId = c.req.query('userId')
-    const body = await c.req.arrayBuffer()
+	const userId = c.req.query('userId');
+	const body = await c.req.arrayBuffer();
 
-    const key = `screenshots/${userId}/${Date.now()}.png`
+	const key = `screenshots/${userId}/${Date.now()}.png`;
 
-    await c.env.BUCKET.put(key, body, {
-        httpMetadata: { contentType: 'image/png' },
-        customMetadata: { userId, uploadedAt: new Date().toISOString() },
-    })
+	await c.env.BUCKET.put(key, body, {
+		httpMetadata: { contentType: 'image/png' },
+		customMetadata: { userId, uploadedAt: new Date().toISOString() }
+	});
 
-    return c.json({ success: true, key })
+	return c.json({ success: true, key });
 }
-```
+````
 
 ### Replay Storage
 
@@ -14813,29 +14879,29 @@ Save and retrieve replays:
 ```typescript title="server/api/replay.ts"
 // Save replay
 export async function PUT(c: Context) {
-    const gameId = c.req.query('gameId')
-    const replayData = await c.req.json()
+  const gameId = c.req.query('gameId');
+  const replayData = await c.req.json();
 
-    const key = `replays/${gameId}.json`
+  const key = `replays/${gameId}.json`;
 
-    await c.env.BUCKET.put(key, JSON.stringify(replayData), {
-        httpMetadata: { contentType: 'application/json' },
-    })
+  await c.env.BUCKET.put(key, JSON.stringify(replayData), {
+    httpMetadata: { contentType: 'application/json' }
+  });
 
-    return c.json({ success: true })
+  return c.json({ success: true });
 }
 
 // Load replay
 export async function GET(c: Context) {
-    const gameId = c.req.query('gameId')
-    const object = await c.env.BUCKET.get(`replays/${gameId}.json`)
+  const gameId = c.req.query('gameId');
+  const object = await c.env.BUCKET.get(`replays/${gameId}.json`);
 
-    if (!object) {
-        return c.json({ error: 'Replay not found' }, 404)
-    }
+  if (!object) {
+    return c.json({ error: 'Replay not found' }, 404);
+  }
 
-    const data = await object.json()
-    return c.json(data)
+  const data = await object.json();
+  return c.json(data);
 }
 ```
 
@@ -14845,24 +14911,24 @@ Store and serve assets:
 
 ```typescript title="server/api/assets.ts"
 export async function GET(c: Context) {
-    const assetPath = c.req.query('path')
+  const assetPath = c.req.query('path');
 
-    const object = await c.env.BUCKET.get(`assets/${assetPath}`)
+  const object = await c.env.BUCKET.get(`assets/${assetPath}`);
 
-    if (!object) {
-        return c.json({ error: 'Asset not found' }, 404)
+  if (!object) {
+    return c.json({ error: 'Asset not found' }, 404);
+  }
+
+  return new Response(object.body, {
+    headers: {
+      'Content-Type': object.httpMetadata?.contentType || 'application/octet-stream',
+      'Cache-Control': 'public, max-age=31536000' // 1 year cache
     }
-
-    return new Response(object.body, {
-        headers: {
-            'Content-Type': object.httpMetadata?.contentType || 'application/octet-stream',
-            'Cache-Control': 'public, max-age=31536000', // 1 year cache
-        },
-    })
+  });
 }
 ```
 
-***
+---
 
 ## Deployment
 
@@ -14870,7 +14936,7 @@ Buckets are automatically provisioned when you deploy:
 
 <TerminalBlock command="playcademy deploy" />
 
-***
+---
 
 ## Best Practices
 
@@ -14878,29 +14944,29 @@ Buckets are automatically provisioned when you deploy:
 
 ```typescript
 // Good
-await c.env.BUCKET.put('screenshots/user123/game456.png', data)
-await c.env.BUCKET.put('replays/2024-01/game789.json', data)
+await c.env.BUCKET.put('screenshots/user123/game456.png', data);
+await c.env.BUCKET.put('replays/2024-01/game789.json', data);
 
 // Avoid
-await c.env.BUCKET.put('file1.png', data)
+await c.env.BUCKET.put('file1.png', data);
 ```
 
 **Set content types:**
 
 ```typescript
 await c.env.BUCKET.put(key, data, {
-    httpMetadata: { contentType: 'image/png' },
-})
+  httpMetadata: { contentType: 'image/png' }
+});
 ```
 
 **Use prefixes for organization:**
 
 ```typescript
 // List only user's screenshots
-const listed = await c.env.BUCKET.list({ prefix: `screenshots/${userId}/` })
+const listed = await c.env.BUCKET.list({ prefix: `screenshots/${userId}/` });
 ```
 
-***
+---
 
 ## What's Next?
 
@@ -14922,7 +14988,6 @@ const listed = await c.env.BUCKET.list({ prefix: `screenshots/${userId}/` })
   </Card>
 </Cards>
 
-
 # Custom Routes
 
 ## Overview
@@ -14939,21 +15004,21 @@ Create custom backend API endpoints for server-side application logic and extern
 <Callout type="info" title="Built on Hono">
   Routes use [Hono](https://hono.dev), a fast web framework for edge runtimes.
 
-  The [**`Context`**](https://hono.dev/docs/api/context) type used in routes is native to Hono.
+The [**`Context`**](https://hono.dev/docs/api/context) type used in routes is native to Hono.
 </Callout>
 
-***
+---
 
 ## Setup
 
 <Tabs items={["New Project", "Existing Project"]}>
-  <Tab value="New Project">
-    ```bash
+<Tab value="New Project">
+`bash
     # Enable routes during project setup
     playcademy init
     # Select "Yes" for Custom API routes
-    ```
-  </Tab>
+    `
+</Tab>
 
   <Tab value="Existing Project">
     ```bash
@@ -14980,10 +15045,11 @@ This creates a `server/api/` directory with sample routes.
     </Folder>
 
     <File name="playcademy.config.js" />
+
   </Folder>
 </Files>
 
-***
+---
 
 ## Writing Routes
 
@@ -14992,14 +15058,15 @@ Routes export functions for HTTP methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE
 ### Basic Examples
 
 <Tabs items={["Basic Route", "Query Params", "Request Body", "Headers"]}>
-  <Tab value="Basic Route">
-    ```typescript title="server/api/sample/custom.ts"
-    export async function GET(c: Context) {
-        return c.json({
-            success: true,
-            message: 'Hello from your custom API route!',
-        })
-    }
+<Tab value="Basic Route">
+
+````typescript title="server/api/sample/custom.ts"
+export async function GET(c: Context) {
+return c.json({
+success: true,
+message: 'Hello from your custom API route!',
+})
+}
 
     export async function POST(c: Context) {
         const body = await c.req.json()
@@ -15010,6 +15077,7 @@ Routes export functions for HTTP methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE
     // GET /api/sample/custom
     // POST /api/sample/custom
     ```
+
   </Tab>
 
   <Tab value="Query Params">
@@ -15021,6 +15089,7 @@ Routes export functions for HTTP methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE
 
     // Called with: /api/users?name=Alice
     ```
+
   </Tab>
 
   <Tab value="Request Body">
@@ -15033,6 +15102,7 @@ Routes export functions for HTTP methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE
         return c.json({ success: true, score })
     }
     ```
+
   </Tab>
 
   <Tab value="Headers">
@@ -15044,6 +15114,7 @@ Routes export functions for HTTP methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE
         return c.json({ platform })
     }
     ```
+
   </Tab>
 </Tabs>
 
@@ -15053,19 +15124,19 @@ On the [Playcademy](/platform) platform, authenticated users are available via `
 
 ```typescript title="server/api/user.ts"
 export async function GET(c: Context) {
-    const playcademyUser = c.get('playcademyUser')
+	const playcademyUser = c.get('playcademyUser');
 
-    if (!playcademyUser) {
-        return c.json({ error: 'Not authenticated' }, 401)
-    }
+	if (!playcademyUser) {
+		return c.json({ error: 'Not authenticated' }, 401);
+	}
 
-    // playcademyUser contains: sub (user ID), name, email, etc.
-    return c.json({
-        userId: playcademyUser.sub,
-        message: `Hello, ${playcademyUser.name}!`,
-    })
+	// playcademyUser contains: sub (user ID), name, email, etc.
+	return c.json({
+		userId: playcademyUser.sub,
+		message: `Hello, ${playcademyUser.name}!`
+	});
 }
-```
+````
 
 <Callout type="info" title="Local Development">
   During local development with the [Vite Plugin](/platform/vite-plugin/develop), `playcademyUser` will be `null` unless you're running in [platform mode](/platform/vite-plugin/develop#plugin-modes).
@@ -15077,21 +15148,21 @@ Access API keys and credentials securely via `c.env.secrets.YOUR_KEY`:
 
 ```typescript title="server/api/ai-prompt.ts"
 export async function POST(c: Context) {
-    const apiKey = c.env.secrets.OPENAI_API_KEY
+  const apiKey = c.env.secrets.OPENAI_API_KEY;
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        headers: {
-            Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
-        },
-        method: 'POST',
-        body: JSON.stringify({
-            model: 'gpt-4',
-            messages: [{ role: 'user', content: 'Hello!' }],
-        }),
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      model: 'gpt-4',
+      messages: [{ role: 'user', content: 'Hello!' }]
     })
+  });
 
-    return c.json(await response.json())
+  return c.json(await response.json());
 }
 ```
 
@@ -15105,10 +15176,10 @@ Use `[param]` syntax to capture URL parameters:
 
 ```typescript title="server/api/quests/[questId].ts"
 export async function GET(c: Context) {
-    const questId = c.req.param('questId') // Extract from URL
-    const quest = QUESTS[questId]
+  const questId = c.req.param('questId'); // Extract from URL
+  const quest = QUESTS[questId];
 
-    return c.json(quest)
+  return c.json(quest);
 }
 ```
 
@@ -15129,13 +15200,14 @@ Organize routes in subdirectories for better structure:
         </Folder>
       </Folder>
     </Folder>
+
   </Folder>
 </Files>
 
 This creates:
 
-* `/api/players/:playerId` (Player details)
-* `/api/players/:playerId/inventory` (Player inventory)
+- `/api/players/:playerId` (Player details)
+- `/api/players/:playerId/inventory` (Player inventory)
 
 ### Catch-All Routes
 
@@ -15143,23 +15215,23 @@ Use `[...param]` to match all remaining path segments:
 
 ```typescript title="server/api/assets/[...path].ts"
 export async function GET(c: Context) {
-    const path = c.req.param('path') // Captures full remaining path
-    const object = await c.env.BUCKET.get(path)
+  const path = c.req.param('path'); // Captures full remaining path
+  const object = await c.env.BUCKET.get(path);
 
-    return new Response(object.body, {
-        headers: {
-            'Content-Type': object.httpMetadata?.contentType || 'application/octet-stream',
-            'Cache-Control': 'public, max-age=3600',
-        },
-    })
+  return new Response(object.body, {
+    headers: {
+      'Content-Type': object.httpMetadata?.contentType || 'application/octet-stream',
+      'Cache-Control': 'public, max-age=3600'
+    }
+  });
 }
 ```
 
 **Matches ALL paths under `/api/assets/`:**
 
-* `/api/assets/sprites/hero.png` → `path = "sprites/hero.png"`
-* `/api/assets/audio/music/theme.mp3` → `path = "audio/music/theme.mp3"`
-* `/api/assets/levels/world-1.json` → `path = "levels/world-1.json"`
+- `/api/assets/sprites/hero.png` → `path = "sprites/hero.png"`
+- `/api/assets/audio/music/theme.mp3` → `path = "audio/music/theme.mp3"`
+- `/api/assets/levels/world-1.json` → `path = "levels/world-1.json"`
 
 ### Response Types
 
@@ -15167,49 +15239,49 @@ Return different response types based on your needs:
 
 ```typescript
 // JSON with status code
-return c.json({ error: 'Not found' }, 404)
+return c.json({ error: 'Not found' }, 404);
 
 // Plain text
-return c.text('Hello, world!')
+return c.text('Hello, world!');
 
 // HTML
-return c.html('<h1>Hello</h1>')
+return c.html('<h1>Hello</h1>');
 
 // Redirect
-return c.redirect('/new-location')
+return c.redirect('/new-location');
 ```
 
-***
+---
 
 ## Calling Routes
 
 Use the SDK's `backend` namespace to call your routes from the frontend:
 
 ```typescript
-import { PlaycademyClient } from '@playcademy/sdk'
+import { PlaycademyClient } from '@playcademy/sdk';
 
-const client = await PlaycademyClient.init()
+const client = await PlaycademyClient.init();
 
 // GET request
-const data = await client.backend.get('/users?name=Alice')
+const data = await client.backend.get('/users?name=Alice');
 
 // POST request
 const result = await client.backend.post('/validate-answer', {
-    questionId: 'q1',
-    answer: 'paris',
-})
+  questionId: 'q1',
+  answer: 'paris'
+});
 ```
 
 <Callout type="warning" title="SDK Required for Platform Users">
   `playcademyUser` is only populated when requests include a valid platform token.
 
-  | Method                                     | Works? |
-  | :----------------------------------------- | :----- |
-  | `sdk.backend.get()` / `sdk.backend.post()` | Yes    |
-  | Plain `fetch('/api/...')`                  | No     |
-  | Postman/cURL without token                 | No     |
+| Method                                     | Works? |
+| :----------------------------------------- | :----- |
+| `sdk.backend.get()` / `sdk.backend.post()` | Yes    |
+| Plain `fetch('/api/...')`                  | No     |
+| Postman/cURL without token                 | No     |
 
-  [@playcademy/sdk](/platform/sdk/browser) automatically includes the platform token. Plain `fetch` does not.
+[@playcademy/sdk](/platform/sdk/browser) automatically includes the platform token. Plain `fetch` does not.
 </Callout>
 
 ### Asset URLs
@@ -15226,7 +15298,7 @@ const videoUrl = client.backend.url('/videos/intro.mp4')
 <video src={videoUrl} />
 ```
 
-***
+---
 
 ## Development & Deployment
 
@@ -15254,9 +15326,10 @@ const videoUrl = client.backend.url('/videos/intro.mp4')
       '  ➜  Project:  My App',
       '  ➜  Sandbox: http://localhost:4321/api',
       '  ➜  Backend: http://localhost:5173/api (via 8788)',
-  ]}
-        />
-      </Tab>
+
+]}
+/>
+</Tab>
 
       <Tab value="CLI Dev Server">
         Or launch the CLI's [dev server](/platform/cli/development) directly:
@@ -15271,8 +15344,9 @@ const videoUrl = client.backend.url('/videos/intro.mp4')
       '/api/sample/kv       GET, POST, DELETE',
       '',
       '✦ Press ctrl+c to stop',
-  ]}
-        />
+
+]}
+/>
 
         <Callout type="warning" title="CLI Dev Server Limitations">
           Using `playcademy dev` directly does not start the [sandbox](/platform/reference-sandbox).
@@ -15283,6 +15357,7 @@ const videoUrl = client.backend.url('/videos/intro.mp4')
         </Callout>
       </Tab>
     </Tabs>
+
   </Step>
 
   <Step>
@@ -15295,9 +15370,10 @@ const videoUrl = client.backend.url('/videos/intro.mp4')
       output={[
       '# Routes automatically bundled and deployed',
       '# Result: https://your-app-staging.playcademy.gg/api',
-  ]}
-    />
-  </Step>
+
+]}
+/>
+</Step>
 </Steps>
 
 <Callout type="tip" title="Auto-Discovery During Deployment">
@@ -15305,7 +15381,7 @@ const videoUrl = client.backend.url('/videos/intro.mp4')
   needed!
 </Callout>
 
-***
+---
 
 ## What's Next?
 
@@ -15327,7 +15403,6 @@ const videoUrl = client.backend.url('/videos/intro.mp4')
   </Card>
 </Cards>
 
-
 # Database
 
 ## Overview
@@ -15344,9 +15419,9 @@ Add a type-safe SQLite database to your project with Drizzle ORM for structured 
 ## Getting Started
 
 <Tabs items={["New Project", "Existing Project"]}>
-  <Tab value="New Project">
-    <TerminalBlock command={'playcademy init  # Select "Yes" for Database integration'} simple />
-  </Tab>
+<Tab value="New Project">
+<TerminalBlock command={'playcademy init # Select "Yes" for Database integration'} simple />
+</Tab>
 
   <Tab value="Existing Project">
     <TerminalBlock command={'playcademy db init'} simple />
@@ -15382,6 +15457,7 @@ This scaffolds a complete database setup:
     <File name="drizzle.config.ts" />
 
     <File name="playcademy.config.js" />
+
   </Folder>
 </Files>
 
@@ -15389,7 +15465,7 @@ This scaffolds a complete database setup:
   A sample route is scaffolded in `server/api/sample/database.ts` to help you get started.
 </Callout>
 
-***
+---
 
 ## Working with Schemas
 
@@ -15397,24 +15473,24 @@ The CLI creates an example schema to get you started:
 
 ```typescript title="server/db/schema/example.ts"
 export const items = sqliteTable('items', {
-    id: integer('id').primaryKey({ autoIncrement: true }),
-    name: text('name').notNull(),
-    data: text('data', { mode: 'json' }).$type<Record<string, unknown>>(),
-    createdAt: text('created_at').notNull(),
-})
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  name: text('name').notNull(),
+  data: text('data', { mode: 'json' }).$type<Record<string, unknown>>(),
+  createdAt: text('created_at').notNull()
+});
 ```
 
 Create your own schema files in the `schema/` directory:
 
 ```typescript title="server/db/schema/players.ts"
 export const players = sqliteTable('players', {
-    id: integer('id').primaryKey({ autoIncrement: true }),
-    name: text('name').notNull(),
-    score: integer('score').default(0),
-})
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  name: text('name').notNull(),
+  score: integer('score').default(0)
+});
 ```
 
-***
+---
 
 ## Database Management
 
@@ -15434,7 +15510,7 @@ Both approaches of [`db:push`](https://orm.drizzle.team/docs/drizzle-kit-push) a
 <Callout type="info" title="Drizzle Kit">
   These commands use [`drizzle-kit`](https://orm.drizzle.team/docs/kit-overview). They're for **local development only**.
 
-  Remote schema operations are handled by [`playcademy deploy`](/platform/cli/deployment).
+Remote schema operations are handled by [`playcademy deploy`](/platform/cli/deployment).
 </Callout>
 
 ### Playcademy CLI Commands
@@ -15455,8 +15531,8 @@ Database operations using the Playcademy CLI:
 ### Development Workflow
 
 <Tabs items={["With db:push", "With db:migrate", "Apply Schema Changes", "Reset & Seed"]}>
-  <Tab value="With db:push">
-    The push approach applies schema changes directly without migration files:
+<Tab value="With db:push">
+The push approach applies schema changes directly without migration files:
 
     <TerminalBlock command={['playcademy dev  # Start dev server first', 'bun db:push  # Push schema to local DB']} />
 
@@ -15466,6 +15542,7 @@ Database operations using the Playcademy CLI:
       Run the development server at least once before using `db:push`: the database file must exist
       first.
     </Callout>
+
   </Tab>
 
   <Tab value="With db:migrate">
@@ -15476,14 +15553,16 @@ Database operations using the Playcademy CLI:
       'playcademy dev  # Start dev server first',
       'bun db:generate  # Generate migration from schema',
       'bun db:migrate  # Apply migration to local DB',
-  ]}
-    />
+
+]}
+/>
 
     After modifying your schema, run `db:generate` to create a migration file, then `db:migrate` to apply it.
 
     <Callout type="info">
       Migration files are stored in `db/migrations/` and can be committed to version control.
     </Callout>
+
   </Tab>
 
   <Tab value="Apply Schema Changes">
@@ -15494,10 +15573,12 @@ Database operations using the Playcademy CLI:
       'bun db:push  # or db:migrate locally',
       'playcademy db diff  # Preview migration SQL',
       'playcademy deploy  # Deploy with auto-migration',
-  ]}
-    />
+
+]}
+/>
 
     `playcademy deploy` detects schema changes and applies migrations automatically to your remote database.
+
   </Tab>
 
   <Tab value="Reset & Seed">
@@ -15508,23 +15589,26 @@ Database operations using the Playcademy CLI:
       'playcademy db seed  # Reset + seed (recommended)',
       'playcademy db reset  # Reset only',
       'playcademy db seed --no-reset  # Seed only',
-  ]}
-    />
+
+]}
+/>
 
     Add `--remote` flag to operate on your deployed database instead of local.
+
   </Tab>
 </Tabs>
 
-***
+---
 
 ## Using the Database
 
 Access your database via `c.env.DB` in your API routes:
 
 <Tabs items={["Query Data", "Insert Data", "Update Data", "Delete Data"]}>
-  <Tab value="Query Data">
-    ```typescript title="server/api/scores.ts"
-    import { desc } from 'drizzle-orm'
+<Tab value="Query Data">
+
+````typescript title="server/api/scores.ts"
+import { desc } from 'drizzle-orm'
 
     import { getDb, schema } from '../../db'
 
@@ -15540,6 +15624,7 @@ Access your database via `c.env.DB` in your API routes:
         return c.json({ scores })
     }
     ```
+
   </Tab>
 
   <Tab value="Insert Data">
@@ -15569,6 +15654,7 @@ Access your database via `c.env.DB` in your API routes:
         return c.json({ success: true, data: newScore })
     }
     ```
+
   </Tab>
 
   <Tab value="Update Data">
@@ -15590,6 +15676,7 @@ Access your database via `c.env.DB` in your API routes:
         return c.json({ user: updated })
     }
     ```
+
   </Tab>
 
   <Tab value="Delete Data">
@@ -15607,6 +15694,7 @@ Access your database via `c.env.DB` in your API routes:
         return c.json({ success: true })
     }
     ```
+
   </Tab>
 </Tabs>
 
@@ -15615,7 +15703,7 @@ Access your database via `c.env.DB` in your API routes:
   queries, joins, and more.
 </Callout>
 
-***
+---
 
 ## Deployment
 
@@ -15632,10 +15720,10 @@ The CLI will:
 <Callout type="tip" title="Auto-Migrations">
   The CLI snapshots your schema after each deployment and compares it to your current schema.
 
-  Only changed tables/columns trigger migrations.
+Only changed tables/columns trigger migrations.
 </Callout>
 
-***
+---
 
 ## Seeding
 
@@ -15646,29 +15734,29 @@ Populate your database with initial or test data using seed files.
 After running `playcademy init` (or `playcademy db init`), a seed file is automatically generated at `server/db/seed.ts`.
 
 ```typescript title="server/db/seed.ts"
-import { getDb } from '.'
-import * as schema from './schema'
+import { getDb } from '.';
+import * as schema from './schema';
 
 export async function seed(c: Context) {
-    const db = getDb(c.env.DB)
+	const db = getDb(c.env.DB);
 
-    // Seed users
-    const [user] = await db
-        .insert(schema.users)
-        .values({
-            name: 'Demo User',
-            createdAt: new Date().toISOString(),
-        })
-        .returning()
+	// Seed users
+	const [user] = await db
+		.insert(schema.users)
+		.values({
+			name: 'Demo User',
+			createdAt: new Date().toISOString()
+		})
+		.returning();
 
-    // Seed related data
-    await db.insert(schema.scores).values({
-        userId: user.id,
-        score: 100,
-        level: 1,
-    })
+	// Seed related data
+	await db.insert(schema.scores).values({
+		userId: user.id,
+		score: 100,
+		level: 1
+	});
 }
-```
+````
 
 <Callout type="tip" title="Key Points">
   * This file must export `async function seed(c: Context)`
@@ -15679,38 +15767,38 @@ export async function seed(c: Context) {
 ### Local Seeding
 
 <TerminalBlock
-  command={[
-      'playcademy db seed              # Resets database first (recommended)',
-      'playcademy db seed --no-reset   # Seed without reset',
-  ]}
+command={[
+'playcademy db seed # Resets database first (recommended)',
+'playcademy db seed --no-reset # Seed without reset',
+]}
 />
 
 ### Remote Seeding
 
 <TerminalBlock
-  command={[
-      'playcademy db seed --remote              # Staging (resets first)',
-      'playcademy db seed --remote --no-reset   # Staging (no reset)',
-      'playcademy db seed --remote --env production  # Production',
-      'playcademy db seed --remote -f           # Skip secrets sync check',
-  ]}
+command={[
+'playcademy db seed --remote # Staging (resets first)',
+'playcademy db seed --remote --no-reset # Staging (no reset)',
+'playcademy db seed --remote --env production # Production',
+'playcademy db seed --remote -f # Skip secrets sync check',
+]}
 />
 
 <Callout type="info" title="Secrets Sync Check">
   Before remote seeding, the CLI checks if your local `.env` secrets match remote.
 
-  If out of sync, you'll be prompted to push secrets first. Use `-f` or `--force` to skip this check.
+If out of sync, you'll be prompted to push secrets first. Use `-f` or `--force` to skip this check.
 
-  See [Secrets Guide](/platform/cli/secrets) for details.
+See [Secrets Guide](/platform/cli/secrets) for details.
 </Callout>
 
 <Callout type="warn" title="Remote seeding with reset">
   When seeding your remote database, you'll be asked to:
 
-  1. Confirm with yes/no
-  2. Type the project slug to confirm
+1. Confirm with yes/no
+2. Type the project slug to confirm
 
-  All existing data will be deleted!
+All existing data will be deleted!
 </Callout>
 
 ### Database Reset
@@ -15718,14 +15806,14 @@ export async function seed(c: Context) {
 Reset your database without seeding:
 
 <TerminalBlock
-  command={[
-      'playcademy db reset            # Local',
-      'playcademy db reset -f         # Local, skip confirmation',
-      'playcademy db reset --remote   # Remote',
-  ]}
+command={[
+'playcademy db reset # Local',
+'playcademy db reset -f # Local, skip confirmation',
+'playcademy db reset --remote # Remote',
+]}
 />
 
-***
+---
 
 ## What's Next?
 
@@ -15746,7 +15834,6 @@ Reset your database without seeding:
     Complete reference for all database CLI commands.
   </Card>
 </Cards>
-
 
 # Integrations
 
@@ -15788,7 +15875,7 @@ Integrations are infrastructural features that run alongside your project.
   </Card>
 </Cards>
 
-***
+---
 
 ## Adding Integrations
 
@@ -15799,6 +15886,7 @@ Integrations are infrastructural features that run alongside your project.
     Enable integrations when running `playcademy init`:
 
     <TerminalBlock command={'playcademy init  # Select integrations when prompted'} />
+
   </Step>
 
   <Step>
@@ -15814,11 +15902,11 @@ Integrations are infrastructural features that run alongside your project.
       'playcademy kv init  # Add KV storage',
       'playcademy bucket init  # Add bucket storage',
       'playcademy api init  # Add custom routes',
-  ]}
-    />
-  </Step>
-</Steps>
 
+]}
+/>
+</Step>
+</Steps>
 
 # KV Storage
 
@@ -15836,9 +15924,9 @@ Add fast, global key-value storage to your project backend for caching and sessi
 ## Getting Started
 
 <Tabs items={["New Project", "Existing Project"]}>
-  <Tab value="New Project">
-    <TerminalBlock command={'playcademy init  # Select "Yes" for KV storage'} simple />
-  </Tab>
+<Tab value="New Project">
+<TerminalBlock command={'playcademy init # Select "Yes" for KV storage'} simple />
+</Tab>
 
   <Tab value="Existing Project">
     <TerminalBlock command="playcademy kv init" simple />
@@ -15848,10 +15936,10 @@ Add fast, global key-value storage to your project backend for caching and sessi
 <Callout type="warn" title="Not a Database">
   KV is a simple key-value store, not a relational database.
 
-  For complex data relationships or write-heavy workloads, use the [Database integration](/platform/integrations/database) instead.
+For complex data relationships or write-heavy workloads, use the [Database integration](/platform/integrations/database) instead.
 </Callout>
 
-***
+---
 
 ## Managing KV Storage
 
@@ -15884,12 +15972,12 @@ Start your dev server to use KV locally:
 **Example CLI commands:**
 
 <TerminalBlock
-  command={[
-      'playcademy kv set user:123:state \'{"score": 100}\'  # Set a value',
-      'playcademy kv get user:123:state  # Get a value',
-      'playcademy kv list  # List all keys',
-      'playcademy kv stats  # Show statistics',
-  ]}
+command={[
+'playcademy kv set user:123:state \'{"score": 100}\' # Set a value',
+'playcademy kv get user:123:state # Get a value',
+'playcademy kv list # List all keys',
+'playcademy kv stats # Show statistics',
+]}
 />
 
 ### Remote Operations
@@ -15897,15 +15985,15 @@ Start your dev server to use KV locally:
 Add `--remote` to work with your deployed app's KV storage:
 
 <TerminalBlock
-  command={[
-      'playcademy kv list --remote  # Staging',
-      'playcademy kv list --remote --env production  # Production',
-      'playcademy kv set config:flags \'{"beta": true}\' --remote  # Set in staging',
-      'playcademy kv seed seeds/kv.json --remote  # Seed staging with test data',
-  ]}
+command={[
+'playcademy kv list --remote # Staging',
+'playcademy kv list --remote --env production # Production',
+'playcademy kv set config:flags \'{"beta": true}\' --remote # Set in staging',
+'playcademy kv seed seeds/kv.json --remote # Seed staging with test data',
+]}
 />
 
-***
+---
 
 ## Using KV Storage
 
@@ -15916,10 +16004,11 @@ Access KV storage via `c.env.KV` in your API routes.
 KV keys are often scoped to an authenticated user. Access the platform user via `c.get('playcademyUser')`:
 
 <Tabs items={["Read Data", "Write Data", "Delete Data"]}>
-  <Tab value="Read Data">
-    ```typescript title="server/api/player-state.ts"
-    export async function GET(c: Context): Promise<Response> {
-        const playcademyUser = c.get('playcademyUser')
+<Tab value="Read Data">
+
+````typescript title="server/api/player-state.ts"
+export async function GET(c: Context): Promise<Response> {
+const playcademyUser = c.get('playcademyUser')
 
         if (!playcademyUser) {
             return c.json({ error: 'Not authenticated' }, 401)
@@ -15933,6 +16022,7 @@ KV keys are often scoped to an authenticated user. Access the platform user via 
         })
     }
     ```
+
   </Tab>
 
   <Tab value="Write Data">
@@ -15957,6 +16047,7 @@ KV keys are often scoped to an authenticated user. Access the platform user via 
         return c.json({ success: true, data: state })
     }
     ```
+
   </Tab>
 
   <Tab value="Delete Data">
@@ -15973,18 +16064,19 @@ KV keys are often scoped to an authenticated user. Access the platform user via 
         return c.json({ success: true })
     }
     ```
+
   </Tab>
 </Tabs>
 
 <Callout type="warning" title="Authentication Context Required">
   `playcademyUser` is populated when your app runs on the Playcademy platform and requests are made via the SDK.
 
-  **For local development:**
+**For local development:**
 
-  * **Vite Plugin**: Use [Platform Mode](/platform/vite-plugin/develop#user-authentication) to get a mock user
-  * **Godot**: Make sure to configure your [local development environment](/platform/guides/godot#local-development)
-  * **Standalone apps**: Set up the [Authentication Integration](/platform/integrations/authentication) for your own user accounts
-</Callout>
+- **Vite Plugin**: Use [Platform Mode](/platform/vite-plugin/develop#user-authentication) to get a mock user
+- **Godot**: Make sure to configure your [local development environment](/platform/guides/godot#local-development)
+- **Standalone apps**: Set up the [Authentication Integration](/platform/integrations/authentication) for your own user accounts
+  </Callout>
 
 **KV API surface:**
 
@@ -15998,15 +16090,16 @@ KV keys are often scoped to an authenticated user. Access the platform user via 
 <Callout type="info" title="Advanced: Expiration & Metadata">
   If you need to store data that expires or has generic metadata, use the `expirationTtl` and `metadata` options.
 
-  ```typescript title="server/api/route.ts"
-  await c.env.KV.put('session:abc', data, {
-      expirationTtl: 3600, // Expire in 1 hour
-      metadata: { version: '1.0' }, // Optional metadata
-  })
-  ```
+```typescript title="server/api/route.ts"
+await c.env.KV.put('session:abc', data, {
+	expirationTtl: 3600, // Expire in 1 hour
+	metadata: { version: '1.0' } // Optional metadata
+});
+````
+
 </Callout>
 
-***
+---
 
 ## Key Naming Patterns
 
@@ -16029,7 +16122,7 @@ Use prefixes to organize and manage your keys:
   | **Cleanup**      | Bulk clear data by prefix during testing                        |
 </Callout>
 
-***
+---
 
 ## Deployment
 
@@ -16037,7 +16130,7 @@ The remote KV namespace is automatically created when you deploy for the first t
 
 <TerminalBlock command="playcademy deploy" />
 
-***
+---
 
 ## What's Next?
 
@@ -16059,7 +16152,6 @@ The remote KV namespace is automatically created when you deploy for the first t
   </Card>
 </Cards>
 
-
 # Timeback
 
 ## Overview
@@ -16077,25 +16169,25 @@ Timeback is [1EdTech](https://www.1edtech.org/)-compliant, enabling deep interop
 ## Getting Started
 
 <Tabs items={["New Project", "Existing Project"]}>
-  <Tab value="New Project">
-    <TerminalBlock
-      command={'playcademy init'}
-      output={[
-      '# ...',
-      'Integrations:',
-      '? Would you like to set up Timeback integration? Yes',
-      '? Select subjects: Math',
-      '? Select grade levels: 3, 4',
-  ]}
-    />
-  </Tab>
+<Tab value="New Project">
+<TerminalBlock
+command={'playcademy init'}
+output={[
+'# ...',
+'Integrations:',
+'? Would you like to set up Timeback integration? Yes',
+'? Select subjects: Math',
+'? Select grade levels: 3, 4',
+]}
+/>
+</Tab>
 
   <Tab value="Existing Project">
     <TerminalBlock command="playcademy timeback init" simple />
   </Tab>
 </Tabs>
 
-***
+---
 
 ### Configuration
 
@@ -16103,33 +16195,33 @@ After enabling Timeback, your `playcademy.config.js` file will include Timeback 
 
 ```javascript title="playcademy.config.js"
 export default {
-    name: 'My Math Project',
-    integrations: {
-        // ↓ Added
-        timeback: {
-            courses: [
-                {
-                    subject: 'Math',
-                    grade: 3,
-                    totalXp: null, // TODO: Set before setup
-                    masterableUnits: null, // TODO: Set before setup
-                },
-                {
-                    subject: 'Math',
-                    grade: 4,
-                    totalXp: null, // TODO: Set before setup
-                    masterableUnits: null, // TODO: Set before setup
-                },
-            ],
+  name: 'My Math Project',
+  integrations: {
+    // ↓ Added
+    timeback: {
+      courses: [
+        {
+          subject: 'Math',
+          grade: 3,
+          totalXp: null, // TODO: Set before setup
+          masterableUnits: null // TODO: Set before setup
         },
-    },
-}
+        {
+          subject: 'Math',
+          grade: 4,
+          totalXp: null, // TODO: Set before setup
+          masterableUnits: null // TODO: Set before setup
+        }
+      ]
+    }
+  }
+};
 ```
 
 <Callout type="warning" title="Required Configuration Before Setup">
   You must configure **`totalXp`** and **`masterableUnits`** for each course before running [`playcademy timeback setup`](/platform/cli/commands#timeback-setup).
 
-  Both are critical for accurate progress tracking and completion calculation.
+Both are critical for accurate progress tracking and completion calculation.
 </Callout>
 
 Configure these values based on your educational content:
@@ -16153,18 +16245,18 @@ timeback: {
 Once configured, create the [OneRoster](/timeback/api-reference/oneroster) resources:
 
 <TerminalBlock
-  command={['playcademy timeback setup', 'playcademy timeback verify']}
-  output={[
-      '✔ Created 3 course(s)',
-      '',
-      '✔ Timeback integration set up successfully!',
-      '',
-      '  Grade 3 (Math): course-id-1',
-      '  Grade 4 (Math): course-id-2',
-      '  Grade 5 (Math): course-id-3',
-      '',
-      '✔ Verification complete',
-  ]}
+command={['playcademy timeback setup', 'playcademy timeback verify']}
+output={[
+'✔ Created 3 course(s)',
+'',
+'✔ Timeback integration set up successfully!',
+'',
+' Grade 3 (Math): course-id-1',
+' Grade 4 (Math): course-id-2',
+' Grade 5 (Math): course-id-3',
+'',
+'✔ Verification complete',
+]}
 />
 
 <Callout type="tip" title="Run Before Deploying">
@@ -16179,8 +16271,8 @@ If you need to customize the Timeback configuration, you can do so by modifying 
 (Note that customizing the configuration is not required, and the default configuration will work for most use cases.)
 
 <Tabs items={["Base Config", "Per-Course Overrides", "Both"]}>
-  <Tab value="Base Config">
-    ```javascript title="playcademy.config.js"
+<Tab value="Base Config">
+`javascript title="playcademy.config.js"
     /**
      * Shared configuration applies to all courses
      */
@@ -16206,8 +16298,8 @@ If you need to customize the Timeback configuration, you can do so by modifying 
             },
         },
     }
-    ```
-  </Tab>
+    `
+</Tab>
 
   <Tab value="Per-Course Overrides">
     ```javascript
@@ -16279,10 +16371,10 @@ If you need to customize the Timeback configuration, you can do so by modifying 
 <Callout type="tip" title="Template Variables">
   Use `{grade}`, `{subject}`, `{appSlug}`, `{appName}` in base config strings.
 
-  The CLI will expand these variables for you when creating OneRoster resources.
+The CLI will expand these variables for you when creating OneRoster resources.
 </Callout>
 
-***
+---
 
 ## Management Commands
 
@@ -16300,12 +16392,13 @@ If you need to customize the Timeback configuration, you can do so by modifying 
 ### Common Workflows \[!toc]
 
 <Tabs items={["Create resources", "Update Resources", "Verify Resources", "Remove Resources"]}>
-  <Tab value="Create resources">
-    Run this after configuring your courses in `playcademy.config.js` to initialize all OneRoster resources.
+<Tab value="Create resources">
+Run this after configuring your courses in `playcademy.config.js` to initialize all OneRoster resources.
 
     This creates courses, components, and the interactive resource for your app.
 
     <TerminalBlock command={['playcademy timeback setup']} />
+
   </Tab>
 
   <Tab value="Update Resources">
@@ -16314,6 +16407,7 @@ If you need to customize the Timeback configuration, you can do so by modifying 
     Use this whenever you update your Timeback config to keep your OneRoster resources in sync.
 
     <TerminalBlock command={['playcademy timeback update']} />
+
   </Tab>
 
   <Tab value="Verify Resources">
@@ -16322,6 +16416,7 @@ If you need to customize the Timeback configuration, you can do so by modifying 
     Run this after setup to confirm everything is ready.
 
     <TerminalBlock command={'playcademy timeback verify'} />
+
   </Tab>
 
   <Tab value="Remove Resources">
@@ -16330,10 +16425,11 @@ If you need to customize the Timeback configuration, you can do so by modifying 
     This deletes the resources but keeps your project intact.
 
     <TerminalBlock command={'playcademy timeback cleanup'} />
+
   </Tab>
 </Tabs>
 
-***
+---
 
 ## Learning Loops
 
@@ -16363,9 +16459,9 @@ The platform accumulates these to calculate `pctCompleteApp`: `(masteredUnits / 
 <Callout type="info" title="When to Report Mastery">
   Mastery is typically achieved when a session meets minimum accuracy and maximum time thresholds.
 
-  For example: completing a quiz with ≥90% accuracy in under 5 minutes might demonstrate mastery.
+For example: completing a quiz with ≥90% accuracy in under 5 minutes might demonstrate mastery.
 
-  Your app defines the thresholds that determine when a unit is mastered.
+Your app defines the thresholds that determine when a unit is mastered.
 </Callout>
 
 ### Progress
@@ -16394,35 +16490,35 @@ Configure `masterableUnits` per course:
 
 ```javascript title="playcademy.config.js"
 export default {
-    name: 'Astro Math',
-    integrations: {
-        timeback: {
-            courses: [
-                {
-                    subject: 'FastMath',
-                    grade: 3,
-                    totalXp: 300,
-                    masterableUnits: 3, // Grade 3: 3 units
-                },
-                {
-                    subject: 'FastMath',
-                    grade: 4,
-                    totalXp: 450,
-                    masterableUnits: 5, // Grade 4: 5 units
-                },
-            ],
+  name: 'Astro Math',
+  integrations: {
+    timeback: {
+      courses: [
+        {
+          subject: 'FastMath',
+          grade: 3,
+          totalXp: 300,
+          masterableUnits: 3 // Grade 3: 3 units
         },
-    },
-}
+        {
+          subject: 'FastMath',
+          grade: 4,
+          totalXp: 450,
+          masterableUnits: 5 // Grade 4: 5 units
+        }
+      ]
+    }
+  }
+};
 ```
 
 <Callout type="info" title="Activity Tracking vs Mastery Tracking?">
   When students complete a discrete learning unit, report `masteredUnits: 1` in [`endActivity()`](#endactivity).
 
-  The platform tracks cumulative progress and calculates `pctCompleteApp` as `(masteredUnits / masterableUnits) × 100`
+The platform tracks cumulative progress and calculates `pctCompleteApp` as `(masteredUnits / masterableUnits) × 100`
 </Callout>
 
-***
+---
 
 ## Using Timeback in Your App
 
@@ -16439,7 +16535,7 @@ Access the user's Timeback context via `client.timeback.user`.
 The user's unique Timeback identifier:
 
 ```typescript title="Example"
-const id = client.timeback.user.id
+const id = client.timeback.user.id;
 // 'abc123-def456-...'
 ```
 
@@ -16448,7 +16544,7 @@ const id = client.timeback.user.id
 The user's primary Timeback role:
 
 ```typescript title="Example"
-const role = client.timeback.user.role
+const role = client.timeback.user.role;
 // 'student' | 'parent' | 'teacher' | 'administrator' | 'guardian'
 ```
 
@@ -16457,7 +16553,7 @@ const role = client.timeback.user.role
 Array of courses the user is enrolled in, scoped to your project:
 
 ```typescript title="Example"
-const enrollments = client.timeback.user.enrollments
+const enrollments = client.timeback.user.enrollments;
 // [{ subject: 'FastMath', grade: 3, courseId: '...' }, ...]
 ```
 
@@ -16470,14 +16566,14 @@ const enrollments = client.timeback.user.enrollments
 Array of all organizations (schools/districts) the user is affiliated with:
 
 ```typescript title="Example"
-const orgs = client.timeback.user.organizations
+const orgs = client.timeback.user.organizations;
 // [{ id: '...', name: 'Playcademy Studios', type: 'school', isPrimary: true }, ...]
 ```
 
 <Callout type="info" title="App-Scoped">
   Like enrollments, organizations are app-scoped.
 
-  Only organizations associated with the user's enrollments for your project are included.
+Only organizations associated with the user's enrollments for your project are included.
 </Callout>
 
 #### `fetch()`
@@ -16486,16 +16582,16 @@ Fetch fresh user data from the server. Results are cached for 5 minutes by defau
 
 ```typescript title="Example"
 // Fetch fresh data (cached for 5 min)
-const fresh = await client.timeback.user.fetch()
+const fresh = await client.timeback.user.fetch();
 
 // Force refresh bypassing cache
-const forced = await client.timeback.user.fetch({ force: true })
+const forced = await client.timeback.user.fetch({ force: true });
 ```
 
 <Callout type="tip" title="When to Fetch">
   The user context is initialized when the app loads.
 
-  Use `fetch()` if you need to ensure you have the latest data, such as after a user might have been enrolled in a new course mid-session.
+Use `fetch()` if you need to ensure you have the latest data, such as after a user might have been enrolled in a new course mid-session.
 </Callout>
 
 ### Activity Tracking
@@ -16507,19 +16603,19 @@ Begin tracking a learning activity. Starts an internal timer and prepares data f
 ```typescript title="startActivity Example"
 // Minimal (most common)
 client.timeback.startActivity({
-    activityId: 'math-quiz-1',
-    grade: 3,
-    subject: 'Math',
-})
+  activityId: 'math-quiz-1',
+  grade: 3,
+  subject: 'Math'
+});
 // Activity name auto-derived: "Math Quiz 1"
 
 // With custom name override
 client.timeback.startActivity({
-    activityId: 'multiplication-drill',
-    activityName: 'Advanced Multiplication Drill',
-    grade: 4,
-    subject: 'Math',
-})
+  activityId: 'multiplication-drill',
+  activityName: 'Advanced Multiplication Drill',
+  grade: 4,
+  subject: 'Math'
+});
 ```
 
 ##### Required Fields \[!toc]
@@ -16541,7 +16637,7 @@ client.timeback.startActivity({
 <Callout type="tip" title="Course Routing">
   The `grade` and `subject` fields determine which [OneRoster](/timeback/api-reference/oneroster) course receives the activity data.
 
-  Ensure these match a course in your `playcademy.config.{js,json}` Timeback configuration.
+Ensure these match a course in your `playcademy.config.{js,json}` Timeback configuration.
 </Callout>
 
 #### `endActivity`
@@ -16551,34 +16647,34 @@ End the current activity and submit results to [OneRoster](/timeback/api-referen
 ```typescript title="endActivity Example"
 // Auto-calculate XP based on score
 await client.timeback.endActivity({
-    correctQuestions: 8,
-    totalQuestions: 10,
-})
+  correctQuestions: 8,
+  totalQuestions: 10
+});
 
 // Override XP calculation
 await client.timeback.endActivity({
-    correctQuestions: 8,
-    totalQuestions: 10,
-    xpAwarded: 15, // award exactly 15 XP
-})
+  correctQuestions: 8,
+  totalQuestions: 10,
+  xpAwarded: 15 // award exactly 15 XP
+});
 
 // Report mastery (e.g., unit completed)
 await client.timeback.endActivity({
-    correctQuestions: 8,
-    totalQuestions: 10,
-    masteredUnits: 1, // student mastered 1 unit
-})
+  correctQuestions: 8,
+  totalQuestions: 10,
+  masteredUnits: 1 // student mastered 1 unit
+});
 ```
 
 <Callout type="info" title="When to Report Mastery">
   Send `masteredUnits: 1` when the student completes a discrete learning unit in your app:
 
-  * **Level-based:** Student completes a level, stage, or world
-  * **Rank-based:** Student earns a rank, tier, or badge
-  * **Skills-based:** Student masters a skill, competency, or standard
-  * **Module-based:** Student completes a module, quiz, or chapter
+- **Level-based:** Student completes a level, stage, or world
+- **Rank-based:** Student earns a rank, tier, or badge
+- **Skills-based:** Student masters a skill, competency, or standard
+- **Module-based:** Student completes a module, quiz, or chapter
 
-  The platform tracks cumulative mastery and calculates completion automatically based on your [mastery configuration](#mastery-configuration).
+The platform tracks cumulative mastery and calculates completion automatically based on your [mastery configuration](#mastery-configuration).
 </Callout>
 
 ##### Required Fields \[!toc]
@@ -16598,17 +16694,17 @@ await client.timeback.endActivity({
 <Callout type="info" title="XP Calculation">
   By default, XP is calculated as:
 
-  **Base XP** = Active time in minutes × Accuracy multiplier
+**Base XP** = Active time in minutes × Accuracy multiplier
 
-  | Accuracy | Multiplier | Example (10 min)                    |
-  | :------- | :--------- | :---------------------------------- |
-  | 100%     | 1.25×      | 10 min × 1.25 = **12.5 XP**         |
-  | 80-99%   | 1.0×       | 10 min × 1.0 = **10 XP**            |
-  | \< 80%   | 0×         | **0 XP** (mastery not demonstrated) |
+| Accuracy | Multiplier | Example (10 min)                    |
+| :------- | :--------- | :---------------------------------- |
+| 100%     | 1.25×      | 10 min × 1.25 = **12.5 XP**         |
+| 80-99%   | 1.0×       | 10 min × 1.0 = **10 XP**            |
+| \< 80%   | 0×         | **0 XP** (mastery not demonstrated) |
 
-  Base rate: **1 minute of active learning = 1 XP**
+Base rate: **1 minute of active learning = 1 XP**
 
-  Re-attempts earn diminishing XP: 50% on 1st re-attempt, 25% on 2nd, 0% on 3rd+.
+Re-attempts earn diminishing XP: 50% on 1st re-attempt, 25% on 2nd, 0% on 3rd+.
 </Callout>
 
 #### `pauseActivity`
@@ -16617,40 +16713,40 @@ Pause the activity timer. Use this during non-instructional moments like showing
 
 ```typescript title="pauseActivity Example"
 client.timeback.startActivity({
-    activityId: 'speed-math-1',
-    grade: 4,
-    subject: 'Math',
-})
+  activityId: 'speed-math-1',
+  grade: 4,
+  subject: 'Math'
+});
 
 // Student attempts a problem...
 
 if (studentAnswerWrong) {
-    // Pause timer during feedback
-    client.timeback.pauseActivity()
+  // Pause timer during feedback
+  client.timeback.pauseActivity();
 
-    // Show correct answer or explanation
-    await showCorrectAnswer()
+  // Show correct answer or explanation
+  await showCorrectAnswer();
 
-    // Resume timer when they continue
-    client.timeback.resumeActivity()
+  // Resume timer when they continue
+  client.timeback.resumeActivity();
 }
 
 // End activity (only active time counted)
 await client.timeback.endActivity({
-    correctQuestions: 40,
-    totalQuestions: 50,
-})
+  correctQuestions: 40,
+  totalQuestions: 50
+});
 ```
 
 <Callout type="tip" title="When to Pause">
   Pause when:
 
-  * Tutorial/instruction screens
-  * Showing hints or explanations
-  * Waiting for external resources to load
-  * Any non-active learning time
+- Tutorial/instruction screens
+- Showing hints or explanations
+- Waiting for external resources to load
+- Any non-active learning time
 
-  This ensures XP reflects actual learning time.
+This ensures XP reflects actual learning time.
 </Callout>
 
 #### `resumeActivity`
@@ -16659,21 +16755,21 @@ Resume the activity timer after a pause.
 
 ```typescript
 // After pausing
-client.timeback.pauseActivity()
+client.timeback.pauseActivity();
 
 // ... show feedback ...
 
 // Resume when ready
-client.timeback.resumeActivity()
+client.timeback.resumeActivity();
 ```
 
 <Callout type="warning" title="Must Call startActivity First">
   You must call `startActivity()` before using `pauseActivity()` or `resumeActivity()`.
 
-  Calling these methods without an active activity will log a warning.
+Calling these methods without an active activity will log a warning.
 </Callout>
 
-***
+---
 
 ## Local Development
 
@@ -16681,10 +16777,10 @@ The [Vite Plugin](/platform/vite-plugin/develop#timeback) automatically enrolls 
 
 ```typescript title="vite.config.ts"
 export default defineConfig({
-    plugins: [
-        playcademy(), // All courses enrolled automatically with mock data
-    ],
-})
+  plugins: [
+    playcademy() // All courses enrolled automatically with mock data
+  ]
+});
 ```
 
 ### Customization
@@ -16693,17 +16789,17 @@ Override defaults for specific testing scenarios:
 
 ```typescript title="vite.config.ts"
 playcademy({
-    timeback: {
-        id: '...', // real student sourcedId for live testing
-        role: 'teacher', // test different user roles
-        organization: { id: '...', name: '...', type: 'school' }, // custom organization
-        courses: {
-            // FastMath:3 is enrolled by default if it is defined in your playcademy.config.js
-            'FastMath:4': false, // not enrolled
-            'FastMath:5': '00000033-0003-0003-0003-000000000003', // real course ID for integration testing
-        },
-    },
-})
+  timeback: {
+    id: '...', // real student sourcedId for live testing
+    role: 'teacher', // test different user roles
+    organization: { id: '...', name: '...', type: 'school' }, // custom organization
+    courses: {
+      // FastMath:3 is enrolled by default if it is defined in your playcademy.config.js
+      'FastMath:4': false, // not enrolled
+      'FastMath:5': '00000033-0003-0003-0003-000000000003' // real course ID for integration testing
+    }
+  }
+});
 ```
 
 Use `null` or `false` to exclude a course from enrollment.
@@ -16717,18 +16813,18 @@ This can be useful for testing how your app behaves when a student is enrolled i
 <Callout type="warn" title="Live Timeback Integration">
   To test against live Timeback services, you must also your `.env` file with credentials:
 
-  ```bash title=".env"
-  # Required: Timeback API credentials
-  TIMEBACK_API_CLIENT_ID=your-client-id
-  TIMEBACK_API_CLIENT_SECRET=your-client-secret
-  TIMEBACK_API_AUTH_URL=https://auth.example.com
+```bash title=".env"
+# Required: Timeback API credentials
+TIMEBACK_API_CLIENT_ID=your-client-id
+TIMEBACK_API_CLIENT_SECRET=your-client-secret
+TIMEBACK_API_AUTH_URL=https://auth.example.com
 
-  # Required: OneRoster and Caliper endpoints
-  TIMEBACK_ONEROSTER_API_URL=https://oneroster.example.com
-  TIMEBACK_CALIPER_API_URL=https://caliper.example.com
-  ```
+# Required: OneRoster and Caliper endpoints
+TIMEBACK_ONEROSTER_API_URL=https://oneroster.example.com
+TIMEBACK_CALIPER_API_URL=https://caliper.example.com
+```
 
-  See [Timeback Authentication](/timeback/essentials/authentication) and [Endpoints](/timeback/resources/endpoints) for details.
+See [Timeback Authentication](/timeback/essentials/authentication) and [Endpoints](/timeback/resources/endpoints) for details.
 </Callout>
 
 ### Hotkeys
@@ -16741,7 +16837,7 @@ Press these keys in the terminal during development:
 
 See [Development Mode](/platform/vite-plugin/develop#timeback) for full configuration options.
 
-***
+---
 
 ## What's Next?
 
@@ -16764,8 +16860,8 @@ See [Development Mode](/platform/vite-plugin/develop#timeback) for full configur
 </Cards>
 
 ```
-```
 
+```
 
 # Resources
 
@@ -16782,7 +16878,7 @@ Before building educational content, it's critical to:
 3. **Calculate XP and time-to-mastery**: Is this efficient compared to alternatives?
 4. **Align with academic standards**: Does this meet curriculum requirements?
 
-***
+---
 
 ## Explore
 
@@ -16807,7 +16903,6 @@ Before building educational content, it's critical to:
   </Card>
 </Cards>
 
-
 # New Game Proposal
 
 import { ScrollTarget } from '@/components/toc-section'
@@ -16821,16 +16916,16 @@ Game developers often build without understanding these critical requirements. T
 <Callout type="warn" title="Mandatory for All New Games">
   Games that skip this template will be rejected. You must answer all critical questions before writing code.
 
-  It's critical to start with something small and well-scoped. Otherwise, you'll waste weeks of work and have to start over.
+It's critical to start with something small and well-scoped. Otherwise, you'll waste weeks of work and have to start over.
 </Callout>
 
 <Callout type="info" title="How to Use This Template">
   This page is for **preview only** and shows you what the template looks like.
 
-  To actually fill out the proposal, <a href="/resources/new-game-proposal.md" download>download the template</a>.
+To actually fill out the proposal, <a href="/resources/new-game-proposal.md" download>download the template</a>.
 </Callout>
 
-***
+---
 
 ## Proposal Template
 
@@ -16881,14 +16976,14 @@ Game developers often build without understanding these critical requirements. T
 <TemplateSection title="2. Student Activities">
   **What do students actually DO in your game/app?**
 
-  <TemplateList
-    items={3}
-    placeholders={[
-      'e.g., spell words from audio',
-      'e.g., solve equations under time pressure',
-      'e.g., write arguments, match definitions to images',
-  ]}
-  />
+<TemplateList
+items={3}
+placeholders={[
+'e.g., spell words from audio',
+'e.g., solve equations under time pressure',
+'e.g., write arguments, match definitions to images',
+]}
+/>
 
   <TemplateField label="Roughly what % of time in each activity?" />
 </TemplateSection>
@@ -16914,39 +17009,39 @@ Game developers often build without understanding these critical requirements. T
 <TemplateSection title="4. Learning Science & Engine">
   **Which learning mechanisms is your game/app built on?**
 
-  <TemplateCheckboxes
-    title="Tier 0 - Foundational (pick all that apply)"
-    items={[
-      {
-          label: 'Faultless communication',
-          description: '(clear examples, non-examples, minimal confusion)',
-      },
-      { label: 'Retrieval practice', description: '(not re-study)' },
-      { label: 'Mastery gating', description: '(90% accuracy before advancing)' },
-      { label: 'Immediate error correction' },
-  ]}
-  />
+<TemplateCheckboxes
+title="Tier 0 - Foundational (pick all that apply)"
+items={[
+{
+label: 'Faultless communication',
+description: '(clear examples, non-examples, minimal confusion)',
+},
+{ label: 'Retrieval practice', description: '(not re-study)' },
+{ label: 'Mastery gating', description: '(90% accuracy before advancing)' },
+{ label: 'Immediate error correction' },
+]}
+/>
 
-  <TemplateCheckboxes
-    title="Tier 1 - Amplifiers (pick all that apply)"
-    items={[
-      { label: 'Spaced repetition', description: '(expanding intervals)' },
-      { label: 'Interleaving', description: '(mixing problem types)' },
-      { label: 'Example variation', description: '(diverse instantiations)' },
-      { label: 'Worked examples → faded practice' },
-      { label: 'Elaborated feedback', description: '(why, not just right/wrong)' },
-  ]}
-  />
+<TemplateCheckboxes
+title="Tier 1 - Amplifiers (pick all that apply)"
+items={[
+{ label: 'Spaced repetition', description: '(expanding intervals)' },
+{ label: 'Interleaving', description: '(mixing problem types)' },
+{ label: 'Example variation', description: '(diverse instantiations)' },
+{ label: 'Worked examples → faded practice' },
+{ label: 'Elaborated feedback', description: '(why, not just right/wrong)' },
+]}
+/>
 
-  <TemplateCheckboxes
-    title="Tier 2 - Context-Dependent (pick if applicable)"
-    items={[
-      { label: 'Dual coding', description: '(visual + verbal when both add value)' },
-      { label: 'Segmenting', description: '(breaking complex tasks into chunks)' },
-      { label: 'Pre-training on component concepts' },
-      { label: 'Metacognitive prompts' },
-  ]}
-  />
+<TemplateCheckboxes
+title="Tier 2 - Context-Dependent (pick if applicable)"
+items={[
+{ label: 'Dual coding', description: '(visual + verbal when both add value)' },
+{ label: 'Segmenting', description: '(breaking complex tasks into chunks)' },
+{ label: 'Pre-training on component concepts' },
+{ label: 'Metacognitive prompts' },
+]}
+/>
 
   <TemplateTextarea label="How do you decide which content to serve when?" rows={3} />
 
@@ -17036,6 +17131,7 @@ Game developers often build without understanding these critical requirements. T
     Preventing these anti-patterns is your **competitive advantage** over existing solutions.
 
     Enforcing correct app usage is the number one feature for Timeback integration.
+
   </Callout>
 </TemplateSection>
 
@@ -17071,15 +17167,15 @@ Game developers often build without understanding these critical requirements. T
 
   <TemplateField label="Target students/guides" placeholder="who will use this" />
 
-  <TemplateCheckboxes
-    title="Research sources (which brain lifts/documents informed this)"
-    items={[
-      { label: 'Brain lift', description: '(link: docs/academics/_____)' },
-      { label: 'Workflow', description: '(link: _____)' },
-      { label: 'Stakeholder interview', description: '(with whom, when)' },
-      { label: 'Existing game analysis' },
-  ]}
-  />
+<TemplateCheckboxes
+title="Research sources (which brain lifts/documents informed this)"
+items={[
+{ label: 'Brain lift', description: '(link: docs/academics/_____)' },
+{ label: 'Workflow', description: '(link: _____)' },
+{ label: 'Stakeholder interview', description: '(with whom, when)' },
+{ label: 'Existing game analysis' },
+]}
+/>
 </TemplateSection>
 
 ### 12. Andy's Critical Questions \[toc]
@@ -17097,6 +17193,7 @@ Game developers often build without understanding these critical requirements. T
     </Callout>
 
     <TemplateTextarea label="Your answer" rows={3} />
+
   </div>
 
   <div className="my-4">
@@ -17107,6 +17204,7 @@ Game developers often build without understanding these critical requirements. T
     </Callout>
 
     <TemplateTextarea label="Your answer" rows={3} />
+
   </div>
 
   <div className="my-4">
@@ -17123,10 +17221,11 @@ Game developers often build without understanding these critical requirements. T
     </Callout>
 
     <TemplateTextarea label="Your answer" rows={3} />
+
   </div>
 </TemplateSection>
 
-***
+---
 
 ## Pre-Build Checklist
 
@@ -17135,18 +17234,18 @@ Game developers often build without understanding these critical requirements. T
 Before you start coding, ensure you can check all these boxes:
 
 <TemplateCheckboxes
-  items={[
-      { label: "I've read relevant brain lifts in academics root" },
-      { label: "I've chosen a relevant curriculum standard to align with" },
-      { label: "I've identified the specific test to prove student improvement" },
-      { label: "I've chosen an appropriate learning engine" },
-      { label: "I've calculated theoretical time to mastery" },
-      { label: "I know what existing solution I'm competing with" },
-      { label: "I can answer all of Andy's questions above" },
-  ]}
+items={[
+{ label: "I've read relevant brain lifts in academics root" },
+{ label: "I've chosen a relevant curriculum standard to align with" },
+{ label: "I've identified the specific test to prove student improvement" },
+{ label: "I've chosen an appropriate learning engine" },
+{ label: "I've calculated theoretical time to mastery" },
+{ label: "I know what existing solution I'm competing with" },
+{ label: "I can answer all of Andy's questions above" },
+]}
 />
 
-***
+---
 
 ## Next Steps
 
@@ -17163,9 +17262,8 @@ After completing this proposal:
 <Callout type="info" title="Need Help?">
   Don't hesitate to reach out to the academics team.
 
-  It's their job to help you develop a game that will get approved and deliver real learning outcomes.
+It's their job to help you develop a game that will get approved and deliver real learning outcomes.
 </Callout>
-
 
 # Browser
 
@@ -17176,24 +17274,24 @@ The browser SDK provides namespaces for interacting with the Playcademy platform
 All methods are accessed through the `PlaycademyClient` instance.
 
 ```typescript
-import { PlaycademyClient } from '@playcademy/sdk'
+import { PlaycademyClient } from '@playcademy/sdk';
 
-const client = await PlaycademyClient.init()
+const client = await PlaycademyClient.init();
 
-const user = await client.users.me() // get current user
-const balance = await client.credits.balance() // get current balance
-await client.scores.submit(gameId, 1500, { level: 5 }) // submit score
+const user = await client.users.me(); // get current user
+const balance = await client.credits.balance(); // get current balance
+await client.scores.submit(gameId, 1500, { level: 5 }); // submit score
 ```
 
 <Callout type="info" title="Initialization">
   `PlaycademyClient.init()` automatically detects your environment and configures the client accordingly.
 
-  See [SDK Initialization](/platform/sdk#initialization) for details.
+See [SDK Initialization](/platform/sdk#initialization) for details.
 </Callout>
 
 For complete documentation including all types and method signatures: [SDK Reference](/platform/reference-sdk)
 
-***
+---
 
 ## Core Namespaces
 
@@ -17203,16 +17301,16 @@ Retrieve current user information and manage player inventory.
 
 ```typescript
 // Get current user
-const user = await client.users.me()
+const user = await client.users.me();
 
 // Get inventory
-const inventory = await client.users.inventory.get()
+const inventory = await client.users.inventory.get();
 
 // Add items
-await client.users.inventory.add('sword-123', 1)
+await client.users.inventory.add('sword-123', 1);
 
 // Remove items
-await client.users.inventory.remove('potion-456', 3)
+await client.users.inventory.remove('potion-456', 3);
 ```
 
 ### `client.credits`
@@ -17221,13 +17319,13 @@ Manage platform currency (credits).
 
 ```typescript
 // Check balance
-const balance = await client.credits.balance()
+const balance = await client.credits.balance();
 
 // Add credits
-await client.credits.add(100)
+await client.credits.add(100);
 
 // Spend credits
-await client.credits.spend(50)
+await client.credits.spend(50);
 ```
 
 ### `client.scores`
@@ -17237,10 +17335,10 @@ Submit scores for your project.
 ```typescript
 // Submit a score
 const result = await client.scores.submit(gameId, 1500, {
-    level: 5,
-    difficulty: 'hard',
-    perfectRun: true,
-})
+  level: 5,
+  difficulty: 'hard',
+  perfectRun: true
+});
 ```
 
 ### `client.identity`
@@ -17250,16 +17348,16 @@ Connect external identity providers (Google, Discord, etc.) to user accounts.
 ```typescript
 // Connect Google account
 const result = await client.identity.connect({
-    provider: 'google',
-    callbackUrl: '/auth/callback',
-})
+  provider: 'google',
+  callbackUrl: '/auth/callback'
+});
 
 if (result.success) {
-    console.log('Connected:', result.user)
+  console.log('Connected:', result.user);
 }
 ```
 
-***
+---
 
 ## Integration Namespaces
 
@@ -17272,14 +17370,14 @@ Track learning activities with automatic XP calculation. Access user context for
 Access the user's Timeback context via `client.timeback.user`:
 
 ```typescript title="Example"
-const id = client.timeback.user.id // User's Timeback ID
-const role = client.timeback.user.role // 'student' | 'parent' | 'teacher' | ...
-const enrollments = client.timeback.user.enrollments // App-scoped course enrollments
-const orgs = client.timeback.user.organizations // App-scoped organizations
+const id = client.timeback.user.id; // User's Timeback ID
+const role = client.timeback.user.role; // 'student' | 'parent' | 'teacher' | ...
+const enrollments = client.timeback.user.enrollments; // App-scoped course enrollments
+const orgs = client.timeback.user.organizations; // App-scoped organizations
 
 // Fetch fresh data from server (cached for 5 min)
-const fresh = await client.timeback.user.fetch()
-const forced = await client.timeback.user.fetch({ force: true })
+const fresh = await client.timeback.user.fetch();
+const forced = await client.timeback.user.fetch({ force: true });
 ```
 
 <Callout type="info" title="App-Scoped">
@@ -17293,23 +17391,23 @@ Start tracking an activity. Only `activityId` is required:
 ```typescript title="Example"
 // Minimal (most common)
 client.timeback.startActivity({
-    activityId: 'math-quiz-1', // automatically derived to "Math Quiz 1"
-})
+  activityId: 'math-quiz-1' // automatically derived to "Math Quiz 1"
+});
 
 // With custom name override
 client.timeback.startActivity({
-    activityId: 'math-quiz-1',
-    activityName: 'Advanced Multiplication Quiz',
-})
+  activityId: 'math-quiz-1',
+  activityName: 'Advanced Multiplication Quiz'
+});
 ```
 
 <Callout type="info" title="Auto-filled Metadata">
   The SDK automatically fills in metadata from your project config:
 
-  * **activityName**: Derived from activityId ("math-quiz-1" → "Math Quiz 1")
-  * **appName**, **subject**, **sensorUrl**: From `playcademy.config.{js,json}`
+- **activityName**: Derived from activityId ("math-quiz-1" → "Math Quiz 1")
+- **appName**, **subject**, **sensorUrl**: From `playcademy.config.{js,json}`
 
-  You can override any of these by providing them explicitly.
+You can override any of these by providing them explicitly.
 </Callout>
 
 #### `endActivity`
@@ -17319,16 +17417,16 @@ End the current activity and submit results:
 ```typescript title="Example"
 // Auto-calculate XP based on score
 await client.timeback.endActivity({
-    correctQuestions: 8,
-    totalQuestions: 10,
-})
+  correctQuestions: 8,
+  totalQuestions: 10
+});
 
 // Override XP calculation
 await client.timeback.endActivity({
-    correctQuestions: 8,
-    totalQuestions: 10,
-    xpAwarded: 15, // award exactly 15 XP
-})
+  correctQuestions: 8,
+  totalQuestions: 10,
+  xpAwarded: 15 // award exactly 15 XP
+});
 ```
 
 #### `{pause,resume}Activity`
@@ -17336,26 +17434,26 @@ await client.timeback.endActivity({
 Pause the timer during instructional moments and resume when ready:
 
 ```typescript title="Example"
-client.timeback.startActivity({ activityId: 'math-quiz-1' })
+client.timeback.startActivity({ activityId: 'math-quiz-1' });
 
 // Student attempts problems...
 
 if (studentAnswerWrong) {
-    // Pause timer to show correct answer
-    client.timeback.pauseActivity()
+  // Pause timer to show correct answer
+  client.timeback.pauseActivity();
 
-    // Let student learn from mistake
-    showCorrectAnswer()
+  // Let student learn from mistake
+  showCorrectAnswer();
 
-    // Resume when they continue playing
-    client.timeback.resumeActivity()
+  // Resume when they continue playing
+  client.timeback.resumeActivity();
 }
 
 // End activity (only active problem-solving time counted)
 await client.timeback.endActivity({
-    correctQuestions: 8,
-    totalQuestions: 10,
-})
+  correctQuestions: 8,
+  totalQuestions: 10
+});
 ```
 
 See [Timeback Integration](/platform/integrations/timeback) for complete documentation.
@@ -17371,15 +17469,16 @@ Learn more [here](/platform/integrations/custom-routes).
 <Callout type="warning" title="Always Use sdk.backend">
   **Don't use plain `fetch()` for your backend routes.**
 
-  The SDK automatically includes the platform authentication token, which is required for `c.get('playcademyUser')` to work in your routes.
+The SDK automatically includes the platform authentication token, which is required for `c.get('playcademyUser')` to work in your routes.
 
-  ```typescript
-  // ✅ Correct - includes platform token
-  const data = await client.backend.get('/my-route')
+```typescript
+// ✅ Correct - includes platform token
+const data = await client.backend.get('/my-route');
 
-  // ❌ Wrong - playcademyUser will be null
-  const data = await fetch('/api/my-route').then(r => r.json())
-  ```
+// ❌ Wrong - playcademyUser will be null
+const data = await fetch('/api/my-route').then((r) => r.json());
+```
+
 </Callout>
 
 #### `get`
@@ -17387,13 +17486,13 @@ Learn more [here](/platform/integrations/custom-routes).
 Make GET requests:
 
 ```typescript
-const data = await client.backend.get('/hello')
-console.log(data.message)
+const data = await client.backend.get('/hello');
+console.log(data.message);
 
 // With custom headers
 const data = await client.backend.get('/protected', {
-    'X-Custom-Header': 'value',
-})
+  'X-Custom-Header': 'value'
+});
 ```
 
 #### `post` / `put` / `patch`
@@ -17403,18 +17502,18 @@ Make requests with body data:
 ```typescript
 // POST request
 const result = await client.backend.post('/validate', {
-    answer: 'paris',
-})
+  answer: 'paris'
+});
 
 // PUT request
 await client.backend.put('/settings', {
-    volume: 0.8,
-})
+  volume: 0.8
+});
 
 // PATCH request
 await client.backend.patch('/profile', {
-    displayName: 'NewName',
-})
+  displayName: 'NewName'
+});
 ```
 
 #### `delete`
@@ -17422,7 +17521,7 @@ await client.backend.patch('/profile', {
 Delete resources:
 
 ```typescript
-await client.backend.delete('/cache/clear')
+await client.backend.delete('/cache/clear');
 ```
 
 #### `download`
@@ -17430,16 +17529,16 @@ await client.backend.delete('/cache/clear')
 Download binary files:
 
 ```typescript
-const response = await client.backend.download('/files?key=report.pdf')
-const blob = await response.blob()
+const response = await client.backend.download('/files?key=report.pdf');
+const blob = await response.blob();
 
 // Trigger browser download
-const url = URL.createObjectURL(blob)
-const a = document.createElement('a')
-a.href = url
-a.download = 'report.pdf'
-a.click()
-URL.revokeObjectURL(url)
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = 'report.pdf';
+a.click();
+URL.revokeObjectURL(url);
 ```
 
 <Callout type="info" title="Downloading Files">
@@ -17465,7 +17564,7 @@ Perfect for catchall routes that serve files by path.
 
 See [Custom Routes](/platform/integrations/custom-routes) and [Bucket Storage](/platform/integrations/bucket) for more examples.
 
-***
+---
 
 ## Runtime & Lifecycle
 
@@ -17475,28 +17574,28 @@ Game lifecycle events, messaging, and static asset loading.
 
 ```typescript
 // Signal ready
-client.runtime.ready()
+client.runtime.ready();
 
 // Exit
-client.runtime.exit()
+client.runtime.exit();
 
 // Listen for pause
 client.runtime.onPause(() => {
-    pauseGame()
-})
+  pauseGame();
+});
 
 // Listen for resume
 client.runtime.onResume(() => {
-    resumeGame()
-})
+  resumeGame();
+});
 
 // Load static assets at runtime
-const levelData = await client.runtime.assets.json`levels/level-${id}.json`
-img.src = client.runtime.assets.url`badges/${badgeType}.png`
-audio.src = client.runtime.assets.url`sfx/${soundEffect}.wav`
+const levelData = await client.runtime.assets.json`levels/level-${id}.json`;
+img.src = client.runtime.assets.url`badges/${badgeType}.png`;
+audio.src = client.runtime.assets.url`sfx/${soundEffect}.wav`;
 ```
 
-***
+---
 
 ## Connection Monitoring
 
@@ -17507,44 +17606,44 @@ Your application only needs to handle the logic for what to do when a user's con
 <Callout type="info" title="Platform Shows Baseline Alerts">
   The platform automatically shows connection alerts ("Connection Lost", "Slow Connection", etc.).
 
-  Your `onDisconnect` handler is just for app-specific logic.
+Your `onDisconnect` handler is just for app-specific logic.
 </Callout>
 
 ### Basic Example
 
 ```typescript
 const client = await PlaycademyClient.init({
-    onDisconnect: async ({ state, displayAlert }) => {
-        if (state === 'offline') {
-            // Save critical data and return to safe location
-            await saveToLocalStorage(appState)
-            returnToLobby()
+  onDisconnect: async ({ state, displayAlert }) => {
+    if (state === 'offline') {
+      // Save critical data and return to safe location
+      await saveToLocalStorage(appState);
+      returnToLobby();
 
-            // Optional: Add app-specific context
-            displayAlert('Progress saved locally. Returning to lobby...', { type: 'info' })
-        }
-    },
-})
+      // Optional: Add app-specific context
+      displayAlert('Progress saved locally. Returning to lobby...', { type: 'info' });
+    }
+  }
+});
 ```
 
 ### Pause App on Connection Issues
 
 ```typescript
 const client = await PlaycademyClient.init({
-    onDisconnect: ({ state }) => {
-        if (state === 'offline' || state === 'degraded') {
-            pause()
-            showReconnectingOverlay()
-        }
-    },
-})
+  onDisconnect: ({ state }) => {
+    if (state === 'offline' || state === 'degraded') {
+      pause();
+      showReconnectingOverlay();
+    }
+  }
+});
 
 client.on('connectionChange', ({ state }) => {
-    if (state === 'online') {
-        hideReconnectingOverlay()
-        resume()
-    }
-})
+  if (state === 'online') {
+    hideReconnectingOverlay();
+    resume();
+  }
+});
 ```
 
 ### API Reference
@@ -17574,20 +17673,20 @@ This is the same mechanism and location the platform uses for automatic network 
 
 ```typescript
 displayAlert('Custom message', {
-    type: 'error', // 'info' | 'warning' | 'error'
-    duration: 5000, // Auto-dismiss in ms (optional)
-})
+  type: 'error', // 'info' | 'warning' | 'error'
+  duration: 5000 // Auto-dismiss in ms (optional)
+});
 ```
 
 **Disable monitoring:**
 
 ```typescript
 const client = await PlaycademyClient.init({
-    enableConnectionMonitoring: false,
-})
+  enableConnectionMonitoring: false
+});
 ```
 
-***
+---
 
 ## Event System
 
@@ -17596,36 +17695,36 @@ Listen for platform events:
 ```typescript
 // Pause event
 client.on('pause', () => {
-    pause()
-})
+  pause();
+});
 
 // Resume event
 client.on('resume', () => {
-    resume()
-})
+  resume();
+});
 
 // Credits changed
 client.on('creditsChanged', (balance: number) => {
-    updateBalanceUI(balance)
-})
+  updateBalanceUI(balance);
+});
 
 // Item purchased
 client.on('itemPurchased', (item: ItemWithId) => {
-    showItemAcquired(item)
-})
+  showItemAcquired(item);
+});
 
 // Level up
 client.on('levelUp', (status: LevelStatus) => {
-    showLevelUpAnimation(status)
-})
+  showLevelUpAnimation(status);
+});
 
 // Exit requested
 client.on('exit', () => {
-    cleanup()
-})
+  cleanup();
+});
 ```
 
-***
+---
 
 ## What's Next?
 
@@ -17647,7 +17746,6 @@ client.on('exit', () => {
   </Card>
 </Cards>
 
-
 # SDK
 
 ## Overview
@@ -17665,7 +17763,7 @@ The Playcademy SDK provides a TypeScript interface for interacting with the Play
 Add the Playcademy SDK to your project:
 
 <PackageManagerTabs
-  commands={{
+commands={{
       bun: 'bun add @playcademy/sdk',
       npm: 'npm install @playcademy/sdk',
       pnpm: 'pnpm add @playcademy/sdk',
@@ -17673,7 +17771,7 @@ Add the Playcademy SDK to your project:
   }}
 />
 
-***
+---
 
 ## Initialization
 
@@ -17682,12 +17780,12 @@ Add the Playcademy SDK to your project:
 For most use cases, especially when using our Vite plugin ([@playcademy/vite-plugin](/platform/vite-plugin)), use automatic initialization:
 
 ```typescript
-import { PlaycademyClient } from '@playcademy/sdk'
+import { PlaycademyClient } from '@playcademy/sdk';
 
-const client = await PlaycademyClient.init()
+const client = await PlaycademyClient.init();
 
-const user = await client.users.me()
-console.log('Current user:', user)
+const user = await client.users.me();
+console.log('Current user:', user);
 ```
 
 **How it works:**
@@ -17715,6 +17813,7 @@ For server-side applications, standalone scripts, or custom environments:
 
     const loginData = await PlaycademyClient.login(baseUrl, email, password)
     ```
+
   </Step>
 
   <Step>
@@ -17727,10 +17826,11 @@ For server-side applications, standalone scripts, or custom environments:
         gameId: 'your-game-id', // Optional: for automatic session management
     })
     ```
+
   </Step>
 </Steps>
 
-***
+---
 
 ## Quick Start
 
@@ -17740,8 +17840,8 @@ A simple example demonstrating common SDK operations:
   ```typescript
   import { PlaycademyClient } from '@playcademy/sdk'
 
-  async function runProject() {
-      const client = await PlaycademyClient.init()
+async function runProject() {
+const client = await PlaycademyClient.init()
 
       try {
           // Get current user
@@ -17768,10 +17868,12 @@ A simple example demonstrating common SDK operations:
       } catch (error) {
           console.error('Error:', error)
       }
-  }
 
-  runProject()
-  ```
+}
+
+runProject()
+
+````
 </CollapsibleCode>
 
 ## Event System
@@ -17785,28 +17887,28 @@ const client = await PlaycademyClient.init()
 
 // Listen for pause events
 client.on('pause', () => {
-    console.log('Paused by platform')
-    pauseGame()
+  console.log('Paused by platform')
+  pauseGame()
 })
 
 // Listen for resume events
 client.on('resume', () => {
-    console.log('Resumed')
-    resumeGame()
+  console.log('Resumed')
+  resumeGame()
 })
 
 // Listen for connection changes
 client.on('connectionChange', ({ state, reason }) => {
-    console.log(`Connection: ${state} - ${reason}`)
-    updateConnectionIndicator(state)
+  console.log(`Connection: ${state} - ${reason}`)
+  updateConnectionIndicator(state)
 })
 
 // Listen for credit changes
 client.on('creditsChanged', (newBalance: number) => {
-    console.log('New balance:', newBalance)
-    updateUI(newBalance)
+  console.log('New balance:', newBalance)
+  updateUI(newBalance)
 })
-```
+````
 
 **Available Events:**
 
@@ -17824,33 +17926,33 @@ client.on('creditsChanged', (newBalance: number) => {
   For handling connection issues specifically, use `client.onDisconnect()` which only fires for
   offline/degraded states.
 
-  Learn more about [Connection Monitoring](/platform/sdk/browser#connection-monitoring).
+Learn more about [Connection Monitoring](/platform/sdk/browser#connection-monitoring).
 </Callout>
 
-***
+---
 
 ## Error Handling
 
 The SDK uses a custom error type for consistent error handling:
 
 ```typescript
-import { PlaycademyClient, PlaycademyError } from '@playcademy/sdk'
+import { PlaycademyClient, PlaycademyError } from '@playcademy/sdk';
 
 try {
-    const client = await PlaycademyClient.init()
-    await client.credits.spend(100)
+  const client = await PlaycademyClient.init();
+  await client.credits.spend(100);
 } catch (error) {
-    if (error instanceof PlaycademyError) {
-        console.error('API Error:', error.message)
-        console.error('Status:', error.status)
-        console.error('Code:', error.code)
-    } else {
-        console.error('Unexpected error:', error)
-    }
+  if (error instanceof PlaycademyError) {
+    console.error('API Error:', error.message);
+    console.error('Status:', error.status);
+    console.error('Code:', error.code);
+  } else {
+    console.error('Unexpected error:', error);
+  }
 }
 ```
 
-***
+---
 
 ## What's Next?
 
@@ -17872,7 +17974,6 @@ try {
   </Card>
 </Cards>
 
-
 # Server
 
 ## Overview
@@ -17882,7 +17983,7 @@ The server SDK (`@playcademy/sdk/server`) provides server-side APIs for integrat
 <Callout type="warn" title="Not for Playcademy Custom Routes">
   If you're using Playcademy's [custom routes](/platform/integrations/custom-routes), these features are already integrated.
 
-  This SDK is for developers building their own external backends.
+This SDK is for developers building their own external backends.
 </Callout>
 
 ## `PlaycademyClient`
@@ -17892,12 +17993,12 @@ The server SDK (`@playcademy/sdk/server`) provides server-side APIs for integrat
 Initialize the client with your API key:
 
 ```typescript
-import { PlaycademyClient } from '@playcademy/sdk/server'
+import { PlaycademyClient } from '@playcademy/sdk/server';
 
 const client = await PlaycademyClient.init({
-    apiKey: process.env.PLAYCADEMY_API_KEY,
-    gameId: 'my-project-id',
-})
+  apiKey: process.env.PLAYCADEMY_API_KEY,
+  gameId: 'my-project-id'
+});
 ```
 
 **Configuration:**
@@ -17913,32 +18014,33 @@ const client = await PlaycademyClient.init({
 <Callout type="tip" title="Config Loading">
   `playcademy.config.js` is auto-discovered if `config` or `configPath` are not provided
 
-  For environments without filesystem access, pass the config directly:
+For environments without filesystem access, pass the config directly:
 
-  ```typescript
-  import { PlaycademyClient } from '@playcademy/sdk/server'
+```typescript
+import { PlaycademyClient } from '@playcademy/sdk/server';
 
-  import type { PlaycademyConfig } from '@playcademy/sdk/server'
+import type { PlaycademyConfig } from '@playcademy/sdk/server';
 
-  const config: PlaycademyConfig = {
-      name: 'My Project',
-      integrations: {
-          timeback: {
-              course: {
-                  subjects: ['Math'],
-                  grades: [3, 4, 5],
-                  title: 'Elementary Math',
-              },
-          },
-      },
+const config: PlaycademyConfig = {
+  name: 'My Project',
+  integrations: {
+    timeback: {
+      course: {
+        subjects: ['Math'],
+        grades: [3, 4, 5],
+        title: 'Elementary Math'
+      }
+    }
   }
+};
 
-  const client = await PlaycademyClient.init({
-      apiKey: process.env.PLAYCADEMY_API_KEY!,
-      gameId: 'my-project',
-      config,
-  })
-  ```
+const client = await PlaycademyClient.init({
+  apiKey: process.env.PLAYCADEMY_API_KEY!,
+  gameId: 'my-project',
+  config
+});
+```
+
 </Callout>
 
 ### Client Structure
@@ -17974,33 +18076,33 @@ End a learning activity and submit results to Timeback:
 ```typescript
 // Minimal example
 await client.timeback.endActivity('student-123', {
-    activityData: {
-        activityId: 'math-quiz-1',
-    },
-    scoreData: {
-        correctQuestions: 8,
-        totalQuestions: 10,
-    },
-    timingData: {
-        durationSeconds: 300, // 5 minutes
-    },
-})
+  activityData: {
+    activityId: 'math-quiz-1'
+  },
+  scoreData: {
+    correctQuestions: 8,
+    totalQuestions: 10
+  },
+  timingData: {
+    durationSeconds: 300 // 5 minutes
+  }
+});
 
 // With optional overrides
 await client.timeback.endActivity('student-123', {
-    activityData: {
-        activityId: 'math-quiz-1',
-        activityName: 'Basic Arithmetic Quiz', // Optional
-    },
-    scoreData: {
-        correctQuestions: 8,
-        totalQuestions: 10,
-    },
-    timingData: {
-        durationSeconds: 300,
-    },
-    xpEarned: 15, // Optional: override automatic XP calculation
-})
+  activityData: {
+    activityId: 'math-quiz-1',
+    activityName: 'Basic Arithmetic Quiz' // Optional
+  },
+  scoreData: {
+    correctQuestions: 8,
+    totalQuestions: 10
+  },
+  timingData: {
+    durationSeconds: 300
+  },
+  xpEarned: 15 // Optional: override automatic XP calculation
+});
 ```
 
 **Parameters:**
@@ -18017,21 +18119,21 @@ await client.timeback.endActivity('student-123', {
 
 **Auto-filled metadata:**
 
-* `activityName`: Prettified from `activityId` ("math-quiz-1" → "Math Quiz 1") if not provided
-* `subject`, `appName`, `courseName`, `sensorUrl`: From your app config
+- `activityName`: Prettified from `activityId` ("math-quiz-1" → "Math Quiz 1") if not provided
+- `subject`, `appName`, `courseName`, `sensorUrl`: From your app config
 
 #### `client.timeback.courseId`
 
 Access the Timeback course ID:
 
 ```typescript
-const courseId = client.timeback.courseId // string | undefined
+const courseId = client.timeback.courseId; // string | undefined
 ```
 
 <Callout type="warn" title="When Is This Set?">
   The course ID is automatically fetched from the platform API the first time you call `endActivity()`.
 
-  Before that, this property is `undefined`.
+Before that, this property is `undefined`.
 </Callout>
 
 ### Client Properties
@@ -18039,34 +18141,34 @@ const courseId = client.timeback.courseId // string | undefined
 #### `client.gameId`
 
 ```typescript
-const gameId = client.gameId
+const gameId = client.gameId;
 ```
 
 #### `client.config`
 
 ```typescript
-const config = client.config
-console.log(config.name)
-console.log(config.integrations?.timeback)
+const config = client.config;
+console.log(config.name);
+console.log(config.integrations?.timeback);
 ```
 
-***
+---
 
 ## `verifyGameToken`
 
 Verify Playcademy tokens to authenticate users.
 
 ```typescript
-import { verifyGameToken } from '@playcademy/sdk/server'
+import { verifyGameToken } from '@playcademy/sdk/server';
 
 // Extract token from Authorization header
-const token = request.headers.get('Authorization')?.split(' ')[1]
-const { user, gameId, claims } = await verifyGameToken(token)
+const token = request.headers.get('Authorization')?.split(' ')[1];
+const { user, gameId, claims } = await verifyGameToken(token);
 
 // User is authenticated
 return new Response(JSON.stringify({ userId: user.sub }), {
-    headers: { 'Content-Type': 'application/json' },
-})
+  headers: { 'Content-Type': 'application/json' }
+});
 ```
 
 **Parameters:**
@@ -18104,75 +18206,75 @@ The function checks these in order:
 3. `PUBLIC_PLAYCADEMY_BASE_URL`
 4. `NEXT_PUBLIC_PLAYCADEMY_BASE_URL`
 
-***
+---
 
 ## Usage Examples
 
 ### Express.js
 
 ```typescript
-import express from 'express'
+import express from 'express';
 
-import { verifyGameToken } from '@playcademy/sdk/server'
+import { verifyGameToken } from '@playcademy/sdk/server';
 
-const app = express()
+const app = express();
 
 app.get('/api/user', async (req, res) => {
-    const token = req.headers.authorization?.split(' ')[1]
-    const { user } = await verifyGameToken(token)
+  const token = req.headers.authorization?.split(' ')[1];
+  const { user } = await verifyGameToken(token);
 
-    res.json({ message: `Hello, ${user.email}!` })
-})
+  res.json({ message: `Hello, ${user.email}!` });
+});
 ```
 
 ### Next.js API Route
 
 ```typescript title="app/api/user/route.ts"
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server';
 
-import { verifyGameToken } from '@playcademy/sdk/server'
+import { verifyGameToken } from '@playcademy/sdk/server';
 
 export async function GET(request: NextRequest) {
-    const token = request.headers.get('Authorization')?.split(' ')[1]
-    const { user } = await verifyGameToken(token)
+  const token = request.headers.get('Authorization')?.split(' ')[1];
+  const { user } = await verifyGameToken(token);
 
-    return NextResponse.json({ message: `Hello, ${user.email}!` })
+  return NextResponse.json({ message: `Hello, ${user.email}!` });
 }
 ```
 
 ### Timeback Integration
 
 ```typescript
-import { PlaycademyClient, verifyGameToken } from '@playcademy/sdk/server'
+import { PlaycademyClient, verifyGameToken } from '@playcademy/sdk/server';
 
 // Initialize client once
 const client = await PlaycademyClient.init({
-    apiKey: process.env.PLAYCADEMY_API_KEY!,
-    gameId: 'my-game',
-})
+  apiKey: process.env.PLAYCADEMY_API_KEY!,
+  gameId: 'my-game'
+});
 
 // In your route handler
-const token = request.headers.get('Authorization')?.split(' ')[1]
-const { user } = await verifyGameToken(token)
+const token = request.headers.get('Authorization')?.split(' ')[1];
+const { user } = await verifyGameToken(token);
 
 // Parse request body
-const body = await request.json()
-const { activityData, scoreData, timingData, xpEarned } = body
+const body = await request.json();
+const { activityData, scoreData, timingData, xpEarned } = body;
 
 // End activity and submit to Timeback
 await client.timeback.endActivity(user.timeback_id, {
-    activityData,
-    scoreData,
-    timingData,
-    xpEarned,
-})
+  activityData,
+  scoreData,
+  timingData,
+  xpEarned
+});
 
 return new Response(JSON.stringify({ success: true }), {
-    headers: { 'Content-Type': 'application/json' },
-})
+  headers: { 'Content-Type': 'application/json' }
+});
 ```
 
-***
+---
 
 ## Environment Setup
 
@@ -18186,10 +18288,10 @@ PLAYCADEMY_BASE_URL=https://hub.playcademy.net
 <Callout type="tip" title="Getting Your API Key">
   Your API key is displayed **once** after running `playcademy login`
 
-  See [CLI Authentication](/platform/cli/authentication) for details
+See [CLI Authentication](/platform/cli/authentication) for details
 </Callout>
 
-***
+---
 
 ## What's Next?
 
@@ -18211,7 +18313,6 @@ PLAYCADEMY_BASE_URL=https://hub.playcademy.net
   </Card>
 </Cards>
 
-
 # Build
 
 ## Overview
@@ -18223,7 +18324,7 @@ The Vite plugin prepares your project for deployment when running your build com
 Run your standard Vite build command:
 
 <PackageManagerTabs
-  commands={{
+commands={{
       bun: 'bun run build',
       npm: 'npm run build',
       pnpm: 'pnpm run build',
@@ -18233,20 +18334,20 @@ Run your standard Vite build command:
 
 The plugin automatically generates the manifest required for deployment.
 
-<TerminalBlock command="bun run build" output={['[Playcademy]', 'playcademy.manifest.json                  0.25 kB']} />
+<TerminalBlock command="bun run build" output={['[Playcademy]', 'playcademy.manifest.json 0.25 kB']} />
 
 If auto-zip is enabled:
 
 <TerminalBlock
-  command="bun run build"
-  output={[
-      '[Playcademy]',
-      'playcademy.manifest.json                  0.25 kB',
-      '.playcademy/my-project.zip                1,234.56 kB',
-  ]}
+command="bun run build"
+output={[
+'[Playcademy]',
+'playcademy.manifest.json 0.25 kB',
+'.playcademy/my-project.zip 1,234.56 kB',
+]}
 />
 
-***
+---
 
 ## Build Output
 
@@ -18265,10 +18366,11 @@ Typical structure:
     </Folder>
 
     <File name="playcademy.manifest.json" />
+
   </Folder>
 </Files>
 
-***
+---
 
 ## The Manifest
 
@@ -18276,16 +18378,16 @@ The plugin generates `playcademy.manifest.json` in your build output:
 
 ```json
 {
-    "version": "1",
-    "platform": "web",
-    "createdAt": "2025-10-09T08:30:00.000Z"
+  "version": "1",
+  "platform": "web",
+  "createdAt": "2025-10-09T08:30:00.000Z"
 }
 ```
 
 <Callout type="tip" title="Build Metadata">
   The manifest provides build metadata. Vite builds are always platform `web`.
 
-  Project metadata (name, emoji, backend routes) is handled by the CLI during deployment.
+Project metadata (name, emoji, backend routes) is handled by the CLI during deployment.
 </Callout>
 
 ### Manifest Fields
@@ -18296,7 +18398,7 @@ The plugin generates `playcademy.manifest.json` in your build output:
 | `platform`  | `"web"`     | Always `web` for Vite   |
 | `createdAt` | (timestamp) | Build timestamp         |
 
-***
+---
 
 ## Auto-Zip
 
@@ -18306,20 +18408,20 @@ To disable automatic zip creation:
 
 ```typescript title="vite.config.ts"
 playcademy({
-    export: {
-        autoZip: false,
-    },
-})
+  export: {
+    autoZip: false
+  }
+});
 ```
 
-***
+---
 
 ## Deployment Workflow
 
 The typical workflow:
 
 <PackageManagerTabs
-  commands={{
+commands={{
       bun: ['bun run build', 'playcademy deploy'],
       npm: ['npm run build', 'playcademy deploy'],
       pnpm: ['pnpm run build', 'playcademy deploy'],
@@ -18334,11 +18436,11 @@ The typical workflow:
 <Callout type="tip" title="What happens during deployment?">
   The CLI reads your built `dist/` directory and:
 
-  1. Deploys your project to Playcademy
-  2. Bundles and deploys any backend integrations (if needed)
-  3. Updates project metadata from `playcademy.config.js`
+1. Deploys your project to Playcademy
+2. Bundles and deploys any backend integrations (if needed)
+3. Updates project metadata from `playcademy.config.js`
 
-  See [Deployment Guide](/platform/cli/deployment) for details.
+See [Deployment Guide](/platform/cli/deployment) for details.
 </Callout>
 
 ## What's Next?
@@ -18361,7 +18463,6 @@ The typical workflow:
   </Card>
 </Cards>
 
-
 # Develop
 
 ## Overview
@@ -18373,7 +18474,7 @@ The Vite plugin automatically starts a local development environment with sandbo
 Run your standard Vite dev server:
 
 <PackageManagerTabs
-  commands={{
+commands={{
       bun: 'bun dev',
       npm: 'npm run dev',
       pnpm: 'pnpm dev',
@@ -18384,32 +18485,32 @@ Run your standard Vite dev server:
 <Callout type="tip" title="What happens next?">
   The plugin automatically
 
-  1. Starts local sandbox on port `4321`
-  2. Starts backend server on port `8788` (if configured)
-  3. Shows startup info in console
-</Callout>
+1. Starts local sandbox on port `4321`
+2. Starts backend server on port `8788` (if configured)
+3. Shows startup info in console
+   </Callout>
 
 <TerminalBlock
-  command="bun dev"
-  output={[
-      'VITE v1.2.3',
-      '',
-      '➜ Local: http://localhost:5173/',
-      '➜ Network: use --host to expose',
-      '',
-      'PLAYCADEMY v1.2.3',
-      '',
-      '➜ Project: my-project',
-      '➜ Sandbox: http://localhost:4321/api',
-      '➜ Backend: http://localhost:5173/api (via 8788)',
-  ]}
+command="bun dev"
+output={[
+'VITE v1.2.3',
+'',
+'➜ Local: http://localhost:5173/',
+'➜ Network: use --host to expose',
+'',
+'PLAYCADEMY v1.2.3',
+'',
+'➜ Project: my-project',
+'➜ Sandbox: http://localhost:4321/api',
+'➜ Backend: http://localhost:5173/api (via 8788)',
+]}
 />
 
 <Callout type="info" title="Additional Servers">
   * **Backend** line appears if you have custom routes configured
 </Callout>
 
-***
+---
 
 ## Local Development Servers
 
@@ -18462,6 +18563,7 @@ Run your standard Vite dev server:
         ```
       </Tab>
     </Tabs>
+
   </Step>
 
   <Step>
@@ -18486,10 +18588,11 @@ Run your standard Vite dev server:
       See the [CLI Development Guide](/platform/cli/development) for detailed information about the
       backend server.
     </Callout>
+
   </Step>
 </Steps>
 
-***
+---
 
 ## User Authentication
 
@@ -18497,41 +18600,41 @@ In [Custom Routes](/platform/integrations/custom-routes), you can access the aut
 
 ```typescript title="server/api/user.ts"
 export async function GET(c: Context) {
-    const playcademyUser = c.get('playcademyUser')
+  const playcademyUser = c.get('playcademyUser');
 
-    if (!playcademyUser) {
-        return c.json({ error: 'Not authenticated' }, 401)
-    }
+  if (!playcademyUser) {
+    return c.json({ error: 'Not authenticated' }, 401);
+  }
 
-    return c.json({
-        userId: playcademyUser.sub,
-        message: `Hello, ${playcademyUser.name}!`,
-    })
+  return c.json({
+    userId: playcademyUser.sub,
+    message: `Hello, ${playcademyUser.name}!`
+  });
 }
 ```
 
 <Callout type="warn" title="Platform Mode Required">
   `playcademyUser` is only populated when:
 
-  1. The plugin is running in [Platform Mode](#plugin-modes)
-  2. Requests are made via [`sdk.backend`](/platform/sdk/browser#clientbackend) (not plain `fetch`)
+1. The plugin is running in [Platform Mode](#plugin-modes)
+2. Requests are made via [`sdk.backend`](/platform/sdk/browser#clientbackend) (not plain `fetch`)
 
-  In Standalone Mode, `playcademyUser` will be `null`.
+In Standalone Mode, `playcademyUser` will be `null`.
 </Callout>
 
 <Callout type="info" title="Standalone Authentication">
   For user accounts outside the Playcademy platform, set up the [Authentication Integration](/platform/integrations/authentication).
 </Callout>
 
-***
+---
 
 ## Plugin Modes
 
 The Vite plugin supports two modes:
 
 <Tabs items={["Platform Mode", "Standalone Mode"]}>
-  <Tab value="Platform Mode">
-    This simulates the full Playcademy platform experience.
+<Tab value="Platform Mode">
+This simulates the full Playcademy platform experience.
 
     1. Mock platform API ([sandbox](/platform/reference-sandbox))
     2. Backend server for integrations
@@ -18542,6 +18645,7 @@ The Vite plugin supports two modes:
         mode: 'platform', // Default
     })
     ```
+
   </Tab>
 
   <Tab value="Standalone Mode">
@@ -18552,6 +18656,7 @@ The Vite plugin supports two modes:
         mode: 'standalone',
     })
     ```
+
   </Tab>
 </Tabs>
 
@@ -18559,7 +18664,7 @@ The Vite plugin supports two modes:
   Press `m + enter` in your terminal while the Vite dev server is running to toggle between platform and standalone modes.
 </Callout>
 
-***
+---
 
 ## Timeback
 
@@ -18570,30 +18675,30 @@ Use mock data for quick iteration, or connect to real Timeback credentials for i
 <Callout type="info" title="Coming Soon">
   A new `@timeback/local` package is in active development.
 
-  Once released, this will provide a significant improvement to the local development experience.
+Once released, this will provide a significant improvement to the local development experience.
 </Callout>
 
 ### Configuration
 
 ```typescript title="vite.config.ts"
 playcademy({
-    timeback: {
-        // id: auto-generated mock ID (default)
-        // id: 'tb_abc123' - use a real Timeback ID for integration testing
-        courses: {
-            'FastMath:3': 'mock', // 'mock' generates fake course ID or omit the course for the same effect
-            'FastMath:4': '00000011-0001-0001-0001-000000000001', // or use real course ID for integration testing
-        },
-        // role: 'student' (default) - cycle with 't' hotkey
-    },
-})
+  timeback: {
+    // id: auto-generated mock ID (default)
+    // id: 'tb_abc123' - use a real Timeback ID for integration testing
+    courses: {
+      'FastMath:3': 'mock', // 'mock' generates fake course ID or omit the course for the same effect
+      'FastMath:4': '00000011-0001-0001-0001-000000000001' // or use real course ID for integration testing
+    }
+    // role: 'student' (default) - cycle with 't' hotkey
+  }
+});
 ```
 
 ### Options \[!toc]
 
 <Tabs items={["Automatic (Default)", "Targeted Enrollment", "Custom Organization", "Custom Role", "Real Timeback IDs"]}>
-  <Tab value="Automatic (Default)">
-    By default, all courses from your `playcademy.config.js` are automatically enrolled with mock IDs.
+<Tab value="Automatic (Default)">
+By default, all courses from your `playcademy.config.js` are automatically enrolled with mock IDs.
 
     ```typescript title="vite.config.ts"
     export default defineConfig({
@@ -18619,6 +18724,7 @@ playcademy({
         ],
     })
     ```
+
   </Tab>
 
   <Tab value="Targeted Enrollment">
@@ -18656,6 +18762,7 @@ playcademy({
     ```
 
     The example above simulates a student enrolled in grade 3 only: useful for testing grade progression flows.
+
   </Tab>
 
   <Tab value="Custom Organization">
@@ -18674,6 +18781,7 @@ playcademy({
     ```
 
     Omit the organization property (or set to `'mock'`) for a generic Playcademy organization.
+
   </Tab>
 
   <Tab value="Custom Role">
@@ -18690,6 +18798,7 @@ playcademy({
     <Callout type="info" title="Role Cycling">
       You can [press `t`](#role-cycling) in the terminal to cycle roles when Vite is running.
     </Callout>
+
   </Tab>
 
   <Tab value="Real Timeback IDs">
@@ -18721,6 +18830,7 @@ playcademy({
     ```
 
     See [Timeback Authentication](/timeback/essentials/authentication) and [Endpoints](/timeback/resources/endpoints) for details.
+
   </Tab>
 </Tabs>
 
@@ -18734,14 +18844,15 @@ playcademy({
 <Callout type="warning" title="Course Keys Must Match">
   The `courses` entries (e.g., `'FastMath:3'`) must match courses defined in your `playcademy.config.js`:
 
-  ```javascript title="playcademy.config.js"
-  timeback: {
-      courses: [
-          { subject: 'FastMath', grade: 3 }, // → 'FastMath:3' in vite.config.ts
-          { subject: 'FastMath', grade: 4 }, // → 'FastMath:4' in vite.config.ts
-      ],
-  }
-  ```
+```javascript title="playcademy.config.js"
+timeback: {
+    courses: [
+        { subject: 'FastMath', grade: 3 }, // → 'FastMath:3' in vite.config.ts
+        { subject: 'FastMath', grade: 4 }, // → 'FastMath:4' in vite.config.ts
+    ],
+}
+```
+
 </Callout>
 
 ### Role Cycling
@@ -18759,7 +18870,7 @@ Press `t + enter` in the terminal to cycle through Timeback roles during develop
   See the [Timeback Integration guide](/platform/integrations/timeback#local-development) for more on developing with Timeback in your app.
 </Callout>
 
-***
+---
 
 ## CLI Hotkeys
 
@@ -18775,10 +18886,10 @@ This plugin provides keyboard shortcuts in the terminal during development:
 <Callout type="info" title="Database Recreation">
   Some configuration changes require recreating the sandbox database to take effect.
 
-  Press `d` after changing options like `timeback.id`, `timeback.organization`, or `timeback.courses` in your vite.config.ts.
+Press `d` after changing options like `timeback.id`, `timeback.organization`, or `timeback.courses` in your vite.config.ts.
 </Callout>
 
-***
+---
 
 ## Debugging
 
@@ -18787,7 +18898,7 @@ This plugin provides keyboard shortcuts in the terminal during development:
 Enable verbose logging to see all sandbox activity:
 
 ```typescript title="vite.config.ts"
-playcademy({ sandbox: { verbose: true } })
+playcademy({ sandbox: { verbose: true } });
 ```
 
 This shows:
@@ -18802,10 +18913,10 @@ Control the amount of logging with the `logLevel` option:
 
 ```typescript title="vite.config.ts"
 playcademy({
-    sandbox: {
-        logLevel: 'debug', // 'debug' | 'info' | 'warn' | 'error'
-    },
-})
+  sandbox: {
+    logLevel: 'debug' // 'debug' | 'info' | 'warn' | 'error'
+  }
+});
 ```
 
 | Log Level   | Description                                   |
@@ -18815,7 +18926,7 @@ playcademy({
 | **`warn`**  | Warnings and errors only                      |
 | **`error`** | Errors only                                   |
 
-***
+---
 
 ## What's Next?
 
@@ -18837,7 +18948,6 @@ playcademy({
   </Card>
 </Cards>
 
-
 # Vite Plugin
 
 ## Overview
@@ -18854,7 +18964,7 @@ The plugin works out of the box for most projects.
 
 Just add it to your `vite.config.ts` file and run `vite dev` to get started.
 
-***
+---
 
 ## Installation
 
@@ -18873,7 +18983,7 @@ This will:
 ### Manual Setup
 
 <PackageManagerTabs
-  commands={{
+commands={{
       bun: 'bun add -D @playcademy/vite-plugin',
       npm: 'npm install -D @playcademy/vite-plugin',
       pnpm: 'pnpm add -D @playcademy/vite-plugin',
@@ -18882,18 +18992,18 @@ This will:
 />
 
 ```typescript title="vite.config.ts"
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
 
-import { playcademy } from '@playcademy/vite-plugin'
+import { playcademy } from '@playcademy/vite-plugin';
 
 export default defineConfig({
-    plugins: [playcademy()],
-})
+  plugins: [playcademy()]
+});
 ```
 
 That's it. Run your dev command and the plugin handles the rest.
 
-***
+---
 
 ## Configuration
 
@@ -18904,16 +19014,16 @@ When [deploying](/platform/cli/deployment) to Playcademy, you'll be given two UR
 <Callout type="info" title="Platform vs. Standalone">
   Configuring the plugin's `mode` option lets you develop against your chosen scenario:
 
-  1. **Platform mode** simulates being launched inside the Playcademy platform
-  2. **Standalone mode** simulates direct access without platform integration
+1. **Platform mode** simulates being launched inside the Playcademy platform
+2. **Standalone mode** simulates direct access without platform integration
 
-  Switch between modes with the [`m + enter`](/platform/vite-plugin/develop#cli-hotkeys) hotkey.
+Switch between modes with the [`m + enter`](/platform/vite-plugin/develop#cli-hotkeys) hotkey.
 </Callout>
 
 ```typescript title="vite.config.ts"
 playcademy({
-    mode: 'platform',
-})
+  mode: 'platform'
+});
 ```
 
 | Option | Type                         | Default      | Description           |
@@ -18926,10 +19036,10 @@ Control build output:
 
 ```typescript title="vite.config.ts"
 playcademy({
-    export: {
-        autoZip: true,
-    },
-})
+  export: {
+    autoZip: true
+  }
+});
 ```
 
 | Option    | Type      | Default | Description                   |
@@ -18942,14 +19052,14 @@ Configure the local development sandbox:
 
 ```typescript title="vite.config.ts"
 playcademy({
-    sandbox: {
-        autoStart: true,
-        recreateDb: false,
-        seed: true,
-        memoryOnly: false,
-        databasePath: undefined,
-    },
-})
+  sandbox: {
+    autoStart: true,
+    recreateDb: false,
+    seed: true,
+    memoryOnly: false,
+    databasePath: undefined
+  }
+});
 ```
 
 | Option         | Type      | Default     | Description                                 |
@@ -18969,10 +19079,10 @@ Configure visual elements during development:
 
 ```typescript title="vite.config.ts"
 playcademy({
-    display: {
-        hideBadge: true,
-    },
-})
+  display: {
+    hideBadge: true
+  }
+});
 ```
 
 | Option      | Type      | Default | Description                  |
@@ -18987,13 +19097,13 @@ You can override defaults for testing purposes:
 
 ```typescript title="vite.config.ts"
 playcademy({
-    timeback: {
-        id: '...',
-        role: 'teacher',
-        organization: { id: '...', name: '...', type: 'school' },
-        courses: { 'FastMath:3': '...' },
-    },
-})
+  timeback: {
+    id: '...',
+    role: 'teacher',
+    organization: { id: '...', name: '...', type: 'school' },
+    courses: { 'FastMath:3': '...' }
+  }
+});
 ```
 
 | Option         | Type     | Default     | Description                                                    |
@@ -19009,7 +19119,7 @@ playcademy({
 
 Read more about [local development with Timeback](/platform/vite-plugin/develop#timeback).
 
-***
+---
 
 ## Common Configurations
 
@@ -19017,8 +19127,8 @@ Read more about [local development with Timeback](/platform/vite-plugin/develop#
 
 ```typescript title="vite.config.ts"
 playcademy({
-    mode: 'standalone',
-})
+  mode: 'standalone'
+});
 ```
 
 ### Disable Auto-Zip
@@ -19027,20 +19137,20 @@ Auto-zip is enabled by default. To disable:
 
 ```typescript title="vite.config.ts"
 playcademy({
-    export: {
-        autoZip: false,
-    },
-})
+  export: {
+    autoZip: false
+  }
+});
 ```
 
 ### Hide Playcademy Badge
 
 ```typescript title="vite.config.ts"
 playcademy({
-    display: {
-        hideBadge: true,
-    },
-})
+  display: {
+    hideBadge: true
+  }
+});
 ```
 
 ### Reset Sandbox Data on Launch
@@ -19049,10 +19159,10 @@ Useful for testing fresh database states:
 
 ```typescript title="vite.config.ts"
 playcademy({
-    sandbox: {
-        recreateDb: true,
-    },
-})
+  sandbox: {
+    recreateDb: true
+  }
+});
 ```
 
 ### In-Memory Database
@@ -19061,10 +19171,10 @@ Use RAM-based database in ephemeral contexts:
 
 ```typescript title="vite.config.ts"
 playcademy({
-    sandbox: {
-        memoryOnly: true,
-    },
-})
+  sandbox: {
+    memoryOnly: true
+  }
+});
 ```
 
 ### Custom Database Path
@@ -19073,13 +19183,13 @@ Specify a custom location for the database file:
 
 ```typescript title="vite.config.ts"
 playcademy({
-    sandbox: {
-        databasePath: './dev-sandbox.db',
-    },
-})
+  sandbox: {
+    databasePath: './dev-sandbox.db'
+  }
+});
 ```
 
-***
+---
 
 ## What's Next?
 
@@ -19100,7 +19210,6 @@ playcademy({
     Build your first project with the Vite plugin from scratch.
   </Card>
 </Cards>
-
 
 # Course Progression
 
@@ -19134,9 +19243,9 @@ It is also recommended to include `masteredUnits` in the [`ActivityEvent`](/time
 <Callout type="info" title="When to Report Mastery">
   Mastery is typically achieved when a session meets minimum accuracy and maximum time thresholds.
 
-  For example: completing a quiz with ≥90% accuracy in under 5 minutes might demonstrate mastery.
+For example: completing a quiz with ≥90% accuracy in under 5 minutes might demonstrate mastery.
 
-  Your application defines the thresholds that determine when a unit is mastered.
+Your application defines the thresholds that determine when a unit is mastered.
 </Callout>
 
 ## Configuring Course Completion
@@ -19164,7 +19273,7 @@ What constitutes a "unit" depends on your application's structure:
 <Callout type="tip" title="Units are Mastery-Based">
   Choose units that represent meaningful mastery milestones, not just engagement metrics.
 
-  Units should reflect mastery of content, not just time spent or attempts made.
+Units should reflect mastery of content, not just time spent or attempts made.
 </Callout>
 
 ## Calculating Progress
@@ -19214,8 +19323,9 @@ The [EduBridge Analytics API](/timeback/api-reference/edubridge) provides aggreg
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+
+````typescript
     const studentId = 'student-123'
     const courseId = 'math-grade-3'
     const path = `${TIMEBACK_API_URL}/ims/edubridge/analytics/v1p0/enrollmentFacts?studentId=${studentId}&courseId=${courseId}`
@@ -19228,10 +19338,11 @@ The [EduBridge Analytics API](/timeback/api-reference/edubridge) provides aggreg
 
     const data = await response.json()
     ```
-  </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Response>
-    ```json
+</RequestExamplesBlock.Tab>
+
+<RequestExamplesBlock.Response>
+`json
     {
         "enrollmentFacts": [
             {
@@ -19243,14 +19354,14 @@ The [EduBridge Analytics API](/timeback/api-reference/edubridge) provides aggreg
             }
         ]
     }
-    ```
-  </RequestExamplesBlock.Response>
+    `
+</RequestExamplesBlock.Response>
 </RequestExamplesBlock>
 
 <Callout type="info">
   The `masteredUnits` value is the cumulative sum of all `masteredUnits` reported this student and course.
 
-  To calculate `pctCompleteApp`, divide `masteredUnits` by your application's total unit count.
+To calculate `pctCompleteApp`, divide `masteredUnits` by your application's total unit count.
 </Callout>
 
 ### OneRoster Assessment Results
@@ -19266,8 +19377,8 @@ Query all `AssessmentResult` entries for a student and sum the `masteredUnits` f
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+```typescript
     const studentId = 'student-123'
     const path = `${TIMEBACK_API_URL}/ims/oneroster/gradebook/v1p2/students/${studentId}/assessmentResults`
 
@@ -19279,7 +19390,8 @@ Query all `AssessmentResult` entries for a student and sum the `masteredUnits` f
 
     const { assessmentResults } = await response.json()
     ```
-  </RequestExamplesBlock.Tab>
+
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
 
 Then aggregate `metadata.masteredUnits` across all results for the course:
@@ -19287,12 +19399,12 @@ Then aggregate `metadata.masteredUnits` across all results for the course:
 ```typescript
 // Sum masteredUnits from all assessment results
 const totalMasteredUnits = assessmentResults
-    .filter(result => result.courseId === 'math-grade-3')
-    .reduce((sum, result) => sum + (result.metadata?.masteredUnits || 0), 0)
+	.filter((result) => result.courseId === 'math-grade-3')
+	.reduce((sum, result) => sum + (result.metadata?.masteredUnits || 0), 0);
 
 // Calculate completion (you provide totalUnits from your app config)
-const pctCompleteApp = (totalMasteredUnits / totalUnits) * 100
-```
+const pctCompleteApp = (totalMasteredUnits / totalUnits) * 100;
+````
 
 ## What's Next?
 
@@ -19305,7 +19417,6 @@ const pctCompleteApp = (totalMasteredUnits / totalUnits) * 100
     Build apps that span multiple grade levels.
   </Card>
 </Cards>
-
 
 # Advanced
 
@@ -19321,8 +19432,7 @@ Advanced guides for building on Timeback.
 
 ## Coming Soon
 
-* tbd
-
+- tbd
 
 # Caliper API
 
@@ -19352,10 +19462,10 @@ Timeback uses a custom Caliper profile with specialized event types for educatio
 
 ## Common Use Cases
 
-* **Track activity completion**: Record when students finish quizzes, lessons, or activities
-* **Measure time spent**: Track active and inactive learning time
-* **Calculate XP**: Send XP earned based on performance and accuracy
-* **Power analytics**: Feed data to dashboards and learning insights
+- **Track activity completion**: Record when students finish quizzes, lessons, or activities
+- **Measure time spent**: Track active and inactive learning time
+- **Calculate XP**: Send XP earned based on performance and accuracy
+- **Power analytics**: Feed data to dashboards and learning insights
 
 ## Essential Event Types
 
@@ -19412,8 +19522,9 @@ Timeback uses a custom Caliper profile with specialized event types for educatio
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+
+````typescript
     const event = {
         '@context': 'http://purl.imsglobal.org/ctx/caliper/v1p2',
         id: `urn:uuid:${crypto.randomUUID()}`,
@@ -19423,27 +19534,27 @@ Timeback uses a custom Caliper profile with specialized event types for educatio
         action: 'Completed',
         actor: {
             id: `${TIMEBACK_API_URL}/ims/oneroster/rostering/v1p2/users/student-123`,
-            type: 'TimebackUser',
-            email: 'student@example.com',
-        },
-        object: {
-            id: 'activity-123',
-            type: 'TimebackActivityContext',
-            subject: 'Math',
-            app: { name: 'Math App' },
-            activity: { id: 'activity-123', name: 'Multiplication Quiz' },
-        },
-        generated: {
-            id: 'metrics-123',
-            type: 'TimebackActivityMetricsCollection',
-            attempt: 1,
-            items: [
-                { type: 'xpEarned', value: 150 },
-                { type: 'totalQuestions', value: 10 },
-                { type: 'correctQuestions', value: 9 },
-            ],
-        },
-    }
+type: 'TimebackUser',
+email: 'student@example.com',
+},
+object: {
+id: 'activity-123',
+type: 'TimebackActivityContext',
+subject: 'Math',
+app: { name: 'Math App' },
+activity: { id: 'activity-123', name: 'Multiplication Quiz' },
+},
+generated: {
+id: 'metrics-123',
+type: 'TimebackActivityMetricsCollection',
+attempt: 1,
+items: [
+{ type: 'xpEarned', value: 150 },
+{ type: 'totalQuestions', value: 10 },
+{ type: 'correctQuestions', value: 9 },
+],
+},
+}
 
     await fetch(`${TIMEBACK_CALIPER_URL}/ims/caliper/v1p2/events`, {
         method: 'POST',
@@ -19459,9 +19570,9 @@ Timeback uses a custom Caliper profile with specialized event types for educatio
         }),
     })
     ```
-  </RequestExamplesBlock.Tab>
-</RequestExamplesBlock>
 
+</RequestExamplesBlock.Tab>
+</RequestExamplesBlock>
 
 # CASE API
 
@@ -19492,10 +19603,10 @@ Use CASE to ensure your app meets curriculum requirements and enables standards-
 
 ## Common Use Cases
 
-* **Find standards**: Browse available frameworks (CCSS, NGSS, state standards)
-* **Tag content**: Link questions and activities to specific learning objectives
-* **Report coverage**: Show which standards your app addresses
-* **Enable filtering**: Let educators search content by standard
+- **Find standards**: Browse available frameworks (CCSS, NGSS, state standards)
+- **Tag content**: Link questions and activities to specific learning objectives
+- **Report coverage**: Show which standards your app addresses
+- **Enable filtering**: Let educators search content by standard
 
 ## Essential Endpoints
 
@@ -19517,17 +19628,18 @@ Use CASE to ensure your app meets curriculum requirements and enables standards-
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+```typescript
     const frameworks = await fetch(`${TIMEBACK_API_URL}/ims/case/v1p0/CFDocuments`, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
-        },
-    })
+},
+})
 
     const { CFDocuments } = await frameworks.json()
     ```
-  </RequestExamplesBlock.Tab>
+
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
 
 ### Get Specific Standard
@@ -19540,20 +19652,20 @@ Use CASE to ensure your app meets curriculum requirements and enables standards-
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+```typescript
     const standard = await fetch(`${TIMEBACK_API_URL}/ims/case/v1p0/CFItems/standard-guid-123`, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
-        },
-    })
+},
+})
 
     const { CFItem } = await standard.json()
     // CFItem contains humanCodingScheme (e.g., "CCSS.Math.5.NF.A.1")
     ```
-  </RequestExamplesBlock.Tab>
-</RequestExamplesBlock>
 
+</RequestExamplesBlock.Tab>
+</RequestExamplesBlock>
 
 # CLR API
 
@@ -19583,10 +19695,10 @@ Use CLR to create holistic learner profiles that follow students throughout thei
 
 ## Common Use Cases
 
-* **Create learner records**: Aggregate achievements from your app into a CLR
-* **Export transcripts**: Provide students with portable, verifiable records
-* **Combine achievements**: Merge accomplishments from multiple learning platforms
-* **Enable portability**: Let students carry their learning history across systems
+- **Create learner records**: Aggregate achievements from your app into a CLR
+- **Export transcripts**: Provide students with portable, verifiable records
+- **Combine achievements**: Merge accomplishments from multiple learning platforms
+- **Enable portability**: Let students carry their learning history across systems
 
 ## Essential Endpoints
 
@@ -19634,8 +19746,8 @@ Use CLR to create holistic learner profiles that follow students throughout thei
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+``typescript
     const clr = await fetch(`${TIMEBACK_API_URL}/ims/clr/v2p0/credentials/`, {
         method: 'POST',
         headers: {
@@ -19667,10 +19779,9 @@ Use CLR to create holistic learner profiles that follow students throughout thei
             },
         }),
     })
-    ```
-  </RequestExamplesBlock.Tab>
+    ``
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
-
 
 # EduBridge API
 
@@ -19699,12 +19810,12 @@ Use EduBridge to enroll students in courses, track their progress, and access an
 
 ## Common Use Cases
 
-* **Enroll students in courses**: Simple one-call enrollment without managing academic sessions
-* **Track student progress**: Access pre-aggregated XP, time spent, and mastery metrics
-* **Query analytics by enrollment**: Get all activity data for a specific enrollment
-* **Find highest grade mastered**: Check student placement across multiple data sources
-* **Manage subject tracks**: Define which courses students should be enrolled in by grade level
-* **Reset progress or goals**: Bulk operations for course management
+- **Enroll students in courses**: Simple one-call enrollment without managing academic sessions
+- **Track student progress**: Access pre-aggregated XP, time spent, and mastery metrics
+- **Query analytics by enrollment**: Get all activity data for a specific enrollment
+- **Find highest grade mastered**: Check student placement across multiple data sources
+- **Manage subject tracks**: Define which courses students should be enrolled in by grade level
+- **Reset progress or goals**: Bulk operations for course management
 
 ## Essential Endpoints
 
@@ -19729,8 +19840,8 @@ Use EduBridge to enroll students in courses, track their progress, and access an
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+``typescript
     const response = await fetch(
         `${TIMEBACK_API_URL}/edubridge/enrollments/enroll/student123/course456/school789`,
         {
@@ -19740,8 +19851,8 @@ Use EduBridge to enroll students in courses, track their progress, and access an
             },
         },
     )
-    ```
-  </RequestExamplesBlock.Tab>
+    ``
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
 
 ### Get Enrollment Analytics
@@ -19758,8 +19869,8 @@ Use EduBridge to enroll students in courses, track their progress, and access an
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+```typescript
     const enrollmentId = 'enrollment123'
     const startDate = '2024-01-01T00:00:00Z'
     const endDate = '2024-12-31T23:59:59Z'
@@ -19772,9 +19883,9 @@ Use EduBridge to enroll students in courses, track their progress, and access an
         },
     })
     ```
-  </RequestExamplesBlock.Tab>
-</RequestExamplesBlock>
 
+</RequestExamplesBlock.Tab>
+</RequestExamplesBlock>
 
 # API Reference
 
@@ -19818,7 +19929,6 @@ Timeback provides eight APIs for building educational applications.
   </Card>
 </Cards>
 
-
 # OneRoster API
 
 ## Overview
@@ -19851,9 +19961,9 @@ Think of it as the organizational backbone, defining what content exists, who ha
 
 ## Common Use Cases
 
-* **Build course structures**: Organize content into courses, units, and lessons
-* **Manage student rosters**: Enroll students and control access to grade-specific content
-* **Query enrollments**: Check which courses a student is enrolled in
+- **Build course structures**: Organize content into courses, units, and lessons
+- **Manage student rosters**: Enroll students and control access to grade-specific content
+- **Query enrollments**: Check which courses a student is enrolled in
 
 ## Essential Endpoints
 
@@ -19889,8 +19999,8 @@ Think of it as the organizational backbone, defining what content exists, who ha
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+``typescript
     const response = await fetch(`${TIMEBACK_API_URL}/ims/oneroster/rostering/v1p2/courses`, {
         method: 'POST',
         headers: {
@@ -19909,8 +20019,8 @@ Think of it as the organizational backbone, defining what content exists, who ha
             },
         }),
     })
-    ```
-  </RequestExamplesBlock.Tab>
+    ``
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
 
 ### Get Student Enrollments
@@ -19923,8 +20033,8 @@ Think of it as the organizational backbone, defining what content exists, who ha
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+``typescript
     const enrollments = await fetch(
         `${TIMEBACK_API_URL}/ims/oneroster/rostering/v1p2/enrollments?filter=user.sourcedId='student-123'`,
         {
@@ -19933,10 +20043,9 @@ Think of it as the organizational backbone, defining what content exists, who ha
             },
         },
     )
-    ```
-  </RequestExamplesBlock.Tab>
+    ``
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
-
 
 # OpenBadge API
 
@@ -19966,10 +20075,10 @@ Use OpenBadge to recognize accomplishments and motivate continued learning.
 
 ## Common Use Cases
 
-* **Issue achievement badges**: Reward students for completing courses or reaching milestones
-* **Create skill badges**: Recognize mastery of specific competencies
-* **Verify credentials**: Confirm that badges are authentic and unaltered
-* **Display earned badges**: Show student achievements in profiles or portfolios
+- **Issue achievement badges**: Reward students for completing courses or reaching milestones
+- **Create skill badges**: Recognize mastery of specific competencies
+- **Verify credentials**: Confirm that badges are authentic and unaltered
+- **Display earned badges**: Show student achievements in profiles or portfolios
 
 ## Essential Endpoints
 
@@ -20017,8 +20126,8 @@ Use OpenBadge to recognize accomplishments and motivate continued learning.
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+``typescript
     const badge = await fetch(`${TIMEBACK_API_URL}/ims/ob/v3p0/credentials/`, {
         method: 'POST',
         headers: {
@@ -20050,8 +20159,8 @@ Use OpenBadge to recognize accomplishments and motivate continued learning.
             },
         }),
     })
-    ```
-  </RequestExamplesBlock.Tab>
+    ``
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
 
 ### Issue Badge to Student
@@ -20071,8 +20180,8 @@ Use OpenBadge to recognize accomplishments and motivate continued learning.
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+``typescript
     const assertion = await fetch(`${TIMEBACK_API_URL}/ims/ob/v3p0/issue-badge/`, {
         method: 'POST',
         headers: {
@@ -20086,10 +20195,9 @@ Use OpenBadge to recognize accomplishments and motivate continued learning.
             validFrom: new Date().toISOString(),
         }),
     })
-    ```
-  </RequestExamplesBlock.Tab>
+    ``
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
-
 
 # PowerPath API
 
@@ -20119,10 +20227,10 @@ Use PowerPath to build adaptive quizzes that adjust to student performance in re
 
 ## Common Use Cases
 
-* **Build adaptive quizzes**: Questions adapt to student performance in real-time
-* **Implement placement tests**: Onboard students to the right grade level
-* **Enable test-outs**: Let students skip content they've already mastered
-* **Track mastery progression**: Monitor student progress through course material
+- **Build adaptive quizzes**: Questions adapt to student performance in real-time
+- **Implement placement tests**: Onboard students to the right grade level
+- **Enable test-outs**: Let students skip content they've already mastered
+- **Track mastery progression**: Monitor student progress through course material
 
 ## Essential Endpoints
 
@@ -20147,20 +20255,21 @@ Use PowerPath to build adaptive quizzes that adjust to student performance in re
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+```typescript
     const response = await fetch(
         `${TIMEBACK_API_URL}/powerpath/getNextQuestion?student=student-456&lesson=lesson-123`,
         {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
-            },
-        },
-    )
+},
+},
+)
 
     const { score, question } = await response.json()
     ```
-  </RequestExamplesBlock.Tab>
+
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
 
 ### Submit Student Answer
@@ -20182,8 +20291,8 @@ Use PowerPath to build adaptive quizzes that adjust to student performance in re
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+``typescript
     await fetch(`${TIMEBACK_API_URL}/powerpath/updateStudentQuestionResponse`, {
         method: 'PUT',
         headers: {
@@ -20199,10 +20308,9 @@ Use PowerPath to build adaptive quizzes that adjust to student performance in re
             },
         }),
     })
-    ```
-  </RequestExamplesBlock.Tab>
+    ``
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
-
 
 # QTI API
 
@@ -20232,10 +20340,10 @@ Use QTI to build quizzes, tests, and interactive assessments that integrate with
 
 ## Common Use Cases
 
-* **Create questions**: Build multiple choice, true/false, and open-ended questions
-* **Build assessments**: Combine questions into quizzes and tests
-* **Add supporting material**: Include articles, videos, or images as context for questions
-* **Embed in your app**: Render QTI content using iframes
+- **Create questions**: Build multiple choice, true/false, and open-ended questions
+- **Build assessments**: Combine questions into quizzes and tests
+- **Add supporting material**: Include articles, videos, or images as context for questions
+- **Embed in your app**: Render QTI content using iframes
 
 ## Essential Endpoints
 
@@ -20264,8 +20372,8 @@ Use QTI to build quizzes, tests, and interactive assessments that integrate with
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+``typescript
     const response = await fetch(`${TIMEBACK_QTI_URL}/assessment-items`, {
         method: 'POST',
         headers: {
@@ -20277,8 +20385,8 @@ Use QTI to build quizzes, tests, and interactive assessments that integrate with
             xml: '<?xml version="1.0" encoding="UTF-8"?><qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" identifier="question-123" title="Fraction Addition" adaptive="false" time-dependent="false"><qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier"><qti-correct-response><qti-value>B</qti-value></qti-correct-response></qti-response-declaration><qti-item-body><qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1"><qti-prompt>What is 1/2 + 1/4?</qti-prompt><qti-simple-choice identifier="A">1/6</qti-simple-choice><qti-simple-choice identifier="B">3/4</qti-simple-choice><qti-simple-choice identifier="C">2/6</qti-simple-choice></qti-choice-interaction></qti-item-body></qti-assessment-item>',
         }),
     })
-    ```
-  </RequestExamplesBlock.Tab>
+    ``
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
 
 ### Get Question Content
@@ -20291,19 +20399,19 @@ Use QTI to build quizzes, tests, and interactive assessments that integrate with
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+```typescript
     const question = await fetch(`${TIMEBACK_QTI_URL}/assessment-items/question-123`, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
-        },
-    })
+},
+})
 
     const { identifier, title, qtiXml } = await question.json()
     ```
-  </RequestExamplesBlock.Tab>
-</RequestExamplesBlock>
 
+</RequestExamplesBlock.Tab>
+</RequestExamplesBlock>
 
 # Activities & XP
 
@@ -20316,7 +20424,7 @@ XP rewards students for completing activities based on accuracy and time spent.
 <Callout type="warn" title="No Credit for Passive Activities">
   Passive activities like watching videos or reading articles don't earn XP on their own.
 
-  Students must demonstrate understanding through an activity first.
+Students must demonstrate understanding through an activity first.
 </Callout>
 
 <div className="w-full max-w-3xl my-6 rounded-xl overflow-hidden">
@@ -20345,7 +20453,7 @@ These events flow to Timeback's analytics system and power dashboards, reports, 
 <Callout type="warn" title="Follow the standard">
   Stick to the **1 XP = 1 minute of actual learning time** convention.
 
-  This keeps XP meaningful across the Timeback ecosystem and ensures your app's data is comparable in reports and dashboards.
+This keeps XP meaningful across the Timeback ecosystem and ensures your app's data is comparable in reports and dashboards.
 </Callout>
 
 ### XP Rules
@@ -20403,7 +20511,6 @@ How you use this data depends on your app and your audience.
   </Card>
 </Cards>
 
-
 # Courses & Enrollments
 
 ## Overview
@@ -20413,7 +20520,7 @@ Courses are containers for your educational content, and enrollments control whi
 <Callout type="info" title="Structure is flexible">
   How you structure courses is up to you. Some apps create one course per grade level, others organize by topic or skill.
 
-  Simpler apps might use a single course for everything.
+Simpler apps might use a single course for everything.
 </Callout>
 
 <div className="w-full max-w-3xl my-6 rounded-xl overflow-hidden">
@@ -20444,18 +20551,20 @@ In other words, students enroll in **classes**, not courses directly. A single c
 
 One common pattern is to create a separate course for each grade level:
 
-```
+````
+
 MathApp: Grade 3
 MathApp: Grade 4
 MathApp: Grade 5
-```
+
+````
 
 Students enroll in their grade-appropriate course, and your app queries enrollments to display the right content. This isn't the only approach. You might instead organize courses by topic, difficulty, or use a single course with internal logic to gate content. See [Multi-Grade Apps](/timeback/concepts/multi-grade-apps) for more on this pattern.
 
 <Callout type="info" title="Using Playcademy?">
   Playcademy uses a grade-based model.
 
-  Courses are created automatically from your config via [`playcademy timeback setup`](/platform/integrations/timeback#management-commands).
+Courses are created automatically from your config via [`playcademy timeback setup`](/platform/integrations/timeback#management-commands).
 </Callout>
 
 ## What's Next?
@@ -20469,7 +20578,6 @@ Students enroll in their grade-appropriate course, and your app queries enrollme
     Record activity as students engage with content.
   </Card>
 </Cards>
-
 
 # Core Concepts
 
@@ -20492,7 +20600,6 @@ Understand the key concepts and mental models behind Timeback's architecture.
     Building apps that serve multiple grade levels
   </Card>
 </Cards>
-
 
 # Multi-Grade Apps
 
@@ -20531,8 +20638,8 @@ When a student logs in, your app:
 
 ## Tips
 
-* If a resource (like a video) works across multiple grades, you can create it once and link it to multiple courses via Component Resources. This avoids duplication while still tracking progress per course.
-* Think through edge cases: What happens if a student is enrolled in multiple grades? What if they're not enrolled in any? Your app should handle these scenarios gracefully.
+- If a resource (like a video) works across multiple grades, you can create it once and link it to multiple courses via Component Resources. This avoids duplication while still tracking progress per course.
+- Think through edge cases: What happens if a student is enrolled in multiple grades? What if they're not enrolled in any? Your app should handle these scenarios gracefully.
 
 ## What's Next?
 
@@ -20545,7 +20652,6 @@ When a student logs in, your app:
     Record progress per course enrollment.
   </Card>
 </Cards>
-
 
 # Authentication
 
@@ -20564,18 +20670,21 @@ All Timeback API requests require OAuth 2.0 authentication using the client cred
     ### Choose Environment
 
     Decide on **Staging** for development or **Production** for live apps.
+
   </Step>
 
   <Step>
     ### Get Credentials
 
     Email the Timeback team to request your **Client ID** and **Client Secret**.
+
   </Step>
 
   <Step>
     ### Use in Code
 
     Call the token endpoint with your credentials, then include the token in your API requests.
+
   </Step>
 </Steps>
 
@@ -20605,31 +20714,32 @@ Exchange your credentials for an access token:
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+```typescript
     const response = await fetch(`${TIMEBACK_AUTH_URL}/oauth2/token`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-            grant_type: 'client_credentials',
-            client_id: 'YOUR_CLIENT_ID',
-            client_secret: 'YOUR_CLIENT_SECRET',
-        }),
-    })
+method: 'POST',
+headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+body: new URLSearchParams({
+grant_type: 'client_credentials',
+client_id: 'YOUR_CLIENT_ID',
+client_secret: 'YOUR_CLIENT_SECRET',
+}),
+})
 
     const data = await response.json()
     ```
-  </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Response>
-    ```json
+</RequestExamplesBlock.Tab>
+
+<RequestExamplesBlock.Response>
+`json
     {
         "access_token": "eyJraWQiOiJ...",
         "expires_in": 3600,
         "token_type": "Bearer"
     }
-    ```
-  </RequestExamplesBlock.Response>
+    `
+</RequestExamplesBlock.Response>
 </RequestExamplesBlock>
 
 ## Use the Token
@@ -20645,8 +20755,8 @@ Include the access token in all API requests:
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+``typescript
     const response = await fetch(`${TIMEBACK_API_URL}/ims/oneroster/rostering/v1p2/courses`, {
         method: 'GET',
         headers: {
@@ -20654,8 +20764,8 @@ Include the access token in all API requests:
             'Content-Type': 'application/json',
         },
     })
-    ```
-  </RequestExamplesBlock.Tab>
+    ``
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
 
 ## What's Next?
@@ -20669,7 +20779,6 @@ Include the access token in all API requests:
     Send activity events and record progress with Caliper.
   </Card>
 </Cards>
-
 
 # Creating Courses
 
@@ -20686,9 +20795,9 @@ Courses define what content your app offers and control which students can acces
 <Callout type="info" title="Structure is flexible">
   OneRoster lets you organize content however fits your app.
 
-  Some apps use deep hierarchies (Course, Units, Lessons, Activities), others keep it simpler.
+Some apps use deep hierarchies (Course, Units, Lessons, Activities), others keep it simpler.
 
-  The examples below show one common pattern, but you can adapt the depth and granularity to match your content model.
+The examples below show one common pattern, but you can adapt the depth and granularity to match your content model.
 </Callout>
 
 <Steps>
@@ -20696,37 +20805,42 @@ Courses define what content your app offers and control which students can acces
     ### Choose Environment
 
     Decide on **Staging** for development or **Production** for live apps.
+
   </Step>
 
   <Step>
     ### Authenticate
 
     Get an access token using your Timeback credentials (see [Authentication](/timeback/essentials/authentication)).
+
   </Step>
 
   <Step>
     ### Create the Course
 
     POST to `/courses` with metadata like title, grades, and subjects.
+
   </Step>
 
   <Step>
     ### Add Components
 
     POST to `/courses/components` to organize content into units, modules, or lessons.
+
   </Step>
 
   <Step>
     ### Link Resources
 
     POST to `/courses/component-resources` to attach learning materials to your structure.
+
   </Step>
 </Steps>
 
 <Callout type="info" title="Using Playcademy?">
   Playcademy handles course setup for you.
 
-  Run [`playcademy timeback setup`](/platform/integrations/timeback#management-commands) to create and sync courses from your config.
+Run [`playcademy timeback setup`](/platform/integrations/timeback#management-commands) to create and sync courses from your config.
 </Callout>
 
 ## Environments
@@ -20762,8 +20876,8 @@ Create the top-level course container:
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+``typescript
     const response = await fetch(`${TIMEBACK_API_URL}/ims/oneroster/rostering/v1p2/courses`, {
         method: 'POST',
         headers: {
@@ -20782,8 +20896,8 @@ Create the top-level course container:
             },
         }),
     })
-    ```
-  </RequestExamplesBlock.Tab>
+    ``
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
 
 | Field       | Description                                        |
@@ -20795,7 +20909,7 @@ Create the top-level course container:
 <Callout type="warn" title="Unique IDs are required">
   OneRoster requires you to supply your own unique `sourcedId` for each resource.
 
-  This applies to courses, components, and all other entities. The API will not auto-generate IDs for you.
+This applies to courses, components, and all other entities. The API will not auto-generate IDs for you.
 </Callout>
 
 ## Add Components
@@ -20823,8 +20937,8 @@ Components can nest arbitrarily deep via the `parent` field.
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+``typescript
     const response = await fetch(
         `${TIMEBACK_API_URL}/ims/oneroster/rostering/v1p2/courses/components`,
         {
@@ -20845,8 +20959,8 @@ Components can nest arbitrarily deep via the `parent` field.
             }),
         },
     )
-    ```
-  </RequestExamplesBlock.Tab>
+    ``
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
 
 | Field       | Description                                                                    |
@@ -20928,6 +21042,7 @@ Resources are the actual learning materials: e.g. videos, articles, quizzes.
     | `importance`       | `primary` or `secondary`                                                |
     | `metadata.type`    | Resource type: `interactive`, `video`, `text`, `qti`, `audio`, `visual` |
     | `metadata.xp`      | XP awarded for completing this resource                                 |
+
   </Step>
 
   <Step>
@@ -20986,6 +21101,7 @@ Resources are the actual learning materials: e.g. videos, articles, quizzes.
     | `resource`        | Reference to the resource being linked                                |
     | `sortOrder`       | Controls display order within the component (1, 2, 3...)              |
     | `lessonType`      | Content type: `quiz`, `placement`, `test-out`, `unit-test`, or `null` |
+
   </Step>
 </Steps>
 
@@ -21000,7 +21116,6 @@ Resources are the actual learning materials: e.g. videos, articles, quizzes.
     Record progress as students engage with content.
   </Card>
 </Cards>
-
 
 # Enrollments
 
@@ -21021,18 +21136,21 @@ When a student is enrolled in a course, they gain access to all its components (
     ### Choose Environment
 
     Decide on **Staging** for development or **Production** for live apps.
+
   </Step>
 
   <Step>
     ### Authenticate
 
     Get an access token using your Timeback credentials (see [Authentication](/timeback/essentials/authentication)).
+
   </Step>
 
   <Step>
     ### Enroll the Student
 
     Use **EduBridge** for simplified enrollment, or **OneRoster** for full control.
+
   </Step>
 </Steps>
 
@@ -21071,8 +21189,8 @@ You simply specify the user, course, and school: no need to manage the underlyin
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+``typescript
     const response = await fetch(
         `${TIMEBACK_API_URL}/edubridge/enrollments/enroll/${userId}/${courseId}/${schoolId}`,
         {
@@ -21082,8 +21200,8 @@ You simply specify the user, course, and school: no need to manage the underlyin
             },
         },
     )
-    ```
-  </RequestExamplesBlock.Tab>
+    ``
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
 
 | Parameter  | Description                          |
@@ -21095,7 +21213,7 @@ You simply specify the user, course, and school: no need to manage the underlyin
 <Callout type="info">
   The default role is `student`. See the [EduBridge API Reference](/timeback/api-reference/edubridge) for additional options.
 
-  You can also use [OneRoster](/timeback/api-reference/oneroster) directly if you need full control over the enrollment process.
+You can also use [OneRoster](/timeback/api-reference/oneroster) directly if you need full control over the enrollment process.
 </Callout>
 
 ## Query Enrollments
@@ -21103,14 +21221,14 @@ You simply specify the user, course, and school: no need to manage the underlyin
 ### Get All Enrollments for a User
 
 <Tabs items={['EduBridge', 'OneRoster']}>
-  <Tab value="EduBridge">
-    <RequestExamplesBlock>
-      <RequestExamplesBlock.Tab label="cURL">
-        ```bash
+<Tab value="EduBridge">
+<RequestExamplesBlock>
+<RequestExamplesBlock.Tab label="cURL">
+`bash
         curl "$TIMEBACK_API_URL/edubridge/enrollments/user/$USER_ID" \
           -H "Authorization: Bearer $ACCESS_TOKEN"
-        ```
-      </RequestExamplesBlock.Tab>
+        `
+</RequestExamplesBlock.Tab>
 
       <RequestExamplesBlock.Tab label="TypeScript">
         ```typescript
@@ -21122,6 +21240,7 @@ You simply specify the user, course, and school: no need to manage the underlyin
         ```
       </RequestExamplesBlock.Tab>
     </RequestExamplesBlock>
+
   </Tab>
 
   <Tab value="OneRoster">
@@ -21146,6 +21265,7 @@ You simply specify the user, course, and school: no need to manage the underlyin
         ```
       </RequestExamplesBlock.Tab>
     </RequestExamplesBlock>
+
   </Tab>
 </Tabs>
 
@@ -21160,7 +21280,6 @@ You simply specify the user, course, and school: no need to manage the underlyin
     Explore additional enrollment and analytics endpoints.
   </Card>
 </Cards>
-
 
 # Essentials
 
@@ -21190,7 +21309,6 @@ Get started with the core workflows every Timeback developer needs to know.
   </Card>
 </Cards>
 
-
 # Tracking Progress
 
 ## Overview
@@ -21212,24 +21330,28 @@ This data powers dashboards, reports, and adaptive learning features.
     ### Choose Environment
 
     Decide on **Staging** for development or **Production** for live apps.
+
   </Step>
 
   <Step>
     ### Authenticate
 
     Get an access token using your Timeback credentials (see [Authentication](/timeback/essentials/authentication)).
+
   </Step>
 
   <Step>
     ### Send ActivityEvents
 
     Use Caliper to track when students start and complete activities.
+
   </Step>
 
   <Step>
     ### Record Results
 
     Use OneRoster to store scores, XP, and mastery data.
+
   </Step>
 </Steps>
 
@@ -21312,8 +21434,8 @@ The `generated.items` array can include:
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+```typescript
     const event = {
         '@context': 'http://purl.imsglobal.org/ctx/caliper/v1p2',
         id: `urn:uuid:${crypto.randomUUID()}`,
@@ -21334,21 +21456,21 @@ The `generated.items` array can include:
             activity: { id: 'fractions-quiz', name: 'Fractions Quiz' },
             course: {
                 id: `${TIMEBACK_API_URL}/ims/oneroster/rostering/v1p2/courses/math-grade-5`,
-                name: 'Math Grade 5',
-            },
-        },
-        generated: {
-            id: 'metrics-123',
-            type: 'TimebackActivityMetricsCollection',
-            attempt: 1,
-            items: [
-                { type: 'totalQuestions', value: 10 },
-                { type: 'correctQuestions', value: 8 },
-                { type: 'xpEarned', value: 100 },
-                { type: 'masteredUnits', value: 1 },
-            ],
-        },
-    }
+name: 'Math Grade 5',
+},
+},
+generated: {
+id: 'metrics-123',
+type: 'TimebackActivityMetricsCollection',
+attempt: 1,
+items: [
+{ type: 'totalQuestions', value: 10 },
+{ type: 'correctQuestions', value: 8 },
+{ type: 'xpEarned', value: 100 },
+{ type: 'masteredUnits', value: 1 },
+],
+},
+}
 
     await fetch(`${TIMEBACK_CALIPER_URL}/ims/caliper/v1p2/events`, {
         method: 'POST',
@@ -21364,7 +21486,8 @@ The `generated.items` array can include:
         }),
     })
     ```
-  </RequestExamplesBlock.Tab>
+
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
 
 ### `TimeSpentEvent`
@@ -21416,8 +21539,8 @@ Record how much time a student spent learning:
     ```
   </RequestExamplesBlock.Tab>
 
-  <RequestExamplesBlock.Tab label="TypeScript">
-    ```typescript
+<RequestExamplesBlock.Tab label="TypeScript">
+```typescript
     const event = {
         '@context': 'http://purl.imsglobal.org/ctx/caliper/v1p2',
         id: `urn:uuid:${crypto.randomUUID()}`,
@@ -21437,18 +21560,18 @@ Record how much time a student spent learning:
             app: { name: 'Math App' },
             course: {
                 id: `${TIMEBACK_API_URL}/ims/oneroster/rostering/v1p2/courses/math-grade-5`,
-                name: 'Math Grade 5',
-            },
-        },
-        generated: {
-            id: 'time-metrics-123',
-            type: 'TimebackTimeSpentMetricsCollection',
-            items: [
-                { type: 'active', value: 240 },
-                { type: 'inactive', value: 60 },
-            ],
-        },
-    }
+name: 'Math Grade 5',
+},
+},
+generated: {
+id: 'time-metrics-123',
+type: 'TimebackTimeSpentMetricsCollection',
+items: [
+{ type: 'active', value: 240 },
+{ type: 'inactive', value: 60 },
+],
+},
+}
 
     await fetch(`${TIMEBACK_CALIPER_URL}/ims/caliper/v1p2/events`, {
         method: 'POST',
@@ -21464,7 +21587,8 @@ Record how much time a student spent learning:
         }),
     })
     ```
-  </RequestExamplesBlock.Tab>
+
+</RequestExamplesBlock.Tab>
 </RequestExamplesBlock>
 
 ## Record Results with XP
@@ -21516,6 +21640,7 @@ Store student results with XP, accuracy, and mastery data using OneRoster.
         ```
       </RequestExamplesBlock.Tab>
     </RequestExamplesBlock>
+
   </Step>
 
   <Step>
@@ -21588,6 +21713,7 @@ Store student results with XP, accuracy, and mastery data using OneRoster.
         ```
       </RequestExamplesBlock.Tab>
     </RequestExamplesBlock>
+
   </Step>
 </Steps>
 
@@ -21627,7 +21753,6 @@ XP is awarded based on accuracy and attempt number. The 80% accuracy threshold e
   </Card>
 </Cards>
 
-
 # Endpoints
 
 import { EndpointsTable } from '@/components/endpoints-table'
@@ -21644,38 +21769,38 @@ import { ScrollTarget } from '@/components/toc-section'
 <ScrollTarget id="oneroster" />
 
 <EndpointsTable
-  title="OneRoster"
-  docsLink="/timeback/api-reference/oneroster"
-  stagingUrl="https://api.staging.alpha-1edtech.ai"
-  productionUrl="https://api.alpha-1edtech.ai"
-  paths={[
-      {
-          path: '/ims/oneroster/rostering/v1p2/academicSessions',
-          purpose: 'School years, terms, semesters',
-      },
-      { path: '/ims/oneroster/rostering/v1p2/classes', purpose: 'Class sections' },
-      { path: '/ims/oneroster/rostering/v1p2/courses', purpose: 'Course definitions' },
-      {
-          path: '/ims/oneroster/rostering/v1p2/courses/components',
-          purpose: 'Course units/lessons',
-      },
-      {
-          path: '/ims/oneroster/rostering/v1p2/courses/component-resources',
-          purpose: 'Link resources to components',
-      },
-      { path: '/ims/oneroster/rostering/v1p2/demographics', purpose: 'Student demographics' },
-      { path: '/ims/oneroster/rostering/v1p2/enrollments', purpose: 'Student enrollments' },
-      { path: '/ims/oneroster/rostering/v1p2/orgs', purpose: 'Organizations/schools' },
-      { path: '/ims/oneroster/rostering/v1p2/users', purpose: 'Students, teachers, admins' },
-      {
-          path: '/ims/oneroster/gradebook/v1p2/assessmentLineItems',
-          purpose: 'Assessment definitions',
-      },
-      { path: '/ims/oneroster/gradebook/v1p2/assessmentResults', purpose: 'Scores and grades' },
-      { path: '/ims/oneroster/gradebook/v1p2/categories', purpose: 'Gradebook categories' },
-      { path: '/ims/oneroster/gradebook/v1p2/gradingPeriods', purpose: 'Grading periods' },
-      { path: '/ims/oneroster/resources/v1p2/resources', purpose: 'Learning materials' },
-  ]}
+title="OneRoster"
+docsLink="/timeback/api-reference/oneroster"
+stagingUrl="https://api.staging.alpha-1edtech.ai"
+productionUrl="https://api.alpha-1edtech.ai"
+paths={[
+{
+path: '/ims/oneroster/rostering/v1p2/academicSessions',
+purpose: 'School years, terms, semesters',
+},
+{ path: '/ims/oneroster/rostering/v1p2/classes', purpose: 'Class sections' },
+{ path: '/ims/oneroster/rostering/v1p2/courses', purpose: 'Course definitions' },
+{
+path: '/ims/oneroster/rostering/v1p2/courses/components',
+purpose: 'Course units/lessons',
+},
+{
+path: '/ims/oneroster/rostering/v1p2/courses/component-resources',
+purpose: 'Link resources to components',
+},
+{ path: '/ims/oneroster/rostering/v1p2/demographics', purpose: 'Student demographics' },
+{ path: '/ims/oneroster/rostering/v1p2/enrollments', purpose: 'Student enrollments' },
+{ path: '/ims/oneroster/rostering/v1p2/orgs', purpose: 'Organizations/schools' },
+{ path: '/ims/oneroster/rostering/v1p2/users', purpose: 'Students, teachers, admins' },
+{
+path: '/ims/oneroster/gradebook/v1p2/assessmentLineItems',
+purpose: 'Assessment definitions',
+},
+{ path: '/ims/oneroster/gradebook/v1p2/assessmentResults', purpose: 'Scores and grades' },
+{ path: '/ims/oneroster/gradebook/v1p2/categories', purpose: 'Gradebook categories' },
+{ path: '/ims/oneroster/gradebook/v1p2/gradingPeriods', purpose: 'Grading periods' },
+{ path: '/ims/oneroster/resources/v1p2/resources', purpose: 'Learning materials' },
+]}
 />
 
 ## EduBridge \[toc]
@@ -21683,52 +21808,52 @@ import { ScrollTarget } from '@/components/toc-section'
 <ScrollTarget id="edubridge" />
 
 <EndpointsTable
-  title="EduBridge"
-  docsLink="/timeback/api-reference/edubridge"
-  stagingUrl="https://api.staging.alpha-1edtech.ai"
-  productionUrl="https://api.alpha-1edtech.ai"
-  paths={[
-      { path: '/edubridge/analytics/activity', purpose: 'Get activity facts by date range' },
-      {
-          path: '/edubridge/analytics/enrollment/:enrollmentId',
-          purpose: 'Get enrollment analytics',
-      },
-      { path: '/edubridge/analytics/facts/weekly', purpose: 'Get weekly facts' },
-      {
-          path: '/edubridge/analytics/highestGradeMastered/:studentId/:subject',
-          purpose: 'Get highest grade mastered',
-      },
-      {
-          path: '/edubridge/enrollments/enroll/:userId/:courseId/:schoolId',
-          purpose: 'Enroll student in course',
-      },
-      {
-          path: '/edubridge/enrollments/unenroll/:userId/:courseId/:schoolId',
-          purpose: 'Unenroll student from course',
-      },
-      { path: '/edubridge/enrollments/user/:userId', purpose: 'Get user enrollments' },
-      {
-          path: '/edubridge/enrollments/defaultClass/:courseId/:schoolId',
-          purpose: 'Get default class',
-      },
-      { path: '/edubridge/enrollments/resetGoals/:courseId', purpose: 'Reset course goals' },
-      {
-          path: '/edubridge/enrollments/resetProgress/:userId/:courseId',
-          purpose: 'Reset student progress',
-      },
-      { path: '/edubridge/subject-track/', purpose: 'Manage subject tracks' },
-      { path: '/edubridge/subject-track/groups', purpose: 'Manage subject track groups' },
-      { path: '/edubridge/users/', purpose: 'Query users' },
-      { path: '/edubridge/applications/', purpose: 'List applications' },
-      {
-          path: '/edubridge/applicationMetrics/:applicationSourcedId',
-          purpose: 'Manage application metrics',
-      },
-      {
-          path: '/edubridge/learning-reports/map-profile/:userId',
-          purpose: 'Get learning profile',
-      },
-  ]}
+title="EduBridge"
+docsLink="/timeback/api-reference/edubridge"
+stagingUrl="https://api.staging.alpha-1edtech.ai"
+productionUrl="https://api.alpha-1edtech.ai"
+paths={[
+{ path: '/edubridge/analytics/activity', purpose: 'Get activity facts by date range' },
+{
+path: '/edubridge/analytics/enrollment/:enrollmentId',
+purpose: 'Get enrollment analytics',
+},
+{ path: '/edubridge/analytics/facts/weekly', purpose: 'Get weekly facts' },
+{
+path: '/edubridge/analytics/highestGradeMastered/:studentId/:subject',
+purpose: 'Get highest grade mastered',
+},
+{
+path: '/edubridge/enrollments/enroll/:userId/:courseId/:schoolId',
+purpose: 'Enroll student in course',
+},
+{
+path: '/edubridge/enrollments/unenroll/:userId/:courseId/:schoolId',
+purpose: 'Unenroll student from course',
+},
+{ path: '/edubridge/enrollments/user/:userId', purpose: 'Get user enrollments' },
+{
+path: '/edubridge/enrollments/defaultClass/:courseId/:schoolId',
+purpose: 'Get default class',
+},
+{ path: '/edubridge/enrollments/resetGoals/:courseId', purpose: 'Reset course goals' },
+{
+path: '/edubridge/enrollments/resetProgress/:userId/:courseId',
+purpose: 'Reset student progress',
+},
+{ path: '/edubridge/subject-track/', purpose: 'Manage subject tracks' },
+{ path: '/edubridge/subject-track/groups', purpose: 'Manage subject track groups' },
+{ path: '/edubridge/users/', purpose: 'Query users' },
+{ path: '/edubridge/applications/', purpose: 'List applications' },
+{
+path: '/edubridge/applicationMetrics/:applicationSourcedId',
+purpose: 'Manage application metrics',
+},
+{
+path: '/edubridge/learning-reports/map-profile/:userId',
+purpose: 'Get learning profile',
+},
+]}
 />
 
 ## Caliper \[toc]
@@ -21742,26 +21867,26 @@ import { ScrollTarget } from '@/components/toc-section'
 <ScrollTarget id="qti" />
 
 <EndpointsTable
-  title="QTI"
-  docsLink="/timeback/api-reference/qti"
-  stagingUrl="https://qti-staging.alpha-1edtech.ai"
-  productionUrl="https://qti.alpha-1edtech.ai"
-  paths={[
-      { path: '/validate', purpose: 'Validate QTI XML' },
-      { path: '/assessment-items', purpose: 'Create/search questions' },
-      { path: '/assessment-items/{identifier}', purpose: 'Get/update/delete question' },
-      {
-          path: '/assessment-items/{identifier}/process-response',
-          purpose: 'Process student response',
-      },
-      { path: '/stimuli', purpose: 'Create/search stimuli' },
-      { path: '/stimuli/{identifier}', purpose: 'Get/update/delete stimulus' },
-      { path: '/assessment-tests', purpose: 'Create/search tests' },
-      { path: '/assessment-tests/{identifier}', purpose: 'Get/update/delete test' },
-      { path: '/assessment-tests/{identifier}/questions', purpose: 'Get all test questions' },
-      { path: '/assessment-tests/{identifier}/test-parts', purpose: 'Manage test parts' },
-      { path: '/assessment-tests/.../sections', purpose: 'Manage test sections' },
-  ]}
+title="QTI"
+docsLink="/timeback/api-reference/qti"
+stagingUrl="https://qti-staging.alpha-1edtech.ai"
+productionUrl="https://qti.alpha-1edtech.ai"
+paths={[
+{ path: '/validate', purpose: 'Validate QTI XML' },
+{ path: '/assessment-items', purpose: 'Create/search questions' },
+{ path: '/assessment-items/{identifier}', purpose: 'Get/update/delete question' },
+{
+path: '/assessment-items/{identifier}/process-response',
+purpose: 'Process student response',
+},
+{ path: '/stimuli', purpose: 'Create/search stimuli' },
+{ path: '/stimuli/{identifier}', purpose: 'Get/update/delete stimulus' },
+{ path: '/assessment-tests', purpose: 'Create/search tests' },
+{ path: '/assessment-tests/{identifier}', purpose: 'Get/update/delete test' },
+{ path: '/assessment-tests/{identifier}/questions', purpose: 'Get all test questions' },
+{ path: '/assessment-tests/{identifier}/test-parts', purpose: 'Manage test parts' },
+{ path: '/assessment-tests/.../sections', purpose: 'Manage test sections' },
+]}
 />
 
 ## PowerPath \[toc]
@@ -21769,30 +21894,30 @@ import { ScrollTarget } from '@/components/toc-section'
 <ScrollTarget id="powerpath" />
 
 <EndpointsTable
-  title="PowerPath"
-  docsLink="/timeback/api-reference/powerpath"
-  stagingUrl="https://api.staging.alpha-1edtech.ai"
-  productionUrl="https://api.alpha-1edtech.ai"
-  paths={[
-      { path: '/powerpath/createExternalPlacementTest', purpose: 'Create placement test' },
-      { path: '/powerpath/getNextQuestion', purpose: 'Get next adaptive question' },
-      { path: '/powerpath/updateStudentQuestionResponse', purpose: 'Submit student answer' },
-      { path: '/powerpath/finalStudentAssessmentResponse', purpose: 'Complete assessment' },
-      { path: '/powerpath/getAssessmentProgress', purpose: 'Check student progress' },
-      {
-          path: '/powerpath/placement/getNextPlacementTest',
-          purpose: 'Get placement test question',
-      },
-      {
-          path: '/powerpath/placement/finalStudentAssessmentResponse',
-          purpose: 'Complete placement test',
-      },
-      { path: '/powerpath/syllabus/{courseSourcedId}', purpose: 'Get course structure' },
-      {
-          path: '/powerpath/syllabus/{courseSourcedId}/{componentSourcedId}',
-          purpose: 'Get component structure',
-      },
-  ]}
+title="PowerPath"
+docsLink="/timeback/api-reference/powerpath"
+stagingUrl="https://api.staging.alpha-1edtech.ai"
+productionUrl="https://api.alpha-1edtech.ai"
+paths={[
+{ path: '/powerpath/createExternalPlacementTest', purpose: 'Create placement test' },
+{ path: '/powerpath/getNextQuestion', purpose: 'Get next adaptive question' },
+{ path: '/powerpath/updateStudentQuestionResponse', purpose: 'Submit student answer' },
+{ path: '/powerpath/finalStudentAssessmentResponse', purpose: 'Complete assessment' },
+{ path: '/powerpath/getAssessmentProgress', purpose: 'Check student progress' },
+{
+path: '/powerpath/placement/getNextPlacementTest',
+purpose: 'Get placement test question',
+},
+{
+path: '/powerpath/placement/finalStudentAssessmentResponse',
+purpose: 'Complete placement test',
+},
+{ path: '/powerpath/syllabus/{courseSourcedId}', purpose: 'Get course structure' },
+{
+path: '/powerpath/syllabus/{courseSourcedId}/{componentSourcedId}',
+purpose: 'Get component structure',
+},
+]}
 />
 
 ## CASE \[toc]
@@ -21800,18 +21925,18 @@ import { ScrollTarget } from '@/components/toc-section'
 <ScrollTarget id="case" />
 
 <EndpointsTable
-  title="CASE"
-  docsLink="/timeback/api-reference/case"
-  stagingUrl="https://api.staging.alpha-1edtech.ai"
-  productionUrl="https://api.alpha-1edtech.ai"
-  paths={[
-      { path: '/ims/case/v1p0/CFAssociations/{id}', purpose: 'Get standard associations' },
-      { path: '/ims/case/v1p0/CFDocuments', purpose: 'List all standards frameworks' },
-      { path: '/ims/case/v1p0/CFDocuments/{id}', purpose: 'Get specific framework' },
-      { path: '/ims/case/v1p0/CFPackages/{id}', purpose: 'Get framework package' },
-      { path: '/ims/case/v1p0/CFItems', purpose: 'List all standards' },
-      { path: '/ims/case/v1p0/CFItems/{id}', purpose: 'Get specific standard' },
-  ]}
+title="CASE"
+docsLink="/timeback/api-reference/case"
+stagingUrl="https://api.staging.alpha-1edtech.ai"
+productionUrl="https://api.alpha-1edtech.ai"
+paths={[
+{ path: '/ims/case/v1p0/CFAssociations/{id}', purpose: 'Get standard associations' },
+{ path: '/ims/case/v1p0/CFDocuments', purpose: 'List all standards frameworks' },
+{ path: '/ims/case/v1p0/CFDocuments/{id}', purpose: 'Get specific framework' },
+{ path: '/ims/case/v1p0/CFPackages/{id}', purpose: 'Get framework package' },
+{ path: '/ims/case/v1p0/CFItems', purpose: 'List all standards' },
+{ path: '/ims/case/v1p0/CFItems/{id}', purpose: 'Get specific standard' },
+]}
 />
 
 ## Open Badges \[toc]
@@ -21819,16 +21944,16 @@ import { ScrollTarget } from '@/components/toc-section'
 <ScrollTarget id="open-badges" />
 
 <EndpointsTable
-  title="Open Badges"
-  docsLink="/timeback/api-reference/open-badges"
-  stagingUrl="https://api.staging.alpha-1edtech.ai"
-  productionUrl="https://api.alpha-1edtech.ai"
-  paths={[
-      { path: '/ims/ob/v3p0/credentials', purpose: 'Create badges' },
-      { path: '/ims/ob/v3p0/credentials/{id}', purpose: 'Get/update badge' },
-      { path: '/ims/ob/v3p0/credentials/{id}/assertions', purpose: 'Issue badge to student' },
-      { path: '/ims/ob/v3p0/assertions/{id}', purpose: 'Get/verify assertion' },
-  ]}
+title="Open Badges"
+docsLink="/timeback/api-reference/open-badges"
+stagingUrl="https://api.staging.alpha-1edtech.ai"
+productionUrl="https://api.alpha-1edtech.ai"
+paths={[
+{ path: '/ims/ob/v3p0/credentials', purpose: 'Create badges' },
+{ path: '/ims/ob/v3p0/credentials/{id}', purpose: 'Get/update badge' },
+{ path: '/ims/ob/v3p0/credentials/{id}/assertions', purpose: 'Issue badge to student' },
+{ path: '/ims/ob/v3p0/assertions/{id}', purpose: 'Get/verify assertion' },
+]}
 />
 
 ## CLR \[toc]
@@ -21836,16 +21961,15 @@ import { ScrollTarget } from '@/components/toc-section'
 <ScrollTarget id="clr" />
 
 <EndpointsTable
-  title="CLR"
-  docsLink="/timeback/api-reference/clr"
-  stagingUrl="https://api.staging.alpha-1edtech.ai"
-  productionUrl="https://api.alpha-1edtech.ai"
-  paths={[
-      { path: '/ims/clr/v2p0/credentials/clrs/', purpose: 'Upsert learner record (CLR)' },
-      { path: '/ims/clr/v2p0/discovery/', purpose: 'Discover CLR capabilities' },
-  ]}
+title="CLR"
+docsLink="/timeback/api-reference/clr"
+stagingUrl="https://api.staging.alpha-1edtech.ai"
+productionUrl="https://api.alpha-1edtech.ai"
+paths={[
+{ path: '/ims/clr/v2p0/credentials/clrs/', purpose: 'Upsert learner record (CLR)' },
+{ path: '/ims/clr/v2p0/discovery/', purpose: 'Discover CLR capabilities' },
+]}
 />
-
 
 # External Links
 
@@ -21887,7 +22011,6 @@ Links to official Timeback APIs, specifications, tooling, and learning resources
 | [@superbuilders/clr](https://www.npmjs.com/package/@superbuilders/clr)                                                     | TypeScript SDK for Comprehensive Learner Record Standard |
 | [@superbuilders/qti-assessment-item-generator](https://www.npmjs.com/package/@superbuilders/qti-assessment-item-generator) | Generate QTI assessment items programmatically           |
 
-
 # Glossary
 
 ## Overview
@@ -21896,7 +22019,7 @@ Quick reference for Timeback terminology.
 
 ## Core Data Model
 
-{/* prettier-ignore */}
+{/_ prettier-ignore _/}
 
 <div className="my-6">
   <table className="w-full">
@@ -22029,12 +22152,13 @@ Quick reference for Timeback terminology.
         </td>
       </tr>
     </tbody>
+
   </table>
 </div>
 
 ## Assessment & Grading
 
-{/* prettier-ignore */}
+{/_ prettier-ignore _/}
 
 <div className="my-6">
   <table className="w-full">
@@ -22139,12 +22263,13 @@ Quick reference for Timeback terminology.
         </td>
       </tr>
     </tbody>
+
   </table>
 </div>
 
 ## Analytics & Tracking
 
-{/* prettier-ignore */}
+{/_ prettier-ignore _/}
 
 <div className="my-6">
   <table className="w-full">
@@ -22263,12 +22388,13 @@ Quick reference for Timeback terminology.
         </td>
       </tr>
     </tbody>
+
   </table>
 </div>
 
 ## Adaptive Learning
 
-{/* prettier-ignore */}
+{/_ prettier-ignore _/}
 
 <div className="my-6">
   <table className="w-full">
@@ -22359,12 +22485,13 @@ Quick reference for Timeback terminology.
         </td>
       </tr>
     </tbody>
+
   </table>
 </div>
 
 ## Standards & Credentials
 
-{/* prettier-ignore */}
+{/_ prettier-ignore _/}
 
 <div className="my-6">
   <table className="w-full">
@@ -22469,12 +22596,13 @@ Quick reference for Timeback terminology.
         </td>
       </tr>
     </tbody>
+
   </table>
 </div>
 
 ## Metrics & Gamification
 
-{/* prettier-ignore */}
+{/_ prettier-ignore _/}
 
 <div className="my-6">
   <table className="w-full">
@@ -22531,7 +22659,7 @@ Quick reference for Timeback terminology.
         </td>
 
         <td className="py-0 pl-4">
-          A discrete mastery-based milestone worked toward across multiple sessions (hours/days/weeks); tracked via 
+          A discrete mastery-based milestone worked toward across multiple sessions (hours/days/weeks); tracked via
 
           `masteredUnits`
         </td>
@@ -22543,7 +22671,7 @@ Quick reference for Timeback terminology.
         </td>
 
         <td className="py-0 pl-4">
-          Reported in 
+          Reported in
 
           `AssessmentResult.metadata`
 
@@ -22581,12 +22709,13 @@ Quick reference for Timeback terminology.
         </td>
       </tr>
     </tbody>
+
   </table>
 </div>
 
 ## Common Confusions
 
-{/* prettier-ignore */}
+{/_ prettier-ignore _/}
 
 <div className="my-6">
   <table className="w-full">
@@ -22631,7 +22760,7 @@ Quick reference for Timeback terminology.
         <td className="py-0 pl-4">
           `AssessmentLineItem`
 
-           \= what's graded. 
+           \= what's graded.
 
           `AssessmentResult`
 
@@ -22647,7 +22776,7 @@ Quick reference for Timeback terminology.
         <td className="py-0 pl-4">
           `ActivityEvent`
 
-           \= what happened. 
+           \= what happened.
 
           `TimeSpentEvent`
 
@@ -22655,9 +22784,9 @@ Quick reference for Timeback terminology.
         </td>
       </tr>
     </tbody>
+
   </table>
 </div>
-
 
 # Resources
 
@@ -22680,3 +22809,4 @@ Quick reference for terminology and links to external Timeback documentation.
     Official documentation and helpful resources
   </Card>
 </Cards>
+````

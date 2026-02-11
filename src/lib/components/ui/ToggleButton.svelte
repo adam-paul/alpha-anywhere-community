@@ -11,13 +11,7 @@
     children: Snippet;
   }
 
-  let {
-    active = false,
-    disabled = false,
-    size = 'md',
-    onclick,
-    children
-  }: Props = $props();
+  let { active = false, disabled = false, size = 'md', onclick, children }: Props = $props();
 </script>
 
 <button

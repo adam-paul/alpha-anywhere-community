@@ -23,12 +23,7 @@
   }: Props = $props();
 </script>
 
-<button
-  class="btn btn-{variant} size-{size}"
-  {type}
-  {disabled}
-  {onclick}
->
+<button class="btn btn-{variant} size-{size}" {type} {disabled} {onclick}>
   {@render children()}
 </button>
 
@@ -46,7 +41,9 @@
     text-transform: uppercase;
     letter-spacing: 0.025em;
     cursor: pointer;
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    transition:
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
   }
 
   .btn:hover:not(:disabled) {

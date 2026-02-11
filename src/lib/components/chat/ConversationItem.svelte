@@ -14,7 +14,7 @@
   // Resolve participants from IDs
   const participants = $derived(
     conversation.participantIds
-      .map(id => MOCK_STUDENTS.find(s => s.id === id))
+      .map((id) => MOCK_STUDENTS.find((s) => s.id === id))
       .filter((s): s is Student => s !== undefined)
   );
 
@@ -23,7 +23,7 @@
     if (conversation.name) return conversation.name;
     if (participants.length === 0) return 'Unknown';
     if (participants.length === 1) return participants[0].displayName;
-    return participants.map(p => p.displayName.split(' ')[0]).join(', ');
+    return participants.map((p) => p.displayName.split(' ')[0]).join(', ');
   });
 
   // Format timestamp
@@ -33,11 +33,13 @@
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
     if (diffDays === 0) {
-      return date.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      }).toLowerCase();
+      return date
+        .toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+        })
+        .toLowerCase();
     } else if (diffDays === 1) {
       return 'Yesterday';
     } else if (diffDays < 7) {
@@ -58,12 +60,7 @@
   });
 </script>
 
-<button
-  class="conversation-item"
-  class:selected={isSelected}
-  onclick={onclick}
-  type="button"
->
+<button class="conversation-item" class:selected={isSelected} {onclick} type="button">
   <div class="avatar-container">
     {#if participants.length >= 2}
       <div class="stacked-avatars">

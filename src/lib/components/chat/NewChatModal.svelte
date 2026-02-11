@@ -15,15 +15,14 @@
     if (!searchQuery.trim()) return MOCK_STUDENTS;
 
     const query = searchQuery.toLowerCase().trim();
-    return MOCK_STUDENTS.filter(s =>
-      s.displayName.toLowerCase().includes(query) ||
-      s.handle.toLowerCase().includes(query)
+    return MOCK_STUDENTS.filter(
+      (s) => s.displayName.toLowerCase().includes(query) || s.handle.toLowerCase().includes(query)
     );
   });
 
   function toggleStudent(id: string) {
     if (selectedIds.includes(id)) {
-      selectedIds = selectedIds.filter(i => i !== id);
+      selectedIds = selectedIds.filter((i) => i !== id);
     } else {
       selectedIds = [...selectedIds, id];
     }
@@ -63,10 +62,7 @@
 
       <div class="modal-content">
         <div class="search-container">
-          <SearchBar
-            bind:value={searchQuery}
-            placeholder="Search students"
-          />
+          <SearchBar bind:value={searchQuery} placeholder="Search students" />
         </div>
 
         {#if selectedIds.length > 0}
@@ -74,7 +70,7 @@
             <span class="selected-label">Selected:</span>
             <div class="selected-names">
               {#each selectedIds as id}
-                {@const student = MOCK_STUDENTS.find(s => s.id === id)}
+                {@const student = MOCK_STUDENTS.find((s) => s.id === id)}
                 {#if student}
                   <span class="selected-name">{student.displayName}</span>
                 {/if}
@@ -116,11 +112,7 @@
 
       <footer class="modal-footer">
         <Button variant="secondary" onclick={handleClose}>Cancel</Button>
-        <Button
-          variant="primary"
-          onclick={handleCreate}
-          disabled={selectedIds.length === 0}
-        >
+        <Button variant="primary" onclick={handleCreate} disabled={selectedIds.length === 0}>
           Create Chat
         </Button>
       </footer>

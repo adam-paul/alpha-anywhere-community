@@ -4,38 +4,38 @@ Reference list of games from the original mock data. Each needs a private server
 
 ## Side-by-Side (Rung 1) - Solo play near others
 
-| Game | Place ID | Status |
-|------|----------|--------|
-| Bee Swarm Simulator | 1537690962 | ✅ Added |
-| Adopt Me! | 920587237 | ⏳ Needs private server |
+| Game                | Place ID   | Status                  |
+| ------------------- | ---------- | ----------------------- |
+| Bee Swarm Simulator | 1537690962 | ✅ Added                |
+| Adopt Me!           | 920587237  | ⏳ Needs private server |
 
 ## Town Square (Rung 2) - Unstructured hangout
 
-| Game | Place ID | Status |
-|------|----------|--------|
-| Brookhaven | 4924922222 | ⏳ Needs private server |
-| Welcome to Bloxburg | 185655149 | ⏳ Needs private server |
+| Game                | Place ID   | Status                  |
+| ------------------- | ---------- | ----------------------- |
+| Brookhaven          | 4924922222 | ⏳ Needs private server |
+| Welcome to Bloxburg | 185655149  | ⏳ Needs private server |
 
 ## Ice Breaker (Rung 3) - Short rounds, shared fate
 
-| Game | Place ID | Status |
-|------|----------|--------|
-| Natural Disaster Survival | 189707 | ⏳ Needs private server |
-| Regretevator | (needs real ID) | ⏳ Needs private server |
+| Game                      | Place ID        | Status                  |
+| ------------------------- | --------------- | ----------------------- |
+| Natural Disaster Survival | 189707          | ⏳ Needs private server |
+| Regretevator              | (needs real ID) | ⏳ Needs private server |
 
 ## Trust Builder (Rung 4) - Cooperative play
 
-| Game | Place ID | Status |
-|------|----------|--------|
-| Work at a Pizza Place | 192800 | ⏳ Needs private server |
+| Game                      | Place ID  | Status                  |
+| ------------------------- | --------- | ----------------------- |
+| Work at a Pizza Place     | 192800    | ⏳ Needs private server |
 | Build A Boat For Treasure | 537413528 | ⏳ Needs private server |
 
 ## Rivalry (Rung 5) - Team competition
 
-| Game | Place ID | Status |
-|------|----------|--------|
+| Game    | Place ID   | Status                  |
+| ------- | ---------- | ----------------------- |
 | BedWars | 6872265039 | ⏳ Needs private server |
-| Arsenal | 286090429 | ⏳ Needs private server |
+| Arsenal | 286090429  | ⏳ Needs private server |
 
 ---
 

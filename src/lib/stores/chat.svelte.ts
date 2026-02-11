@@ -1,43 +1,14 @@
 import { getContext, setContext } from 'svelte';
-import type { Conversation, Message, Student } from '../types';
+import type { ChatState, Conversation, Message, Student } from '$lib/types';
 import { MOCK_CONVERSATIONS, MOCK_MESSAGES, MOCK_STUDENTS } from '../mock-data';
 
 const CHAT_CONTEXT_KEY = 'chat';
-
-export interface ChatState {
-  // Data
-  conversations: Conversation[];
-  messages: Record<string, Message[]>;
-
-  // UI State
-  activeConversationId: string | null;
-  searchQuery: string;
-  composeText: string;
-  isDetailsPanelOpen: boolean;
-  isNewChatModalOpen: boolean;
-
-  // Derived
-  readonly filteredConversations: Conversation[];
-  readonly activeConversation: Conversation | null;
-  readonly activeMessages: Message[];
-  readonly activeParticipants: Student[];
-
-  // Actions
-  selectConversation(id: string): void;
-  sendMessage(text: string): void;
-  toggleDetailsPanel(): void;
-  openNewChatModal(): void;
-  closeNewChatModal(): void;
-  createConversation(participantIds: string[]): string;
-}
 
 export function createChatStore(): ChatState {
   // Make copies so we can mutate
   let conversations = $state<Conversation[]>([...MOCK_CONVERSATIONS]);
   let messages = $state<Record<string, Message[]>>(
-    Object.fromEntries(
-      Object.entries(MOCK_MESSAGES).map(([k, v]) => [k, [...v]])
-    )
+    Object.fromEntries(Object.entries(MOCK_MESSAGES).map(([k, v]) => [k, [...v]]))
   );
 
   // UI State
@@ -54,7 +25,7 @@ export function createChatStore(): ChatState {
     }
 
     const query = searchQuery.toLowerCase().trim();
-    return conversations.filter(conv => {
+    return conversations.filter((conv) => {
       // Search by conversation name
       if (conv.name?.toLowerCase().includes(query)) {
         return true;
@@ -62,17 +33,15 @@ export function createChatStore(): ChatState {
 
       // Search by participant names
       const participants = conv.participantIds
-        .map(id => MOCK_STUDENTS.find(s => s.id === id))
+        .map((id) => MOCK_STUDENTS.find((s) => s.id === id))
         .filter((s): s is Student => s !== undefined);
 
-      return participants.some(p =>
-        p.displayName.toLowerCase().includes(query)
-      );
+      return participants.some((p) => p.displayName.toLowerCase().includes(query));
     });
   });
 
   const activeConversation = $derived(
-    conversations.find(c => c.id === activeConversationId) ?? null
+    conversations.find((c) => c.id === activeConversationId) ?? null
   );
 
   const activeMessages = $derived.by(() => {
@@ -81,11 +50,11 @@ export function createChatStore(): ChatState {
   });
 
   const activeParticipants = $derived.by(() => {
-    const conv = conversations.find(c => c.id === activeConversationId);
+    const conv = conversations.find((c) => c.id === activeConversationId);
     if (!conv) return [];
 
     return conv.participantIds
-      .map(id => MOCK_STUDENTS.find(s => s.id === id))
+      .map((id) => MOCK_STUDENTS.find((s) => s.id === id))
       .filter((s): s is Student => s !== undefined);
   });
 
@@ -95,7 +64,7 @@ export function createChatStore(): ChatState {
     composeText = '';
 
     // Mark as read
-    const conv = conversations.find(c => c.id === id);
+    const conv = conversations.find((c) => c.id === id);
     if (conv && conv.unreadCount > 0) {
       conv.unreadCount = 0;
     }
@@ -119,7 +88,7 @@ export function createChatStore(): ChatState {
     messages[activeConversationId] = [...messages[activeConversationId], newMessage];
 
     // Update last message on conversation
-    const conv = conversations.find(c => c.id === activeConversationId);
+    const conv = conversations.find((c) => c.id === activeConversationId);
     if (conv) {
       conv.lastMessage = {
         content: text.trim(),
@@ -146,9 +115,9 @@ export function createChatStore(): ChatState {
 
   function createConversation(participantIds: string[]): string {
     // Check if conversation already exists with same participants
-    const existing = conversations.find(c => {
+    const existing = conversations.find((c) => {
       if (c.participantIds.length !== participantIds.length) return false;
-      return participantIds.every(id => c.participantIds.includes(id));
+      return participantIds.every((id) => c.participantIds.includes(id));
     });
 
     if (existing) {
@@ -174,31 +143,67 @@ export function createChatStore(): ChatState {
   }
 
   const store: ChatState = {
-    get conversations() { return conversations; },
-    set conversations(value) { conversations = value; },
+    get conversations() {
+      return conversations;
+    },
+    set conversations(value) {
+      conversations = value;
+    },
 
-    get messages() { return messages; },
-    set messages(value) { messages = value; },
+    get messages() {
+      return messages;
+    },
+    set messages(value) {
+      messages = value;
+    },
 
-    get activeConversationId() { return activeConversationId; },
-    set activeConversationId(value) { activeConversationId = value; },
+    get activeConversationId() {
+      return activeConversationId;
+    },
+    set activeConversationId(value) {
+      activeConversationId = value;
+    },
 
-    get searchQuery() { return searchQuery; },
-    set searchQuery(value) { searchQuery = value; },
+    get searchQuery() {
+      return searchQuery;
+    },
+    set searchQuery(value) {
+      searchQuery = value;
+    },
 
-    get composeText() { return composeText; },
-    set composeText(value) { composeText = value; },
+    get composeText() {
+      return composeText;
+    },
+    set composeText(value) {
+      composeText = value;
+    },
 
-    get isDetailsPanelOpen() { return isDetailsPanelOpen; },
-    set isDetailsPanelOpen(value) { isDetailsPanelOpen = value; },
+    get isDetailsPanelOpen() {
+      return isDetailsPanelOpen;
+    },
+    set isDetailsPanelOpen(value) {
+      isDetailsPanelOpen = value;
+    },
 
-    get isNewChatModalOpen() { return isNewChatModalOpen; },
-    set isNewChatModalOpen(value) { isNewChatModalOpen = value; },
+    get isNewChatModalOpen() {
+      return isNewChatModalOpen;
+    },
+    set isNewChatModalOpen(value) {
+      isNewChatModalOpen = value;
+    },
 
-    get filteredConversations() { return filteredConversations; },
-    get activeConversation() { return activeConversation; },
-    get activeMessages() { return activeMessages; },
-    get activeParticipants() { return activeParticipants; },
+    get filteredConversations() {
+      return filteredConversations;
+    },
+    get activeConversation() {
+      return activeConversation;
+    },
+    get activeMessages() {
+      return activeMessages;
+    },
+    get activeParticipants() {
+      return activeParticipants;
+    },
 
     selectConversation,
     sendMessage,
@@ -215,7 +220,9 @@ export function createChatStore(): ChatState {
 export function getChatStore(): ChatState {
   const store = getContext<ChatState>(CHAT_CONTEXT_KEY);
   if (!store) {
-    throw new Error('Chat store not found. Ensure createChatStore() is called in a parent component.');
+    throw new Error(
+      'Chat store not found. Ensure createChatStore() is called in a parent component.'
+    );
   }
   return store;
 }
