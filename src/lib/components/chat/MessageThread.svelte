@@ -31,6 +31,7 @@
   }
 
   // Auto-scroll to bottom when messages change
+  // svelte-ignore non_reactive_update
   let messagesContainer: HTMLDivElement;
 
   $effect(() => {

@@ -1,6 +1,6 @@
 # Alpha Anywhere Community: Roadmap
 
-**Last updated:** 2026-02-09
+**Last updated:** 2026-02-10
 
 This document outlines what's been built, what's missing, and the recommended build order to take the Community from prototype to production.
 
@@ -127,35 +127,37 @@ Use **6173** (Wrangler) when testing D1 features or auth. Use **5173** (Vite) fo
 
 ---
 
-#### 1.5 Connect Work-Wall to Real LWAI Data 🔥 PRIORITY
+#### 1.5 Connect Work-Wall to Real LWAI Data ⏳ IN PROGRESS
 
-**What:** Replace hardcoded 120 XP with real learning progress from LWAI.
+**What:** Replace hardcoded XP with real learning progress from LWAI.
 
 **Data source:** `daily_learning_metrics` table via AWS Athena
-- Cross-account role configured in `.env`
-- Key fields: `email`, `date`, `active_minutes`, `levels_mastered`, `correct_questions`
+- Cross-account role: Lambda assumes Coachbot role in AlphaLearn account
+- Key fields: `email`, `date`, `active_minutes`
 
-**Progress (2026-02-09):**
+**Progress (2026-02-10):**
 - ✅ Athena access working (CLI tested, queries return data)
 - ✅ Schema confirmed — see `docs/LWAI_Data-Feed-Integration-Guide.md`
 - ✅ User mapping resolved: query by **email**
-- ✅ Gating criteria decided: **`active_minutes`** (weekly sum)
+- ✅ Gating criteria decided: **`active_minutes`** (weekly sum, 300 min threshold)
+- ✅ Architecture decided: **Lambda proxy** (CF Workers can't do STS AssumeRole)
+- ✅ SST project created: `infra/lwai-proxy/`
+- ✅ Lambda handler: assumes Coachbot role, queries Athena, returns eligibility
+- ✅ AAC integration: `/arcade` fetches gating data, work-wall uses real state
 
-**Gating criteria:**
-- Use `SUM(active_minutes)` from `daily_learning_metrics` for the current week
-- `active_minutes` reported by "XO" (likely a StudyReel extension or browser extension)
-- Exact methodology is opaque, but it's Alpha Anywhere's official learning time metric
-- Starting threshold TBD (e.g., 300 min/week) — tune empirically
+**Gating logic:**
+```sql
+SELECT COALESCE(SUM(active_minutes), 0) as total_minutes
+FROM daily_learning_metrics
+WHERE email = '{email}'
+  AND date >= date_format(date_trunc('week', current_date), '%Y-%m-%d')
+```
 
 **Remaining:**
-- Design query architecture (CF Workers can't do STS AssumeRole)
-- Implement `GET /api/gating` endpoint with caching
+- Deploy Lambda: `cd infra/lwai-proxy && bunx sst deploy --stage production`
+- Set Cloudflare secrets: `LWAI_PROXY_URL`, `LWAI_API_KEY`
+- Test end-to-end with real student account
 - Handle edge cases: new students, weekends, breaks
-
-**Architecture options:**
-1. Lambda proxy in AlphaLearn account
-2. Precompute eligibility daily to D1/KV
-3. Use existing AlphaLearn API if available
 
 ---
 
@@ -481,7 +483,7 @@ CREATE TABLE reports (
 | ~~Roblox private server access~~ | ~~Dev~~ | ✅ Done | ~~1.6 Private servers~~ |
 | ~~Timeback M2M API auth URL~~ | ~~Beyond AI~~ | ✅ Done | ~~1.7 Timeback ID~~ |
 | ~~LWAI → Community user mapping~~ | ~~Dev~~ | ✅ Done (use email) | ~~1.5 Work-wall~~ |
-| LWAI query from edge runtime | Dev | Open (Lambda proxy or precompute) | 1.5 Work-wall |
+| ~~LWAI query from edge runtime~~ | ~~Dev~~ | ✅ Done (Lambda proxy in `infra/lwai-proxy/`) | ~~1.5 Work-wall~~ |
 | RTC provider selection | Team | Open | 5.1 Voice |
 
 ---
@@ -501,6 +503,58 @@ CREATE TABLE reports (
 
 ---
 
+## Future Consolidation
+
+Technical debt and infrastructure improvements to tackle after core features are stable.
+
+#### Unified Environment Variables
+
+**Problem:** Mixed patterns for accessing env vars — `$env/static/private` for auth secrets (build-time), `$env/dynamic/private` for LWAI proxy (runtime), `platform.env` for D1. Confusing and fragile.
+
+**Goal:** Single approach that works both locally (`.env`) and on Cloudflare (secrets/bindings).
+
+**Work:**
+- Refactor `timeback.ts` to lazily initialize (not module-level singleton)
+- Refactor `session.ts` to accept secret as parameter
+- Use `$env/dynamic/private` consistently everywhere
+- Document the pattern in `CLAUDE.md`
+
+---
+
+#### Adaptive Gating (Timeback XP vs LWAI Minutes)
+
+**Problem:** Currently hardcoded to LWAI `active_minutes`. Alpha Anywhere students use LWAI/Coachbot, but most Timeback students use XP from the Timeback system.
+
+**Goal:** Auto-detect which gating source applies to each student and adapt the UI accordingly.
+
+**Work:**
+- Add `gatingSource: 'lwai' | 'timeback'` to `GatingState`
+- Detect source based on user's school/org (OneRoster data)
+- For Timeback students: call Timeback XP API instead of LWAI proxy
+- UI shows "minutes" for LWAI, "XP" for Timeback
+- Work wall messaging adapts to source
+
+**Deferred until:** LWAI integration stable, Timeback XP API available
+
+---
+
+#### SST Infrastructure Consolidation
+
+**Problem:** Multiple deployment tools — wrangler for Cloudflare (Pages, D1, secrets), SST for AWS Lambda. Different secret management, different deploy commands.
+
+**Goal:** Single `sst deploy` manages everything.
+
+**Work:**
+- Migrate SvelteKit app to `sst.cloudflare.SvelteKit`
+- Migrate D1 database to `sst.cloudflare.D1`
+- Keep existing `sst.aws.ApiGatewayV2` for LWAI proxy
+- Unified secrets via SST linking
+- Remove wrangler.toml, update CI/CD
+
+**Reference:** SST v3 (Ion) supports multi-provider (AWS + Cloudflare) in single config.
+
+---
+
 ## Strategic Context
 
 - **Weekly goals > daily** — High schoolers plan weekly
@@ -516,9 +570,9 @@ CREATE TABLE reports (
 
 ## Open Questions
 
-1. **Work-wall criteria:** What metrics from `daily_learning_metrics` define "done"? Active minutes, levels mastered, correct questions, or a combination?
+1. ~~**Work-wall criteria:**~~ ✅ Decided — `active_minutes` weekly sum, 300 min threshold
 2. **Weekly vs daily gating:** AB test, or just go weekly? What happens on weekends/breaks?
-3. **LWAI query architecture:** How to call Athena from Cloudflare Workers? Lambda proxy, precompute, or existing API?
+3. ~~**LWAI query architecture:**~~ ✅ Decided — Lambda proxy in `infra/lwai-proxy/`
 4. **Profile stats:** What metrics to show on student profile pages? Options from LWAI: total levels mastered, active minutes, accuracy rate, streak days.
 5. **Roblox private servers:** API access model? Pre-provisioned vs on-demand? Cost per server?
 6. **Roblox identity linking:** How to connect AAC accounts to Roblox accounts for private server access?
@@ -538,9 +592,10 @@ CREATE TABLE reports (
 6. ~~**Apply migrations remotely**~~ ✅ Done
 7. ~~**Fetch real Timeback ID**~~ ✅ Done — M2M OneRoster lookup implemented (1.7)
 8. ~~**LWAI access & exploration**~~ ✅ Done — Athena queries working, schema documented
-9. **Design LWAI query architecture** — Solve edge runtime limitation (Lambda proxy, precompute, or existing API)
-10. **Define work-wall criteria** — Choose metrics and thresholds from `daily_learning_metrics`
-11. **Implement work-wall endpoint** — `GET /api/gating` with caching (1.5)
-12. **Explore profile stats metrics** — What LWAI data to surface on student profiles (levels mastered, streaks, etc.)
-13. **Upload production secrets** — Set Cloudflare secrets for prod branch (1.8)
-14. **Provision more private servers** — See `docs/games-to-add.md` for game list
+9. ~~**Design LWAI query architecture**~~ ✅ Done — Lambda proxy in `infra/lwai-proxy/`
+10. ~~**Define work-wall criteria**~~ ✅ Done — `active_minutes` weekly sum, 300 min threshold
+11. ~~**Implement work-wall endpoint**~~ ✅ Done — Arcade fetches gating data from Lambda proxy
+12. **Deploy LWAI Lambda** — `cd infra/lwai-proxy && bunx sst deploy --stage production`
+13. **Set Cloudflare secrets** — `LWAI_PROXY_URL`, `LWAI_API_KEY` for production
+14. **Explore profile stats metrics** — What LWAI data to surface on student profiles (levels mastered, streaks, etc.)
+15. **Provision more private servers** — See `docs/games-to-add.md` for game list

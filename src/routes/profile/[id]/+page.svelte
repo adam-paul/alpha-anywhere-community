@@ -11,9 +11,12 @@
   let isEditing = $state(false);
   let isSaving = $state(false);
 
-  // Editable fields (initialized from server data)
+  // Editable fields (initialized from server data, then edited locally)
+  // svelte-ignore state_referenced_locally
   let editBio = $state(data.profile.bio ?? '');
+  // svelte-ignore state_referenced_locally
   let editLocation = $state(data.profile.location ?? '');
+  // svelte-ignore state_referenced_locally
   let editInterests = $state<Interest[]>([...data.profile.interests]);
 
   // Format joined date from ISO string

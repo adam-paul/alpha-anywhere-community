@@ -1,12 +1,9 @@
 import { getContext, setContext } from 'svelte';
-import type { EngagementCategory, Game, GatingState, Theme } from '../types';
+import type { EngagementCategory, Game, Theme } from '../types';
 
 const ARCADE_CONTEXT_KEY = 'arcade';
 
 export interface ArcadeState {
-  // Gating
-  gatingState: GatingState;
-
   // Filter
   activeFilter: EngagementCategory | 'all';
 
@@ -23,13 +20,6 @@ export interface CreateArcadeStoreOptions {
 }
 
 export function createArcadeStore(options: CreateArcadeStoreOptions = {}) {
-  let gatingState = $state<GatingState>({
-    mode: 'daily',
-    isUnlocked: true,
-    xpCurrent: 120,
-    xpRequired: 120
-  });
-
   let activeFilter = $state<EngagementCategory | 'all'>('all');
   let theme = $state<Theme>('cel-shaded');
 
@@ -42,9 +32,6 @@ export function createArcadeStore(options: CreateArcadeStoreOptions = {}) {
   );
 
   const store: ArcadeState = {
-    get gatingState() { return gatingState; },
-    set gatingState(value) { gatingState = value; },
-
     get activeFilter() { return activeFilter; },
     set activeFilter(value) { activeFilter = value; },
 

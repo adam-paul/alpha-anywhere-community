@@ -5,15 +5,16 @@
   import ProgressRing from './ProgressRing.svelte';
 
   interface Props {
-    gatingState: GatingState;
+    gatingState: GatingState | null;
+    loading?: boolean;
     onDismiss?: () => void;
   }
 
-  let { gatingState, onDismiss }: Props = $props();
+  let { gatingState, loading = false, onDismiss }: Props = $props();
 
-  const progressPercent = $derived(computeProgressPercent(gatingState));
+  const progressPercent = $derived(gatingState ? computeProgressPercent(gatingState) : 0);
   const isComplete = $derived(progressPercent >= 100);
-  const modeLabel = $derived(gatingState.mode === 'daily' ? 'today' : 'this week');
+  const modeLabel = $derived(gatingState?.mode === 'daily' ? 'today' : 'this week');
 
   function handleDismiss() {
     onDismiss?.();
@@ -21,8 +22,31 @@
 </script>
 
 <div class="work-wall">
-  <div class="work-wall-content" class:complete={isComplete}>
-    {#if isComplete}
+  <div class="work-wall-content" class:complete={isComplete && !loading}>
+    {#if loading}
+      <!-- Loading state -->
+      <div class="loading-icon">
+        <Icon name="clock" size={48} />
+      </div>
+
+      <h3 class="work-wall-title">Checking Progress...</h3>
+      <p class="work-wall-message">
+        Loading your learning data
+      </p>
+
+      <div class="progress-container">
+        <ProgressRing
+          progress={0}
+          size={120}
+          strokeWidth={10}
+        />
+        <div class="progress-label">
+          <span class="minutes-current">—</span>
+          <span class="minutes-separator">/</span>
+          <span class="minutes-required">— min</span>
+        </div>
+      </div>
+    {:else if isComplete}
       <!-- Completed state -->
       <div class="unlock-icon">
         <Icon name="unlock" size={48} />
@@ -40,9 +64,9 @@
           strokeWidth={10}
         />
         <div class="progress-label">
-          <span class="xp-current complete">{gatingState.xpCurrent}</span>
-          <span class="xp-separator">/</span>
-          <span class="xp-required">{gatingState.xpRequired} XP</span>
+          <span class="minutes-current complete">{gatingState.minutesCurrent}</span>
+          <span class="minutes-separator">/</span>
+          <span class="minutes-required">{gatingState.minutesRequired} min</span>
         </div>
       </div>
 
@@ -73,9 +97,9 @@
           strokeWidth={10}
         />
         <div class="progress-label">
-          <span class="xp-current">{gatingState.xpCurrent}</span>
-          <span class="xp-separator">/</span>
-          <span class="xp-required">{gatingState.xpRequired} XP</span>
+          <span class="minutes-current">{gatingState.minutesCurrent}</span>
+          <span class="minutes-separator">/</span>
+          <span class="minutes-required">{gatingState.minutesRequired} min</span>
         </div>
       </div>
 
@@ -120,13 +144,23 @@
   }
 
   .lock-icon,
-  .unlock-icon {
+  .unlock-icon,
+  .loading-icon {
     color: var(--color-text-muted);
     margin-bottom: var(--space-4);
   }
 
   .unlock-icon {
     color: var(--color-progress-fill);
+  }
+
+  .loading-icon {
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
   }
 
   .work-wall-title {
@@ -159,22 +193,22 @@
     font-weight: 700;
   }
 
-  .xp-current {
+  .minutes-current {
     font-size: var(--font-size-2xl);
     color: var(--color-progress-incomplete);
   }
 
-  .xp-current.complete {
+  .minutes-current.complete {
     color: var(--color-progress-fill);
   }
 
-  .xp-separator {
+  .minutes-separator {
     font-size: var(--font-size-lg);
     color: var(--color-text-muted);
     margin: 0 var(--space-1);
   }
 
-  .xp-required {
+  .minutes-required {
     font-size: var(--font-size-lg);
     color: var(--color-text-muted);
   }

@@ -1,6 +1,7 @@
 {
   "name": "alpha-anywhere-community",
   "version": "0.1.0",
+  "workspaces": ["infra/lwai-proxy"],
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260206.0",
     "@sveltejs/adapter-cloudflare": "^7.2.6",

@@ -14,6 +14,7 @@
   let { data, children }: Props = $props();
 
   // Create user store with session from server (sets context for child components)
+  // svelte-ignore state_referenced_locally
   createUserStore(data.user);
 </script>
 

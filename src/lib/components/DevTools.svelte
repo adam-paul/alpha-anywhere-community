@@ -3,12 +3,17 @@
 
   interface Props {
     isLocked: boolean;
-    xpCurrent: number;
-    xpRequired: number;
+    minutesCurrent: number;
+    minutesRequired: number;
     theme: Theme;
+    onchange?: () => void;
   }
 
-  let { isLocked = $bindable(), xpCurrent = $bindable(), xpRequired, theme = $bindable() }: Props = $props();
+  let { isLocked = $bindable(), minutesCurrent = $bindable(), minutesRequired, theme = $bindable(), onchange }: Props = $props();
+
+  function handleChange() {
+    onchange?.();
+  }
 
   const themes: { value: Theme; label: string }[] = [
     { value: 'cel-shaded', label: 'Cel Shaded Pro' },
@@ -33,6 +38,7 @@
           <input
             type="checkbox"
             bind:checked={isLocked}
+            onchange={handleChange}
           />
           <span>Work Wall Locked</span>
         </label>
@@ -40,14 +46,15 @@
 
       {#if isLocked}
         <div class="control-group">
-          <span class="control-label">XP Progress: {xpCurrent} / {xpRequired}</span>
+          <span class="control-label">Minutes: {minutesCurrent} / {minutesRequired}</span>
           <input
             type="range"
             min={0}
-            max={xpRequired}
-            bind:value={xpCurrent}
+            max={minutesRequired}
+            bind:value={minutesCurrent}
+            oninput={handleChange}
             class="range-input"
-            aria-label="XP Progress"
+            aria-label="Minutes Progress"
           />
         </div>
       {/if}

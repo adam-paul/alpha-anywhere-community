@@ -39,8 +39,8 @@ export type LaunchOptions =
 export interface GatingState {
   mode: GatingMode;
   isUnlocked: boolean;
-  xpCurrent: number;
-  xpRequired: number;
+  minutesCurrent: number;
+  minutesRequired: number;
 }
 
 export interface UserContext {
@@ -86,8 +86,8 @@ export const ENGAGEMENT_CATEGORIES: Record<EngagementCategory, {
 
 // Helper to compute progress percentage
 export function computeProgressPercent(state: GatingState): number {
-  if (state.xpRequired <= 0) return 100;
-  return Math.min(100, Math.round((state.xpCurrent / state.xpRequired) * 100));
+  if (state.minutesRequired <= 0) return 100;
+  return Math.min(100, Math.round((state.minutesCurrent / state.minutesRequired) * 100));
 }
 
 // Interest types for student profiles

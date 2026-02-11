@@ -1,6 +1,7 @@
 <script lang="ts">
   import { createArcadeStore } from '$lib/stores/arcade.svelte';
-  import { computeProgressPercent } from '$lib/types';
+  import { createGatingStore } from '$lib/stores/gating.svelte';
+  import type { GatingState } from '$lib/types';
   import { PageHeader } from '$lib/components/layout';
   import GameGrid from '$lib/components/GameGrid.svelte';
   import WorkWall from '$lib/components/WorkWall.svelte';
@@ -9,57 +10,39 @@
 
   let { data } = $props();
 
-  // Create arcade store with games from server
+  // Create stores (initial values only, not reactive to data changes)
+  // svelte-ignore state_referenced_locally
   const arcade = createArcadeStore({ games: data.games });
-
-  // Track if user has dismissed the work wall after completing goals
-  let workWallDismissed = $state(false);
-
-  // Track previous lock state to detect toggles
-  let prevIsUnlocked = $state(arcade.gatingState.isUnlocked);
-
-  // Calculate if goals are complete
-  const progressPercent = $derived(computeProgressPercent(arcade.gatingState));
-  const isGoalComplete = $derived(progressPercent >= 100);
-
-  // Reset dismissed state if XP drops below 100%
-  $effect(() => {
-    if (!isGoalComplete) {
-      workWallDismissed = false;
-    }
-  });
-
-  // Reset dismissed state if lock state changes from unlocked → locked
-  $effect(() => {
-    const currentIsUnlocked = arcade.gatingState.isUnlocked;
-    if (prevIsUnlocked && !currentIsUnlocked) {
-      workWallDismissed = false;
-    }
-    prevIsUnlocked = currentIsUnlocked;
-  });
-
-  // Show work wall when: locked AND NOT (complete + dismissed)
-  const showWorkWall = $derived(
-    !arcade.gatingState.isUnlocked && !(isGoalComplete && workWallDismissed)
-  );
-
-  function handleWorkWallDismiss() {
-    workWallDismissed = true;
-  }
+  // svelte-ignore state_referenced_locally
+  const gating = createGatingStore(data.gatingState);
 
   // Dev tools bindings
   let devIsLocked = $state(false);
-  let devXpCurrent = $state(67);
+  let devMinutesCurrent = $state(0);
+  let devToolsReady = $state(false);
 
-  // Sync dev tools to arcade store
+  // Initialize dev tools when server data loads
   $effect(() => {
-    arcade.gatingState = {
-      mode: 'daily',
-      isUnlocked: !devIsLocked,
-      xpCurrent: devIsLocked ? devXpCurrent : 120,
-      xpRequired: 120
-    };
+    if (gating.serverData && !devToolsReady) {
+      devIsLocked = !gating.serverData.isUnlocked;
+      devMinutesCurrent = gating.serverData.minutesCurrent;
+      devToolsReady = true;
+    }
   });
+
+  // Sync dev tools to gating store
+  function syncDevTools() {
+    if (!gating.serverData) return;
+
+    const override: GatingState = {
+      mode: gating.serverData.mode,
+      isUnlocked: !devIsLocked,
+      minutesCurrent: devIsLocked ? devMinutesCurrent : gating.serverData.minutesRequired,
+      minutesRequired: gating.serverData.minutesRequired
+    };
+
+    gating.setDevOverride(override);
+  }
 </script>
 
 <svelte:head>
@@ -68,29 +51,36 @@
 
 <PageHeader title="Arcade">
   {#snippet actions()}
-    <FilterBar disabled={showWorkWall} />
+    <FilterBar disabled={gating.showWorkWall} />
   {/snippet}
 </PageHeader>
 
-<div class="arcade-content" class:locked={showWorkWall}>
-  <GameGrid disabled={showWorkWall} />
+<div class="arcade-content" class:locked={gating.showWorkWall}>
+  <GameGrid disabled={gating.showWorkWall} />
 
-  {#if showWorkWall}
-    <WorkWall gatingState={arcade.gatingState} onDismiss={handleWorkWallDismiss} />
+  {#if gating.showWorkWall}
+    <WorkWall
+      gatingState={gating.activeData}
+      loading={gating.isLoading}
+      onDismiss={gating.dismiss}
+    />
   {/if}
 </div>
 
-<DevTools
-  bind:isLocked={devIsLocked}
-  bind:xpCurrent={devXpCurrent}
-  bind:theme={arcade.theme}
-  xpRequired={120}
-/>
+{#if gating.serverData}
+  <DevTools
+    bind:isLocked={devIsLocked}
+    bind:minutesCurrent={devMinutesCurrent}
+    bind:theme={arcade.theme}
+    minutesRequired={gating.serverData.minutesRequired}
+    onchange={syncDevTools}
+  />
+{/if}
 
 <style>
   .arcade-content {
     position: relative;
-    min-height: 400px;
+    min-height: calc(100vh - 200px); /* Fill viewport minus header/padding */
   }
 
   .arcade-content.locked {

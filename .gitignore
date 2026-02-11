@@ -37,11 +37,11 @@ coverage
 # Assets
 */screenshots
 
-# Project instructions
-CLAUDE.md
-
 # Wrangler local state
 .wrangler
+
+# SST build artifacts
+.sst
 
 # Internal repositories
 timeback/

@@ -12,6 +12,7 @@
   let { data }: { data: PageData } = $props();
 
   // Create explore store with server data (provides context to child components)
+  // svelte-ignore state_referenced_locally
   const explore = createExploreStore(data.students);
 
   // Build interest filter options from INTERESTS metadata
