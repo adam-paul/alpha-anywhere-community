@@ -26,7 +26,11 @@
     "preview": "wrangler pages dev .svelte-kit/cloudflare",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "db:seed": "bun run scripts/seed-games.ts",
+    "db:seed:remote": "bun run scripts/seed-games.ts --remote",
+    "db:seed:clear": "bun run scripts/seed-games.ts --clear",
+    "db:seed:remote:clear": "bun run scripts/seed-games.ts --remote --clear"
   },
   "lint-staged": {
     "*.{js,ts,svelte,css,md,json}": "prettier --write"

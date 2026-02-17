@@ -593,6 +593,39 @@ Technical debt and infrastructure improvements to tackle after core features are
 
 ---
 
+#### Seed Script Architecture
+
+**Problem:** Currently one seed script (`scripts/seed-games.ts`) with inline types and data. As we add more seeded tables (users, templates, etc.), we'll duplicate runner logic (wrangler execution, --remote/--clear handling).
+
+**Goal:** Shared infrastructure with per-table data/types.
+
+**Work:**
+
+- Extract `scripts/lib/seed-utils.ts` with `executeSQL()`, `parseArgs()`, `escapeSQL()`
+- Keep seed interfaces near their data (not in main `types.ts` — they're ETL shapes, not domain types)
+- One script per table: `seed-games.ts`, `seed-users.ts`, etc.
+
+**Deferred until:** Second seed script is needed
+
+---
+
+#### Private Server Credentials Storage
+
+**Problem:** Currently storing Roblox private server credentials (`access_code`, `link_code`) directly in D1. Not ideal for secrets — exposed in DB backups, harder to rotate.
+
+**Goal:** Secure, scalable storage for per-game credentials.
+
+**Options to evaluate:**
+
+- Cloudflare Workers KV (key-value store, encrypted at rest)
+- Cloudflare Secrets (but one giant JSON blob doesn't scale to 100 games)
+- Encrypted columns in D1 (app-level encryption/decryption)
+- Separate secrets table with row-level access control
+
+**Deferred until:** Game catalog grows beyond ~10 games
+
+---
+
 ## Strategic Context
 
 - **Weekly goals > daily** — High schoolers plan weekly
@@ -637,4 +670,5 @@ Technical debt and infrastructure improvements to tackle after core features are
 13. ~~**Set Cloudflare secrets**~~ ✅ Done — `LWAI_PROXY_URL`, `LWAI_API_KEY` for preview
 14. **Set Cloudflare secrets for production** — Same secrets for master branch deployment
 15. **Explore profile stats metrics** — What LWAI data to surface on student profiles (levels mastered, streaks, etc.)
-16. **Provision more private servers** — See `docs/games-to-add.md` for game list
+16. ~~**Game catalog seed script**~~ ✅ Done — `bun run db:seed` / `db:seed:remote`, 10 games cataloged (1 active)
+17. **Provision more private servers** — Add credentials to `scripts/seed-games.ts`, set `isActive: true`
