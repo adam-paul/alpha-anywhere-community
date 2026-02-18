@@ -1,6 +1,8 @@
 import type { PageServerLoad } from './$types';
 import { createDbClient } from '$lib/server/db/client';
 import type { Game, GatingResponse, GatingState } from '$lib/types';
+import type { DbGame } from '$lib/server/db/types';
+import { decrypt } from '$lib/server/crypto';
 import { env } from '$env/dynamic/private';
 
 async function fetchGatingData(email: string): Promise<GatingState> {
@@ -44,6 +46,35 @@ async function fetchGatingData(email: string): Promise<GatingState> {
   }
 }
 
+/**
+ * Decrypt game credentials if encryption key is available.
+ * Falls back to raw values if no key (local dev without encryption).
+ */
+async function decryptCredentials(
+  game: DbGame,
+  key: string | undefined
+): Promise<{ accessCode?: string; linkCode?: string }> {
+  if (!key) {
+    // No encryption key — return raw values (local dev or unencrypted)
+    return {
+      accessCode: game.private_server_access_code ?? undefined,
+      linkCode: game.link_code ?? undefined
+    };
+  }
+
+  try {
+    return {
+      accessCode: game.private_server_access_code
+        ? await decrypt(game.private_server_access_code, key)
+        : undefined,
+      linkCode: game.link_code ? await decrypt(game.link_code, key) : undefined
+    };
+  } catch (err) {
+    console.error(`Failed to decrypt credentials for game ${game.id}:`, err);
+    return {};
+  }
+}
+
 export const load: PageServerLoad = async ({ platform, locals }) => {
   const games: Game[] = [];
 
@@ -51,23 +82,28 @@ export const load: PageServerLoad = async ({ platform, locals }) => {
   if (platform?.env?.DB) {
     const db = createDbClient(platform.env.DB);
     const dbGames = await db.games.findAll();
+    const credentialsKey = env.GAME_CREDENTIALS_KEY;
 
-    // Transform DB format to client format
-    games.push(
-      ...dbGames.map((g) => ({
-        id: g.id,
-        title: g.title,
-        thumbnailUrl: g.thumbnail_url ?? '',
-        type: g.type,
-        engagementCategory: g.engagement_category,
-        launchUrl: g.launch_url,
-        placeId: g.place_id ?? undefined,
-        accessCode: g.private_server_access_code ?? undefined,
-        linkCode: g.link_code ?? undefined,
-        description: g.description ?? undefined,
-        isActive: g.is_active === 1
-      }))
+    // Transform DB format to client format (decrypt credentials)
+    const transformedGames = await Promise.all(
+      dbGames.map(async (g) => {
+        const creds = await decryptCredentials(g, credentialsKey);
+        return {
+          id: g.id,
+          title: g.title,
+          thumbnailUrl: g.thumbnail_url ?? '',
+          type: g.type,
+          engagementCategory: g.engagement_category,
+          launchUrl: g.launch_url,
+          placeId: g.place_id ?? undefined,
+          accessCode: creds.accessCode,
+          linkCode: creds.linkCode,
+          description: g.description ?? undefined,
+          isActive: g.is_active === 1
+        };
+      })
     );
+    games.push(...transformedGames);
   }
 
   // Return games immediately, stream gating data when ready

@@ -10,9 +10,29 @@
  * This script generates SQL and executes it via wrangler d1.
  * Games are upserted by ID using INSERT OR REPLACE.
  *
- * Private server credentials (access_code, link_code) are included here
- * for games where we have them. TODO: Move credentials to a more secure
- * storage mechanism when we have many games.
+ * ## Credential Encryption
+ *
+ * The accessCode and linkCode values below are AES-256-GCM encrypted.
+ * They are decrypted at runtime using the GAME_CREDENTIALS_KEY secret.
+ *
+ * To add new credentials:
+ *   1. Get the plaintext accessCode and linkCode (see below)
+ *   2. Encrypt each value:
+ *      GAME_CREDENTIALS_KEY=<key> bun run scripts/encrypt-credential.ts "<plaintext>"
+ *   3. Paste the encrypted output into this file
+ *
+ * ## How to Get Private Server Credentials
+ *
+ * 1. Go to the game on Roblox.com
+ * 2. Click the "..." menu → "Create Private Server" (may require Robux)
+ * 3. Copy the share link: https://www.roblox.com/share?code=XXXXXXXX&type=Server
+ * 4. Open the share link in a browser with DevTools open (Console tab)
+ * 5. Look for both values in the console logs:
+ *    - accessCode: UUID like 365ac2f6-cde8-41b1-82ff-93dafd34258a
+ *    - linkCode: Numeric string like 32872177519509092753493698228788
+ * 6. The placeId is the game's numeric ID (visible in the game URL)
+ *
+ * Both accessCode AND linkCode are required — the deep link won't work with just one.
  */
 
 import { $ } from 'bun';
@@ -56,8 +76,10 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'side-by-side',
     placeId: '1537690962',
     launchUrl: 'https://www.roblox.com/games/1537690962/Bee-Swarm-Simulator',
-    accessCode: '365ac2f6-cde8-41b1-82ff-93dafd34258a',
-    linkCode: '32872177519509092753493698228788',
+    // Encrypted with GAME_CREDENTIALS_KEY
+    accessCode:
+      'k+Tqn7w7zvrlqLxoF/D07Se7w6YJOGAjpoLOZLqzC8UE/7Vqujb5i8CQK0CwGbdoa6OYf3/JlANOMLg/4sXoWA==',
+    linkCode: 'L8SCAkCVBE1jjTCr8xrABrVEIDsxstioiPVHzmwCckPJmW4PherdJXnUep5l/E6k5wSjgFHuG28t02q4',
     isActive: true
   },
   {
@@ -86,18 +108,6 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'town-square',
     placeId: '4924922222',
     launchUrl: 'https://www.roblox.com/games/4924922222/Brookhaven-RP',
-    isActive: false // Needs private server
-  },
-  {
-    id: 'welcome-to-bloxburg',
-    title: 'Welcome to Bloxburg',
-    description: 'Build your dream home and live out your virtual life.',
-    thumbnailUrl:
-      'https://tr.rbxcdn.com/180DAY-b08698e2e1ba211cf2acf61fec5325b3/512/512/Image/Png/noFilter',
-    type: 'roblox',
-    engagementCategory: 'town-square',
-    placeId: '185655149',
-    launchUrl: 'https://www.roblox.com/games/185655149/Welcome-to-Bloxburg',
     isActive: false // Needs private server
   },
 

@@ -1,5 +1,4 @@
 name = "alpha-community"
-account_id = "48d95ff25caa60f04e2cfd2a901f8907"
 compatibility_date = "2025-01-13"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".svelte-kit/cloudflare"
