@@ -43,6 +43,9 @@ coverage
 # SST build artifacts
 .sst
 
+# Game credentials (plaintext, encrypted at seed time)
+scripts/game-credentials.json
+
 # Internal repositories
 timeback/
 lms-alphalearn/

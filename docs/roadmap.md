@@ -609,20 +609,14 @@ Technical debt and infrastructure improvements to tackle after core features are
 
 ---
 
-#### Private Server Credentials Storage
+#### ~~Private Server Credentials Storage~~ ✅ Done
 
-**Problem:** Currently storing Roblox private server credentials (`access_code`, `link_code`) directly in D1. Not ideal for secrets — exposed in DB backups, harder to rotate.
+**Solution:** Encrypted columns in D1 (AES-256-GCM, app-level encryption/decryption).
 
-**Goal:** Secure, scalable storage for per-game credentials.
-
-**Options to evaluate:**
-
-- Cloudflare Workers KV (key-value store, encrypted at rest)
-- Cloudflare Secrets (but one giant JSON blob doesn't scale to 100 games)
-- Encrypted columns in D1 (app-level encryption/decryption)
-- Separate secrets table with row-level access control
-
-**Deferred until:** Game catalog grows beyond ~10 games
+- Plaintext credentials live in `scripts/game-credentials.json` (gitignored)
+- Seed script encrypts at insert time using `GAME_CREDENTIALS_KEY`
+- Server decrypts at page load (`src/lib/server/crypto.ts`)
+- Key rotation: change key + re-run seed
 
 ---
 
@@ -671,4 +665,4 @@ Technical debt and infrastructure improvements to tackle after core features are
 14. **Set Cloudflare secrets for production** — Same secrets for master branch deployment
 15. **Explore profile stats metrics** — What LWAI data to surface on student profiles (levels mastered, streaks, etc.)
 16. ~~**Game catalog seed script**~~ ✅ Done — `bun run db:seed` / `db:seed:remote`, 10 games cataloged (1 active)
-17. **Provision more private servers** — Add credentials to `scripts/seed-games.ts`, set `isActive: true`
+17. **Provision more private servers** — Add game to `seed-games.ts`, credentials to `game-credentials.json`, run `db:seed`

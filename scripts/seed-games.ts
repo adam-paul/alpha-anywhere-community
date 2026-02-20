@@ -3,23 +3,25 @@
  * Seed script for the games catalog.
  *
  * Usage:
- *   bun run scripts/seed-games.ts              # Seed local D1
- *   bun run scripts/seed-games.ts --remote     # Seed remote D1
- *   bun run scripts/seed-games.ts --clear      # Clear existing games first
+ *   bun run db:seed                # Seed local D1
+ *   bun run db:seed:remote         # Seed remote D1
+ *   bun run scripts/seed-games.ts --clear          # Clear existing games first
  *
- * This script generates SQL and executes it via wrangler d1.
  * Games are upserted by ID using INSERT OR REPLACE.
  *
- * ## Credential Encryption
+ * ## Credentials
  *
- * The accessCode and linkCode values below are AES-256-GCM encrypted.
- * They are decrypted at runtime using the GAME_CREDENTIALS_KEY secret.
+ * Private server credentials live in scripts/game-credentials.json (gitignored).
+ * This script encrypts them at insert time using GAME_CREDENTIALS_KEY.
  *
- * To add new credentials:
- *   1. Get the plaintext accessCode and linkCode (see below)
- *   2. Encrypt each value:
- *      GAME_CREDENTIALS_KEY=<key> bun run scripts/encrypt-credential.ts "<plaintext>"
- *   3. Paste the encrypted output into this file
+ * To add a new game with private server credentials:
+ *   1. Add the game metadata to the GAMES array below
+ *   2. Add credentials to scripts/game-credentials.json:
+ *      { "my-game-id": { "accessCode": "...", "linkCode": "..." } }
+ *   3. Run: bun run db:seed
+ *
+ * If GAME_CREDENTIALS_KEY is not set, credentials are stored as plaintext
+ * (fine for local dev).
  *
  * ## How to Get Private Server Credentials
  *
@@ -36,6 +38,7 @@
  */
 
 import { $ } from 'bun';
+import { encrypt } from '../src/lib/server/crypto';
 import type { GameType, EngagementCategory } from '../src/lib/types';
 
 // =============================================================================
@@ -51,11 +54,12 @@ interface GameSeed {
   engagementCategory: EngagementCategory;
   placeId?: string; // Roblox place ID
   launchUrl: string; // Web fallback URL
-  // Private server credentials (only for games where we have them)
-  accessCode?: string;
-  linkCode?: string;
-  // Whether the game appears in the arcade (false = exists in DB but hidden)
-  isActive: boolean;
+  isActive: boolean; // false = exists in DB but hidden from arcade
+}
+
+interface GameCredentials {
+  accessCode: string;
+  linkCode: string;
 }
 
 // =============================================================================
@@ -76,10 +80,6 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'side-by-side',
     placeId: '1537690962',
     launchUrl: 'https://www.roblox.com/games/1537690962/Bee-Swarm-Simulator',
-    // Encrypted with GAME_CREDENTIALS_KEY
-    accessCode:
-      'k+Tqn7w7zvrlqLxoF/D07Se7w6YJOGAjpoLOZLqzC8UE/7Vqujb5i8CQK0CwGbdoa6OYf3/JlANOMLg/4sXoWA==',
-    linkCode: 'L8SCAkCVBE1jjTCr8xrABrVEIDsxstioiPVHzmwCckPJmW4PherdJXnUep5l/E6k5wSjgFHuG28t02q4',
     isActive: true
   },
   {
@@ -92,9 +92,6 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'side-by-side',
     placeId: '920587237',
     launchUrl: 'https://www.roblox.com/games/920587237/Adopt-Me',
-    accessCode:
-      'ltNFl9wBRQNCxN2RCF5XOqBK1X9AEmPshbMNW2/kCuh2Is4oZ1NQDhcpH+cyzKOSdSHkHXHdqacpP19tSY1qEw==',
-    linkCode: 'gllPcwqvQBn1a0E/nj4e7H1cbMWx7KhigOxOZfx6/Icpt16h5Pa0Iw6PTY3XJohb37uXJgi9QHsxt3tP',
     isActive: true
   },
 
@@ -111,9 +108,6 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'town-square',
     placeId: '4924922222',
     launchUrl: 'https://www.roblox.com/games/4924922222/Brookhaven-RP',
-    accessCode:
-      'gvZrjbfpfCwbh91seg17zELDje4X2yQURYxdcZ7sx1xsSFtRRuSwJftV0UddhaNLdN1lC74fUfK7pBlS0aGWUQ==',
-    linkCode: 'u3EJACCC7UgMoViVuaS/SAJliZkoOSRJKgz9FKwObqoLnwR3ZtbbRduF35Q68bS9teX86f+8ymqAq6Be',
     isActive: true
   },
 
@@ -130,9 +124,6 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'ice-breaker',
     placeId: '189707',
     launchUrl: 'https://www.roblox.com/games/189707/Natural-Disaster-Survival',
-    accessCode:
-      '5I/7IWslCqZeU7oK5bwwev6DYlHCdjSehsIOGGtEEFlRCitUqfr44eTa/HMxBGMBJv/ONSR2Oj14bkY3dkwXDA==',
-    linkCode: '4pufJz3csj33mrC3rR6Vj7eWBDehBnec2JPugmsu1CLru7dKOBAk4lMLzT5goTVPv1nUAQTjkhGQUIBN',
     isActive: true
   },
   {
@@ -145,9 +136,6 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'ice-breaker',
     placeId: '4972273297',
     launchUrl: 'https://www.roblox.com/games/4972273297/Regretevator',
-    accessCode:
-      'EeNwRMQtVgGREbOy6dQL+z+Pi21/bd8m3O6BLb8W3jVbMc+DDku6salZqZzQlPKUoT+l/uklGH+VPCI39tt/PQ==',
-    linkCode: 'qN9IEMBd50ROO1xZHWQAS8XpIgOZFfBOrGpc7QJiVHUvS5/ba/Wdd4GQb9hWbS5JE9/+jXUoTGRdcBqh',
     isActive: true
   },
 
@@ -164,9 +152,6 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'trust-builder',
     placeId: '192800',
     launchUrl: 'https://www.roblox.com/games/192800/Work-at-a-Pizza-Place',
-    accessCode:
-      'IBTnZ1GpjAoxYdG8LXUPNq5+AFbKxQUGFjt4tBcrLixkpp2vEXTUAVymPpUrGrPtjpNsDkuY0yzOh8IF4nKutw==',
-    linkCode: 'QPeODXeaE8nQjdiR8N2SAnpY5YzEOPhwkCWQt3wtjaYuVeuWfHsdD0OVk+l5fz1MWvij/y7dWFzPt89D',
     isActive: true
   },
   {
@@ -179,9 +164,6 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'trust-builder',
     placeId: '537413528',
     launchUrl: 'https://www.roblox.com/games/537413528/Build-A-Boat-For-Treasure',
-    accessCode:
-      '9cSLYyLgMhrlnKhXZFCexchyLQUPidOGxtickA8RZ4paY2bjGl0i6oeeVz8M6+vYYDYOk8QQeV3KgQUUJeKrXA==',
-    linkCode: 'o4l3kBXTuXSOGUT9ksJ+Ybre92/BSXW55Ou5IX6DSR32Iy4WBDcB9lyHNhWAxcxvfwiy0RPlkynMDAY+',
     isActive: true
   },
 
@@ -198,9 +180,6 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'rivalry',
     placeId: '6872265039',
     launchUrl: 'https://www.roblox.com/games/6872265039/BedWars',
-    accessCode:
-      '61OzkYNPQD+Gbm47249c1lR7XBcx2ejmjhoWXPhZzA0gNI9pFoJk2uR0Ld5PwgXVOSa/CsWW5ESZ0Cqp1Hi1YQ==',
-    linkCode: 'lOgFQBtYwB/L++w/0TGsuBE/EejlCupfXMW/mQGSfNVX9YkgCSbMtqSPDQVZlZxPgZ0f3wXlYL7PMphJ',
     isActive: true
   },
   {
@@ -213,12 +192,30 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'rivalry',
     placeId: '286090429',
     launchUrl: 'https://www.roblox.com/games/286090429/Arsenal',
-    accessCode:
-      'kk+fv/yN2XoBq3ZDw93EIoxBguy6tbz4oebmTrdaVrYVE9uMIJ+sUIzOaRJ/zdj7Y0LTitTzGaW6fpYby0p49g==',
-    linkCode: 'z+XniedkfGK0e/WQgkFj6v2UqyFBMNNQOGkU4vMme9UknAqtGI5AV89vYZ/QBcQ+LAI5v1cdxBXnJWGt',
     isActive: true
   }
 ];
+
+// =============================================================================
+// CREDENTIALS
+// =============================================================================
+
+async function loadCredentials(): Promise<Record<string, GameCredentials>> {
+  const credentialsPath = new URL('./game-credentials.json', import.meta.url).pathname;
+  const file = Bun.file(credentialsPath);
+
+  if (!(await file.exists())) {
+    console.log('No game-credentials.json found — seeding without private server credentials.');
+    return {};
+  }
+
+  return file.json();
+}
+
+async function encryptCredential(plaintext: string, key: string | undefined): Promise<string> {
+  if (!key) return plaintext;
+  return encrypt(plaintext, key);
+}
 
 // =============================================================================
 // SQL GENERATION
@@ -226,11 +223,16 @@ const GAMES: GameSeed[] = [
 
 function escapeSQL(value: string | undefined | null): string {
   if (value === undefined || value === null) return 'NULL';
-  // Escape single quotes by doubling them
   return `'${value.replace(/'/g, "''")}'`;
 }
 
-function generateInsertSQL(game: GameSeed): string {
+interface InsertValues {
+  game: GameSeed;
+  accessCode?: string;
+  linkCode?: string;
+}
+
+function generateInsertSQL({ game, accessCode, linkCode }: InsertValues): string {
   return `INSERT OR REPLACE INTO games (
   id,
   title,
@@ -253,17 +255,13 @@ function generateInsertSQL(game: GameSeed): string {
   ${escapeSQL(game.engagementCategory)},
   ${escapeSQL(game.launchUrl)},
   ${escapeSQL(game.placeId)},
-  ${escapeSQL(game.accessCode)},
-  ${escapeSQL(game.linkCode)},
+  ${escapeSQL(accessCode)},
+  ${escapeSQL(linkCode)},
   ${escapeSQL(game.description)},
   ${game.isActive ? 1 : 0},
   datetime('now'),
   datetime('now')
 );`;
-}
-
-function generateClearSQL(): string {
-  return 'DELETE FROM games;';
 }
 
 // =============================================================================
@@ -278,16 +276,38 @@ async function main() {
   const target = isRemote ? 'remote' : 'local';
   console.log(`\nSeeding games to ${target} D1...\n`);
 
-  // Build SQL
+  const credentials = await loadCredentials();
+  const key = process.env.GAME_CREDENTIALS_KEY;
+
+  if (Object.keys(credentials).length > 0 && !key) {
+    console.log('GAME_CREDENTIALS_KEY not set — credentials will be stored as plaintext.\n');
+  }
+
+  // Build SQL (encrypt credentials at insert time)
   const statements: string[] = [];
 
   if (shouldClear) {
     console.log('Clearing existing games...');
-    statements.push(generateClearSQL());
+    statements.push('DELETE FROM games;');
   }
 
+  let withCreds = 0;
+  let withoutCreds = 0;
+
   for (const game of GAMES) {
-    statements.push(generateInsertSQL(game));
+    const creds = credentials[game.id];
+    let accessCode: string | undefined;
+    let linkCode: string | undefined;
+
+    if (creds) {
+      accessCode = await encryptCredential(creds.accessCode, key);
+      linkCode = await encryptCredential(creds.linkCode, key);
+      withCreds++;
+    } else {
+      withoutCreds++;
+    }
+
+    statements.push(generateInsertSQL({ game, accessCode, linkCode }));
   }
 
   const sql = statements.join('\n\n');
@@ -314,7 +334,9 @@ async function main() {
 
   console.log(`\nSeeded ${GAMES.length} games to ${target} D1:`);
   console.log(`  - ${activeGames.length} active (visible in arcade)`);
-  console.log(`  - ${inactiveGames.length} inactive (hidden, awaiting private servers)`);
+  console.log(`  - ${inactiveGames.length} inactive (hidden)`);
+  console.log(`  - ${withCreds} with encrypted credentials`);
+  console.log(`  - ${withoutCreds} without credentials`);
 
   if (inactiveGames.length > 0) {
     console.log('\nInactive games (set isActive: true when ready):');
