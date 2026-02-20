@@ -14,5 +14,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["sst.config.ts", "packages/**/*.ts"]
+  "include": ["sst-env.d.ts", "sst.config.ts", "packages/**/*.ts"]
 }
