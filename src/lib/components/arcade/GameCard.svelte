@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Game } from '$lib/types';
-  import { Card } from './ui';
+  import { Card } from '$lib/components/ui';
   import CategoryBadge from './CategoryBadge.svelte';
   import PlayerCount from './PlayerCount.svelte';
 
@@ -70,7 +70,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.6);
+    background: var(--color-overlay);
     opacity: 0;
     transition: opacity var(--transition-fast);
   }
@@ -84,11 +84,11 @@
     font-family: var(--font-display);
     font-size: var(--font-size-lg);
     font-weight: 800;
-    color: white;
+    color: var(--color-on-primary);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     padding: var(--space-2) var(--space-4);
-    border: 3px solid white;
+    border: 3px solid var(--color-on-primary);
   }
 
   .card-content {

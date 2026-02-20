@@ -1,7 +1,7 @@
 <script lang="ts">
   import { INTERESTS } from '$lib/constants';
   import type { Interest } from '$lib/types';
-  import Badge from './Badge.svelte';
+  import { Badge } from '$lib/components/ui';
 
   interface Props {
     interest: Interest;

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Conversation, Student } from '$lib/types';
-  import { Avatar, Icon, Button } from '$lib/components/ui';
+  import { Avatar, AvatarStack, IconButton, Button } from '$lib/components/ui';
   import { MOCK_STUDENTS } from '$lib/mock-data';
 
   interface Props {
@@ -33,20 +33,7 @@
   <div class="header-left">
     <div class="avatar-container">
       {#if participants.length >= 2}
-        <div class="stacked-avatars">
-          <Avatar
-            src={participants[0]?.avatarUrl}
-            alt={participants[0]?.displayName ?? ''}
-            size="sm"
-            fallback={participants[0]?.displayName.charAt(0) ?? '?'}
-          />
-          <Avatar
-            src={participants[1]?.avatarUrl}
-            alt={participants[1]?.displayName ?? ''}
-            size="sm"
-            fallback={participants[1]?.displayName.charAt(0) ?? '?'}
-          />
-        </div>
+        <AvatarStack participants={participants.slice(0, 2)} />
       {:else if participants.length === 1}
         <Avatar
           src={participants[0].avatarUrl}
@@ -64,9 +51,7 @@
   </div>
 
   <div class="header-right">
-    <button class="info-btn" onclick={onInfoClick} aria-label="Toggle chat details">
-      <Icon name="info" size={20} />
-    </button>
+    <IconButton icon="info" shape="circle" label="Toggle chat details" onclick={onInfoClick} />
   </div>
 </header>
 
@@ -92,26 +77,6 @@
     flex-shrink: 0;
   }
 
-  .stacked-avatars {
-    position: relative;
-    width: 40px;
-    height: 40px;
-  }
-
-  .stacked-avatars :global(.avatar:first-child) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-  }
-
-  .stacked-avatars :global(.avatar:last-child) {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    z-index: 0;
-  }
-
   .header-info {
     display: flex;
     flex-direction: column;
@@ -133,24 +98,5 @@
     display: flex;
     align-items: center;
     gap: var(--space-2);
-  }
-
-  .info-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    background: transparent;
-    border: var(--border-width) solid var(--color-border);
-    border-radius: 50%;
-    cursor: pointer;
-    color: var(--color-text-muted);
-    transition: all var(--transition-fast);
-  }
-
-  .info-btn:hover {
-    color: var(--color-primary);
-    border-color: var(--color-primary);
   }
 </style>

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getExploreStore } from '$lib/stores/explore.svelte';
+  import Placeholder from '$lib/components/Placeholder.svelte';
   import StudentCard from './StudentCard.svelte';
 
   interface Props {
@@ -15,9 +16,7 @@
   {#each explore.filteredStudents as student (student.id)}
     <StudentCard {student} {disabled} />
   {:else}
-    <div class="empty-state">
-      <p>No students found matching your criteria.</p>
-    </div>
+    <Placeholder size="sm" title="No students found matching your criteria." />
   {/each}
 </div>
 
@@ -28,15 +27,7 @@
     gap: var(--space-6);
   }
 
-  .empty-state {
+  .student-grid :global(.placeholder) {
     grid-column: 1 / -1;
-    text-align: center;
-    padding: var(--space-8);
-    color: var(--color-text-muted);
-  }
-
-  .empty-state p {
-    margin: 0;
-    font-size: var(--font-size-base);
   }
 </style>

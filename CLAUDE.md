@@ -39,6 +39,11 @@ A work-walled community portal for Alpha Anywhere homeschool students. Students 
 - Keep components decoupled — no deep assumptions about parents.
 - State flows down, events flow up.
 
+### Minimize Rules
+
+- Prefer one rule that applies everywhere over granular rules with thresholds. If a decision requires counting or judgment calls, simplify the rule until it doesn't.
+- Architectural conventions should be deterministic: given the same input, any developer (or agent) should make the same decision.
+
 ### Avoid Tech Debt
 
 - Fix warnings immediately, not "later."
@@ -97,7 +102,9 @@ Types are **always abstracted** to dedicated type files and have exactly one hom
 - Rare exceptions (tiny helper type truly private to one module) require justification.
 - Prefer discriminated unions over optional fields when different variants need different data.
 - No duplicates, no re-exports.
-- **Always use path aliases** for imports: `$lib/types`, not `../types`. Path aliases don't break when files move and are more explicit.
+- **Same-directory imports**: use relative `./` — expresses cohesion within a unit (`import Icon from './Icon.svelte'`).
+- **Cross-directory imports**: use `$lib/` path aliases — expresses location within the project (`import { Icon } from '$lib/components/ui'`, not `'../ui'`).
+- **No barrel exports** for app code. Barrels (`index.ts`) are only for library-style APIs with many consumers (e.g., `ui/`). Feature directories use direct file imports.
 
 ### State Management
 
@@ -155,12 +162,25 @@ When state accumulates multiple boolean flags (`isLoading`, `hasError`, `isDismi
 
 ### UI Component System
 
+**Organization** — Components live in four layers:
+
+| Layer               | Location                | Rule                                                                                                                                                   |
+| ------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| UI primitives       | `components/ui/`        | Domain-agnostic. No imports from `$lib/types` or stores. Could exist in a different app unchanged.                                                     |
+| Feature components  | `components/<feature>/` | Every top-level feature gets a directory (arcade, chat, explore, profile). All components live in `$lib/components/`, not colocated with routes.       |
+| Shared components   | `components/` root      | Used by 2+ features. Move here when a second consumer appears.                                                                                         |
+| Layout (app chrome) | `components/layout/`    | The persistent shell rendered on every page (AppShell, Sidebar, AppHeader). Allowed domain knowledge (nav, auth) because those are app-level concerns. |
+
+**Principles:**
+
 - **Abstract early**: Unlike business logic (wait for patterns), UI elements should be abstracted into reusable components from the start.
 - **Single source of styling**: Every button, input, card, badge, etc. should be a component. Changing border-radius on buttons = one change, not N changes.
 - **Variants over duplication**: Use props for size/color/state variants (`<Button size="sm" variant="primary">`), not separate components.
-- **Composition**: Build complex UI from simple primitives. A card is a container; card content is separate.
+- **Composition**: Build complex UI from simple primitives. A card is a container; card content is separate. Feature components compose UI primitives (e.g., `NewChatModal` uses `Modal` for chrome, owns the chat-specific content).
 - **No inline styles**: If you're tempted to add a one-off style, make a component or extend an existing one.
 - **Design tokens first**: Colors, spacing, typography, radii — all come from `tokens.css`. Components consume tokens, never raw values.
+
+See `/check-ui` skill for the full audit checklist.
 
 ### Events
 

@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { PageHeader } from '$lib/components/layout';
+  import { PageHeader } from '$lib/components/ui';
   import { Select } from '$lib/components/ui';
   import { createExploreStore } from '$lib/stores/explore.svelte';
   import { INTERESTS } from '$lib/constants';
   import type { Interest } from '$lib/types';
-  import StudentGrid from '$lib/components/StudentGrid.svelte';
+  import StudentGrid from '$lib/components/explore/StudentGrid.svelte';
   import SearchBar from '$lib/components/SearchBar.svelte';
-  import ViewToggle from '$lib/components/ViewToggle.svelte';
+  import ViewToggle from '$lib/components/explore/ViewToggle.svelte';
   import Placeholder from '$lib/components/Placeholder.svelte';
   import type { PageData } from './$types';
 

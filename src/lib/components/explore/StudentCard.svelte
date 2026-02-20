@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Student } from '$lib/types';
-  import { Card, Avatar, Badge, InterestBadge } from './ui';
+  import { Card, Avatar, Badge } from '$lib/components/ui';
+  import InterestBadge from '$lib/components/InterestBadge.svelte';
 
   interface Props {
     student: Student;

@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { getArcadeStore } from '../stores/arcade.svelte';
+  import { getArcadeStore } from '$lib/stores/arcade.svelte';
   import type { Game, LaunchOptions } from '$lib/types';
-  import { launchGame } from '../utils/game-launcher';
+  import { launchGame } from '$lib/utils/game-launcher';
+  import Placeholder from '$lib/components/Placeholder.svelte';
   import GameCard from './GameCard.svelte';
 
   interface Props {
@@ -70,9 +71,7 @@
   {/each}
 
   {#if games.length === 0}
-    <div class="empty-state">
-      <p>No games found in this category.</p>
-    </div>
+    <Placeholder size="sm" title="No games found in this category." />
   {/if}
 </div>
 
@@ -83,10 +82,7 @@
     gap: var(--space-6);
   }
 
-  .empty-state {
+  .game-grid :global(.placeholder) {
     grid-column: 1 / -1;
-    text-align: center;
-    padding: var(--space-12);
-    color: var(--color-text-muted);
   }
 </style>

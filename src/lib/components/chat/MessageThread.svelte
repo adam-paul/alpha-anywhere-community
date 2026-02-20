@@ -55,9 +55,7 @@
 
     <div class="messages-container" bind:this={messagesContainer}>
       {#if chat.activeMessages.length === 0}
-        <div class="empty-messages">
-          <p>No messages yet. Say hello!</p>
-        </div>
+        <Placeholder size="sm" title="No messages yet. Say hello!" />
       {:else}
         {#each chat.activeMessages as message, index (message.id)}
           {#if shouldShowDateSeparator(chat.activeMessages, index)}
@@ -92,19 +90,6 @@
     flex: 1;
     overflow-y: auto;
     padding: var(--space-2) 0;
-  }
-
-  .empty-messages {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: var(--color-text-muted);
-  }
-
-  .empty-messages p {
-    margin: 0;
-    font-size: var(--font-size-sm);
   }
 
   .no-conversation {

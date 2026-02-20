@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Icon, Button } from '$lib/components/ui';
+  import { IconButton } from '$lib/components/ui';
 
   interface Props {
     value: string;
@@ -32,9 +32,7 @@
 </script>
 
 <div class="message-composer">
-  <button class="attachment-btn" type="button" aria-label="Add attachment">
-    <Icon name="plus" size={20} />
-  </button>
+  <IconButton icon="plus" shape="circle" label="Add attachment" />
 
   <input
     type="text"
@@ -45,15 +43,13 @@
     onkeydown={handleKeydown}
   />
 
-  <button
-    class="send-btn"
-    type="button"
+  <IconButton
+    icon="send"
+    shape="circle"
+    label="Send message"
     onclick={handleSend}
     disabled={!value.trim()}
-    aria-label="Send message"
-  >
-    <Icon name="send" size={18} />
-  </button>
+  />
 </div>
 
 <style>
@@ -66,25 +62,6 @@
     box-sizing: border-box;
     border-top: var(--border-width) solid var(--color-border);
     background: var(--color-surface);
-  }
-
-  .attachment-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    background: var(--color-bg);
-    border: var(--border-width) solid var(--color-border);
-    border-radius: 50%;
-    cursor: pointer;
-    color: var(--color-text-muted);
-    transition: all var(--transition-fast);
-  }
-
-  .attachment-btn:hover {
-    color: var(--color-text);
-    border-color: var(--color-text-muted);
   }
 
   .input {
@@ -106,30 +83,5 @@
 
   .input:focus {
     border-color: var(--color-primary);
-  }
-
-  .send-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    background: var(--color-bg);
-    border: var(--border-width) solid var(--color-border);
-    border-radius: 50%;
-    cursor: pointer;
-    color: var(--color-text-muted);
-    transition: all var(--transition-fast);
-  }
-
-  .send-btn:hover:not(:disabled) {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-    color: white;
-  }
-
-  .send-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
   }
 </style>

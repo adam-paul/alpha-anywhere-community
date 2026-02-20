@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { GatingState } from '$lib/types';
   import { computeProgressPercent } from '$lib/utils/gating';
-  import { Button, Icon } from './ui';
+  import { Button, Icon } from '$lib/components/ui';
   import ProgressRing from './ProgressRing.svelte';
 
   interface Props {

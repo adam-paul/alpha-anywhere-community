@@ -2,11 +2,11 @@
   import { createArcadeStore } from '$lib/stores/arcade.svelte';
   import { createGatingStore } from '$lib/stores/gating.svelte';
   import type { GatingState } from '$lib/types';
-  import { PageHeader } from '$lib/components/layout';
-  import GameGrid from '$lib/components/GameGrid.svelte';
-  import WorkWall from '$lib/components/WorkWall.svelte';
-  import FilterBar from '$lib/components/FilterBar.svelte';
-  import DevTools from '$lib/components/DevTools.svelte';
+  import { PageHeader } from '$lib/components/ui';
+  import GameGrid from '$lib/components/arcade/GameGrid.svelte';
+  import WorkWall from '$lib/components/arcade/WorkWall.svelte';
+  import FilterBar from '$lib/components/arcade/FilterBar.svelte';
+  import DevTools from '$lib/components/arcade/DevTools.svelte';
 
   let { data } = $props();
 

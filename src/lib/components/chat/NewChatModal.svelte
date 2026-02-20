@@ -1,9 +1,9 @@
 <script lang="ts">
   import { getChatStore } from '$lib/stores/chat.svelte';
-  import { Avatar, Icon, Button } from '$lib/components/ui';
+  import { Avatar, Icon, Button, Modal } from '$lib/components/ui';
   import SearchBar from '$lib/components/SearchBar.svelte';
+  import Placeholder from '$lib/components/Placeholder.svelte';
   import { MOCK_STUDENTS } from '$lib/mock-data';
-  import type { Student } from '$lib/types';
 
   const chat = getChatStore();
 
@@ -41,142 +41,65 @@
     searchQuery = '';
     selectedIds = [];
   }
-
-  function handleBackdropClick(e: MouseEvent) {
-    if (e.target === e.currentTarget) {
-      handleClose();
-    }
-  }
 </script>
 
-{#if chat.isNewChatModalOpen}
-  <!-- svelte-ignore a11y_click_events_have_key_events -->
-  <div class="modal-backdrop" role="presentation" onclick={handleBackdropClick}>
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <header class="modal-header">
-        <h2 id="modal-title" class="modal-title">New Chat</h2>
-        <button class="close-btn" onclick={handleClose} aria-label="Close">
-          <Icon name="x" size={20} />
-        </button>
-      </header>
+<Modal open={chat.isNewChatModalOpen} onclose={handleClose} title="New Chat">
+  {#snippet content()}
+    <div class="search-container">
+      <SearchBar bind:value={searchQuery} placeholder="Search students" />
+    </div>
 
-      <div class="modal-content">
-        <div class="search-container">
-          <SearchBar bind:value={searchQuery} placeholder="Search students" />
-        </div>
-
-        {#if selectedIds.length > 0}
-          <div class="selected-preview">
-            <span class="selected-label">Selected:</span>
-            <div class="selected-names">
-              {#each selectedIds as id}
-                {@const student = MOCK_STUDENTS.find((s) => s.id === id)}
-                {#if student}
-                  <span class="selected-name">{student.displayName}</span>
-                {/if}
-              {/each}
-            </div>
-          </div>
-        {/if}
-
-        <div class="students-list">
-          {#each filteredStudents as student (student.id)}
-            <button
-              class="student-item"
-              class:selected={selectedIds.includes(student.id)}
-              onclick={() => toggleStudent(student.id)}
-            >
-              <Avatar
-                src={student.avatarUrl}
-                alt={student.displayName}
-                size="sm"
-                fallback={student.displayName.charAt(0)}
-              />
-              <div class="student-info">
-                <span class="student-name">{student.displayName}</span>
-                <span class="student-handle">@{student.handle}</span>
-              </div>
-              {#if selectedIds.includes(student.id)}
-                <div class="check-icon">
-                  <Icon name="check" size={16} />
-                </div>
-              {/if}
-            </button>
-          {:else}
-            <div class="empty-state">
-              <p>No students found</p>
-            </div>
+    {#if selectedIds.length > 0}
+      <div class="selected-preview">
+        <span class="selected-label">Selected:</span>
+        <div class="selected-names">
+          {#each selectedIds as id}
+            {@const student = MOCK_STUDENTS.find((s) => s.id === id)}
+            {#if student}
+              <span class="selected-name">{student.displayName}</span>
+            {/if}
           {/each}
         </div>
       </div>
+    {/if}
 
-      <footer class="modal-footer">
-        <Button variant="secondary" onclick={handleClose}>Cancel</Button>
-        <Button variant="primary" onclick={handleCreate} disabled={selectedIds.length === 0}>
-          Create Chat
-        </Button>
-      </footer>
+    <div class="students-list">
+      {#each filteredStudents as student (student.id)}
+        <button
+          class="student-item"
+          class:selected={selectedIds.includes(student.id)}
+          onclick={() => toggleStudent(student.id)}
+        >
+          <Avatar
+            src={student.avatarUrl}
+            alt={student.displayName}
+            size="sm"
+            fallback={student.displayName.charAt(0)}
+          />
+          <div class="student-info">
+            <span class="student-name">{student.displayName}</span>
+            <span class="student-handle">@{student.handle}</span>
+          </div>
+          {#if selectedIds.includes(student.id)}
+            <div class="check-icon">
+              <Icon name="check" size={16} />
+            </div>
+          {/if}
+        </button>
+      {:else}
+        <Placeholder size="sm" title="No students found" />
+      {/each}
     </div>
-  </div>
-{/if}
+  {/snippet}
+  {#snippet footer()}
+    <Button variant="secondary" onclick={handleClose}>Cancel</Button>
+    <Button variant="primary" onclick={handleCreate} disabled={selectedIds.length === 0}>
+      Create Chat
+    </Button>
+  {/snippet}
+</Modal>
 
 <style>
-  .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-  }
-
-  .modal {
-    width: 100%;
-    max-width: 400px;
-    max-height: 80vh;
-    background: var(--color-surface);
-    border: var(--border-width) solid var(--color-border);
-    display: flex;
-    flex-direction: column;
-  }
-
-  .modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--space-4);
-    border-bottom: var(--border-width) solid var(--color-border);
-  }
-
-  .modal-title {
-    font-size: var(--font-size-lg);
-    font-weight: 700;
-    margin: 0;
-  }
-
-  .close-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-1);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--color-text-muted);
-    transition: color var(--transition-fast);
-  }
-
-  .close-btn:hover {
-    color: var(--color-text);
-  }
-
-  .modal-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: var(--space-4);
-  }
-
   .search-container {
     margin-bottom: var(--space-4);
   }
@@ -266,26 +189,7 @@
     width: 24px;
     height: 24px;
     background: var(--color-primary);
-    color: white;
+    color: var(--color-on-primary);
     border-radius: 50%;
-  }
-
-  .empty-state {
-    padding: var(--space-8);
-    text-align: center;
-    color: var(--color-text-muted);
-  }
-
-  .empty-state p {
-    margin: 0;
-    font-size: var(--font-size-sm);
-  }
-
-  .modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--space-3);
-    padding: var(--space-4);
-    border-top: var(--border-width) solid var(--color-border);
   }
 </style>

@@ -92,7 +92,10 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'side-by-side',
     placeId: '920587237',
     launchUrl: 'https://www.roblox.com/games/920587237/Adopt-Me',
-    isActive: false // Needs private server
+    accessCode:
+      'ltNFl9wBRQNCxN2RCF5XOqBK1X9AEmPshbMNW2/kCuh2Is4oZ1NQDhcpH+cyzKOSdSHkHXHdqacpP19tSY1qEw==',
+    linkCode: 'gllPcwqvQBn1a0E/nj4e7H1cbMWx7KhigOxOZfx6/Icpt16h5Pa0Iw6PTY3XJohb37uXJgi9QHsxt3tP',
+    isActive: true
   },
 
   // ---------------------------------------------------------------------------
@@ -108,7 +111,10 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'town-square',
     placeId: '4924922222',
     launchUrl: 'https://www.roblox.com/games/4924922222/Brookhaven-RP',
-    isActive: false // Needs private server
+    accessCode:
+      'gvZrjbfpfCwbh91seg17zELDje4X2yQURYxdcZ7sx1xsSFtRRuSwJftV0UddhaNLdN1lC74fUfK7pBlS0aGWUQ==',
+    linkCode: 'u3EJACCC7UgMoViVuaS/SAJliZkoOSRJKgz9FKwObqoLnwR3ZtbbRduF35Q68bS9teX86f+8ymqAq6Be',
+    isActive: true
   },
 
   // ---------------------------------------------------------------------------
@@ -124,18 +130,25 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'ice-breaker',
     placeId: '189707',
     launchUrl: 'https://www.roblox.com/games/189707/Natural-Disaster-Survival',
-    isActive: false // Needs private server
+    accessCode:
+      '5I/7IWslCqZeU7oK5bwwev6DYlHCdjSehsIOGGtEEFlRCitUqfr44eTa/HMxBGMBJv/ONSR2Oj14bkY3dkwXDA==',
+    linkCode: '4pufJz3csj33mrC3rR6Vj7eWBDehBnec2JPugmsu1CLru7dKOBAk4lMLzT5goTVPv1nUAQTjkhGQUIBN',
+    isActive: true
   },
   {
     id: 'regretevator',
     title: 'Regretevator',
     description: 'A quirky elevator game with unexpected twists.',
-    thumbnailUrl: 'https://t4.rbxcdn.com/180DAY-3acb0f0da8433cb97bb84fe70301c78f',
+    thumbnailUrl:
+      'https://tr.rbxcdn.com/180DAY-5a37ffd91acbb6abbe3ce78bef9c9321/512/512/Image/Png/noFilter',
     type: 'roblox',
     engagementCategory: 'ice-breaker',
-    placeId: '11747379489',
-    launchUrl: 'https://www.roblox.com/games/11747379489/Regretevator',
-    isActive: false // Needs private server
+    placeId: '4972273297',
+    launchUrl: 'https://www.roblox.com/games/4972273297/Regretevator',
+    accessCode:
+      'EeNwRMQtVgGREbOy6dQL+z+Pi21/bd8m3O6BLb8W3jVbMc+DDku6salZqZzQlPKUoT+l/uklGH+VPCI39tt/PQ==',
+    linkCode: 'qN9IEMBd50ROO1xZHWQAS8XpIgOZFfBOrGpc7QJiVHUvS5/ba/Wdd4GQb9hWbS5JE9/+jXUoTGRdcBqh',
+    isActive: true
   },
 
   // ---------------------------------------------------------------------------
@@ -151,7 +164,10 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'trust-builder',
     placeId: '192800',
     launchUrl: 'https://www.roblox.com/games/192800/Work-at-a-Pizza-Place',
-    isActive: false // Needs private server
+    accessCode:
+      'IBTnZ1GpjAoxYdG8LXUPNq5+AFbKxQUGFjt4tBcrLixkpp2vEXTUAVymPpUrGrPtjpNsDkuY0yzOh8IF4nKutw==',
+    linkCode: 'QPeODXeaE8nQjdiR8N2SAnpY5YzEOPhwkCWQt3wtjaYuVeuWfHsdD0OVk+l5fz1MWvij/y7dWFzPt89D',
+    isActive: true
   },
   {
     id: 'build-a-boat',
@@ -163,7 +179,10 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'trust-builder',
     placeId: '537413528',
     launchUrl: 'https://www.roblox.com/games/537413528/Build-A-Boat-For-Treasure',
-    isActive: false // Needs private server
+    accessCode:
+      '9cSLYyLgMhrlnKhXZFCexchyLQUPidOGxtickA8RZ4paY2bjGl0i6oeeVz8M6+vYYDYOk8QQeV3KgQUUJeKrXA==',
+    linkCode: 'o4l3kBXTuXSOGUT9ksJ+Ybre92/BSXW55Ou5IX6DSR32Iy4WBDcB9lyHNhWAxcxvfwiy0RPlkynMDAY+',
+    isActive: true
   },
 
   // ---------------------------------------------------------------------------
@@ -179,7 +198,10 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'rivalry',
     placeId: '6872265039',
     launchUrl: 'https://www.roblox.com/games/6872265039/BedWars',
-    isActive: false // Needs private server
+    accessCode:
+      '61OzkYNPQD+Gbm47249c1lR7XBcx2ejmjhoWXPhZzA0gNI9pFoJk2uR0Ld5PwgXVOSa/CsWW5ESZ0Cqp1Hi1YQ==',
+    linkCode: 'lOgFQBtYwB/L++w/0TGsuBE/EejlCupfXMW/mQGSfNVX9YkgCSbMtqSPDQVZlZxPgZ0f3wXlYL7PMphJ',
+    isActive: true
   },
   {
     id: 'arsenal',
@@ -191,7 +213,10 @@ const GAMES: GameSeed[] = [
     engagementCategory: 'rivalry',
     placeId: '286090429',
     launchUrl: 'https://www.roblox.com/games/286090429/Arsenal',
-    isActive: false // Needs private server
+    accessCode:
+      'kk+fv/yN2XoBq3ZDw93EIoxBguy6tbz4oebmTrdaVrYVE9uMIJ+sUIzOaRJ/zdj7Y0LTitTzGaW6fpYby0p49g==',
+    linkCode: 'z+XniedkfGK0e/WQgkFj6v2UqyFBMNNQOGkU4vMme9UknAqtGI5AV89vYZ/QBcQ+LAI5v1cdxBXnJWGt',
+    isActive: true
   }
 ];
 

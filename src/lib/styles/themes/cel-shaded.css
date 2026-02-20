@@ -38,6 +38,11 @@
   --color-rivalry: #ef4444;
   --color-rivalry-bg: #fee2e2;
 
+  /* Overlay & contrast colors */
+  --color-on-primary: #ffffff;
+  --color-overlay: rgba(0, 0, 0, 0.6);
+  --color-backdrop: rgba(0, 0, 0, 0.5);
+
   /* Work wall colors */
   --color-locked-overlay: rgba(0, 0, 0, 0.7);
   --color-progress-track: #e5e5e5;

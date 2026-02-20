@@ -1,12 +1,10 @@
 <script lang="ts">
   import { createChatStore } from '$lib/stores/chat.svelte';
-  import {
-    ChatLayout,
-    ConversationList,
-    MessageThread,
-    ChatDetails,
-    NewChatModal
-  } from '$lib/components/chat';
+  import ChatLayout from '$lib/components/chat/ChatLayout.svelte';
+  import ConversationList from '$lib/components/chat/ConversationList.svelte';
+  import MessageThread from '$lib/components/chat/MessageThread.svelte';
+  import ChatDetails from '$lib/components/chat/ChatDetails.svelte';
+  import NewChatModal from '$lib/components/chat/NewChatModal.svelte';
 
   // Create chat store (provides context to child components)
   const chat = createChatStore();

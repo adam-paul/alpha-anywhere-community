@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Conversation, Student } from '$lib/types';
-  import { Avatar } from '$lib/components/ui';
+  import { Avatar, AvatarStack } from '$lib/components/ui';
   import { MOCK_STUDENTS } from '$lib/mock-data';
 
   interface Props {
@@ -63,20 +63,7 @@
 <button class="conversation-item" class:selected={isSelected} {onclick} type="button">
   <div class="avatar-container">
     {#if participants.length >= 2}
-      <div class="stacked-avatars">
-        <Avatar
-          src={participants[0]?.avatarUrl}
-          alt={participants[0]?.displayName ?? ''}
-          size="sm"
-          fallback={participants[0]?.displayName.charAt(0) ?? '?'}
-        />
-        <Avatar
-          src={participants[1]?.avatarUrl}
-          alt={participants[1]?.displayName ?? ''}
-          size="sm"
-          fallback={participants[1]?.displayName.charAt(0) ?? '?'}
-        />
-      </div>
+      <AvatarStack {participants} />
     {:else}
       <Avatar
         src={participants[0]?.avatarUrl}
@@ -124,37 +111,18 @@
 
   .conversation-item.selected {
     background: var(--color-primary);
-    color: white;
+    color: var(--color-on-primary);
   }
 
   .conversation-item.selected .timestamp,
   .conversation-item.selected .preview {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--color-on-primary);
+    opacity: 0.8;
   }
 
   .avatar-container {
     position: relative;
     flex-shrink: 0;
-  }
-
-  .stacked-avatars {
-    position: relative;
-    width: 40px;
-    height: 40px;
-  }
-
-  .stacked-avatars :global(.avatar:first-child) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-  }
-
-  .stacked-avatars :global(.avatar:last-child) {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    z-index: 0;
   }
 
   .online-indicator {
@@ -225,6 +193,6 @@
   }
 
   .selected .unread-indicator {
-    background: white;
+    background: var(--color-surface);
   }
 </style>

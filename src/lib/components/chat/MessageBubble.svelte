@@ -104,7 +104,7 @@
   .message.sent .bubble {
     background: var(--color-primary);
     border-color: var(--color-primary);
-    color: white;
+    color: var(--color-on-primary);
   }
 
   .content {

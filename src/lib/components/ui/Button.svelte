@@ -81,7 +81,7 @@
   .btn-primary {
     background: var(--color-primary);
     border-color: var(--color-border);
-    color: white;
+    color: var(--color-on-primary);
   }
 
   .btn-primary:hover:not(:disabled) {

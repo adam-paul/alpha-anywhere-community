@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getChatStore } from '$lib/stores/chat.svelte';
   import { getUserStore } from '$lib/stores/user.svelte';
-  import { Avatar, Icon, Button } from '$lib/components/ui';
+  import { Avatar, Icon, IconButton, Button, Toggle } from '$lib/components/ui';
   import { MOCK_STUDENTS } from '$lib/mock-data';
   import type { Student } from '$lib/types';
 
@@ -49,25 +49,18 @@
     <section class="section">
       <div class="chat-name-row">
         <span class="chat-name">{displayName}</span>
-        <button class="edit-btn" aria-label="Edit chat name">
-          <Icon name="edit" size={16} />
-        </button>
+        <IconButton icon="edit" shape="ghost" size="sm" label="Edit chat name" />
       </div>
     </section>
 
     <section class="section">
       <div class="mute-row">
         <span class="mute-label">Mute Chat</span>
-        <button
-          class="toggle"
-          class:active={chat.activeConversation?.isMuted}
-          onclick={toggleMute}
-          role="switch"
-          aria-checked={chat.activeConversation?.isMuted ?? false}
-          aria-label="Mute chat"
-        >
-          <span class="toggle-thumb"></span>
-        </button>
+        <Toggle
+          checked={chat.activeConversation?.isMuted ?? false}
+          onchange={toggleMute}
+          label="Mute chat"
+        />
       </div>
     </section>
 
@@ -109,9 +102,7 @@
             <div class="member-info">
               <span class="member-name">{participant.displayName}</span>
             </div>
-            <button class="member-menu-btn" aria-label="Member options">
-              <Icon name="more" size={16} />
-            </button>
+            <IconButton icon="more" shape="ghost" size="sm" label="Member options" />
           </div>
         {/each}
       </div>
@@ -172,22 +163,6 @@
     font-weight: 600;
   }
 
-  .edit-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-1);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--color-text-muted);
-    transition: color var(--transition-fast);
-  }
-
-  .edit-btn:hover {
-    color: var(--color-primary);
-  }
-
   .mute-row {
     display: flex;
     align-items: center;
@@ -197,36 +172,6 @@
   .mute-label {
     font-size: var(--font-size-sm);
     font-weight: 500;
-  }
-
-  .toggle {
-    position: relative;
-    width: 44px;
-    height: 24px;
-    background: var(--color-border);
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background var(--transition-fast);
-  }
-
-  .toggle.active {
-    background: var(--color-primary);
-  }
-
-  .toggle-thumb {
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 20px;
-    height: 20px;
-    background: white;
-    border-radius: 50%;
-    transition: transform var(--transition-fast);
-  }
-
-  .toggle.active .toggle-thumb {
-    transform: translateX(20px);
   }
 
   .section-header {
@@ -290,22 +235,6 @@
   .member-status {
     font-size: var(--font-size-xs);
     color: var(--color-text-muted);
-  }
-
-  .member-menu-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-1);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--color-text-muted);
-    transition: color var(--transition-fast);
-  }
-
-  .member-menu-btn:hover {
-    color: var(--color-text);
   }
 
   .details-footer {

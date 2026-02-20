@@ -1,7 +1,7 @@
 <script lang="ts">
   import { ENGAGEMENT_CATEGORIES } from '$lib/constants';
   import type { EngagementCategory } from '$lib/types';
-  import { Badge } from './ui';
+  import { Badge } from '$lib/components/ui';
 
   interface Props {
     category: EngagementCategory;

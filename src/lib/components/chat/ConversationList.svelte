@@ -1,7 +1,8 @@
 <script lang="ts">
   import { getChatStore } from '$lib/stores/chat.svelte';
-  import { Icon } from '$lib/components/ui';
+  import { IconButton } from '$lib/components/ui';
   import SearchBar from '$lib/components/SearchBar.svelte';
+  import Placeholder from '$lib/components/Placeholder.svelte';
   import ConversationItem from './ConversationItem.svelte';
 
   const chat = getChatStore();
@@ -10,13 +11,13 @@
 <div class="conversation-list">
   <header class="list-header">
     <h2 class="title">Chats</h2>
-    <button
-      class="new-chat-btn"
+    <IconButton
+      icon="edit"
+      shape="ghost"
+      size="sm"
+      label="Start new chat"
       onclick={() => chat.openNewChatModal()}
-      aria-label="Start new chat"
-    >
-      <Icon name="edit" size={18} />
-    </button>
+    />
   </header>
 
   <div class="search-container">
@@ -31,9 +32,7 @@
         onclick={() => chat.selectConversation(conversation.id)}
       />
     {:else}
-      <div class="empty-state">
-        <p>No conversations found</p>
-      </div>
+      <Placeholder size="sm" title="No conversations found" />
     {/each}
   </div>
 </div>
@@ -61,23 +60,6 @@
     margin: 0;
   }
 
-  .new-chat-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--color-text-muted);
-    transition: color var(--transition-fast);
-  }
-
-  .new-chat-btn:hover {
-    color: var(--color-primary);
-  }
-
   .search-container {
     padding: var(--space-3) var(--space-4);
   }
@@ -89,18 +71,5 @@
   .list-content {
     flex: 1;
     overflow-y: auto;
-  }
-
-  .empty-state {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-8);
-    color: var(--color-text-muted);
-  }
-
-  .empty-state p {
-    margin: 0;
-    font-size: var(--font-size-sm);
   }
 </style>

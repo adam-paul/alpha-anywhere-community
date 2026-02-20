@@ -1,7 +1,8 @@
 <script lang="ts">
   import { invalidateAll } from '$app/navigation';
-  import { Button, Badge, InterestBadge } from '$lib/components/ui';
-  import ProfileHeader from '$lib/components/ProfileHeader.svelte';
+  import { Button, Badge } from '$lib/components/ui';
+  import InterestBadge from '$lib/components/InterestBadge.svelte';
+  import ProfileHeader from '$lib/components/profile/ProfileHeader.svelte';
   import { INTERESTS } from '$lib/constants';
   import type { Interest } from '$lib/types';
   import type { PageData } from './$types';

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { ViewMode } from '$lib/stores/explore.svelte';
-  import { ToggleButton } from './ui';
+  import { ToggleButton } from '$lib/components/ui';
 
   interface Props {
     mode: ViewMode;

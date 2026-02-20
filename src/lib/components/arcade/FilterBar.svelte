@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { getArcadeStore } from '../stores/arcade.svelte';
+  import { getArcadeStore } from '$lib/stores/arcade.svelte';
   import { ENGAGEMENT_CATEGORIES } from '$lib/constants';
   import type { EngagementCategory } from '$lib/types';
-  import { ToggleButton } from './ui';
+  import { ToggleButton } from '$lib/components/ui';
 
   interface Props {
     disabled?: boolean;

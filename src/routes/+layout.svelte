@@ -1,7 +1,7 @@
 <script lang="ts">
   import '../lib/styles/tokens.css';
   import '../lib/styles/themes/cel-shaded.css';
-  import { AppShell } from '$lib/components/layout';
+  import AppShell from '$lib/components/layout/AppShell.svelte';
   import { createUserStore } from '$lib/stores/user.svelte';
 
   interface Props {

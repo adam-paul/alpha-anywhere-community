@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Avatar, Button } from './ui';
+  import { Avatar, Button } from '$lib/components/ui';
 
   interface ProfileStudent {
     displayName: string;
@@ -88,21 +88,21 @@
     display: flex;
     gap: var(--space-4);
     align-items: flex-start;
-    margin-top: -40px;
+    margin-top: calc(-1 * var(--avatar-size-md));
     position: relative;
   }
 
   .avatar-wrapper {
     flex-shrink: 0;
-    padding: 4px;
+    padding: var(--space-1);
     background: var(--color-surface);
     border-radius: 50%;
     border: var(--border-width) solid var(--color-border);
   }
 
   .avatar-wrapper :global(.avatar) {
-    width: 80px;
-    height: 80px;
+    width: var(--avatar-size-xl);
+    height: var(--avatar-size-xl);
     font-size: var(--font-size-xl);
   }
 
