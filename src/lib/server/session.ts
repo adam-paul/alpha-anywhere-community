@@ -4,7 +4,7 @@
  * Handles cookie-based session storage with HMAC signing for integrity.
  */
 
-import { SESSION_SECRET } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import type { Cookies } from '@sveltejs/kit';
 import type { UserContext } from '$lib/types';
 
@@ -40,7 +40,7 @@ async function verify(data: string, signature: string, secret: string): Promise<
  */
 async function createSessionValue(user: UserContext): Promise<string> {
   const data = JSON.stringify(user);
-  const signature = await sign(data, SESSION_SECRET);
+  const signature = await sign(data, env.SESSION_SECRET);
   return `${btoa(data)}.${signature}`;
 }
 
@@ -53,7 +53,7 @@ async function parseSessionValue(value: string): Promise<UserContext | null> {
     if (!dataB64 || !signature) return null;
 
     const data = atob(dataB64);
-    const isValid = await verify(data, signature, SESSION_SECRET);
+    const isValid = await verify(data, signature, env.SESSION_SECRET);
     if (!isValid) return null;
 
     return JSON.parse(data) as UserContext;

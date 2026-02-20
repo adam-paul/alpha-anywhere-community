@@ -542,18 +542,9 @@ CREATE TABLE reports (
 
 Technical debt and infrastructure improvements to tackle after core features are stable.
 
-#### Unified Environment Variables
+#### ~~Unified Environment Variables~~ ✅ Done
 
-**Problem:** Mixed patterns for accessing env vars — `$env/static/private` for auth secrets (build-time), `$env/dynamic/private` for LWAI proxy (runtime), `platform.env` for D1. Confusing and fragile.
-
-**Goal:** Single approach that works both locally (`.env`) and on Cloudflare (secrets/bindings).
-
-**Work:**
-
-- Refactor `timeback.ts` to lazily initialize (not module-level singleton)
-- Refactor `session.ts` to accept secret as parameter
-- Use `$env/dynamic/private` consistently everywhere
-- Document the pattern in `CLAUDE.md`
+All SvelteKit server code uses `$env/dynamic/private`. Timeback SDK is lazy-initialized on first request. `platform.env` for Cloudflare bindings (D1). Scripts use `process.env` (Bun auto-loads `.env`).
 
 ---
 

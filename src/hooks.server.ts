@@ -7,7 +7,7 @@
  */
 
 import { building } from '$app/environment';
-import { timeback } from '$lib/server/timeback';
+import { getTimeback } from '$lib/server/timeback';
 import { getSessionFromCookie } from '$lib/server/session';
 import { createDbClient } from '$lib/server/db/client';
 import { svelteKitHandler } from '@timeback/sdk/svelte-kit';
@@ -37,7 +37,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
   // Let Timeback handle auth routes
   return svelteKitHandler({
-    timeback,
+    timeback: getTimeback(),
     event,
     resolve,
     building,
