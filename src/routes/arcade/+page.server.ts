@@ -4,12 +4,14 @@ import type { Game, GatingResponse, GatingState } from '$lib/types';
 import type { DbGame } from '$lib/server/db/types';
 import { decrypt } from '$lib/server/crypto';
 import { env } from '$env/dynamic/private';
+import { fetchTimebackDailyXp } from '$lib/server/timeback';
+import { TIMEBACK_DAILY_XP_REQUIRED } from '$lib/constants';
 
 const DEFAULT_UNLOCKED: GatingState = {
   mode: 'weekly',
   isUnlocked: true,
-  minutesCurrent: 300,
-  minutesRequired: 300
+  progressCurrent: 300,
+  progressRequired: 300
 };
 
 /**
@@ -34,6 +36,31 @@ async function probeIsLwaiStudent(email: string): Promise<boolean> {
 }
 
 /**
+ * Fetch Timeback gating data (daily XP).
+ */
+async function fetchTimebackGating(email: string): Promise<GatingState> {
+  try {
+    const dailyXp = await fetchTimebackDailyXp(email);
+    return {
+      mode: 'daily',
+      isUnlocked: dailyXp >= TIMEBACK_DAILY_XP_REQUIRED,
+      progressCurrent: dailyXp,
+      progressRequired: TIMEBACK_DAILY_XP_REQUIRED,
+      source: 'timeback'
+    };
+  } catch (err) {
+    console.error('Timeback gating error:', err);
+    return {
+      mode: 'daily',
+      isUnlocked: true,
+      progressCurrent: 120,
+      progressRequired: 120,
+      source: 'timeback'
+    };
+  }
+}
+
+/**
  * Fetch LWAI gating data (weekly active minutes).
  */
 async function fetchLwaiGating(email: string): Promise<GatingState> {
@@ -54,8 +81,8 @@ async function fetchLwaiGating(email: string): Promise<GatingState> {
     return {
       mode: 'weekly',
       isUnlocked: data.eligible,
-      minutesCurrent: data.weekly_active_minutes,
-      minutesRequired: data.threshold,
+      progressCurrent: data.weekly_active_minutes,
+      progressRequired: data.threshold,
       source: 'lwai'
     };
   } catch (err) {
@@ -83,7 +110,7 @@ async function fetchGatingData(email: string, db: DbClient): Promise<GatingState
   }
 
   if (cachedSource === 'timeback') {
-    return { ...DEFAULT_UNLOCKED, source: 'timeback' };
+    return fetchTimebackGating(email);
   }
 
   if (cachedSource === 'lwai') {
@@ -100,7 +127,7 @@ async function fetchGatingData(email: string, db: DbClient): Promise<GatingState
     .catch((err) => console.error('Failed to cache gating source:', err));
 
   if (source === 'timeback') {
-    return { ...DEFAULT_UNLOCKED, source: 'timeback' };
+    return fetchTimebackGating(email);
   }
 
   return fetchLwaiGating(email);

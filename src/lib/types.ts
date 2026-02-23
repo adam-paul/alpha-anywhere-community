@@ -47,8 +47,8 @@ export interface LaunchResult {
 export interface GatingState {
   mode: GatingMode;
   isUnlocked: boolean;
-  minutesCurrent: number;
-  minutesRequired: number;
+  progressCurrent: number;
+  progressRequired: number;
   source?: GatingSource;
 }
 

@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { GatingState } from '$lib/types';
+  import { GATING_UNIT_LABELS } from '$lib/constants';
   import { computeProgressPercent } from '$lib/utils/gating';
   import { Button, Icon } from '$lib/components/ui';
   import ProgressRing from './ProgressRing.svelte';
@@ -15,6 +16,7 @@
   const progressPercent = $derived(gatingState ? computeProgressPercent(gatingState) : 0);
   const isComplete = $derived(progressPercent >= 100);
   const modeLabel = $derived(gatingState?.mode === 'daily' ? 'today' : 'this week');
+  const unitLabel = $derived(GATING_UNIT_LABELS[gatingState?.source ?? 'lwai']);
 
   function handleDismiss() {
     onDismiss?.();
@@ -35,9 +37,9 @@
       <div class="progress-container">
         <ProgressRing progress={0} size={120} strokeWidth={10} />
         <div class="progress-label">
-          <span class="minutes-current">—</span>
-          <span class="minutes-separator">/</span>
-          <span class="minutes-required">— min</span>
+          <span class="progress-current">—</span>
+          <span class="progress-separator">/</span>
+          <span class="progress-required">— {unitLabel}</span>
         </div>
       </div>
     {:else if isComplete}
@@ -54,9 +56,9 @@
       <div class="progress-container">
         <ProgressRing progress={progressPercent} size={120} strokeWidth={10} />
         <div class="progress-label">
-          <span class="minutes-current complete">{gatingState.minutesCurrent}</span>
-          <span class="minutes-separator">/</span>
-          <span class="minutes-required">{gatingState.minutesRequired} min</span>
+          <span class="progress-current complete">{gatingState.progressCurrent}</span>
+          <span class="progress-separator">/</span>
+          <span class="progress-required">{gatingState.progressRequired} {unitLabel}</span>
         </div>
       </div>
 
@@ -79,9 +81,9 @@
       <div class="progress-container">
         <ProgressRing progress={progressPercent} size={120} strokeWidth={10} />
         <div class="progress-label">
-          <span class="minutes-current">{gatingState.minutesCurrent}</span>
-          <span class="minutes-separator">/</span>
-          <span class="minutes-required">{gatingState.minutesRequired} min</span>
+          <span class="progress-current">{gatingState.progressCurrent}</span>
+          <span class="progress-separator">/</span>
+          <span class="progress-required">{gatingState.progressRequired} {unitLabel}</span>
         </div>
       </div>
 
@@ -180,22 +182,22 @@
     font-weight: 700;
   }
 
-  .minutes-current {
+  .progress-current {
     font-size: var(--font-size-2xl);
     color: var(--color-progress-incomplete);
   }
 
-  .minutes-current.complete {
+  .progress-current.complete {
     color: var(--color-progress-fill);
   }
 
-  .minutes-separator {
+  .progress-separator {
     font-size: var(--font-size-lg);
     color: var(--color-text-muted);
     margin: 0 var(--space-1);
   }
 
-  .minutes-required {
+  .progress-required {
     font-size: var(--font-size-lg);
     color: var(--color-text-muted);
   }

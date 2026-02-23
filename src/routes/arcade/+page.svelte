@@ -1,6 +1,7 @@
 <script lang="ts">
   import { createArcadeStore } from '$lib/stores/arcade.svelte';
   import { createGatingStore } from '$lib/stores/gating.svelte';
+  import { GATING_UNIT_LABELS } from '$lib/constants';
   import type { GatingState } from '$lib/types';
   import { PageHeader } from '$lib/components/ui';
   import GameGrid from '$lib/components/arcade/GameGrid.svelte';
@@ -18,14 +19,16 @@
 
   // Dev tools bindings
   let devIsLocked = $state(false);
-  let devMinutesCurrent = $state(0);
+  let devProgressCurrent = $state(0);
   let devToolsReady = $state(false);
+
+  const unitLabel = $derived(GATING_UNIT_LABELS[gating.serverData?.source ?? 'lwai']);
 
   // Initialize dev tools when server data loads
   $effect(() => {
     if (gating.serverData && !devToolsReady) {
       devIsLocked = !gating.serverData.isUnlocked;
-      devMinutesCurrent = gating.serverData.minutesCurrent;
+      devProgressCurrent = gating.serverData.progressCurrent;
       devToolsReady = true;
     }
   });
@@ -37,8 +40,9 @@
     const override: GatingState = {
       mode: gating.serverData.mode,
       isUnlocked: !devIsLocked,
-      minutesCurrent: devIsLocked ? devMinutesCurrent : gating.serverData.minutesRequired,
-      minutesRequired: gating.serverData.minutesRequired
+      progressCurrent: devIsLocked ? devProgressCurrent : gating.serverData.progressRequired,
+      progressRequired: gating.serverData.progressRequired,
+      source: gating.serverData.source
     };
 
     gating.setDevOverride(override);
@@ -70,9 +74,10 @@
 {#if gating.serverData}
   <DevTools
     bind:isLocked={devIsLocked}
-    bind:minutesCurrent={devMinutesCurrent}
+    bind:progressCurrent={devProgressCurrent}
     bind:theme={arcade.theme}
-    minutesRequired={gating.serverData.minutesRequired}
+    progressRequired={gating.serverData.progressRequired}
+    {unitLabel}
     onchange={syncDevTools}
   />
 {/if}

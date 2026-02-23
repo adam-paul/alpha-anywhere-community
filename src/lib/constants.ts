@@ -5,7 +5,14 @@
  * for types defined in types.ts.
  */
 
-import type { EngagementCategory, Interest } from '$lib/types';
+import type { EngagementCategory, GatingSource, Interest } from '$lib/types';
+
+export const TIMEBACK_DAILY_XP_REQUIRED = 120;
+
+export const GATING_UNIT_LABELS: Record<GatingSource, string> = {
+  lwai: 'min',
+  timeback: 'XP'
+};
 
 // Engagement category metadata
 export const ENGAGEMENT_CATEGORIES: Record<

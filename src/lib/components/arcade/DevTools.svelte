@@ -3,16 +3,18 @@
 
   interface Props {
     isLocked: boolean;
-    minutesCurrent: number;
-    minutesRequired: number;
+    progressCurrent: number;
+    progressRequired: number;
+    unitLabel: string;
     theme: Theme;
     onchange?: () => void;
   }
 
   let {
     isLocked = $bindable(),
-    minutesCurrent = $bindable(),
-    minutesRequired,
+    progressCurrent = $bindable(),
+    progressRequired,
+    unitLabel,
     theme = $bindable(),
     onchange
   }: Props = $props();
@@ -48,15 +50,15 @@
 
       {#if isLocked}
         <div class="control-group">
-          <span class="control-label">Minutes: {minutesCurrent} / {minutesRequired}</span>
+          <span class="control-label">{unitLabel}: {progressCurrent} / {progressRequired}</span>
           <input
             type="range"
             min={0}
-            max={minutesRequired}
-            bind:value={minutesCurrent}
+            max={progressRequired}
+            bind:value={progressCurrent}
             oninput={handleChange}
             class="range-input"
-            aria-label="Minutes Progress"
+            aria-label="Progress"
           />
         </div>
       {/if}

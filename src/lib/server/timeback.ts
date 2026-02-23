@@ -10,9 +10,45 @@
  */
 
 import { createTimebackIdentity } from '@timeback/sdk/edge';
+import { EdubridgeClient, aggregateActivityMetrics } from '@timeback/edubridge';
 import { env } from '$env/dynamic/private';
 import { createSessionCookieHeader, getSessionFromRequest } from './session';
 import type { UserContext } from '$lib/types';
+
+/**
+ * Lazy-initialized EdubridgeClient for analytics API calls.
+ * Handles its own M2M auth internally (token acquisition, caching, refresh).
+ */
+let _edubridge: InstanceType<typeof EdubridgeClient>;
+
+function getEdubridgeClient() {
+  if (!_edubridge) {
+    _edubridge = new EdubridgeClient({
+      env: 'staging',
+      auth: {
+        clientId: env.TIMEBACK_API_CLIENT_ID!,
+        clientSecret: env.TIMEBACK_API_CLIENT_SECRET!
+      }
+    });
+  }
+  return _edubridge;
+}
+
+/**
+ * Fetch a student's total XP earned today via the EduBridge Analytics API.
+ */
+export async function fetchTimebackDailyXp(email: string): Promise<number> {
+  const client = getEdubridgeClient();
+  const today = new Date().toISOString().slice(0, 10);
+  const activity = await client.analytics.getActivity({
+    email,
+    startDate: today,
+    endDate: today,
+    timezone: 'America/Chicago'
+  });
+  const { totalXp } = aggregateActivityMetrics(activity);
+  return totalXp;
+}
 
 /**
  * Get M2M access token using client credentials flow.
