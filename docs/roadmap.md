@@ -27,7 +27,7 @@ The frontend is production-quality with complete UI flows. Infrastructure is in 
 | Feature       | Location             | Status             | Data Source              |
 | ------------- | -------------------- | ------------------ | ------------------------ |
 | **Arcade**    | `/arcade`            | Complete           | D1 ✅                    |
-| **Work Wall** | Integrated in arcade | Complete           | LWAI via Lambda proxy ✅ |
+| **Work Wall** | Integrated in arcade | Complete           | LWAI ✅ / Timeback XP ✅ |
 | **Profiles**  | `/profile/[id]`      | Complete, editable | D1 ✅                    |
 | **Explore**   | `/explore`           | Complete           | D1 ✅                    |
 | **Chat**      | `/chat`              | Complete           | Mock data                |
@@ -164,7 +164,7 @@ WHERE email = '{email}'
 **Future enhancements:**
 
 - Handle edge cases: new students, weekends, breaks
-- Add caching (sessionStorage or edge cache) to reduce Athena query latency
+- Add client-side gating cache (see "Gating Result Caching" under Future Consolidation)
 
 ---
 
@@ -550,26 +550,42 @@ All SvelteKit server code uses `$env/dynamic/private`. Timeback SDK is lazy-init
 
 ---
 
-#### ~~Gating Source Detection (LWAI vs Timeback)~~ ✅ Partially Done
+#### ~~Gating Source Detection (LWAI vs Timeback)~~ ✅ Done
 
-**Done:** Per-student gating source detection and caching. On first arcade visit, the LWAI proxy `/probe` endpoint checks for any historical presence in the CoachBot Athena database (`daily_learning_metrics`). Result is cached in D1 (`users.gating_source`). LWAI students get the existing weekly-minutes gating. Timeback students get default-unlocked (XP gating not yet available). See `GatingSource` type in `types.ts`, `fetchGatingData()` in `arcade/+page.server.ts`.
+Per-student gating source detection and caching. On first arcade visit, the LWAI proxy `/probe` endpoint checks for any historical presence in the CoachBot Athena database (`daily_learning_metrics`). Result is cached in D1 (`users.gating_source`). LWAI students get weekly-minutes gating (300 min/week). Timeback students get daily XP gating (120 XP/day) via EduBridge Analytics API.
 
-**Remaining:** Wire the Timeback XP gating path + optimize detection.
+See `GatingSource` type in `types.ts`, `fetchGatingData()` in `arcade/+page.server.ts`, `fetchTimebackDailyXp()` in `server/timeback.ts`.
 
-#### Adaptive Gating: Timeback XP Path + Detection Optimization
+#### ~~Adaptive Gating: Timeback XP Path~~ ✅ Mostly Done
 
-**Problem:** Timeback students currently default to unlocked because the Timeback XP API doesn't exist yet. Detection relies on an LWAI Athena probe (one-time per user, but slow ~15s). Ideally, detection would check Timeback activity first (faster) and only fall back to LWAI for the minority of CoachBot students.
+**Done:**
 
-**Goal:** Real gating for Timeback students, faster detection, and adaptive UI.
+- ✅ Timeback XP gating via `@timeback/edubridge` — `EdubridgeClient` + `aggregateActivityMetrics()` for daily XP
+- ✅ `fetchTimebackGating()` in `arcade/+page.server.ts` with 120 XP/day threshold, fail-open on error
+- ✅ UI adaptation — WorkWall shows "XP" for Timeback, "min" for LWAI, with `GATING_UNIT_LABELS` in constants
+- ✅ `GatingState` fields renamed `minutesCurrent/Required` → `progressCurrent/Required` for source-agnostic naming
 
-**Work:**
+**Remaining:**
 
-- **Timeback XP gating:** When Timeback XP API is available, add a `fetchTimebackGating()` path in `arcade/+page.server.ts` that queries XP instead of LWAI minutes
 - **Flip detection order:** Probe Timeback first (enrollment/activity data via OneRoster or XP API), only fall back to LWAI Athena for students with no Timeback activity. This avoids the slow Athena probe for the majority of users
-- **UI adaptation:** Add `source` awareness to WorkWall — show "minutes" for LWAI, "XP" for Timeback, with different messaging
 - **Remove LWAI probe:** Once Timeback-first detection is reliable, the `/probe` Lambda endpoint and Athena existence check can be retired
 
-**Blocked on:** Timeback XP API availability
+---
+
+#### Gating Result Caching
+
+**Problem:** Every navigation to `/arcade` re-runs the server load function, which makes a live API call (LWAI Lambda or EduBridge Analytics). This adds unnecessary latency for real users and also means dev tool overrides are lost on navigation (the component is destroyed and recreated with fresh server data).
+
+**Goal:** Cache gating results so repeat visits within a session don't re-fetch. Solving this for real users would also fix dev tool state persistence as a side effect.
+
+**Options to evaluate:**
+
+- **sessionStorage** — Client-side, scoped to tab, clears on close. Simple but means first load always hits API.
+- **SvelteKit layout-level data** — Move gating fetch to a layout load function so it persists across child navigations. May be too aggressive (stale data across full session).
+- **Edge cache (KV or Cache API)** — Cache per-user gating result at the edge with short TTL (5–15 min). Reduces API calls for both LWAI Athena (slow ~15s) and EduBridge.
+- **Hybrid** — Edge cache for the API response, sessionStorage for the client-side resolved state (including dev overrides).
+
+**Consideration:** Cache invalidation matters — if a student completes their goal mid-session, stale cache could delay unlock. A short TTL (5 min) or manual refresh button may be sufficient.
 
 ---
 
