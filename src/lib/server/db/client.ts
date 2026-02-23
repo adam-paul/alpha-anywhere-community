@@ -119,6 +119,18 @@ export function createDbClient(db: D1Database) {
       },
 
       /**
+       * Cache the detected gating source for a user.
+       */
+      async setGatingSource(email: string, source: 'lwai' | 'timeback'): Promise<void> {
+        await db
+          .prepare(
+            `UPDATE users SET gating_source = ?, gating_source_probed_at = datetime('now'), updated_at = datetime('now') WHERE email = ?`
+          )
+          .bind(source, email)
+          .run();
+      },
+
+      /**
        * Get all users with their profiles (for explore page). Paginated.
        */
       async findAllWithProfiles(limit = 50, offset = 0): Promise<UserWithProfile[]> {

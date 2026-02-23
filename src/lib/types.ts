@@ -10,6 +10,8 @@ export type EngagementCategory =
 
 export type GatingMode = 'daily' | 'weekly';
 
+export type GatingSource = 'lwai' | 'timeback';
+
 export type Theme = 'cel-shaded' | 'pixel' | 'roblox-3d';
 
 // Core interfaces
@@ -47,6 +49,7 @@ export interface GatingState {
   isUnlocked: boolean;
   minutesCurrent: number;
   minutesRequired: number;
+  source?: GatingSource;
 }
 
 // LWAI proxy response format

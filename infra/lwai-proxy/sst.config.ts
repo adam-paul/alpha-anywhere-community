@@ -20,10 +20,9 @@ export default $config({
     // Lambda function for gating queries
     const api = new sst.aws.ApiGatewayV2('LwaiApi');
 
-    api.route('GET /gating', {
-      handler: 'packages/functions/src/gating.handler',
-      timeout: '30 seconds',
-      memory: '256 MB',
+    const lambdaConfig = {
+      timeout: '30 seconds' as const,
+      memory: '256 MB' as const,
       environment: {
         COACHBOT_ROLE_ARN:
           'arn:aws:iam::515451715086:role/alphacoachbot-production-alphacoachbotproductiona-15USUMI5JRGHW',
@@ -40,6 +39,16 @@ export default $config({
           ]
         }
       ]
+    };
+
+    api.route('GET /gating', {
+      handler: 'packages/functions/src/gating.handler',
+      ...lambdaConfig
+    });
+
+    api.route('GET /probe', {
+      handler: 'packages/functions/src/probe.handler',
+      ...lambdaConfig
     });
 
     return {

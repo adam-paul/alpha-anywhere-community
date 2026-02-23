@@ -1,36 +1,53 @@
 import type { PageServerLoad } from './$types';
-import { createDbClient } from '$lib/server/db/client';
+import { createDbClient, type DbClient } from '$lib/server/db/client';
 import type { Game, GatingResponse, GatingState } from '$lib/types';
 import type { DbGame } from '$lib/server/db/types';
 import { decrypt } from '$lib/server/crypto';
 import { env } from '$env/dynamic/private';
 
-async function fetchGatingData(email: string): Promise<GatingState> {
-  // Default unlocked state for dev or when proxy not configured
-  const defaultState: GatingState = {
-    mode: 'weekly',
-    isUnlocked: true,
-    minutesCurrent: 300,
-    minutesRequired: 300
-  };
+const DEFAULT_UNLOCKED: GatingState = {
+  mode: 'weekly',
+  isUnlocked: true,
+  minutesCurrent: 300,
+  minutesRequired: 300
+};
 
-  if (!env.LWAI_PROXY_URL || !env.LWAI_API_KEY) {
-    return defaultState;
+/**
+ * Probe LWAI to check if a student exists in the CoachBot database.
+ * Returns true if the student has any historical data.
+ */
+async function probeIsLwaiStudent(email: string): Promise<boolean> {
+  if (!env.LWAI_PROXY_URL || !env.LWAI_API_KEY) return false;
+
+  try {
+    const response = await fetch(`${env.LWAI_PROXY_URL}/probe?email=${encodeURIComponent(email)}`, {
+      headers: { 'x-api-key': env.LWAI_API_KEY }
+    });
+
+    if (!response.ok) return false;
+
+    const data = (await response.json()) as { exists: boolean };
+    return data.exists;
+  } catch {
+    return false;
   }
+}
+
+/**
+ * Fetch LWAI gating data (weekly active minutes).
+ */
+async function fetchLwaiGating(email: string): Promise<GatingState> {
+  if (!env.LWAI_PROXY_URL || !env.LWAI_API_KEY) return DEFAULT_UNLOCKED;
 
   try {
     const response = await fetch(
       `${env.LWAI_PROXY_URL}/gating?email=${encodeURIComponent(email)}`,
-      {
-        headers: {
-          'x-api-key': env.LWAI_API_KEY
-        }
-      }
+      { headers: { 'x-api-key': env.LWAI_API_KEY } }
     );
 
     if (!response.ok) {
       console.error('LWAI proxy error:', response.status);
-      return defaultState;
+      return DEFAULT_UNLOCKED;
     }
 
     const data: GatingResponse = await response.json();
@@ -38,12 +55,55 @@ async function fetchGatingData(email: string): Promise<GatingState> {
       mode: 'weekly',
       isUnlocked: data.eligible,
       minutesCurrent: data.weekly_active_minutes,
-      minutesRequired: data.threshold
+      minutesRequired: data.threshold,
+      source: 'lwai'
     };
   } catch (err) {
     console.error('LWAI proxy fetch error:', err);
-    return defaultState;
+    return DEFAULT_UNLOCKED;
   }
+}
+
+/**
+ * Resolve gating data for a student.
+ *
+ * 1. Check cached gating_source in D1
+ * 2. If 'timeback' → default unlocked (XP API not yet available)
+ * 3. If 'lwai' → fetch LWAI gating data
+ * 4. If null → probe LWAI to detect source, cache result, then gate accordingly
+ */
+async function fetchGatingData(email: string, db: DbClient): Promise<GatingState> {
+  // Check cached gating source
+  let cachedSource: 'lwai' | 'timeback' | null = null;
+  try {
+    const user = await db.users.findByEmail(email);
+    cachedSource = user?.gating_source ?? null;
+  } catch {
+    // DB read failed — fall through to probe
+  }
+
+  if (cachedSource === 'timeback') {
+    return { ...DEFAULT_UNLOCKED, source: 'timeback' };
+  }
+
+  if (cachedSource === 'lwai') {
+    return fetchLwaiGating(email);
+  }
+
+  // Unknown source — probe LWAI to detect
+  const isLwai = await probeIsLwaiStudent(email);
+  const source = isLwai ? 'lwai' : 'timeback';
+
+  // Cache the result (fire and forget)
+  db.users
+    .setGatingSource(email, source)
+    .catch((err) => console.error('Failed to cache gating source:', err));
+
+  if (source === 'timeback') {
+    return { ...DEFAULT_UNLOCKED, source: 'timeback' };
+  }
+
+  return fetchLwaiGating(email);
 }
 
 /**
@@ -77,10 +137,10 @@ async function decryptCredentials(
 
 export const load: PageServerLoad = async ({ platform, locals }) => {
   const games: Game[] = [];
+  const db = platform?.env?.DB ? createDbClient(platform.env.DB) : null;
 
   // Fetch games from DB if available (fast)
-  if (platform?.env?.DB) {
-    const db = createDbClient(platform.env.DB);
+  if (db) {
     const dbGames = await db.games.findAll();
     const credentialsKey = env.GAME_CREDENTIALS_KEY;
 
@@ -110,13 +170,9 @@ export const load: PageServerLoad = async ({ platform, locals }) => {
   // The promise is not awaited, so the page renders instantly
   return {
     games,
-    gatingState: locals.user?.email
-      ? fetchGatingData(locals.user.email)
-      : Promise.resolve({
-          mode: 'weekly' as const,
-          isUnlocked: true,
-          minutesCurrent: 300,
-          minutesRequired: 300
-        })
+    gatingState:
+      locals.user?.email && db
+        ? fetchGatingData(locals.user.email, db)
+        : Promise.resolve(DEFAULT_UNLOCKED)
   };
 };

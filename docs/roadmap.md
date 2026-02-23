@@ -1,6 +1,6 @@
 # Alpha Anywhere Community: Roadmap
 
-**Last updated:** 2026-02-10
+**Last updated:** 2026-02-23
 
 This document outlines what's been built, what's missing, and the recommended build order to take the Community from prototype to production.
 
@@ -8,7 +8,7 @@ This document outlines what's been built, what's missing, and the recommended bu
 
 ## Current State
 
-The frontend is production-quality with complete UI flows. Infrastructure is in place: D1 database (local + remote), Timeback SSO, cookie sessions. User provisioning works. Roblox private server deep links working. Work-wall gating live with real LWAI learning data via Lambda proxy.
+The frontend is production-quality with complete UI flows. Infrastructure is in place: D1 database (local + remote), Timeback SSO, cookie sessions. User provisioning works. Roblox private server deep links working. Work-wall gating live with real LWAI learning data via Lambda proxy. Per-student gating source detection (LWAI vs Timeback) deployed and cached in D1.
 
 ### Infrastructure (Complete)
 
@@ -51,6 +51,7 @@ games (standalone, Roblox private server support)
 
 - `migrations/0001_initial.sql` — Core schema (users, profiles, friendships, chat)
 - `migrations/0002_games.sql` — Games catalog with private server fields
+- `migrations/0003_gating_source.sql` — Per-student gating source cache columns
 - `src/lib/server/db/client.ts` — Type-safe D1 client
 - `src/lib/server/db/types.ts` — TypeScript interfaces
 
@@ -523,18 +524,19 @@ CREATE TABLE reports (
 
 ## Architecture Decisions Made
 
-| Decision              | Choice                            | Rationale                                                              |
-| --------------------- | --------------------------------- | ---------------------------------------------------------------------- |
-| **Database**          | Cloudflare D1                     | Edge-native, no cold starts, simple, sufficient for MVP                |
-| **Sessions**          | HMAC-signed cookies               | Stateless, no session store needed                                     |
-| **Auth**              | Timeback SSO                      | Already integrated, handles Cognito                                    |
-| **User identity**     | Timeback ID (OneRoster sourcedId) | Fetched via M2M API; falls back to Cognito sub                         |
-| **LWAI user mapping** | Query by email                    | LWAI uses Alpha's 4-digit IDs, not Timeback UUIDs; email is common key |
-| **LWAI query**        | Lambda proxy (SST)                | CF Workers can't do STS AssumeRole; Lambda in AlphaLearn account       |
-| **Gating state**      | Discriminated union store         | Eliminates boolean flag creep; see `gating.svelte.ts`                  |
-| **Parent portal**     | Link to AlphaLearn                | Don't rebuild, just add toggles                                        |
-| **Notifications**     | Simple D1 table                   | Multi-channel overkill for MVP                                         |
-| **Permissions**       | Role column + settings table      | Simple, extensible                                                     |
+| Decision              | Choice                            | Rationale                                                                    |
+| --------------------- | --------------------------------- | ---------------------------------------------------------------------------- |
+| **Database**          | Cloudflare D1                     | Edge-native, no cold starts, simple, sufficient for MVP                      |
+| **Sessions**          | HMAC-signed cookies               | Stateless, no session store needed                                           |
+| **Auth**              | Timeback SSO                      | Already integrated, handles Cognito                                          |
+| **User identity**     | Timeback ID (OneRoster sourcedId) | Fetched via M2M API; falls back to Cognito sub                               |
+| **LWAI user mapping** | Query by email                    | LWAI uses Alpha's 4-digit IDs, not Timeback UUIDs; email is common key       |
+| **LWAI query**        | Lambda proxy (SST)                | CF Workers can't do STS AssumeRole; Lambda in AlphaLearn account             |
+| **Gating state**      | Discriminated union store         | Eliminates boolean flag creep; see `gating.svelte.ts`                        |
+| **Gating source**     | LWAI Athena probe, cached in D1   | One-time `/probe` checks `daily_learning_metrics` existence; result persists |
+| **Parent portal**     | Link to AlphaLearn                | Don't rebuild, just add toggles                                              |
+| **Notifications**     | Simple D1 table                   | Multi-channel overkill for MVP                                               |
+| **Permissions**       | Role column + settings table      | Simple, extensible                                                           |
 
 ---
 
@@ -548,21 +550,26 @@ All SvelteKit server code uses `$env/dynamic/private`. Timeback SDK is lazy-init
 
 ---
 
-#### Adaptive Gating (Timeback XP vs LWAI Minutes)
+#### ~~Gating Source Detection (LWAI vs Timeback)~~ ✅ Partially Done
 
-**Problem:** Currently hardcoded to LWAI `active_minutes`. Alpha Anywhere students use LWAI/Coachbot, but most Timeback students use XP from the Timeback system.
+**Done:** Per-student gating source detection and caching. On first arcade visit, the LWAI proxy `/probe` endpoint checks for any historical presence in the CoachBot Athena database (`daily_learning_metrics`). Result is cached in D1 (`users.gating_source`). LWAI students get the existing weekly-minutes gating. Timeback students get default-unlocked (XP gating not yet available). See `GatingSource` type in `types.ts`, `fetchGatingData()` in `arcade/+page.server.ts`.
 
-**Goal:** Auto-detect which gating source applies to each student and adapt the UI accordingly.
+**Remaining:** Wire the Timeback XP gating path + optimize detection.
+
+#### Adaptive Gating: Timeback XP Path + Detection Optimization
+
+**Problem:** Timeback students currently default to unlocked because the Timeback XP API doesn't exist yet. Detection relies on an LWAI Athena probe (one-time per user, but slow ~15s). Ideally, detection would check Timeback activity first (faster) and only fall back to LWAI for the minority of CoachBot students.
+
+**Goal:** Real gating for Timeback students, faster detection, and adaptive UI.
 
 **Work:**
 
-- Add `gatingSource: 'lwai' | 'timeback'` to `GatingState`
-- Detect source based on user's school/org (OneRoster data)
-- For Timeback students: call Timeback XP API instead of LWAI proxy
-- UI shows "minutes" for LWAI, "XP" for Timeback
-- Work wall messaging adapts to source
+- **Timeback XP gating:** When Timeback XP API is available, add a `fetchTimebackGating()` path in `arcade/+page.server.ts` that queries XP instead of LWAI minutes
+- **Flip detection order:** Probe Timeback first (enrollment/activity data via OneRoster or XP API), only fall back to LWAI Athena for students with no Timeback activity. This avoids the slow Athena probe for the majority of users
+- **UI adaptation:** Add `source` awareness to WorkWall — show "minutes" for LWAI, "XP" for Timeback, with different messaging
+- **Remove LWAI probe:** Once Timeback-first detection is reliable, the `/probe` Lambda endpoint and Athena existence check can be retired
 
-**Deferred until:** LWAI integration stable, Timeback XP API available
+**Blocked on:** Timeback XP API availability
 
 ---
 

@@ -1,14 +1,21 @@
+/**
+ * LWAI Probe Endpoint
+ *
+ * Checks whether a student exists in the LWAI/CoachBot database (Athena).
+ * Used to determine gating source: if a student has any historical data
+ * in daily_learning_metrics, they're an LWAI student.
+ *
+ * GET /probe?email=student@example.com
+ * Returns: { email, exists: boolean }
+ */
+
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
 import { Resource } from 'sst';
 import { createAthenaClient, executeAthenaQuery, sanitizeEmail } from './athena';
 
-const WEEKLY_THRESHOLD = parseInt(process.env.WEEKLY_THRESHOLD ?? '300', 10);
-
-interface GatingResponse {
+interface ProbeResponse {
   email: string;
-  weekly_active_minutes: number;
-  threshold: number;
-  eligible: boolean;
+  exists: boolean;
 }
 
 interface ErrorResponse {
@@ -41,24 +48,18 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 
     const safeEmail = sanitizeEmail(email);
     const query = `
-      SELECT COALESCE(SUM(active_minutes), 0) as total_minutes
-      FROM daily_learning_metrics
+      SELECT 1 FROM daily_learning_metrics
       WHERE email = '${safeEmail}'
-        AND date >= date_trunc('week', current_date)
+      LIMIT 1
     `;
 
     const resultSet = await executeAthenaQuery(athena, query);
 
+    // First row is headers. If there's a second row, the student exists.
     const rows = resultSet.Rows ?? [];
-    // First row is headers, second row is data
-    const totalMinutes = rows.length > 1 ? parseFloat(rows[1].Data?.[0]?.VarCharValue ?? '0') : 0;
+    const exists = rows.length > 1;
 
-    const response: GatingResponse = {
-      email,
-      weekly_active_minutes: totalMinutes,
-      threshold: WEEKLY_THRESHOLD,
-      eligible: totalMinutes >= WEEKLY_THRESHOLD
-    };
+    const response: ProbeResponse = { email, exists };
 
     return {
       statusCode: 200,
@@ -66,7 +67,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
       body: JSON.stringify(response)
     };
   } catch (error) {
-    console.error('Gating query error:', error);
+    console.error('Probe query error:', error);
     return {
       statusCode: 500,
       headers: { 'Content-Type': 'application/json' },

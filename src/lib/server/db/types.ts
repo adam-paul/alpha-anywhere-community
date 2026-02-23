@@ -15,6 +15,8 @@ export interface DbUser {
   display_name: string;
   created_at: string;
   updated_at: string;
+  gating_source: 'lwai' | 'timeback' | null;
+  gating_source_probed_at: string | null;
 }
 
 export interface DbProfile {
