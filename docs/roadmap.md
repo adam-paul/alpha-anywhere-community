@@ -2,13 +2,11 @@
 
 **Last updated:** 2026-02-23
 
-This document outlines what's been built, what's missing, and the recommended build order to take the Community from prototype to production.
-
 ---
 
 ## Current State
 
-The frontend is production-quality with complete UI flows. Infrastructure is in place: D1 database (local + remote), Timeback SSO, cookie sessions. User provisioning works. Roblox private server deep links working. Work-wall gating live with real LWAI learning data via Lambda proxy. Per-student gating source detection (LWAI vs Timeback) deployed and cached in D1.
+Production-quality frontend with complete UI flows. Infrastructure in place: D1 database (local + remote), Timeback SSO, cookie sessions, auto-provisioned users. Roblox private server deep links working. Work-wall gating live for both LWAI (300 min/week via Lambda proxy) and Timeback (120 XP/day via EduBridge Analytics). Per-student gating source detection cached in D1.
 
 ### Infrastructure (Complete)
 
@@ -33,7 +31,7 @@ The frontend is production-quality with complete UI flows. Infrastructure is in 
 | **Chat**      | `/chat`              | Complete           | Mock data                |
 | **UI System** | `$lib/components/ui` | Complete           | N/A                      |
 
-### Database Schema (Applied Locally + Remote)
+### Database Schema
 
 ```
 users ←──── profiles (1:1)
@@ -55,24 +53,21 @@ games (standalone, Roblox private server support)
 - `src/lib/server/db/client.ts` — Type-safe D1 client
 - `src/lib/server/db/types.ts` — TypeScript interfaces
 
-### What's NOT Wired Yet
+### Not Yet Wired
 
-| Feature              | Status        | Notes                                                   |
-| -------------------- | ------------- | ------------------------------------------------------- |
-| Chat → D1            | Not connected | Still uses `MOCK_CONVERSATIONS`, `MOCK_MESSAGES`        |
-| ~~Real Gating Data~~ | ✅ Connected  | LWAI `active_minutes` via Lambda proxy, streaming to UI |
-| Student Map          | Placeholder   | UI exists, shows "Coming soon"                          |
-| Friend System        | None          | Schema exists, no UI flow                               |
-| Real-time Presence   | None          | No "who's online" functionality                         |
-| AI Chat Moderation   | None          | No content filtering                                    |
-| Parent Controls      | None          | No ToS, no per-child toggles                            |
-| Notifications        | None          | Schema not yet added                                    |
+| Feature            | Status        | Notes                                            |
+| ------------------ | ------------- | ------------------------------------------------ |
+| Chat → D1          | Not connected | Still uses `MOCK_CONVERSATIONS`, `MOCK_MESSAGES` |
+| Student Map        | Placeholder   | UI exists, shows "Coming soon"                   |
+| Friend System      | None          | Schema exists, no UI flow                        |
+| Real-time Presence | None          | No "who's online" functionality                  |
+| Chat Moderation    | None          | No content filtering                             |
+| Parent Controls    | None          | No ToS, no per-child toggles                     |
+| Notifications      | None          | Schema not yet added                             |
 
 ---
 
 ## Development Environment
-
-**Two dev servers:**
 
 | Port | Command          | Runtime            | D1 Access |
 | ---- | ---------------- | ------------------ | --------- |
@@ -81,257 +76,71 @@ games (standalone, Roblox private server support)
 
 Use **6173** (Wrangler) when testing D1 features or auth. Use **5173** (Vite) for fast UI iteration without auth.
 
-**Health check:** `http://localhost:6173/api/health` — Shows DB status, user info, profile info.
-
-**Credentials:** Alpha Anywhere Community's dedicated Cognito credentials (callbacks on ports 5173 and 6173).
+**Health check:** `http://localhost:6173/api/health`
 
 ---
 
 ## Build Order
 
-### Tier 1: Core Experience (Current Focus)
+### Tier 1: Core Experience — ✅ Mostly Complete
 
-**Goal:** Deliver the two key features that make Community valuable — the gated arcade and the work-wall that gates it.
-
-#### 1.1 ~~Activate Timeback SSO~~ ✅ DONE
-
-- SSO works via `@timeback/sdk/edge` package
-- Cookie-based sessions with HMAC signing
-- User provisioned in D1 on first authenticated request
-- Using dedicated Alpha Anywhere Community Cognito credentials
-- Real Timeback ID fetched via M2M OneRoster lookup (see 1.7)
-
----
-
-#### 1.2 ~~Wire Explore to Real Users~~ ✅ DONE
-
-- `src/routes/explore/+page.server.ts` fetches users with profiles from D1
-- `explore.svelte.ts` store accepts `initialStudents` parameter
-- Explore page transforms DB data to Student shape
-
----
-
-#### 1.3 ~~Wire Profiles to Real Data~~ ✅ DONE
-
-- `src/routes/profile/[id]/+page.server.ts` fetches user + profile from D1
-- Handles `/profile/me` as alias for current user's profile
-- Edit mode implemented: bio, location, interests editable via `PATCH /api/profile`
-
----
-
-#### 1.4 ~~Game Launch~~ ✅ DONE
-
-- `src/lib/utils/game-launcher.ts` handles all game types
-- Roblox: tries `roblox://placeId=X` protocol, falls back to roblox.com
-- Visibility-based detection for protocol success
-- Electron support for Timeback wrapper (`shell.openExternal`)
-- Web/Minecraft/iframe types supported
-
----
-
-#### 1.5 ~~Connect Work-Wall to Real LWAI Data~~ ✅ DONE
-
-**What:** Replace hardcoded XP with real learning progress from LWAI.
-
-**Data source:** `daily_learning_metrics` table via AWS Athena
-
-- Cross-account role: Lambda assumes Coachbot role in AlphaLearn account
-- Key fields: `email`, `date`, `active_minutes`
-
-**Completed (2026-02-10):**
-
-- ✅ Athena access working (CLI tested, queries return data)
-- ✅ Schema confirmed — see `docs/LWAI_Data-Feed-Integration-Guide.md`
-- ✅ User mapping resolved: query by **email**
-- ✅ Gating criteria decided: **`active_minutes`** (weekly sum, 300 min threshold)
-- ✅ Architecture decided: **Lambda proxy** (CF Workers can't do STS AssumeRole)
-- ✅ SST project created: `infra/lwai-proxy/`
-- ✅ Lambda handler: assumes Coachbot role, queries Athena, returns eligibility
-- ✅ AAC integration: `/arcade` fetches gating data, work-wall uses real state
-- ✅ Lambda deployed to production stage
-- ✅ Cloudflare secrets set for preview environment
-- ✅ End-to-end tested on live preview deployment
-
-**Gating logic:**
-
-```sql
-SELECT COALESCE(SUM(active_minutes), 0) as total_minutes
-FROM daily_learning_metrics
-WHERE email = '{email}'
-  AND date >= date_trunc('week', current_date)
-```
-
-**Future enhancements:**
-
-- Handle edge cases: new students, weekends, breaks
-- Add client-side gating cache (see "Gating Result Caching" under Future Consolidation)
-
----
-
-#### 1.6 ~~Roblox Arcade: Private Servers & Game Management~~ ✅ MOSTLY DONE
-
-**What:** Move from public Roblox game links to Alpha-managed private servers. Admin tooling for game catalog management.
-
-**Done:**
-
-- ✅ Private server deep links working: `roblox://placeId={id}&accessCode={uuid}&linkCode={code}`
-- ✅ Games table in D1 with `place_id`, `private_server_access_code`, `link_code` fields
-- ✅ Game launcher uses discriminated union types for type-safe launch options
-- ✅ Arcade loads games from D1, not mock data
-- ✅ Bee Swarm Simulator seeded as first game (local + remote)
+SSO, Explore, Profiles, Game Launch, LWAI work-wall, Timeback XP gating, private servers, and Timeback ID resolution are all done. See git history for implementation details.
 
 **Remaining:**
+
+#### Game Catalog Management
 
 - Admin API for CRUD on games (currently manual SQL inserts)
-- More games need private servers provisioned (see `docs/games-to-add.md`)
+- More games need private servers provisioned
 
-**Future — Minecraft Extensibility:**
+#### Game Extensibility (Minecraft & Beyond)
 
-- Evaluate Minecraft server hosting options (Bedrock vs Java, Realms vs self-hosted)
-- `minecraft://` protocol handler support in game launcher (already stubbed)
-- Server connection flow for Minecraft (IP/port vs Realms invite)
+- Evaluate Minecraft server hosting (Bedrock vs Java, Realms vs self-hosted)
+- `minecraft://` protocol handler support (already stubbed in game launcher)
 - Determine if work-wall gating applies per-game or globally
 
-**Future — Presence:**
+#### Production Deploy ⏳
 
-- Track game sessions: log when a student launches a game
-- Display "X students playing" on game cards (UI already supports `playerCount` prop)
-- Show which friends are in which game
-- Simple approach: record launch event + 30-min TTL, no real Roblox API polling
-- Advanced: Roblox API presence endpoint (requires Roblox OAuth)
-
----
-
-#### 1.7 ~~Fetch Real Timeback ID via M2M API~~ ✅ DONE
-
-**What:** Fetch OneRoster `sourcedId` (Timeback ID) for each user during SSO.
-
-**Implementation:** `src/lib/server/timeback.ts`
-
-- `getM2MToken()` — client credentials flow to get access token
-- `resolveTimebackId(email)` — queries OneRoster API for `sourcedId`
-- Called in SSO callback; falls back to Cognito `sub` if lookup fails
-
-**Credentials:** Staging in `.env`, production credentials for Cloudflare prod env.
-
-**Note:** Timeback ID is useful for future Timeback APIs (XP, parent-child linking). For LWAI, use email — see 1.5.
-
----
-
-#### 1.8 Production Deploy ⏳ IN PROGRESS
-
-**What:** Get the app running on Cloudflare Pages with real D1.
-
-**Done:**
-
-- ✅ Migrations applied to remote D1
-- ✅ Bee Swarm seeded in remote D1
-- ✅ Cloudflare Pages deploys from dev branch
-- ✅ Preview environment secrets set (LWAI proxy)
-- ✅ Work-wall live on preview with real gating data
-
-**Remaining:**
-
-- Consider creating a separate D1 database for prod vs preview
+- Consider separate D1 database for prod vs preview
 - Set secrets for production/master branch
-- Verify SSO callbacks work with production domain
+- Verify SSO callbacks with production domain
 - Smoke test: login → profile → arcade → work-wall flow
 
 ---
 
 ### Tier 2: Social & Communication
 
-**Goal:** Wire up remaining social features. DB schema already supports these — connect when ready.
+**Goal:** Wire up remaining social features. DB schema already supports these.
 
-#### 2.1 Wire Chat to Real Messages
+#### Wire Chat to Real Messages
 
-**What:** `/chat` reads/writes messages to D1.
+Chat UI is complete and DB schema + client methods exist. Ready to wire.
 
-**Note:** Chat UI is complete and DB schema + client methods exist. This is ready to wire whenever it becomes a priority.
+- Create `src/routes/chat/+page.server.ts` — fetch conversations
+- `POST /api/messages` — send message
+- `GET /api/conversations/[id]/messages` — paginated fetch
+- Update `chat.svelte.ts` to use API, remove mock data
 
-**Work:**
+#### Friend System
 
-- Create `src/routes/chat/+page.server.ts` — fetch user's conversations
-- Create `POST /api/messages` — send message
-- Create `GET /api/conversations/[id]/messages` — paginated fetch
-- Update `chat.svelte.ts` to use API
-- Remove `MOCK_CONVERSATIONS`, `MOCK_MESSAGES` imports
+Schema exists (`friendships` table with status). Needs API routes (send, accept, decline, unfriend), "Add Friend" button on profiles, notifications.
 
----
+#### Student Map
 
-#### 2.2 Friend System
-
-**What:** Send/accept friend requests.
-
-**Schema already exists:** `friendships` table with status field.
-
-**Work:**
-
-- API routes: send, accept, decline, unfriend
-- "Add Friend" button on profiles
-- Notifications on friend request
-- Update mutual friends to use real data
-
----
-
-#### 2.3 Student Map
-
-**What:** Geographic visualization of student locations.
-
-**Work:**
-
-- Geocode locations to lat/lng
-- Map component (Mapbox or Leaflet)
-- City-level clustering for privacy
-- "Students near me" filter
+Geographic visualization of student locations. Geocode to lat/lng, map component (Mapbox or Leaflet), city-level clustering for privacy.
 
 **Priority:** High — parents frequently ask "who else is in my area?"
 
----
+#### Presence (Online + In-Game)
 
-#### 2.4 Real-time Presence
+Show who's online and who's playing what.
 
-**What:** Show who's online across the app (not just in-game).
+- **Online presence:** Heartbeat mechanism, green dot on avatars, sidebar friends list. Architecture: Durable Objects or simple polling with short TTL.
+- **Game presence:** Track launch events with 30-min TTL, show "X students playing" on game cards (UI already supports `playerCount` prop). Advanced: Roblox API presence endpoint (requires OAuth).
 
-**Architecture options:**
+#### Notifications
 
-- Cloudflare Durable Objects (recommended)
-- Simple polling with short TTL
-
-**Work:**
-
-- Heartbeat mechanism (ping on page load / interval)
-- Green dot on avatars throughout the app
-- Sidebar online friends list
-- Feeds into arcade player counts (complements game-specific presence in 1.6)
-
----
-
-#### 2.5 Notifications
-
-**What:** In-app notifications for friend requests, messages, etc.
-
-**Schema:**
-
-```sql
-CREATE TABLE notifications (
-  id TEXT PRIMARY KEY,
-  user_id TEXT REFERENCES users(id),
-  type TEXT NOT NULL,
-  title TEXT NOT NULL,
-  body TEXT,
-  data TEXT,
-  read_at TEXT,
-  created_at TEXT DEFAULT (datetime('now'))
-);
-```
-
-**Work:**
-
-- Migration for table
-- API: list, mark read
-- Notification bell with unread count
-- Create notifications on events
+In-app notifications for friend requests, messages, etc. Needs migration, API (list, mark read), notification bell with unread count.
 
 ---
 
@@ -339,77 +148,17 @@ CREATE TABLE notifications (
 
 **Goal:** Role-based access, parent controls.
 
-#### 3.1 User Roles
+#### User Roles
 
-**What:** Distinguish students, parents, admins.
+Distinguish students, parents, admins. Migration for role column, populate from SSO claims, role check utilities for protected routes.
 
-**Work:**
+#### Parent Controls
 
-- Migration: `ALTER TABLE users ADD COLUMN role`
-- Populate from Timeback SSO claims or default to 'student'
-- Role check utilities for protected routes
+Connect parent accounts to children, let parents manage per-child feature settings.
 
----
-
-#### 3.2 Parent-Child Linking
-
-**What:** Connect parent accounts to children.
-
-**Schema:**
-
-```sql
-CREATE TABLE guardianships (
-  id TEXT PRIMARY KEY,
-  parent_id TEXT REFERENCES users(id),
-  child_id TEXT REFERENCES users(id),
-  relationship TEXT DEFAULT 'parent',
-  created_at TEXT DEFAULT (datetime('now')),
-  UNIQUE(parent_id, child_id)
-);
-```
-
-**Work:**
-
-- Migration for table
-- Sync from Timeback (OneRoster agents) or manual linking
-- API to fetch parent's children / child's guardians
-
----
-
-#### 3.3 Per-Child Feature Settings
-
-**What:** Parents can enable/disable features per child.
-
-**Schema:**
-
-```sql
-CREATE TABLE user_settings (
-  user_id TEXT PRIMARY KEY REFERENCES users(id),
-  community_enabled BOOLEAN DEFAULT false,
-  chat_enabled BOOLEAN DEFAULT true,
-  arcade_enabled BOOLEAN DEFAULT true,
-  voice_enabled BOOLEAN DEFAULT true,
-  location_visible BOOLEAN DEFAULT true,
-  terms_accepted_at TEXT,
-  terms_accepted_by TEXT,
-  updated_at TEXT DEFAULT (datetime('now'))
-);
-```
-
-**Work:**
-
-- Migration for table
-- Create default settings on user creation
-- ToS acceptance flow
-- Check settings before rendering features
-
----
-
-#### 3.4 Link to AlphaLearn Parent Portal
-
-**What:** Parents manage settings via existing AlphaLearn UI.
-
-**Decision:** Don't rebuild parent portal. Add Community-specific toggles to AlphaLearn's existing dashboard.
+- **Parent-child linking:** `guardianships` table, sync from Timeback OneRoster or manual linking
+- **Feature settings:** `user_settings` table (community, chat, arcade, voice, location toggles), ToS acceptance flow
+- **UI:** Link to AlphaLearn's existing parent dashboard rather than rebuilding
 
 ---
 
@@ -417,49 +166,17 @@ CREATE TABLE user_settings (
 
 **Goal:** Make it safe for kids.
 
-#### 4.1 AI Chat Moderation
+#### Chat Moderation
 
-**What:** Flag inappropriate messages.
+AI moderation (OpenAI Moderation API) — check on send, before persistence. Decision needed: block vs deliver with flag.
 
-**Work:**
+#### Staff Escalation
 
-- Integrate OpenAI Moderation API
-- Check on send, before persistence
-- Store moderation result with message
-- Decision: block vs deliver with flag?
+Protected `/admin/moderation` route. List flagged messages, actions (dismiss, warn, suspend), audit log.
 
----
+#### Report Flow
 
-#### 4.2 Staff Escalation Dashboard
-
-**What:** Review flagged content.
-
-**Work:**
-
-- Protected `/admin/moderation` route
-- List flagged messages with context
-- Actions: dismiss, warn, suspend
-- Audit log
-
----
-
-#### 4.3 Report Flow
-
-**What:** Students can report messages/users.
-
-**Schema:**
-
-```sql
-CREATE TABLE reports (
-  id TEXT PRIMARY KEY,
-  reporter_id TEXT REFERENCES users(id),
-  reported_user_id TEXT REFERENCES users(id),
-  message_id TEXT REFERENCES messages(id),
-  reason TEXT NOT NULL,
-  status TEXT DEFAULT 'pending',
-  created_at TEXT DEFAULT (datetime('now'))
-);
-```
+Students report messages/users. `reports` table with status tracking.
 
 ---
 
@@ -467,62 +184,19 @@ CREATE TABLE reports (
 
 **Goal:** Unique high-value features.
 
-#### 5.1 Alpha Voice
+#### Alpha Voice
 
-**What:** Browser-based voice chat for under-13 students.
+Browser-based voice chat for under-13 students. RTC SDK (Daily.co or Agora), voice pods per game. Safety: panic button, recording indicator.
 
-**Architecture:**
+**Blocked on:** RTC provider selection.
 
-- RTC SDK (Daily.co or Agora)
-- Voice pods per game
-- Runs in browser while Roblox runs separately
+#### Avatar Generation
 
-**Safety:** Panic button, recording indicator, optional AI sentiment analysis.
+AI-generated avatars from clickable trait selection (not free text — prevents prompt injection). Image generation API + Cloudflare R2 storage. Low priority.
 
 ---
 
-#### 5.2 Avatar Generation
-
-**What:** AI-generated avatars from trait selection.
-
-**Approach:** Clickable UI for traits (not free text) to prevent prompt injection.
-
-**Work:**
-
-- Avatar builder UI
-- Image generation API (DALL-E, Stability)
-- Storage (Cloudflare R2)
-
----
-
-#### 5.3 Roblox Presence Integration
-
-**What:** Show which game a student is playing.
-
-**Pragmatic approach:**
-
-- Track on game launch click
-- Set "Playing [Game]" with 30-min TTL
-- Display avatars on game cards
-
----
-
-## Dependencies & Blockers
-
-| Dependency                         | Owner         | Status                                        | Blocks                   |
-| ---------------------------------- | ------------- | --------------------------------------------- | ------------------------ |
-| ~~Dedicated Timeback credentials~~ | ~~Beyond AI~~ | ✅ Done                                       | ~~Production deploy~~    |
-| ~~LWAI IAM credentials~~           | ~~Amanda~~    | ✅ Done                                       | ~~1.5 Work-wall gating~~ |
-| ~~Roblox deep link validation~~    | ~~Dev~~       | ✅ Done                                       | ~~1.4 Launch~~           |
-| ~~Roblox private server access~~   | ~~Dev~~       | ✅ Done                                       | ~~1.6 Private servers~~  |
-| ~~Timeback M2M API auth URL~~      | ~~Beyond AI~~ | ✅ Done                                       | ~~1.7 Timeback ID~~      |
-| ~~LWAI → Community user mapping~~  | ~~Dev~~       | ✅ Done (use email)                           | ~~1.5 Work-wall~~        |
-| ~~LWAI query from edge runtime~~   | ~~Dev~~       | ✅ Done (Lambda proxy in `infra/lwai-proxy/`) | ~~1.5 Work-wall~~        |
-| RTC provider selection             | Team          | Open                                          | 5.1 Voice                |
-
----
-
-## Architecture Decisions Made
+## Architecture Decisions
 
 | Decision              | Choice                            | Rationale                                                                    |
 | --------------------- | --------------------------------- | ---------------------------------------------------------------------------- |
@@ -532,151 +206,54 @@ CREATE TABLE reports (
 | **User identity**     | Timeback ID (OneRoster sourcedId) | Fetched via M2M API; falls back to Cognito sub                               |
 | **LWAI user mapping** | Query by email                    | LWAI uses Alpha's 4-digit IDs, not Timeback UUIDs; email is common key       |
 | **LWAI query**        | Lambda proxy (SST)                | CF Workers can't do STS AssumeRole; Lambda in AlphaLearn account             |
+| **Timeback XP**       | EduBridge Analytics API           | `@timeback/edubridge` client, 120 XP/day threshold, fail-open                |
 | **Gating state**      | Discriminated union store         | Eliminates boolean flag creep; see `gating.svelte.ts`                        |
 | **Gating source**     | LWAI Athena probe, cached in D1   | One-time `/probe` checks `daily_learning_metrics` existence; result persists |
+| **Credentials**       | Encrypted D1 columns              | AES-256-GCM, app-level encrypt at seed / decrypt at runtime                  |
 | **Parent portal**     | Link to AlphaLearn                | Don't rebuild, just add toggles                                              |
-| **Notifications**     | Simple D1 table                   | Multi-channel overkill for MVP                                               |
-| **Permissions**       | Role column + settings table      | Simple, extensible                                                           |
 
 ---
 
-## Future Consolidation
+## Future Improvements
 
-Technical debt and infrastructure improvements to tackle after core features are stable.
+#### Adaptive Gating
 
-#### ~~Unified Environment Variables~~ ✅ Done
-
-All SvelteKit server code uses `$env/dynamic/private`. Timeback SDK is lazy-initialized on first request. `platform.env` for Cloudflare bindings (D1). Scripts use `process.env` (Bun auto-loads `.env`).
-
----
-
-#### ~~Gating Source Detection (LWAI vs Timeback)~~ ✅ Done
-
-Per-student gating source detection and caching. On first arcade visit, the LWAI proxy `/probe` endpoint checks for any historical presence in the CoachBot Athena database (`daily_learning_metrics`). Result is cached in D1 (`users.gating_source`). LWAI students get weekly-minutes gating (300 min/week). Timeback students get daily XP gating (120 XP/day) via EduBridge Analytics API.
-
-See `GatingSource` type in `types.ts`, `fetchGatingData()` in `arcade/+page.server.ts`, `fetchTimebackDailyXp()` in `server/timeback.ts`.
-
-#### ~~Adaptive Gating: Timeback XP Path~~ ✅ Mostly Done
-
-**Done:**
-
-- ✅ Timeback XP gating via `@timeback/edubridge` — `EdubridgeClient` + `aggregateActivityMetrics()` for daily XP
-- ✅ `fetchTimebackGating()` in `arcade/+page.server.ts` with 120 XP/day threshold, fail-open on error
-- ✅ UI adaptation — WorkWall shows "XP" for Timeback, "min" for LWAI, with `GATING_UNIT_LABELS` in constants
-- ✅ `GatingState` fields renamed `minutesCurrent/Required` → `progressCurrent/Required` for source-agnostic naming
-
-**Remaining:**
-
-- **Flip detection order:** Probe Timeback first (enrollment/activity data via OneRoster or XP API), only fall back to LWAI Athena for students with no Timeback activity. This avoids the slow Athena probe for the majority of users
-- **Remove LWAI probe:** Once Timeback-first detection is reliable, the `/probe` Lambda endpoint and Athena existence check can be retired
-
----
+- **Flip detection order:** Probe Timeback first, fall back to LWAI Athena. Avoids slow Athena probe for majority of users.
+- **Remove LWAI probe:** Once Timeback-first detection is reliable, retire `/probe` Lambda endpoint.
+- **Source re-evaluation:** Cached `gating_source` in D1 is permanent — need periodic re-probes or admin mechanism for students who switch platforms.
+- **New student detection:** Metrics-based probe misclassifies new LWAI students with no history. Needs enrollment/roster signal instead.
 
 #### Gating Result Caching
 
-**Problem:** Every navigation to `/arcade` re-runs the server load function, which makes a live API call (LWAI Lambda or EduBridge Analytics). This adds unnecessary latency for real users and also means dev tool overrides are lost on navigation (the component is destroyed and recreated with fresh server data).
-
-**Goal:** Cache gating results so repeat visits within a session don't re-fetch. Solving this for real users would also fix dev tool state persistence as a side effect.
-
-**Options to evaluate:**
-
-- **sessionStorage** — Client-side, scoped to tab, clears on close. Simple but means first load always hits API.
-- **SvelteKit layout-level data** — Move gating fetch to a layout load function so it persists across child navigations. May be too aggressive (stale data across full session).
-- **Edge cache (KV or Cache API)** — Cache per-user gating result at the edge with short TTL (5–15 min). Reduces API calls for both LWAI Athena (slow ~15s) and EduBridge.
-- **Hybrid** — Edge cache for the API response, sessionStorage for the client-side resolved state (including dev overrides).
-
-**Consideration:** Cache invalidation matters — if a student completes their goal mid-session, stale cache could delay unlock. A short TTL (5 min) or manual refresh button may be sufficient.
-
----
+Every `/arcade` navigation makes a live API call (LWAI Lambda or EduBridge). Need client-side or edge caching for repeat visits. Options: sessionStorage, SvelteKit layout-level data, edge cache (KV/Cache API with short TTL), or hybrid. Cache invalidation matters — short TTL (5 min) or manual refresh may suffice.
 
 #### SST Infrastructure Consolidation
 
-**Problem:** Multiple deployment tools — wrangler for Cloudflare (Pages, D1, secrets), SST for AWS Lambda. Different secret management, different deploy commands.
-
-**Goal:** Single `sst deploy` manages everything.
-
-**Work:**
-
-- Migrate SvelteKit app to `sst.cloudflare.SvelteKit`
-- Migrate D1 database to `sst.cloudflare.D1`
-- Keep existing `sst.aws.ApiGatewayV2` for LWAI proxy
-- Unified secrets via SST linking
-- Remove wrangler.toml, update CI/CD
-
-**Reference:** SST v3 (Ion) supports multi-provider (AWS + Cloudflare) in single config.
-
----
+Unify wrangler (Cloudflare) + SST (AWS) into single `sst deploy`. SST v3 supports multi-provider. Low priority — current setup works.
 
 #### Seed Script Architecture
 
-**Problem:** Currently one seed script (`scripts/seed-games.ts`) with inline types and data. As we add more seeded tables (users, templates, etc.), we'll duplicate runner logic (wrangler execution, --remote/--clear handling).
-
-**Goal:** Shared infrastructure with per-table data/types.
-
-**Work:**
-
-- Extract `scripts/lib/seed-utils.ts` with `executeSQL()`, `parseArgs()`, `escapeSQL()`
-- Keep seed interfaces near their data (not in main `types.ts` — they're ETL shapes, not domain types)
-- One script per table: `seed-games.ts`, `seed-users.ts`, etc.
-
-**Deferred until:** Second seed script is needed
-
----
-
-#### ~~Private Server Credentials Storage~~ ✅ Done
-
-**Solution:** Encrypted columns in D1 (AES-256-GCM, app-level encryption/decryption).
-
-- Plaintext credentials live in `scripts/game-credentials.json` (gitignored)
-- Seed script encrypts at insert time using `GAME_CREDENTIALS_KEY`
-- Server decrypts at page load (`src/lib/server/crypto.ts`)
-- Key rotation: change key + re-run seed
+Extract shared utilities (`escapeSQL`, arg parsing, wrangler execution) when a second seed script is needed. Deferred.
 
 ---
 
 ## Strategic Context
 
-- **Weekly goals > daily** — High schoolers plan weekly
-- **300 min/week threshold** — Based on `active_minutes` from LWAI; tune empirically based on student feedback
+- **Weekly goals > daily** — High schoolers plan weekly (LWAI uses weekly; Timeback uses daily)
 - **Don't rebuild AlphaLearn** — It's maintenance mode, link don't extend
 - **Map is high priority** — Parents constantly ask about nearby students
 - **Timeback Electron as launcher** — Community will run inside Electron wrapper
-- **Private servers first** — Public Roblox games are a liability; private servers give control over environment
-- **Minecraft is a stretch goal** — Architecture should support it, but Roblox is the primary platform
-- **Chat is ready but not urgent** — DB schema and client methods exist; wire when socialization features become the focus
+- **Private servers first** — Public Roblox games are a liability; private servers give control
+- **Minecraft is a stretch goal** — Architecture should support it, Roblox is primary
+- **Chat is ready but not urgent** — Wire when socialization features become the focus
 
 ---
 
 ## Open Questions
 
-1. ~~**Work-wall criteria:**~~ ✅ Decided — `active_minutes` weekly sum, 300 min threshold
-2. **Weekly vs daily gating:** AB test, or just go weekly? What happens on weekends/breaks?
-3. ~~**LWAI query architecture:**~~ ✅ Decided — Lambda proxy in `infra/lwai-proxy/`
-4. **Profile stats:** What metrics to show on student profile pages? Options from LWAI: total levels mastered, active minutes, accuracy rate, streak days.
-5. **Roblox private servers:** API access model? Pre-provisioned vs on-demand? Cost per server?
-6. **Roblox identity linking:** How to connect AAC accounts to Roblox accounts for private server access?
-7. **Minecraft feasibility:** Bedrock vs Java? Realms vs self-hosted? Worth doing in Feb or defer?
-8. **Voice provider:** Agora vs Daily.co?
-9. **Avatar generation:** Which image model? Cost?
-
----
-
-## Next Steps (Immediate — February 2026)
-
-1. ~~**Wire Explore to D1**~~ ✅ Done
-2. ~~**Wire Profiles to D1**~~ ✅ Done (with editing)
-3. ~~**Implement Game Launch**~~ ✅ Done (Roblox private server deep links)
-4. ~~**Roblox private servers**~~ ✅ Done (deep link format: `placeId` + `accessCode` + `linkCode`)
-5. ~~**Game catalog to D1**~~ ✅ Done (games table with private server fields)
-6. ~~**Apply migrations remotely**~~ ✅ Done
-7. ~~**Fetch real Timeback ID**~~ ✅ Done — M2M OneRoster lookup implemented (1.7)
-8. ~~**LWAI access & exploration**~~ ✅ Done — Athena queries working, schema documented
-9. ~~**Design LWAI query architecture**~~ ✅ Done — Lambda proxy in `infra/lwai-proxy/`
-10. ~~**Define work-wall criteria**~~ ✅ Done — `active_minutes` weekly sum, 300 min threshold
-11. ~~**Implement work-wall endpoint**~~ ✅ Done — Arcade fetches gating data from Lambda proxy
-12. ~~**Deploy LWAI Lambda**~~ ✅ Done — `bunx sst deploy --stage production`
-13. ~~**Set Cloudflare secrets**~~ ✅ Done — `LWAI_PROXY_URL`, `LWAI_API_KEY` for preview
-14. **Set Cloudflare secrets for production** — Same secrets for master branch deployment
-15. **Explore profile stats metrics** — What LWAI data to surface on student profiles (levels mastered, streaks, etc.)
-16. ~~**Game catalog seed script**~~ ✅ Done — `bun run db:seed` / `db:seed:remote`, 10 games cataloged (1 active)
-17. **Provision more private servers** — Add game to `seed-games.ts`, credentials to `game-credentials.json`, run `db:seed`
+1. **Profile stats:** What metrics to show on student profile pages? Options from LWAI: total levels mastered, active minutes, accuracy rate, streak days.
+2. **Roblox private servers:** API access model? Pre-provisioned vs on-demand? Cost per server?
+3. **Roblox identity linking:** How to connect AAC accounts to Roblox accounts for private server access?
+4. **Minecraft feasibility:** Bedrock vs Java? Realms vs self-hosted?
+5. **Voice provider:** Agora vs Daily.co?
+6. **Avatar generation:** Which image model? Cost?
