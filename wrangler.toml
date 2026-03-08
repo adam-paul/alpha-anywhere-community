@@ -1,3 +1,5 @@
+# account_id is intentionally omitted — Cloudflare Pages projects reject it
+# in wrangler.toml. Use the CLOUDFLARE_ACCOUNT_ID env var instead.
 name = "alpha-community"
 compatibility_date = "2025-01-13"
 compatibility_flags = ["nodejs_compat"]

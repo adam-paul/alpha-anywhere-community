@@ -13,6 +13,7 @@ export interface DbUser {
   timeback_id: string;
   email: string;
   display_name: string;
+  role: 'student' | 'admin';
   created_at: string;
   updated_at: string;
   gating_source: 'lwai' | 'timeback' | null;

@@ -5,16 +5,16 @@
     "infra/lwai-proxy"
   ],
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260206.0",
-    "@sveltejs/adapter-cloudflare": "^7.2.6",
-    "@sveltejs/kit": "^2.50.2",
+    "@cloudflare/workers-types": "^4.20260307.1",
+    "@sveltejs/adapter-cloudflare": "^7.2.8",
+    "@sveltejs/kit": "^2.53.4",
     "@sveltejs/vite-plugin-svelte": "^5.1.1",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
+    "lint-staged": "^16.3.2",
     "prettier": "^3.8.1",
-    "prettier-plugin-svelte": "^3.4.1",
-    "svelte": "^5.50.0",
-    "svelte-check": "^4.3.6",
+    "prettier-plugin-svelte": "^3.5.1",
+    "svelte": "^5.53.7",
+    "svelte-check": "^4.4.5",
     "typescript": "^5.9.3",
     "vite": "^6.4.1"
   },
@@ -27,6 +27,10 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky",
+    "db:migrate": "wrangler d1 migrations apply alpha-community --local",
+    "db:migrate:remote": "wrangler d1 migrations apply alpha-community --remote",
+    "db:migrate:status": "wrangler d1 migrations list alpha-community --local",
+    "db:migrate:status:remote": "wrangler d1 migrations list alpha-community --remote",
     "db:seed": "bun run scripts/seed-games.ts",
     "db:seed:remote": "bun run scripts/seed-games.ts --remote",
     "db:seed:clear": "bun run scripts/seed-games.ts --clear",
@@ -39,6 +43,6 @@
   "dependencies": {
     "@timeback/edubridge": "^0.1.5",
     "@timeback/sdk": "0.1.4",
-    "wrangler": "^4.63.0"
+    "wrangler": "^4.71.0"
   }
 }

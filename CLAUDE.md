@@ -193,11 +193,21 @@ See `/check-ui` skill for the full audit checklist.
 ## Commands
 
 ```bash
-bun install      # Install dependencies
-bun run dev      # Start dev server (http://localhost:5174)
-bun run build    # Production build
-bun run preview  # Preview production build
+bun install                # Install dependencies
+bun run dev                # Start dev server (http://localhost:5174)
+bun run build              # Production build
+bun run preview            # Preview production build
+bun run db:migrate         # Apply pending D1 migrations (local)
+bun run db:migrate:remote  # Apply pending D1 migrations (remote)
 ```
+
+---
+
+## Known Gotchas
+
+### Cloudflare account_id
+
+**Do NOT add `account_id` to `wrangler.toml`.** Cloudflare Pages projects reject it — the `pages_build_output_dir` key triggers stricter validation that blocks `account_id`. Use the `CLOUDFLARE_ACCOUNT_ID` env var instead. The developer's Cloudflare login has two accounts; the env var disambiguates which one wrangler targets.
 
 ---
 

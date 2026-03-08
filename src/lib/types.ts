@@ -1,3 +1,6 @@
+// User types
+export type UserRole = 'student' | 'admin';
+
 // Game types
 export type GameType = 'roblox' | 'minecraft' | 'web' | 'iframe';
 
