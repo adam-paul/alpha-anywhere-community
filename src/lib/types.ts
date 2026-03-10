@@ -67,8 +67,8 @@ export interface UserContext {
   id: string;
   email: string;
   displayName: string;
+  role: UserRole;
   avatarUrl?: string;
-  timebackId?: string; // OneRoster sourcedId, populated after M2M lookup
 }
 
 // Interest types for student profiles

@@ -1,6 +1,6 @@
 # Alpha Anywhere Community: Roadmap
 
-**Last updated:** 2026-02-23
+**Last updated:** 2026-03-08
 
 ---
 
@@ -50,6 +50,7 @@ games (standalone, Roblox private server support)
 - `migrations/0001_initial.sql` — Core schema (users, profiles, friendships, chat)
 - `migrations/0002_games.sql` — Games catalog with private server fields
 - `migrations/0003_gating_source.sql` — Per-student gating source cache columns
+- `migrations/0004_user_roles.sql` — User roles (`student`/`admin`)
 - `src/lib/server/db/client.ts` — Type-safe D1 client
 - `src/lib/server/db/types.ts` — TypeScript interfaces
 
@@ -77,6 +78,17 @@ games (standalone, Roblox private server support)
 Use **6173** (Wrangler) when testing D1 features or auth. Use **5173** (Vite) for fast UI iteration without auth.
 
 **Health check:** `http://localhost:6173/api/health`
+
+**Migrations:**
+
+```bash
+bun run db:migrate              # Apply pending migrations (local)
+bun run db:migrate:remote       # Apply pending migrations (remote)
+bun run db:migrate:status       # List pending migrations (local)
+bun run db:migrate:status:remote # List pending migrations (remote)
+```
+
+Order: apply remote migrations **before** deploying new code that depends on schema changes.
 
 ---
 
@@ -148,9 +160,11 @@ In-app notifications for friend requests, messages, etc. Needs migration, API (l
 
 **Goal:** Role-based access, parent controls.
 
-#### User Roles
+#### User Roles — Schema Done ✅
 
-Distinguish students, parents, admins. Migration for role column, populate from SSO claims, role check utilities for protected routes.
+`role` column on users table (`student`/`admin`, default `student`). Currently set manually via SQL. Future: map from OneRoster roles during login — `resolveTimebackId()` already makes the M2M call, just needs to capture the role field and apply a mapping constant.
+
+**Remaining:** Route guards, admin UI gating, OneRoster role mapping.
 
 #### Parent Controls
 

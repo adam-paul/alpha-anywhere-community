@@ -4,8 +4,8 @@ import type { UserContext, Student, Conversation, Message } from './types';
 export const MOCK_USER: UserContext = {
   id: 'user-001',
   email: 'alex.t@alpha.school',
-  displayName: 'Alex T.'
-  // timebackId will be populated after M2M lookup when real auth is implemented
+  displayName: 'Alex T.',
+  role: 'student'
 };
 
 // Mock students for Explore page

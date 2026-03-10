@@ -133,7 +133,8 @@ export function createDbClient(db: D1Database) {
           .prepare(
             `
 						SELECT
-							u.id, u.timeback_id, u.email, u.display_name, u.created_at, u.updated_at,
+							u.id, u.timeback_id, u.email, u.display_name, u.role,
+							u.gating_source, u.gating_source_probed_at, u.created_at, u.updated_at,
 							p.bio, p.location, p.avatar_url, p.cover_url, p.interests
 						FROM users u
 						LEFT JOIN profiles p ON u.id = p.user_id
@@ -151,8 +152,11 @@ export function createDbClient(db: D1Database) {
           timeback_id: row.timeback_id as string,
           email: row.email as string,
           display_name: row.display_name as string,
+          role: (row.role as 'student' | 'admin') ?? 'student',
           created_at: row.created_at as string,
           updated_at: row.updated_at as string,
+          gating_source: (row.gating_source as 'lwai' | 'timeback' | null) ?? null,
+          gating_source_probed_at: (row.gating_source_probed_at as string | null) ?? null,
           profile: {
             user_id: row.id as string,
             bio: row.bio as string | null,

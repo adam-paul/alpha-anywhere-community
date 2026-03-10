@@ -142,7 +142,8 @@ export function getTimeback() {
           const session: UserContext = {
             id: timebackId ?? user.sub,
             email,
-            displayName: user.name ?? email.split('@')[0] ?? 'User'
+            displayName: user.name ?? email.split('@')[0] ?? 'User',
+            role: 'student'
           };
 
           const cookieHeader = await createSessionCookieHeader(session);

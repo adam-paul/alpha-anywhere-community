@@ -256,15 +256,16 @@
 
 ### 15. Admin Features
 
-| Capability                             | LMS                 | AAC | Gap                      |
-| -------------------------------------- | ------------------- | --- | ------------------------ |
-| Admin game management (CRUD + reorder) | Yes (full UI + API) | No  | **Need admin arcade**    |
-| Admin Roblox metadata lookup           | Yes                 | No  | **Need lookup**          |
-| Admin user list                        | Yes                 | No  | **Need user management** |
-| Admin event log viewer + export        | Yes                 | No  | **Need event viewer**    |
-| Admin moderation queue                 | Yes                 | No  | **Need mod queue**       |
-| Admin flag review/dismiss              | Yes                 | No  | **Need review workflow** |
-| Admin moderation statistics            | Yes                 | No  | **Need stats**           |
+| Capability                             | LMS                 | AAC                          | Gap                                      |
+| -------------------------------------- | ------------------- | ---------------------------- | ---------------------------------------- |
+| User role system (admin/student)       | Yes                 | Yes (DB schema, manual only) | **Need route guards, OneRoster mapping** |
+| Admin game management (CRUD + reorder) | Yes (full UI + API) | No                           | **Need admin arcade**                    |
+| Admin Roblox metadata lookup           | Yes                 | No                           | **Need lookup**                          |
+| Admin user list                        | Yes                 | No                           | **Need user management**                 |
+| Admin event log viewer + export        | Yes                 | No                           | **Need event viewer**                    |
+| Admin moderation queue                 | Yes                 | No                           | **Need mod queue**                       |
+| Admin flag review/dismiss              | Yes                 | No                           | **Need review workflow**                 |
+| Admin moderation statistics            | Yes                 | No                           | **Need stats**                           |
 
 **Summary:** Admin tooling is entirely missing from AAC. LMS has a complete admin panel for games, users, events, and moderation.
 
