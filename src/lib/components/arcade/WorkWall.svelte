@@ -1,34 +1,25 @@
 <script lang="ts">
-  import type { GatingState } from '$lib/types';
+  import type { GatingStore } from '$lib/types';
   import { GATING_UNIT_LABELS } from '$lib/constants';
-  import { computeProgressPercent } from '$lib/utils/gating';
   import { Button, Icon } from '$lib/components/ui';
   import ProgressRing from './ProgressRing.svelte';
 
   interface Props {
-    gatingState: GatingState | null;
-    loading?: boolean;
-    onDismiss?: () => void;
+    gating: GatingStore;
   }
 
-  let { gatingState, loading = false, onDismiss }: Props = $props();
+  let { gating }: Props = $props();
 
-  const progressPercent = $derived(gatingState ? computeProgressPercent(gatingState) : 0);
-  const isComplete = $derived(progressPercent >= 100);
-  const modeLabel = $derived(gatingState?.mode === 'daily' ? 'today' : 'this week');
-  const unitLabel = $derived(GATING_UNIT_LABELS[gatingState?.source ?? 'lwai']);
-
-  function handleDismiss() {
-    onDismiss?.();
-  }
+  const modeLabel = $derived(gating.activeData?.mode === 'daily' ? 'today' : 'this week');
+  const unitLabel = $derived(GATING_UNIT_LABELS[gating.activeData?.source ?? 'lwai']);
 </script>
 
 <div class="work-wall">
-  <div class="work-wall-content" class:complete={isComplete && !loading}>
-    {#if loading}
+  <div class="work-wall-content" class:complete={gating.isGoalComplete && !gating.isLoading}>
+    {#if gating.isLoading}
       <!-- Loading state -->
       <div class="loading-icon">
-        <Icon name="clock" size={48} />
+        <Icon name="lock" size={48} />
       </div>
 
       <h3 class="work-wall-title">Checking Progress...</h3>
@@ -42,62 +33,65 @@
           <span class="progress-required">— {unitLabel}</span>
         </div>
       </div>
-    {:else if isComplete}
-      <!-- Completed state -->
-      <div class="unlock-icon">
-        <Icon name="unlock" size={48} />
-      </div>
-
-      <h3 class="work-wall-title">Goal Complete!</h3>
-      <p class="work-wall-message">
-        Great work {modeLabel}! You've earned your play time.
-      </p>
-
-      <div class="progress-container">
-        <ProgressRing progress={progressPercent} size={120} strokeWidth={10} />
-        <div class="progress-label">
-          <span class="progress-current complete">{gatingState.progressCurrent}</span>
-          <span class="progress-separator">/</span>
-          <span class="progress-required">{gatingState.progressRequired} {unitLabel}</span>
+    {:else if gating.activeData}
+      <!-- Data loaded -->
+      {#if gating.isGoalComplete}
+        <!-- Completed state -->
+        <div class="unlock-icon">
+          <Icon name="unlock" size={48} />
         </div>
-      </div>
 
-      <p class="congrats-text">You crushed it! Time to play.</p>
+        <h3 class="work-wall-title">Goal Complete!</h3>
+        <p class="work-wall-message">
+          Great work {modeLabel}! You've earned your play time.
+        </p>
 
-      <div class="unlock-btn">
-        <Button variant="primary" size="lg" onclick={handleDismiss}>Enter Arcade</Button>
-      </div>
-    {:else}
-      <!-- In-progress state -->
-      <div class="lock-icon">
-        <Icon name="lock" size={48} />
-      </div>
-
-      <h3 class="work-wall-title">Complete Your Goals</h3>
-      <p class="work-wall-message">
-        Finish your learning goals {modeLabel} to unlock the Arcade!
-      </p>
-
-      <div class="progress-container">
-        <ProgressRing progress={progressPercent} size={120} strokeWidth={10} />
-        <div class="progress-label">
-          <span class="progress-current">{gatingState.progressCurrent}</span>
-          <span class="progress-separator">/</span>
-          <span class="progress-required">{gatingState.progressRequired} {unitLabel}</span>
+        <div class="progress-container">
+          <ProgressRing progress={gating.progressPercent} size={120} strokeWidth={10} />
+          <div class="progress-label">
+            <span class="progress-current complete">{gating.activeData.progressCurrent}</span>
+            <span class="progress-separator">/</span>
+            <span class="progress-required">{gating.activeData.progressRequired} {unitLabel}</span>
+          </div>
         </div>
-      </div>
 
-      <p class="motivation-text">
-        {#if progressPercent < 25}
-          You've got this! Start strong.
-        {:else if progressPercent < 50}
-          Great start! Keep the momentum going.
-        {:else if progressPercent < 75}
-          Halfway there! You're doing amazing.
-        {:else}
-          Almost there! Just a little more.
-        {/if}
-      </p>
+        <p class="congrats-text">You crushed it! Time to play.</p>
+
+        <div class="unlock-btn">
+          <Button variant="primary" size="lg" onclick={gating.dismiss}>Enter Arcade</Button>
+        </div>
+      {:else}
+        <!-- In-progress state -->
+        <div class="lock-icon">
+          <Icon name="lock" size={48} />
+        </div>
+
+        <h3 class="work-wall-title">Complete Your Goals</h3>
+        <p class="work-wall-message">
+          Finish your learning goals {modeLabel} to unlock the Arcade!
+        </p>
+
+        <div class="progress-container">
+          <ProgressRing progress={gating.progressPercent} size={120} strokeWidth={10} />
+          <div class="progress-label">
+            <span class="progress-current">{gating.activeData.progressCurrent}</span>
+            <span class="progress-separator">/</span>
+            <span class="progress-required">{gating.activeData.progressRequired} {unitLabel}</span>
+          </div>
+        </div>
+
+        <p class="motivation-text">
+          {#if gating.progressPercent < 25}
+            You've got this! Start strong.
+          {:else if gating.progressPercent < 50}
+            Great start! Keep the momentum going.
+          {:else if gating.progressPercent < 75}
+            Halfway there! You're doing amazing.
+          {:else}
+            Almost there! Just a little more.
+          {/if}
+        </p>
+      {/if}
     {/if}
   </div>
 </div>

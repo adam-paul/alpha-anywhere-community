@@ -1,11 +1,12 @@
 <script lang="ts">
+  import type { IconName } from '$lib/types';
   import Icon from './Icon.svelte';
 
   type Shape = 'ghost' | 'circle';
   type Size = 'sm' | 'md';
 
   interface Props {
-    icon: Parameters<typeof Icon>[0]['name'];
+    icon: IconName;
     shape?: Shape;
     size?: Size;
     label: string;

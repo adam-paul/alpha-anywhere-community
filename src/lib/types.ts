@@ -1,3 +1,23 @@
+// UI types
+export type IconName =
+  | 'search'
+  | 'chat'
+  | 'gamepad'
+  | 'user'
+  | 'users'
+  | 'bell'
+  | 'lock'
+  | 'unlock'
+  | 'map'
+  | 'chevron-right'
+  | 'x'
+  | 'edit'
+  | 'plus'
+  | 'send'
+  | 'info'
+  | 'more'
+  | 'check';
+
 // User types
 export type UserRole = 'student' | 'admin';
 

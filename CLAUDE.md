@@ -111,6 +111,7 @@ Types are **always abstracted** to dedicated type files and have exactly one hom
 - Component-local: `$state` / `$derived`
 - Cross-component: Svelte context (`setContext` / `getContext`)
 - No global stores unless absolutely necessary
+- **Pass the store, not its pieces.** If a component consumes data from a store, pass the store object — don't destructure it into individual props at the call site. Destructuring loses type narrowing, creates coupled props, and makes the parent responsible for relationships the store already manages. Exception: UI primitives (`components/ui/`) stay domain-agnostic and receive plain props, never stores.
 
 ### Avoiding Boolean Flag Creep
 

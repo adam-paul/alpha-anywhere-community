@@ -63,11 +63,7 @@
   <GameGrid disabled={gating.showWorkWall} />
 
   {#if gating.showWorkWall}
-    <WorkWall
-      gatingState={gating.activeData}
-      loading={gating.isLoading}
-      onDismiss={gating.dismiss}
-    />
+    <WorkWall {gating} />
   {/if}
 </div>
 

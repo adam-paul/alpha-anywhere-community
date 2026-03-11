@@ -1,22 +1,5 @@
 <script lang="ts">
-  type IconName =
-    | 'search'
-    | 'chat'
-    | 'gamepad'
-    | 'user'
-    | 'users'
-    | 'bell'
-    | 'lock'
-    | 'unlock'
-    | 'map'
-    | 'chevron-right'
-    | 'x'
-    | 'edit'
-    | 'plus'
-    | 'send'
-    | 'info'
-    | 'more'
-    | 'check';
+  import type { IconName } from '$lib/types';
 
   interface Props {
     name: IconName;
