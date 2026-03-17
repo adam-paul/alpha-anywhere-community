@@ -56,14 +56,14 @@ games (standalone, Roblox private server support)
 
 ### Not Yet Wired
 
-| Feature            | Status        | Notes                                            |
-| ------------------ | ------------- | ------------------------------------------------ |
-| Chat → D1          | Not connected | Still uses `MOCK_CONVERSATIONS`, `MOCK_MESSAGES` |
-| Student Map        | Placeholder   | UI exists, shows "Coming soon"                   |
-| Real-time Presence | None          | No "who's online" functionality                  |
-| Chat Moderation    | None          | No content filtering                             |
-| Parent Controls    | None          | No ToS, no per-child toggles                     |
-| Notifications      | None          | Schema not yet added                             |
+| Feature            | Status        | Notes                                                                                    |
+| ------------------ | ------------- | ---------------------------------------------------------------------------------------- |
+| Chat → D1          | Not connected | Still uses `MOCK_CONVERSATIONS`, `MOCK_MESSAGES`                                         |
+| Student Map        | Placeholder   | UI exists, shows "Coming soon"                                                           |
+| Real-time Presence | None          | No "who's online" functionality                                                          |
+| Chat Moderation    | None          | No content filtering                                                                     |
+| Parent Controls    | None          | No ToS, no per-child toggles                                                             |
+| Notifications      | Stopgap       | Pending friend requests shown on profile + sidebar badge; no general notification system |
 
 ---
 
@@ -136,7 +136,7 @@ Chat UI is complete and DB schema + client methods exist. Ready to wire.
 
 Send/accept/decline/unfriend with full API (`/api/friends/{request,accept,remove}`), state-aware ProfileHeader button (hover-to-cancel on pending), friends list on own profile, mutual friends on others' profiles. Decline = delete row (re-request always possible). No `declined` status in schema.
 
-**Not yet done:** Friend request notifications, 30-day request expiry, blocking (separate feature).
+**Not yet done:** General notification system (friend requests currently surfaced via profile page + sidebar badge as stopgap), 30-day request expiry, blocking (separate feature).
 
 #### Student Map
 
@@ -153,7 +153,14 @@ Show who's online and who's playing what.
 
 #### Notifications
 
-In-app notifications for friend requests, messages, etc. Needs migration, API (list, mark read), notification bell with unread count.
+Full in-app notification system. Currently friend requests are surfaced via the user's own profile page and a sidebar badge — this is a stopgap. A proper system is needed before chat goes live, since chat messages will also need notifications.
+
+- **Migration:** `notifications` table (user_id, type, payload JSON, read_at, created_at)
+- **API:** `GET /api/notifications` (list, paginated), `POST /api/notifications/read` (mark read/all-read)
+- **UI:** Notification bell in sidebar or header with unread count badge, dropdown or dedicated page for notification list
+- **Event sources:** Friend requests (pending), chat messages (new message in conversation), moderation actions, system announcements
+- **Delivery:** Start with poll-on-navigation (layout server load). Upgrade to SSE or WebSocket for real-time later
+- **Cleanup:** Once live, remove the stopgap pending-request count from layout server load and sidebar badge — replace with general notification count
 
 ---
 
