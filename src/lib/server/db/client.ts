@@ -225,6 +225,16 @@ export function createDbClient(db: D1Database) {
     // =========================================================================
     friendships: {
       /**
+       * Find a friendship by ID.
+       */
+      async findById(friendshipId: string): Promise<DbFriendship | null> {
+        return db
+          .prepare('SELECT * FROM friendships WHERE id = ?')
+          .bind(friendshipId)
+          .first<DbFriendship>();
+      },
+
+      /**
        * Send a friend request.
        */
       async sendRequest(requesterId: string, addresseeId: string): Promise<DbFriendship> {
@@ -281,6 +291,70 @@ export function createDbClient(db: D1Database) {
           .bind(userId, userId)
           .all<DbUser>();
         return results;
+      },
+
+      /**
+       * Remove a friendship (decline, cancel, or unfriend). Deletes the row.
+       */
+      async remove(friendshipId: string): Promise<void> {
+        await db.prepare('DELETE FROM friendships WHERE id = ?').bind(friendshipId).run();
+      },
+
+      /**
+       * Get the friendship row between two users (either direction), or null.
+       */
+      async getStatus(userId1: string, userId2: string): Promise<DbFriendship | null> {
+        return db
+          .prepare(
+            `
+						SELECT * FROM friendships
+						WHERE (requester_id = ? AND addressee_id = ?)
+						   OR (requester_id = ? AND addressee_id = ?)
+					`
+          )
+          .bind(userId1, userId2, userId2, userId1)
+          .first<DbFriendship>();
+      },
+
+      /**
+       * Get mutual friends between two users (intersection of accepted friend lists).
+       */
+      async getMutualFriends(userId1: string, userId2: string): Promise<DbUser[]> {
+        const { results } = await db
+          .prepare(
+            `
+						SELECT u.* FROM users u
+						WHERE u.id IN (
+							SELECT CASE WHEN f.requester_id = ? THEN f.addressee_id ELSE f.requester_id END
+							FROM friendships f
+							WHERE (f.requester_id = ? OR f.addressee_id = ?) AND f.status = 'accepted'
+						)
+						AND u.id IN (
+							SELECT CASE WHEN f.requester_id = ? THEN f.addressee_id ELSE f.requester_id END
+							FROM friendships f
+							WHERE (f.requester_id = ? OR f.addressee_id = ?) AND f.status = 'accepted'
+						)
+					`
+          )
+          .bind(userId1, userId1, userId1, userId2, userId2, userId2)
+          .all<DbUser>();
+        return results;
+      },
+
+      /**
+       * Count accepted friendships for a user.
+       */
+      async getFriendCount(userId: string): Promise<number> {
+        const result = await db
+          .prepare(
+            `
+						SELECT COUNT(*) as count FROM friendships
+						WHERE (requester_id = ? OR addressee_id = ?) AND status = 'accepted'
+					`
+          )
+          .bind(userId, userId)
+          .first<{ count: number }>();
+        return result?.count ?? 0;
       },
 
       /**

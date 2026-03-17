@@ -54,7 +54,7 @@ CREATE TABLE friendships (
   id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
   requester_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   addressee_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'declined', 'blocked')),
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'blocked')),
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
 

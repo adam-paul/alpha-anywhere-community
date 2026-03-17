@@ -11,6 +11,7 @@
     type?: 'button' | 'submit' | 'reset';
     onclick?: (e: MouseEvent) => void;
     children: Snippet;
+    sizeFrom?: Snippet;
   }
 
   let {
@@ -19,12 +20,22 @@
     disabled = false,
     type = 'button',
     onclick,
-    children
+    children,
+    sizeFrom
   }: Props = $props();
 </script>
 
-<button class="btn btn-{variant} size-{size}" {type} {disabled} {onclick}>
-  {@render children()}
+<button
+  class="btn btn-{variant} size-{size}"
+  class:has-sizer={!!sizeFrom}
+  {type}
+  {disabled}
+  {onclick}
+>
+  {#if sizeFrom}
+    <span class="btn-sizer" aria-hidden="true">{@render sizeFrom()}</span>
+  {/if}
+  <span class="btn-content">{@render children()}</span>
 </button>
 
 <style>
@@ -59,6 +70,26 @@
   .btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  /* sizeFrom: invisible content that sets minimum button width */
+  .btn.has-sizer {
+    display: inline-grid;
+    align-items: center;
+    justify-items: center;
+  }
+
+  .btn.has-sizer .btn-content,
+  .btn.has-sizer .btn-sizer {
+    grid-area: 1 / 1;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .btn-sizer {
+    visibility: hidden;
+    pointer-events: none;
   }
 
   /* Sizes */

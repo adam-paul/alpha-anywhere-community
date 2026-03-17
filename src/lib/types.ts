@@ -84,7 +84,8 @@ export interface GatingResponse {
 }
 
 export interface UserContext {
-  id: string;
+  id: string; // D1 internal ID (primary key in users table)
+  timebackId: string; // Timeback OneRoster sourcedId (external)
   email: string;
   displayName: string;
   role: UserRole;
@@ -116,6 +117,14 @@ export type Interest =
   | 'baking'
   | 'tennis'
   | 'drawing';
+
+// Friendship status for profile button state
+export type FriendshipStatus =
+  | { kind: 'none' }
+  | { kind: 'pending-sent'; friendshipId: string }
+  | { kind: 'pending-received'; friendshipId: string }
+  | { kind: 'friends'; friendshipId: string }
+  | { kind: 'self' };
 
 // Student profile
 export interface Student {

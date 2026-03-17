@@ -1,12 +1,13 @@
 /**
  * Profile page server load
  *
- * Fetches user and profile from D1.
+ * Fetches user, profile, and friendship data from D1.
  * Handles 'me' as a special ID that resolves to the current user.
  */
 
 import { error, redirect } from '@sveltejs/kit';
 import { createDbClient } from '$lib/server/db/client';
+import type { FriendshipStatus } from '$lib/types';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, locals, platform }) => {
@@ -17,21 +18,7 @@ export const load: PageServerLoad = async ({ params, locals, platform }) => {
     if (!locals.user) {
       redirect(302, '/');
     }
-
-    if (!platform?.env?.DB) {
-      error(503, 'Database not available');
-    }
-
-    const db = createDbClient(platform.env.DB);
-    // Look up by email (stable across Cognito pools)
-    const dbUser = await db.users.findByEmail(locals.user.email);
-
-    if (!dbUser) {
-      error(404, 'User not found');
-    }
-
-    // Redirect to canonical URL with actual ID
-    redirect(302, `/profile/${dbUser.id}`);
+    redirect(302, `/profile/${locals.user.id}`);
   }
 
   // Fetch user by D1 internal ID
@@ -49,7 +36,49 @@ export const load: PageServerLoad = async ({ params, locals, platform }) => {
   const dbProfile = await db.profiles.findByUserId(dbUser.id);
 
   // Check if this is the current user's own profile
-  const isOwnProfile = locals.user?.id === dbUser.timeback_id;
+  const isOwnProfile = locals.user?.id === dbUser.id;
+  const viewerId = locals.user?.id;
+
+  // Load friendship data
+  let friendshipStatus: FriendshipStatus = isOwnProfile ? { kind: 'self' } : { kind: 'none' };
+  let friends: Array<{ id: string; displayName: string; avatarUrl: string | null }> = [];
+  let mutualFriends: Array<{ id: string; displayName: string; avatarUrl: string | null }> = [];
+
+  if (isOwnProfile) {
+    // Own profile: load full friends list
+    const friendDbUsers = await db.friendships.getFriends(dbUser.id);
+    const friendProfiles = await Promise.all(
+      friendDbUsers.map((u) => db.profiles.findByUserId(u.id))
+    );
+    friends = friendDbUsers.map((u, i) => ({
+      id: u.id,
+      displayName: u.display_name,
+      avatarUrl: friendProfiles[i]?.avatar_url ?? null
+    }));
+  } else if (viewerId) {
+    // Other profile: load friendship status and mutual friends
+    const row = await db.friendships.getStatus(viewerId, dbUser.id);
+    if (row) {
+      if (row.status === 'accepted') {
+        friendshipStatus = { kind: 'friends', friendshipId: row.id };
+      } else if (row.status === 'pending') {
+        friendshipStatus =
+          row.requester_id === viewerId
+            ? { kind: 'pending-sent', friendshipId: row.id }
+            : { kind: 'pending-received', friendshipId: row.id };
+      }
+    }
+
+    const mutualDbUsers = await db.friendships.getMutualFriends(viewerId, dbUser.id);
+    const mutualProfiles = await Promise.all(
+      mutualDbUsers.map((u) => db.profiles.findByUserId(u.id))
+    );
+    mutualFriends = mutualDbUsers.map((u, i) => ({
+      id: u.id,
+      displayName: u.display_name,
+      avatarUrl: mutualProfiles[i]?.avatar_url ?? null
+    }));
+  }
 
   return {
     user: {
@@ -73,6 +102,9 @@ export const load: PageServerLoad = async ({ params, locals, platform }) => {
           coverUrl: null,
           interests: []
         },
-    isOwnProfile
+    isOwnProfile,
+    friendshipStatus,
+    friends,
+    mutualFriends
   };
 };

@@ -34,7 +34,7 @@ export interface DbFriendship {
   id: string;
   requester_id: string;
   addressee_id: string;
-  status: 'pending' | 'accepted' | 'declined' | 'blocked';
+  status: 'pending' | 'accepted' | 'blocked';
   created_at: string;
   updated_at: string;
 }

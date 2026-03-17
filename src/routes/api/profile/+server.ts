@@ -19,12 +19,7 @@ export const PATCH: RequestHandler = async ({ request, locals, platform }) => {
   }
 
   const db = createDbClient(platform.env.DB);
-
-  // Get the user's internal ID (by email, stable across Cognito pools)
-  const dbUser = await db.users.findByEmail(locals.user.email);
-  if (!dbUser) {
-    error(404, 'User not found');
-  }
+  const userId = locals.user.id;
 
   // Parse and validate request body
   const body = await request.json();
@@ -38,7 +33,7 @@ export const PATCH: RequestHandler = async ({ request, locals, platform }) => {
   }
 
   // Update the profile
-  const updatedProfile = await db.profiles.upsert(dbUser.id, {
+  const updatedProfile = await db.profiles.upsert(userId, {
     bio: bio ?? undefined,
     location: location ?? undefined,
     interests: interests ?? undefined

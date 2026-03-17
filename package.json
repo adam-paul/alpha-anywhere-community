@@ -43,6 +43,6 @@
   "dependencies": {
     "@timeback/edubridge": "^0.1.5",
     "@timeback/sdk": "0.1.4",
-    "wrangler": "^4.71.0"
+    "wrangler": "^4.74.0"
   }
 }

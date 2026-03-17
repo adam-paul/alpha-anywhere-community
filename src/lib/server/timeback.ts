@@ -139,8 +139,10 @@ export function getTimeback() {
             console.warn(`Could not resolve Timeback ID for ${email}, using Cognito sub`);
           }
 
+          const tbId = timebackId ?? user.sub;
           const session: UserContext = {
-            id: timebackId ?? user.sub,
+            id: tbId, // Temporary — hooks.server.ts replaces with D1 ID on next request
+            timebackId: tbId,
             email,
             displayName: user.name ?? email.split('@')[0] ?? 'User',
             role: 'student'
@@ -161,7 +163,7 @@ export function getTimeback() {
         getUser: async (req) => {
           const session = await getSessionFromRequest(req);
           if (!session) return undefined;
-          return { id: session.id, email: session.email, name: session.displayName };
+          return { id: session.timebackId, email: session.email, name: session.displayName };
         }
       }
     });

@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { Avatar, Button } from '$lib/components/ui';
+  import { Avatar, Button, Icon } from '$lib/components/ui';
+  import type { FriendshipStatus } from '$lib/types';
 
   interface ProfileStudent {
     displayName: string;
@@ -12,12 +13,13 @@
 
   interface Props {
     student: ProfileStudent;
-    isOwnProfile?: boolean;
+    friendshipStatus: FriendshipStatus;
     isEditing?: boolean;
     onEdit?: () => void;
+    onFriendAction?: (action: 'request' | 'accept' | 'remove', friendshipId?: string) => void;
   }
 
-  let { student, isOwnProfile = false, isEditing = false, onEdit }: Props = $props();
+  let { student, friendshipStatus, isEditing = false, onEdit, onFriendAction }: Props = $props();
 </script>
 
 <div class="profile-header">
@@ -41,13 +43,52 @@
           <h1 class="display-name">{student.displayName}</h1>
           <span class="handle">@{student.handle}</span>
         </div>
-        {#if isOwnProfile}
-          {#if !isEditing}
-            <Button variant="secondary" size="sm" onclick={onEdit}>Edit Profile</Button>
+        <div class="actions">
+          {#if friendshipStatus.kind === 'self'}
+            {#if !isEditing}
+              <Button variant="secondary" size="sm" onclick={onEdit}>Edit Profile</Button>
+            {/if}
+          {:else if friendshipStatus.kind === 'none'}
+            <Button variant="primary" size="sm" onclick={() => onFriendAction?.('request')}>
+              Add Friend
+            </Button>
+          {:else if friendshipStatus.kind === 'pending-sent'}
+            <div class="pending-sent-wrap">
+              <Button
+                variant="secondary"
+                size="sm"
+                onclick={() => onFriendAction?.('remove', friendshipStatus.friendshipId)}
+              >
+                {#snippet sizeFrom()}Request Sent{/snippet}
+                <span class="pending-label">Request Sent</span>
+                <span class="cancel-label"><Icon name="x" size={14} /> Cancel</span>
+              </Button>
+            </div>
+          {:else if friendshipStatus.kind === 'pending-received'}
+            <Button
+              variant="primary"
+              size="sm"
+              onclick={() => onFriendAction?.('accept', friendshipStatus.friendshipId)}
+            >
+              Accept
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onclick={() => onFriendAction?.('remove', friendshipStatus.friendshipId)}
+            >
+              Decline
+            </Button>
+          {:else if friendshipStatus.kind === 'friends'}
+            <Button
+              variant="secondary"
+              size="sm"
+              onclick={() => onFriendAction?.('remove', friendshipStatus.friendshipId)}
+            >
+              Unfriend
+            </Button>
           {/if}
-        {:else}
-          <Button variant="primary" size="sm">Send Friend Request</Button>
-        {/if}
+        </div>
       </div>
 
       <div class="meta-row">
@@ -137,6 +178,11 @@
     color: var(--color-text-muted);
   }
 
+  .actions {
+    display: flex;
+    gap: var(--space-2);
+  }
+
   .meta-row {
     display: flex;
     align-items: center;
@@ -147,5 +193,24 @@
 
   .separator {
     color: var(--color-border);
+  }
+
+  .pending-sent-wrap .cancel-label {
+    display: none;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .pending-sent-wrap:hover .pending-label {
+    display: none;
+  }
+
+  .pending-sent-wrap:hover .cancel-label {
+    display: inline-flex;
+  }
+
+  .pending-sent-wrap:hover :global(.btn) {
+    border-color: var(--color-border);
+    color: #c53030;
   }
 </style>

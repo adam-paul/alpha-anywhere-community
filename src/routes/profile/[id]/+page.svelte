@@ -1,6 +1,6 @@
 <script lang="ts">
   import { invalidateAll } from '$app/navigation';
-  import { Button, Badge } from '$lib/components/ui';
+  import { Avatar, Button } from '$lib/components/ui';
   import InterestBadge from '$lib/components/InterestBadge.svelte';
   import ProfileHeader from '$lib/components/profile/ProfileHeader.svelte';
   import { INTERESTS } from '$lib/constants';
@@ -38,6 +38,13 @@
     interests: data.profile.interests,
     joinedDate
   });
+
+  // Friends section (own profile: friends, other profile: mutual friends)
+  const friendsLabel = $derived(data.isOwnProfile ? 'Friends' : 'Mutual Friends');
+  const friendsList = $derived(data.isOwnProfile ? data.friends : data.mutualFriends);
+  const friendsEmptyMessage = $derived(
+    data.isOwnProfile ? "You haven't added any friends yet." : 'No mutual friends yet.'
+  );
 
   // All available interests for the picker
   const allInterests = Object.keys(INTERESTS) as Interest[];
@@ -88,13 +95,59 @@
       isSaving = false;
     }
   }
+
+  async function handleFriendAction(
+    action: 'request' | 'accept' | 'remove',
+    friendshipId?: string
+  ) {
+    try {
+      let url: string;
+      let body: Record<string, string>;
+
+      switch (action) {
+        case 'request':
+          url = '/api/friends/request';
+          body = { addresseeId: data.user.id };
+          break;
+        case 'accept':
+          url = '/api/friends/accept';
+          body = { friendshipId: friendshipId! };
+          break;
+        case 'remove':
+          url = '/api/friends/remove';
+          body = { friendshipId: friendshipId! };
+          break;
+      }
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to ${action} friend`);
+      }
+
+      await invalidateAll();
+    } catch (error) {
+      console.error(`Friend action failed:`, error);
+      // TODO: Show error toast
+    }
+  }
 </script>
 
 <svelte:head>
   <title>{data.user.displayName} - Profile - Alpha Anywhere Community</title>
 </svelte:head>
 
-<ProfileHeader {student} isOwnProfile={data.isOwnProfile} {isEditing} onEdit={startEditing} />
+<ProfileHeader
+  {student}
+  friendshipStatus={data.friendshipStatus}
+  {isEditing}
+  onEdit={startEditing}
+  onFriendAction={handleFriendAction}
+/>
 
 {#if isEditing}
   <!-- Edit Mode -->
@@ -179,6 +232,27 @@
         </p>
       {/if}
     </section>
+
+    <section class="profile-section">
+      <h3 class="section-title">{friendsLabel} ({friendsList.length})</h3>
+      {#if friendsList.length === 0}
+        <p class="about-text empty">{friendsEmptyMessage}</p>
+      {:else}
+        <div class="friends-list">
+          {#each friendsList as friend (friend.id)}
+            <a href="/profile/{friend.id}" class="friend-item">
+              <Avatar
+                src={friend.avatarUrl ?? undefined}
+                alt={friend.displayName}
+                size="sm"
+                fallback={friend.displayName.charAt(0)}
+              />
+              <span class="friend-name">{friend.displayName}</span>
+            </a>
+          {/each}
+        </div>
+      {/if}
+    </section>
   </div>
 {/if}
 
@@ -214,6 +288,33 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
+  }
+
+  .friends-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .friend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: inherit;
+    transition: background var(--transition-fast);
+  }
+
+  .friend-item:hover {
+    background: var(--color-bg);
+  }
+
+  .friend-name {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
   }
 
   .about-text.empty {
