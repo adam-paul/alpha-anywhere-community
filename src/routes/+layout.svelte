@@ -7,6 +7,7 @@
   interface Props {
     data: {
       user: import('$lib/types').UserContext | null;
+      pendingFriendRequestCount: number;
     };
     children: import('svelte').Snippet;
   }
@@ -19,7 +20,7 @@
 </script>
 
 <div class="app-root" data-theme="cel-shaded">
-  <AppShell>
+  <AppShell pendingFriendRequestCount={data.pendingFriendRequestCount}>
     {@render children()}
   </AppShell>
 </div>

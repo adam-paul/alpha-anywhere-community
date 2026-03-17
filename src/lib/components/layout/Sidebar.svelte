@@ -5,11 +5,17 @@
   import { SignInButton } from '@timeback/sdk/svelte';
   import { getUserStore } from '$lib/stores/user.svelte';
 
+  interface Props {
+    pendingFriendRequestCount?: number;
+  }
+
   interface NavItem {
     href: string;
     label: string;
     icon: 'search' | 'chat' | 'gamepad';
   }
+
+  let { pendingFriendRequestCount = 0 }: Props = $props();
 
   const userStore = getUserStore();
 
@@ -53,6 +59,14 @@
           size="sm"
           fallback={userStore.user.displayName.charAt(0)}
         />
+        {#if pendingFriendRequestCount > 0}
+          <span
+            class="notification-badge"
+            aria-label="{pendingFriendRequestCount} pending friend requests"
+          >
+            {pendingFriendRequestCount}
+          </span>
+        {/if}
       </a>
       <div class="user-info">
         <a href="/profile/me" class="user-name-link">{userStore.user.displayName}</a>
@@ -120,12 +134,31 @@
 
   .user-profile-link {
     display: block;
+    position: relative;
     border-radius: 50%;
     transition: opacity var(--transition-fast);
   }
 
   .user-profile-link:hover {
     opacity: 0.8;
+  }
+
+  .notification-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    font-size: 11px;
+    font-weight: 700;
+    color: white;
+    background: var(--color-error);
+    border-radius: 9px;
+    border: 2px solid var(--color-bg);
   }
 
   .user-info {

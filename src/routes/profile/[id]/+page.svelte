@@ -1,6 +1,6 @@
 <script lang="ts">
   import { invalidateAll } from '$app/navigation';
-  import { Avatar, Button } from '$lib/components/ui';
+  import { Avatar, Button, Icon } from '$lib/components/ui';
   import InterestBadge from '$lib/components/InterestBadge.svelte';
   import ProfileHeader from '$lib/components/profile/ProfileHeader.svelte';
   import { INTERESTS } from '$lib/constants';
@@ -235,23 +235,68 @@
 
     <section class="profile-section">
       <h3 class="section-title">{friendsLabel} ({friendsList.length})</h3>
-      {#if friendsList.length === 0}
-        <p class="about-text empty">{friendsEmptyMessage}</p>
-      {:else}
-        <div class="friends-list">
-          {#each friendsList as friend (friend.id)}
-            <a href="/profile/{friend.id}" class="friend-item">
-              <Avatar
-                src={friend.avatarUrl ?? undefined}
-                alt={friend.displayName}
-                size="sm"
-                fallback={friend.displayName.charAt(0)}
-              />
-              <span class="friend-name">{friend.displayName}</span>
-            </a>
-          {/each}
+
+      <div
+        class="friends-columns"
+        class:has-requests={data.isOwnProfile && data.pendingRequests.length > 0}
+      >
+        <div class="friends-column">
+          {#if friendsList.length === 0}
+            <p class="about-text empty">{friendsEmptyMessage}</p>
+          {:else}
+            <div class="friends-list">
+              {#each friendsList as friend (friend.id)}
+                <a href="/profile/{friend.id}" class="friend-item">
+                  <Avatar
+                    src={friend.avatarUrl ?? undefined}
+                    alt={friend.displayName}
+                    size="sm"
+                    fallback={friend.displayName.charAt(0)}
+                  />
+                  <span class="friend-name">{friend.displayName}</span>
+                </a>
+              {/each}
+            </div>
+          {/if}
         </div>
-      {/if}
+
+        {#if data.isOwnProfile && data.pendingRequests.length > 0}
+          <div class="requests-column">
+            <h4 class="subsection-title">Pending Requests ({data.pendingRequests.length})</h4>
+            <div class="friend-requests-list">
+              {#each data.pendingRequests as request (request.friendshipId)}
+                <div class="friend-request-item">
+                  <a href="/profile/{request.id}" class="friend-item">
+                    <Avatar
+                      src={request.avatarUrl ?? undefined}
+                      alt={request.displayName}
+                      size="sm"
+                      fallback={request.displayName.charAt(0)}
+                    />
+                    <span class="friend-name">{request.displayName}</span>
+                  </a>
+                  <div class="friend-request-actions">
+                    <button
+                      class="action-btn action-accept"
+                      onclick={() => handleFriendAction('accept', request.friendshipId)}
+                      aria-label="Accept friend request from {request.displayName}"
+                    >
+                      <Icon name="check" size={16} />
+                    </button>
+                    <button
+                      class="action-btn action-decline"
+                      onclick={() => handleFriendAction('remove', request.friendshipId)}
+                      aria-label="Decline friend request from {request.displayName}"
+                    >
+                      <Icon name="x" size={16} />
+                    </button>
+                  </div>
+                </div>
+              {/each}
+            </div>
+          </div>
+        {/if}
+      </div>
     </section>
   </div>
 {/if}
@@ -320,6 +365,92 @@
   .about-text.empty {
     color: var(--color-text-muted);
     font-style: italic;
+  }
+
+  .friends-columns {
+    display: block;
+  }
+
+  .friends-columns.has-requests {
+    display: flex;
+    gap: 0;
+  }
+
+  .friends-column {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .friends-columns.has-requests .friends-column {
+    /* Align cards with the right column by matching the subsection title height */
+    padding-top: calc(var(--font-size-sm) * 1.5 + var(--space-3));
+    padding-right: var(--space-5);
+  }
+
+  .requests-column {
+    flex: 1;
+    min-width: 0;
+    padding-left: var(--space-5);
+    border-left: 1px solid var(--color-border);
+  }
+
+  .subsection-title {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .friend-requests-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .friend-request-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .friend-request-actions {
+    display: flex;
+    gap: var(--space-2);
+    flex-shrink: 0;
+  }
+
+  .action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    background: transparent;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .action-accept {
+    color: var(--color-success);
+  }
+
+  .action-accept:hover {
+    background: var(--color-success);
+    border-color: var(--color-success);
+    color: white;
+  }
+
+  .action-decline {
+    color: var(--color-error);
+  }
+
+  .action-decline:hover {
+    background: var(--color-error);
+    border-color: var(--color-error);
+    color: white;
   }
 
   /* Edit mode styles */

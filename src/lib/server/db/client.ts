@@ -354,6 +354,39 @@ export function createDbClient(db: D1Database) {
           .bind(userId, userId)
           .first<{ count: number }>();
         return result?.count ?? 0;
+      },
+
+      /**
+       * Get all pending incoming friend requests for a user.
+       */
+      async getPendingRequests(userId: string): Promise<DbFriendship[]> {
+        const { results } = await db
+          .prepare(
+            `
+						SELECT * FROM friendships
+						WHERE addressee_id = ? AND status = 'pending'
+						ORDER BY created_at DESC
+					`
+          )
+          .bind(userId)
+          .all<DbFriendship>();
+        return results;
+      },
+
+      /**
+       * Count pending incoming friend requests for a user.
+       */
+      async getPendingRequestCount(userId: string): Promise<number> {
+        const result = await db
+          .prepare(
+            `
+						SELECT COUNT(*) as count FROM friendships
+						WHERE addressee_id = ? AND status = 'pending'
+					`
+          )
+          .bind(userId)
+          .first<{ count: number }>();
+        return result?.count ?? 0;
       }
     },
 

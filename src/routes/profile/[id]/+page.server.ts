@@ -43,10 +43,19 @@ export const load: PageServerLoad = async ({ params, locals, platform }) => {
   let friendshipStatus: FriendshipStatus = isOwnProfile ? { kind: 'self' } : { kind: 'none' };
   let friends: Array<{ id: string; displayName: string; avatarUrl: string | null }> = [];
   let mutualFriends: Array<{ id: string; displayName: string; avatarUrl: string | null }> = [];
+  let pendingRequests: Array<{
+    friendshipId: string;
+    id: string;
+    displayName: string;
+    avatarUrl: string | null;
+  }> = [];
 
   if (isOwnProfile) {
-    // Own profile: load full friends list
-    const friendDbUsers = await db.friendships.getFriends(dbUser.id);
+    // Own profile: load full friends list and pending incoming requests
+    const [friendDbUsers, pendingFriendships] = await Promise.all([
+      db.friendships.getFriends(dbUser.id),
+      db.friendships.getPendingRequests(dbUser.id)
+    ]);
     const friendProfiles = await Promise.all(
       friendDbUsers.map((u) => db.profiles.findByUserId(u.id))
     );
@@ -55,6 +64,22 @@ export const load: PageServerLoad = async ({ params, locals, platform }) => {
       displayName: u.display_name,
       avatarUrl: friendProfiles[i]?.avatar_url ?? null
     }));
+
+    // Resolve requester info for pending requests
+    const pendingWithUsers = await Promise.all(
+      pendingFriendships.map(async (f) => {
+        const requester = await db.users.findById(f.requester_id);
+        if (!requester) return null;
+        const profile = await db.profiles.findByUserId(requester.id);
+        return {
+          friendshipId: f.id,
+          id: requester.id,
+          displayName: requester.display_name,
+          avatarUrl: profile?.avatar_url ?? null
+        };
+      })
+    );
+    pendingRequests = pendingWithUsers.filter((r): r is NonNullable<typeof r> => r !== null);
   } else if (viewerId) {
     // Other profile: load friendship status and mutual friends
     const row = await db.friendships.getStatus(viewerId, dbUser.id);
@@ -105,6 +130,7 @@ export const load: PageServerLoad = async ({ params, locals, platform }) => {
     isOwnProfile,
     friendshipStatus,
     friends,
-    mutualFriends
+    mutualFriends,
+    pendingRequests
   };
 };

@@ -5,13 +5,14 @@
 
   interface Props {
     children: Snippet;
+    pendingFriendRequestCount?: number;
   }
 
-  let { children }: Props = $props();
+  let { children, pendingFriendRequestCount = 0 }: Props = $props();
 </script>
 
 <div class="app-shell">
-  <Sidebar />
+  <Sidebar {pendingFriendRequestCount} />
 
   <div class="app-main">
     <AppHeader />
