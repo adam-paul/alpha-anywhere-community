@@ -18,13 +18,6 @@ export const load: PageServerLoad = async ({ platform, locals }) => {
   const db = createDbClient(platform.env.DB);
   const usersWithProfiles = await db.users.findAllWithProfiles();
 
-  // Load viewer's friend IDs once for mutual friend computation
-  let viewerFriendIds: Set<string> | null = null;
-  if (locals.user) {
-    const friends = await db.friendships.getFriends(locals.user.id);
-    viewerFriendIds = new Set(friends.map((f) => f.id));
-  }
-
   // Transform DB data to Student-like shape for the UI
   const students = usersWithProfiles.map((u) => {
     const interests: Interest[] = u.profile?.interests ? JSON.parse(u.profile.interests) : [];
@@ -34,14 +27,7 @@ export const load: PageServerLoad = async ({ platform, locals }) => {
       year: 'numeric'
     });
 
-    // Compute mutual friends: intersection of viewer's friends with this student's ID
-    // (A mutual friend is someone who is friends with both the viewer and this student)
-    // For now, we just check if this student is a friend — full mutual computation
-    // would require loading each student's friend list. We pass the viewer's friend IDs
-    // so the UI can at least show "Friend" badges.
     const mutualFriendIds: string[] = [];
-    // TODO: Full mutual friend computation requires per-student friend lists.
-    // For now, this remains empty. The profile page computes it accurately.
 
     return {
       id: u.id,
@@ -60,8 +46,7 @@ export const load: PageServerLoad = async ({ platform, locals }) => {
         dailyXpCurrent: 0,
         dailyXpGoal: 120
       },
-      mutualFriendIds,
-      isFriend: viewerFriendIds?.has(u.id) ?? false
+      mutualFriendIds
     };
   });
 
