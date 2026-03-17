@@ -1,12 +1,12 @@
 # Alpha Anywhere Community: Roadmap
 
-**Last updated:** 2026-03-08
+**Last updated:** 2026-03-16
 
 ---
 
 ## Current State
 
-Production-quality frontend with complete UI flows. Infrastructure in place: D1 database (local + remote), Timeback SSO, cookie sessions, auto-provisioned users. Roblox private server deep links working. Work-wall gating live for both LWAI (300 min/week via Lambda proxy) and Timeback (120 XP/day via EduBridge Analytics). Per-student gating source detection cached in D1.
+Production-quality frontend with complete UI flows. Infrastructure in place: D1 database (local + remote), Timeback SSO, cookie sessions, auto-provisioned users. Roblox private server deep links working. Work-wall gating live for both LWAI (300 min/week via Lambda proxy) and Timeback (120 XP/day via EduBridge Analytics). Per-student gating source detection cached in D1. Friend system (request/accept/decline/unfriend) fully wired from DB through API to UI.
 
 ### Infrastructure (Complete)
 
@@ -22,14 +22,14 @@ Production-quality frontend with complete UI flows. Infrastructure in place: D1 
 
 ### Frontend UI
 
-| Feature       | Location             | Status             | Data Source              |
-| ------------- | -------------------- | ------------------ | ------------------------ |
-| **Arcade**    | `/arcade`            | Complete           | D1 ✅                    |
-| **Work Wall** | Integrated in arcade | Complete           | LWAI ✅ / Timeback XP ✅ |
-| **Profiles**  | `/profile/[id]`      | Complete, editable | D1 ✅                    |
-| **Explore**   | `/explore`           | Complete           | D1 ✅                    |
-| **Chat**      | `/chat`              | Complete           | Mock data                |
-| **UI System** | `$lib/components/ui` | Complete           | N/A                      |
+| Feature       | Location             | Status             | Data Source                     |
+| ------------- | -------------------- | ------------------ | ------------------------------- |
+| **Arcade**    | `/arcade`            | Complete           | D1 ✅                           |
+| **Work Wall** | Integrated in arcade | Complete           | LWAI ✅ / Timeback XP ✅        |
+| **Profiles**  | `/profile/[id]`      | Complete, editable | D1 ✅ (friends, mutual friends) |
+| **Explore**   | `/explore`           | Complete           | D1 ✅                           |
+| **Chat**      | `/chat`              | Complete           | Mock data                       |
+| **UI System** | `$lib/components/ui` | Complete           | N/A                             |
 
 ### Database Schema
 
@@ -60,7 +60,6 @@ games (standalone, Roblox private server support)
 | ------------------ | ------------- | ------------------------------------------------ |
 | Chat → D1          | Not connected | Still uses `MOCK_CONVERSATIONS`, `MOCK_MESSAGES` |
 | Student Map        | Placeholder   | UI exists, shows "Coming soon"                   |
-| Friend System      | None          | Schema exists, no UI flow                        |
 | Real-time Presence | None          | No "who's online" functionality                  |
 | Chat Moderation    | None          | No content filtering                             |
 | Parent Controls    | None          | No ToS, no per-child toggles                     |
@@ -133,9 +132,11 @@ Chat UI is complete and DB schema + client methods exist. Ready to wire.
 - `GET /api/conversations/[id]/messages` — paginated fetch
 - Update `chat.svelte.ts` to use API, remove mock data
 
-#### Friend System
+#### Friend System — ✅ Complete
 
-Schema exists (`friendships` table with status). Needs API routes (send, accept, decline, unfriend), "Add Friend" button on profiles, notifications.
+Send/accept/decline/unfriend with full API (`/api/friends/{request,accept,remove}`), state-aware ProfileHeader button (hover-to-cancel on pending), friends list on own profile, mutual friends on others' profiles. Decline = delete row (re-request always possible). No `declined` status in schema.
+
+**Not yet done:** Friend request notifications, 30-day request expiry, blocking (separate feature).
 
 #### Student Map
 
@@ -212,19 +213,19 @@ AI-generated avatars from clickable trait selection (not free text — prevents 
 
 ## Architecture Decisions
 
-| Decision              | Choice                            | Rationale                                                                    |
-| --------------------- | --------------------------------- | ---------------------------------------------------------------------------- |
-| **Database**          | Cloudflare D1                     | Edge-native, no cold starts, simple, sufficient for MVP                      |
-| **Sessions**          | HMAC-signed cookies               | Stateless, no session store needed                                           |
-| **Auth**              | Timeback SSO                      | Already integrated, handles Cognito                                          |
-| **User identity**     | Timeback ID (OneRoster sourcedId) | Fetched via M2M API; falls back to Cognito sub                               |
-| **LWAI user mapping** | Query by email                    | LWAI uses Alpha's 4-digit IDs, not Timeback UUIDs; email is common key       |
-| **LWAI query**        | Lambda proxy (SST)                | CF Workers can't do STS AssumeRole; Lambda in AlphaLearn account             |
-| **Timeback XP**       | EduBridge Analytics API           | `@timeback/edubridge` client, 120 XP/day threshold, fail-open                |
-| **Gating state**      | Discriminated union store         | Eliminates boolean flag creep; see `gating.svelte.ts`                        |
-| **Gating source**     | LWAI Athena probe, cached in D1   | One-time `/probe` checks `daily_learning_metrics` existence; result persists |
-| **Credentials**       | Encrypted D1 columns              | AES-256-GCM, app-level encrypt at seed / decrypt at runtime                  |
-| **Parent portal**     | Link to AlphaLearn                | Don't rebuild, just add toggles                                              |
+| Decision              | Choice                             | Rationale                                                                     |
+| --------------------- | ---------------------------------- | ----------------------------------------------------------------------------- |
+| **Database**          | Cloudflare D1                      | Edge-native, no cold starts, simple, sufficient for MVP                       |
+| **Sessions**          | HMAC-signed cookies                | Stateless, no session store needed                                            |
+| **Auth**              | Timeback SSO                       | Already integrated, handles Cognito                                           |
+| **User identity**     | Dual: D1 internal ID + Timeback ID | `locals.user.id` = D1 hex ID (for DB FKs), `timebackId` = OneRoster sourcedId |
+| **LWAI user mapping** | Query by email                     | LWAI uses Alpha's 4-digit IDs, not Timeback UUIDs; email is common key        |
+| **LWAI query**        | Lambda proxy (SST)                 | CF Workers can't do STS AssumeRole; Lambda in AlphaLearn account              |
+| **Timeback XP**       | EduBridge Analytics API            | `@timeback/edubridge` client, 120 XP/day threshold, fail-open                 |
+| **Gating state**      | Discriminated union store          | Eliminates boolean flag creep; see `gating.svelte.ts`                         |
+| **Gating source**     | LWAI Athena probe, cached in D1    | One-time `/probe` checks `daily_learning_metrics` existence; result persists  |
+| **Credentials**       | Encrypted D1 columns               | AES-256-GCM, app-level encrypt at seed / decrypt at runtime                   |
+| **Parent portal**     | Link to AlphaLearn                 | Don't rebuild, just add toggles                                               |
 
 ---
 
@@ -247,7 +248,7 @@ Unify wrangler (Cloudflare) + SST (AWS) into single `sst deploy`. SST v3 support
 
 #### Seed Script Architecture
 
-Extract shared utilities (`escapeSQL`, arg parsing, wrangler execution) when a second seed script is needed. Deferred.
+Two seed scripts exist (`seed-games.ts`, `seed-users.ts`) with duplicated utilities (`escapeSQL`, arg parsing, wrangler execution). Extract shared module when adding a third.
 
 ---
 

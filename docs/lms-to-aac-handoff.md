@@ -120,19 +120,19 @@
 
 ---
 
-### 7. Friends System
+### 7. Friends System — ✅ Complete
 
-| Capability                                                        | LMS                    | AAC               | Gap                    |
-| ----------------------------------------------------------------- | ---------------------- | ----------------- | ---------------------- |
-| Friend request model (pending/accepted/ignored/cancelled/expired) | Yes                    | Yes (schema only) | **Need API**           |
-| 30-day request expiry                                             | Yes                    | No                | **Need expiry logic**  |
-| Accept/ignore/cancel actions                                      | Yes (full API)         | No                | **Need API endpoints** |
-| Friends list                                                      | Yes                    | No                | **Need API + UI**      |
-| Mutual friends                                                    | Yes (API + UI preview) | No                | **Need API + UI**      |
-| Friend request button component                                   | Yes                    | No                | **Need UI**            |
-| Canonical friendship edge (user1.id < user2.id)                   | Yes                    | Yes (in schema)   | None                   |
+| Capability                                      | LMS                    | AAC                          | Gap                   |
+| ----------------------------------------------- | ---------------------- | ---------------------------- | --------------------- |
+| Friend request model (pending/accepted/blocked) | Yes                    | Yes (full lifecycle)         | None                  |
+| 30-day request expiry                           | Yes                    | No                           | **Need expiry logic** |
+| Accept/decline/cancel actions                   | Yes (full API)         | Yes (`/api/friends/*`)       | None                  |
+| Friends list                                    | Yes                    | Yes (own profile page)       | None                  |
+| Mutual friends                                  | Yes (API + UI preview) | Yes (other profiles + DB)    | None                  |
+| Friend request button (state-aware)             | Yes                    | Yes (5 states, hover-cancel) | None                  |
+| Canonical friendship edge                       | Yes                    | Yes (in schema)              | None                  |
 
-**Summary:** AAC has the database schema for friendships but zero API endpoints or UI. LMS has a complete friend system with request lifecycle, mutual friends, and UI components.
+**Summary:** AAC now has a complete friend system: API routes (`/api/friends/{request,accept,remove}`), state-aware ProfileHeader button, friends list on own profile, mutual friends on others'. Decline = delete row (re-request always possible). Only gap: 30-day request expiry.
 
 ---
 
@@ -288,7 +288,7 @@ These are non-negotiable for launching a community product used by children:
 
 | Feature                     | Effort       | Notes                                                                 |
 | --------------------------- | ------------ | --------------------------------------------------------------------- |
-| **Friends System**          | Medium       | Schema exists. Need API + UI.                                         |
+| **Friends System**          | ~~Done~~ ✅  | Full lifecycle: request/accept/decline/unfriend + mutual friends UI.  |
 | **Admin Arcade Management** | Medium       | CRUD + reorder + Roblox lookup. Replace seed scripts.                 |
 | **Roblox Account Linking**  | Small-Medium | Lookup + link/unlink + profile fields. Prerequisite for presence.     |
 | **Game Presence**           | Medium       | Launch records + Roblox polling. Use KV instead of Redis.             |
@@ -365,7 +365,7 @@ Based on the Hive project board priorities for March 2026:
 
 1. **Roblox Account Linking** (already planned) → unblocks game presence
 2. **Game Presence** → quick win after linking, visible user value
-3. **Friends API** → schema exists, medium effort, high social value
+3. ~~**Friends API**~~ ✅ Done
 4. **Content Moderation** → blocks chat launch, start early
 5. **Chat Backend** → UI already built, wire up persistence + moderation
 6. **Parent Controls** → required before wider beta
