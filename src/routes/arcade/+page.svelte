@@ -13,11 +13,16 @@
 
   let { data } = $props();
 
-  // Create stores (initial values only, not reactive to data changes)
+  // Create stores
   // svelte-ignore state_referenced_locally
   const arcade = createArcadeStore({ games: data.games });
   // svelte-ignore state_referenced_locally
   const gating = createGatingStore(data.gatingState);
+
+  // Sync games into store when server data refreshes (e.g., after admin CRUD)
+  $effect(() => {
+    arcade.setGames(data.games);
+  });
 
   // Dev tools bindings
   let devIsLocked = $state(false);
@@ -54,10 +59,12 @@
   let gameFormOpen = $state(false);
   let gameFormMode = $state<GameFormMode>({ kind: 'create' });
   let gameFormInitialData = $state<GameFormData | undefined>(undefined);
+  let gameFormHasCredentials = $state(false);
 
   function openCreateGame() {
     gameFormMode = { kind: 'create' };
     gameFormInitialData = undefined;
+    gameFormHasCredentials = false;
     gameFormOpen = true;
   }
 
@@ -75,6 +82,7 @@
       linkCode: '',
       isActive: game.isActive ?? true
     };
+    gameFormHasCredentials = !!(game.accessCode && game.linkCode);
     gameFormOpen = true;
   }
 
@@ -122,6 +130,7 @@
     onclose={() => (gameFormOpen = false)}
     mode={gameFormMode}
     initialData={gameFormInitialData}
+    hasCredentials={gameFormHasCredentials}
     onsave={handleGameSave}
   />
 {/if}

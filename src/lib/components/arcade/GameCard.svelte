@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Game } from '$lib/types';
-  import { Card, IconButton } from '$lib/components/ui';
+  import { Card, Icon, IconButton } from '$lib/components/ui';
   import CategoryBadge from './CategoryBadge.svelte';
   import PlayerCount from './PlayerCount.svelte';
 
@@ -21,11 +21,17 @@
 </script>
 
 <Card interactive {disabled} onclick={handleClick}>
-  <div class="thumbnail-container">
+  <div class="thumbnail-container" class:inactive={game.isActive === false}>
     <img src={game.thumbnailUrl} alt={game.title} class="thumbnail" loading="lazy" />
     <div class="thumbnail-overlay">
       <span class="play-label">Play</span>
     </div>
+    {#if game.isActive === false}
+      <div class="inactive-badge">
+        <Icon name="lock" size={12} />
+        Inactive
+      </div>
+    {/if}
     {#if onEdit}
       <div class="edit-overlay">
         <IconButton
@@ -66,6 +72,27 @@
     aspect-ratio: 16 / 9;
     overflow: hidden;
     border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .thumbnail-container.inactive {
+    opacity: 0.5;
+  }
+
+  .inactive-badge {
+    position: absolute;
+    bottom: var(--space-2);
+    left: var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: white;
+    background: var(--color-text);
+    z-index: 2;
   }
 
   .thumbnail {

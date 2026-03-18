@@ -1,12 +1,12 @@
 # Alpha Anywhere Community: Roadmap
 
-**Last updated:** 2026-03-16
+**Last updated:** 2026-03-18
 
 ---
 
 ## Current State
 
-Production-quality frontend with complete UI flows. Infrastructure in place: D1 database (local + remote), Timeback SSO, cookie sessions, auto-provisioned users. Roblox private server deep links working. Work-wall gating live for both LWAI (300 min/week via Lambda proxy) and Timeback (120 XP/day via EduBridge Analytics). Per-student gating source detection cached in D1. Friend system (request/accept/decline/unfriend) fully wired from DB through API to UI.
+Production-quality frontend with complete UI flows. Infrastructure in place: D1 database (local + remote), Timeback SSO, cookie sessions, auto-provisioned users. Roblox private server deep links working. Work-wall gating live for both LWAI (300 min/week via Lambda proxy) and Timeback (120 XP/day via EduBridge Analytics). Per-student gating source detection cached in D1. Friend system fully wired. Admin role gating with inline admin tools (game CRUD with Roblox lookup, DevTools).
 
 ### Infrastructure (Complete)
 
@@ -22,14 +22,15 @@ Production-quality frontend with complete UI flows. Infrastructure in place: D1 
 
 ### Frontend UI
 
-| Feature       | Location             | Status             | Data Source                     |
-| ------------- | -------------------- | ------------------ | ------------------------------- |
-| **Arcade**    | `/arcade`            | Complete           | D1 ✅                           |
-| **Work Wall** | Integrated in arcade | Complete           | LWAI ✅ / Timeback XP ✅        |
-| **Profiles**  | `/profile/[id]`      | Complete, editable | D1 ✅ (friends, mutual friends) |
-| **Explore**   | `/explore`           | Complete           | D1 ✅                           |
-| **Chat**      | `/chat`              | Complete           | Mock data                       |
-| **UI System** | `$lib/components/ui` | Complete           | N/A                             |
+| Feature         | Location             | Status             | Data Source                     |
+| --------------- | -------------------- | ------------------ | ------------------------------- |
+| **Arcade**      | `/arcade`            | Complete           | D1 ✅                           |
+| **Work Wall**   | Integrated in arcade | Complete           | LWAI ✅ / Timeback XP ✅        |
+| **Profiles**    | `/profile/[id]`      | Complete, editable | D1 ✅ (friends, mutual friends) |
+| **Explore**     | `/explore`           | Complete           | D1 ✅                           |
+| **Chat**        | `/chat`              | Complete           | Mock data                       |
+| **Admin Tools** | Inline in arcade     | Complete           | D1 ✅ (game CRUD, DevTools)     |
+| **UI System**   | `$lib/components/ui` | Complete           | N/A                             |
 
 ### Database Schema
 
@@ -53,6 +54,7 @@ games (standalone, Roblox private server support)
 - `migrations/0004_user_roles.sql` — User roles (`student`/`admin`)
 - `src/lib/server/db/client.ts` — Type-safe D1 client
 - `src/lib/server/db/types.ts` — TypeScript interfaces
+- `src/lib/server/admin.ts` — Admin role guard
 
 ### Not Yet Wired
 
@@ -97,12 +99,11 @@ Order: apply remote migrations **before** deploying new code that depends on sch
 
 SSO, Explore, Profiles, Game Launch, LWAI work-wall, Timeback XP gating, private servers, and Timeback ID resolution are all done. See git history for implementation details.
 
+#### Game Catalog Management — ✅ Complete
+
+Admin game CRUD via inline modal on arcade page (`/api/admin/games/*`). Roblox URL lookup auto-populates game metadata. Credentials encrypted at write time via AES-256-GCM. Seed script remains for bulk bootstrapping.
+
 **Remaining:**
-
-#### Game Catalog Management
-
-- Admin API for CRUD on games (currently manual SQL inserts)
-- More games need private servers provisioned
 
 #### Game Extensibility (Minecraft & Beyond)
 
@@ -168,11 +169,11 @@ Full in-app notification system. Currently friend requests are surfaced via the 
 
 **Goal:** Role-based access, parent controls.
 
-#### User Roles — Schema Done ✅
+#### User Roles — ✅ Schema + Gating Done
 
-`role` column on users table (`student`/`admin`, default `student`). Currently set manually via SQL. Future: map from OneRoster roles during login — `resolveTimebackId()` already makes the M2M call, just needs to capture the role field and apply a mapping constant.
+`role` column on users table (`student`/`admin`, default `student`). Server-side `assertAdmin()` guard on all admin API routes. Admin UI conditionally rendered via `isAdmin` from server load. Role currently set manually via SQL.
 
-**Remaining:** Route guards, admin UI gating, OneRoster role mapping.
+**Remaining:** OneRoster role mapping during login — `resolveTimebackId()` already makes the M2M call, just needs to capture the role field.
 
 #### Parent Controls
 
@@ -231,7 +232,9 @@ AI-generated avatars from clickable trait selection (not free text — prevents 
 | **Timeback XP**       | EduBridge Analytics API            | `@timeback/edubridge` client, 120 XP/day threshold, fail-open                 |
 | **Gating state**      | Discriminated union store          | Eliminates boolean flag creep; see `gating.svelte.ts`                         |
 | **Gating source**     | LWAI Athena probe, cached in D1    | One-time `/probe` checks `daily_learning_metrics` existence; result persists  |
-| **Credentials**       | Encrypted D1 columns               | AES-256-GCM, app-level encrypt at seed / decrypt at runtime                   |
+| **Credentials**       | Encrypted D1 columns               | AES-256-GCM, app-level encrypt at seed/admin write, decrypt at runtime        |
+| **Admin tools**       | Inline in existing pages           | No separate dashboard; admin sees student view plus admin controls            |
+| **Admin auth**        | Server-side `assertAdmin()`        | Backend is single source of truth; frontend renders conditionally from server |
 | **Parent portal**     | Link to AlphaLearn                 | Don't rebuild, just add toggles                                               |
 
 ---

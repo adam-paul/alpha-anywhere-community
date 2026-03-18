@@ -51,6 +51,10 @@ A work-walled community portal for Alpha Anywhere homeschool students. Students 
 - Refactor as you go, not in a separate "cleanup phase."
 - **After every refactor**: Check for dead code, unused imports, orphaned files. Delete immediately. This is critical.
 
+### Admin Tools
+
+Admin features are inline — they appear within existing pages (e.g., game CRUD modal on the arcade page, DevTools overlay), not in a separate dashboard. Admins see the student view plus admin controls. All authorization is server-side (`assertAdmin()` on API routes, `isAdmin` derived in server load functions). The frontend conditionally renders admin UI based on what the server provides. If a dedicated admin dashboard is ever needed, it would be a separate effort; inline tools would likely remain alongside it.
+
 ---
 
 ## Tech Stack

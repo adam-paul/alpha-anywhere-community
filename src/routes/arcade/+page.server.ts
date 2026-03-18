@@ -168,7 +168,8 @@ export const load: PageServerLoad = async ({ platform, locals }) => {
 
   // Fetch games from DB if available (fast)
   if (db) {
-    const dbGames = await db.games.findAll();
+    const isAdmin = locals.user?.role === 'admin';
+    const dbGames = isAdmin ? await db.games.findAllAdmin() : await db.games.findAll();
     const credentialsKey = env.GAME_CREDENTIALS_KEY;
 
     // Transform DB format to client format (decrypt credentials)

@@ -16,10 +16,11 @@
     onclose: () => void;
     mode: GameFormMode;
     initialData?: GameFormData;
+    hasCredentials?: boolean;
     onsave: () => void;
   }
 
-  let { open, onclose, mode, initialData, onsave }: Props = $props();
+  let { open, onclose, mode, initialData, hasCredentials = false, onsave }: Props = $props();
 
   // Form state
   let title = $state('');
@@ -33,14 +34,15 @@
   let placeId = $state('');
   let accessCode = $state('');
   let linkCode = $state('');
-  let isActive = $state(true);
+  let isActive = $state(false);
   let robloxUrl = $state('');
   let status = $state<FormStatus>('idle');
   let errorMessage = $state('');
 
   const isEdit = $derived(mode.kind === 'edit');
   const isRoblox = $derived(type === 'roblox');
-  const missingCredentials = $derived(isRoblox && !accessCode && !linkCode && !isEdit);
+  const credentialsPresent = $derived(hasCredentials || (!!accessCode && !!linkCode));
+  const showCredentialsWarning = $derived(isRoblox && isActive && !credentialsPresent);
   const canSave = $derived(
     title &&
       slug &&
@@ -94,7 +96,7 @@
         thumbnailUrl = '';
         launchUrl = '';
         placeId = '';
-        isActive = true;
+        isActive = false;
       }
       // Credentials always start blank (write-only)
       accessCode = '';
@@ -357,12 +359,10 @@
               />
             </fieldset>
           </div>
-          {#if missingCredentials}
-            <p class="credentials-warning">
-              <Icon name="info" size={14} />
-              Roblox games require private server credentials to launch.
-            </p>
-          {/if}
+          <p class="credentials-note">
+            <Icon name="info" size={14} />
+            Roblox games require private server credentials to launch.
+          </p>
         </div>
       {/if}
 
@@ -370,6 +370,12 @@
       <fieldset class="field-group toggle-field">
         <label class="field-label" for="gf-active">Active</label>
         <Toggle checked={isActive} onchange={() => (isActive = !isActive)} label="Game is active" />
+        {#if showCredentialsWarning}
+          <span class="active-warning">
+            <Icon name="info" size={14} />
+            This game has no private server credentials and will not launch.
+          </span>
+        {/if}
       </fieldset>
     </div>
   {/snippet}
@@ -472,7 +478,7 @@
     margin: 0;
   }
 
-  .credentials-warning {
+  .credentials-note {
     display: flex;
     align-items: center;
     gap: var(--space-2);
@@ -480,6 +486,15 @@
     font-weight: 600;
     color: var(--color-accent);
     margin: 0;
+  }
+
+  .active-warning {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--color-error);
   }
 
   .error-banner {

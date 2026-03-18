@@ -56,7 +56,7 @@ export const POST: RequestHandler = async ({ request, locals, platform }) => {
     return json({ success: true, game });
   } catch (err) {
     if (err instanceof Error && err.message.includes('UNIQUE')) {
-      error(409, 'A game with this title already exists');
+      error(409, 'A game with this slug already exists');
     }
     throw err;
   }

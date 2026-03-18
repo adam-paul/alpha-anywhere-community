@@ -170,6 +170,7 @@ export interface ArcadeState {
   theme: Theme;
   readonly games: Game[];
   readonly filteredGames: Game[];
+  setGames: (games: Game[]) => void;
 }
 
 export interface CreateArcadeStoreOptions {

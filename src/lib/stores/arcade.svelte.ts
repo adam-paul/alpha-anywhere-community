@@ -6,8 +6,7 @@ const ARCADE_CONTEXT_KEY = 'arcade';
 export function createArcadeStore(options: CreateArcadeStoreOptions = {}) {
   let activeFilter = $state<EngagementCategory | 'all'>('all');
   let theme = $state<Theme>('cel-shaded');
-
-  const games = options.games ?? [];
+  let games = $state(options.games ?? []);
 
   const filteredGames = $derived(
     activeFilter === 'all' ? games : games.filter((g) => g.engagementCategory === activeFilter)
@@ -33,6 +32,10 @@ export function createArcadeStore(options: CreateArcadeStoreOptions = {}) {
     },
     get filteredGames() {
       return filteredGames;
+    },
+
+    setGames(newGames) {
+      games = newGames;
     }
   };
 
