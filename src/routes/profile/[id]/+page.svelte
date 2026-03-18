@@ -4,14 +4,13 @@
   import InterestBadge from '$lib/components/InterestBadge.svelte';
   import ProfileHeader from '$lib/components/profile/ProfileHeader.svelte';
   import { INTERESTS } from '$lib/constants';
-  import type { Interest } from '$lib/types';
+  import type { EditMode, Interest } from '$lib/types';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();
 
   // Edit mode state
-  let isEditing = $state(false);
-  let isSaving = $state(false);
+  let editMode = $state<EditMode>('view');
 
   // Editable fields (initialized from server data, then edited locally)
   // svelte-ignore state_referenced_locally
@@ -53,11 +52,11 @@
     editBio = data.profile.bio ?? '';
     editLocation = data.profile.location ?? '';
     editInterests = [...data.profile.interests];
-    isEditing = true;
+    editMode = 'editing';
   }
 
   function cancelEditing() {
-    isEditing = false;
+    editMode = 'view';
   }
 
   function toggleInterest(interest: Interest) {
@@ -69,7 +68,7 @@
   }
 
   async function saveProfile() {
-    isSaving = true;
+    editMode = 'saving';
     try {
       const response = await fetch('/api/profile', {
         method: 'PATCH',
@@ -87,12 +86,10 @@
 
       // Refresh page data from server
       await invalidateAll();
-      isEditing = false;
+      editMode = 'view';
     } catch (error) {
       console.error('Failed to save profile:', error);
-      // TODO: Show error toast
-    } finally {
-      isSaving = false;
+      editMode = 'editing';
     }
   }
 
@@ -144,12 +141,12 @@
 <ProfileHeader
   {student}
   friendshipStatus={data.friendshipStatus}
-  {isEditing}
+  isEditing={editMode !== 'view'}
   onEdit={startEditing}
   onFriendAction={handleFriendAction}
 />
 
-{#if isEditing}
+{#if editMode !== 'view'}
   <!-- Edit Mode -->
   <div class="profile-content">
     <section class="profile-section">
@@ -190,9 +187,11 @@
     </section>
 
     <div class="edit-actions">
-      <Button variant="secondary" onclick={cancelEditing} disabled={isSaving}>Cancel</Button>
-      <Button variant="primary" onclick={saveProfile} disabled={isSaving}>
-        {isSaving ? 'Saving...' : 'Save Profile'}
+      <Button variant="secondary" onclick={cancelEditing} disabled={editMode === 'saving'}
+        >Cancel</Button
+      >
+      <Button variant="primary" onclick={saveProfile} disabled={editMode === 'saving'}>
+        {editMode === 'saving' ? 'Saving...' : 'Save Profile'}
       </Button>
     </div>
   </div>

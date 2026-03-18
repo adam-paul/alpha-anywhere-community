@@ -106,6 +106,9 @@ export type FriendshipStatus =
   | { kind: 'friends'; friendshipId: string }
   | { kind: 'self' };
 
+// Profile edit state
+export type EditMode = 'view' | 'editing' | 'saving';
+
 // Friend list items (used by profile page for friends, mutual friends, pending requests)
 export interface FriendSummary {
   id: string;
