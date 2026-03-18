@@ -8,6 +8,8 @@ export { default as IconButton } from './IconButton.svelte';
 export { default as Input } from './Input.svelte';
 export { default as Modal } from './Modal.svelte';
 export { default as PageHeader } from './PageHeader.svelte';
+export { default as Placeholder } from './Placeholder.svelte';
+export { default as SearchBar } from './SearchBar.svelte';
 export { default as Select } from './Select.svelte';
 export { default as Textarea } from './Textarea.svelte';
 export { default as Toggle } from './Toggle.svelte';

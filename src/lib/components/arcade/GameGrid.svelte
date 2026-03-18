@@ -2,7 +2,7 @@
   import { getArcadeStore } from '$lib/stores/arcade.svelte';
   import type { Game, LaunchOptions } from '$lib/types';
   import { launchGame } from '$lib/utils/game-launcher';
-  import Placeholder from '$lib/components/Placeholder.svelte';
+  import { Placeholder } from '$lib/components/ui';
   import GameCard from './GameCard.svelte';
 
   interface Props {

@@ -5,9 +5,9 @@
   import { INTERESTS } from '$lib/constants';
   import type { Interest } from '$lib/types';
   import StudentGrid from '$lib/components/explore/StudentGrid.svelte';
-  import SearchBar from '$lib/components/SearchBar.svelte';
+  import { SearchBar } from '$lib/components/ui';
   import ViewToggle from '$lib/components/explore/ViewToggle.svelte';
-  import Placeholder from '$lib/components/Placeholder.svelte';
+  import { Placeholder } from '$lib/components/ui';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();

@@ -11,19 +11,19 @@ Scan all `.svelte` files and `tokens.css` for violations of the UI component sys
 
 Components are organized into four layers. The layer determines where a component lives.
 
-| Layer                   | Location                | Rule                                                                                                                                                                              |
-| ----------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **UI primitives**       | `components/ui/`        | Fully self-contained. Zero imports from outside `ui/`. Own types live in `ui/types.ts` (internal, not exported via barrel). Could be extracted as a standalone package unchanged. |
-| **Feature components**  | `components/<feature>/` | Domain-specific. Every top-level feature (arcade, chat, explore, profile) gets its own directory, regardless of component count.                                                  |
-| **Shared components**   | `components/` root      | Used by 2+ features. If a feature component gains a second consumer, move it up to root.                                                                                          |
-| **Layout (app chrome)** | `components/layout/`    | The persistent shell rendered on every page (AppShell, Sidebar, AppHeader). Allowed domain knowledge (nav, auth) because those are app-level concerns.                            |
+| Layer                   | Location                | Rule                                                                                                                                                                                                                                                                             |
+| ----------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **UI primitives**       | `components/ui/`        | Fully self-contained and domain-agnostic. Zero imports from outside `ui/`. Could be extracted as a standalone package unchanged. Number of consumers is irrelevant — if it's domain-agnostic, it goes here. Own types live in `ui/types.ts` (internal, not exported via barrel). |
+| **Feature components**  | `components/<feature>/` | Domain-aware, single feature consumer. Every top-level feature gets a directory (arcade, chat, explore, profile, admin), regardless of component count.                                                                                                                          |
+| **Shared components**   | `components/` root      | Domain-aware, 2+ feature consumers. These import from `$lib/types`, `$lib/constants`, etc. Move here when a second consumer appears.                                                                                                                                             |
+| **Layout (app chrome)** | `components/layout/`    | The persistent shell rendered on every page (AppShell, Sidebar, AppHeader). Allowed domain knowledge (nav, auth) because those are app-level concerns.                                                                                                                           |
 
-**Litmus tests:**
+**Placement rule** — apply in order, first match wins:
 
-- Could this component exist in a different app? Yes → `ui/`. No → feature dir or shared root.
-- Does it render on every page as part of the persistent shell? Yes → `layout/`.
-- Is it used by only one feature? Yes → `components/<feature>/`.
-- Is it used by 2+ features? Yes → `components/` root.
+1. Could this component exist in a different app unchanged? → `ui/`
+2. Does it render on every page as part of the persistent shell? → `layout/`
+3. Does it import domain types/constants and have 2+ feature consumers? → `components/` root
+4. Otherwise → `components/<feature>/`
 
 ### What to Check
 

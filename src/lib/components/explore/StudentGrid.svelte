@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getExploreStore } from '$lib/stores/explore.svelte';
-  import Placeholder from '$lib/components/Placeholder.svelte';
+  import { Placeholder } from '$lib/components/ui';
   import StudentCard from './StudentCard.svelte';
 
   interface Props {

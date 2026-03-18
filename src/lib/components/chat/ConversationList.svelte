@@ -1,8 +1,8 @@
 <script lang="ts">
   import { getChatStore } from '$lib/stores/chat.svelte';
   import { IconButton } from '$lib/components/ui';
-  import SearchBar from '$lib/components/SearchBar.svelte';
-  import Placeholder from '$lib/components/Placeholder.svelte';
+  import { SearchBar } from '$lib/components/ui';
+  import { Placeholder } from '$lib/components/ui';
   import ConversationItem from './ConversationItem.svelte';
 
   const chat = getChatStore();

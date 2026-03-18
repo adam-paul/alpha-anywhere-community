@@ -1,8 +1,8 @@
 <script lang="ts">
   import { getChatStore } from '$lib/stores/chat.svelte';
   import { Avatar, Icon, Button, Modal } from '$lib/components/ui';
-  import SearchBar from '$lib/components/SearchBar.svelte';
-  import Placeholder from '$lib/components/Placeholder.svelte';
+  import { SearchBar } from '$lib/components/ui';
+  import { Placeholder } from '$lib/components/ui';
   import { MOCK_STUDENTS } from '$lib/mock-data';
 
   const chat = getChatStore();

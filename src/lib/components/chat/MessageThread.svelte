@@ -4,7 +4,7 @@
   import MessageBubble from './MessageBubble.svelte';
   import MessageComposer from './MessageComposer.svelte';
   import DateSeparator from './DateSeparator.svelte';
-  import Placeholder from '$lib/components/Placeholder.svelte';
+  import { Placeholder } from '$lib/components/ui';
 
   const chat = getChatStore();
 
