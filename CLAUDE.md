@@ -84,14 +84,15 @@ A work-walled community portal for Alpha Anywhere homeschool students. Students 
 
 Types are **always abstracted** to dedicated type files and have exactly one home. No inline type definitions except `Props`. Keep `types.ts` pure — no runtime code.
 
-| Location                     | What belongs there                                        |
-| ---------------------------- | --------------------------------------------------------- |
-| `src/lib/types.ts`           | All domain types — pure type definitions only             |
-| `src/lib/constants.ts`       | Runtime metadata for types (labels, colors, descriptions) |
-| `src/lib/server/db/types.ts` | Database-specific types (snake_case, D1 schema)           |
-| `src/lib/utils/*.ts`         | Helper functions                                          |
-| Component files              | **Only** `interface Props` (the component's own API)      |
-| Utils/stores                 | No type definitions — import from `types.ts`              |
+| Location                         | What belongs there                                                                         |
+| -------------------------------- | ------------------------------------------------------------------------------------------ |
+| `src/lib/types.ts`               | Domain types — pure type definitions only                                                  |
+| `src/lib/components/ui/types.ts` | UI-internal types (e.g., `IconName`) — not exported via barrel, not imported outside `ui/` |
+| `src/lib/constants.ts`           | Runtime metadata for types (labels, colors, descriptions)                                  |
+| `src/lib/server/db/types.ts`     | Database-specific types (snake_case, D1 schema)                                            |
+| `src/lib/utils/*.ts`             | Helper functions                                                                           |
+| Component files                  | **Only** `interface Props` (the component's own API)                                       |
+| Utils/stores                     | No type definitions — import from `types.ts`                                               |
 
 **Rules:**
 
@@ -165,12 +166,12 @@ When state accumulates multiple boolean flags (`isLoading`, `hasError`, `isDismi
 
 **Organization** — Components live in four layers:
 
-| Layer               | Location                | Rule                                                                                                                                                   |
-| ------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| UI primitives       | `components/ui/`        | Domain-agnostic. No imports from `$lib/types` or stores. Could exist in a different app unchanged.                                                     |
-| Feature components  | `components/<feature>/` | Every top-level feature gets a directory (arcade, chat, explore, profile). All components live in `$lib/components/`, not colocated with routes.       |
-| Shared components   | `components/` root      | Used by 2+ features. Move here when a second consumer appears.                                                                                         |
-| Layout (app chrome) | `components/layout/`    | The persistent shell rendered on every page (AppShell, Sidebar, AppHeader). Allowed domain knowledge (nav, auth) because those are app-level concerns. |
+| Layer               | Location                | Rule                                                                                                                                                                                                                        |
+| ------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| UI primitives       | `components/ui/`        | Fully self-contained. Zero imports from outside `ui/` — no `$lib/types`, no stores, no app code. Own types live in `ui/types.ts` (internal, not exported via barrel). Could be extracted as a standalone package unchanged. |
+| Feature components  | `components/<feature>/` | Every top-level feature gets a directory (arcade, chat, explore, profile). All components live in `$lib/components/`, not colocated with routes.                                                                            |
+| Shared components   | `components/` root      | Used by 2+ features. Move here when a second consumer appears.                                                                                                                                                              |
+| Layout (app chrome) | `components/layout/`    | The persistent shell rendered on every page (AppShell, Sidebar, AppHeader). Allowed domain knowledge (nav, auth) because those are app-level concerns.                                                                      |
 
 **Principles:**
 

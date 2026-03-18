@@ -43,7 +43,7 @@
     color: var(--color-text-muted);
     background: var(--color-bg);
     padding: var(--space-1) var(--space-3);
-    border-radius: 12px;
+    border-radius: var(--radius-pill);
     border: var(--border-width) solid var(--color-border);
   }
 </style>

@@ -153,11 +153,11 @@
     min-width: 18px;
     height: 18px;
     padding: 0 4px;
-    font-size: 11px;
+    font-size: var(--font-size-xs);
     font-weight: 700;
     color: white;
     background: var(--color-error);
-    border-radius: 9px;
+    border-radius: var(--radius-pill);
     border: 2px solid var(--color-bg);
   }
 

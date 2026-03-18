@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { IconName } from '$lib/types';
+  import type { IconName } from './types';
   import Icon from './Icon.svelte';
 
   type Shape = 'ghost' | 'circle';

@@ -11,12 +11,12 @@ Scan all `.svelte` files and `tokens.css` for violations of the UI component sys
 
 Components are organized into four layers. The layer determines where a component lives.
 
-| Layer                   | Location                | Rule                                                                                                                                                   |
-| ----------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **UI primitives**       | `components/ui/`        | Domain-agnostic. Does NOT import from `$lib/types` or any store. Could exist in a different app unchanged.                                             |
-| **Feature components**  | `components/<feature>/` | Domain-specific. Every top-level feature (arcade, chat, explore, profile) gets its own directory, regardless of component count.                       |
-| **Shared components**   | `components/` root      | Used by 2+ features. If a feature component gains a second consumer, move it up to root.                                                               |
-| **Layout (app chrome)** | `components/layout/`    | The persistent shell rendered on every page (AppShell, Sidebar, AppHeader). Allowed domain knowledge (nav, auth) because those are app-level concerns. |
+| Layer                   | Location                | Rule                                                                                                                                                                              |
+| ----------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **UI primitives**       | `components/ui/`        | Fully self-contained. Zero imports from outside `ui/`. Own types live in `ui/types.ts` (internal, not exported via barrel). Could be extracted as a standalone package unchanged. |
+| **Feature components**  | `components/<feature>/` | Domain-specific. Every top-level feature (arcade, chat, explore, profile) gets its own directory, regardless of component count.                                                  |
+| **Shared components**   | `components/` root      | Used by 2+ features. If a feature component gains a second consumer, move it up to root.                                                                                          |
+| **Layout (app chrome)** | `components/layout/`    | The persistent shell rendered on every page (AppShell, Sidebar, AppHeader). Allowed domain knowledge (nav, auth) because those are app-level concerns.                            |
 
 **Litmus tests:**
 
@@ -28,7 +28,7 @@ Components are organized into four layers. The layer determines where a componen
 ### What to Check
 
 1. **Feature components in wrong location** — A component used only by arcade should be in `components/arcade/`, not `components/` root.
-2. **UI primitives with domain imports** — A component in `ui/` that imports from `$lib/types` or a store should be moved to a feature directory or the root.
+2. **UI primitives with external imports** — Any file in `ui/` that imports from outside `ui/` (e.g., `$lib/types`, `$lib/constants`, stores, feature code) is a violation. UI-internal types belong in `ui/types.ts` and must not be exported via the barrel (`ui/index.ts`). If a ui/ component needs a type that lives outside `ui/`, either the type should move into `ui/types.ts` (if it's truly a UI concern) or the component doesn't belong in `ui/`.
 3. **Shared components in feature directories** — A component in `components/chat/` that is imported by a non-chat file should move to `components/` root.
 4. **Non-persistent components in layout/** — A component in `layout/` that is used by individual pages (not the root layout) should move to `ui/` or a feature directory.
 

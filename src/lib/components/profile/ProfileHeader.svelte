@@ -211,6 +211,6 @@
 
   .pending-sent-wrap:hover :global(.btn) {
     border-color: var(--color-border);
-    color: #c53030;
+    color: var(--color-error);
   }
 </style>
