@@ -200,6 +200,7 @@ export const load: PageServerLoad = async ({ platform, locals }) => {
     gatingState:
       locals.user?.email && db
         ? fetchGatingData(locals.user.email, db)
-        : Promise.resolve(DEFAULT_UNLOCKED)
+        : Promise.resolve(DEFAULT_UNLOCKED),
+    isAdmin: locals.user?.role === 'admin'
   };
 };

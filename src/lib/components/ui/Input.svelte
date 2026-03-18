@@ -1,5 +1,6 @@
 <script lang="ts">
   interface Props {
+    id?: string;
     value?: string;
     placeholder?: string;
     disabled?: boolean;
@@ -7,10 +8,10 @@
     oninput?: (e: Event) => void;
   }
 
-  let { value = '', placeholder, disabled = false, type = 'text', oninput }: Props = $props();
+  let { id, value = '', placeholder, disabled = false, type = 'text', oninput }: Props = $props();
 </script>
 
-<input class="input" {type} {value} {placeholder} {disabled} {oninput} />
+<input class="input" {id} {type} {value} {placeholder} {disabled} {oninput} />
 
 <style>
   .input {

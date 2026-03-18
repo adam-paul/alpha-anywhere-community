@@ -235,3 +235,27 @@ export interface Conversation {
   unreadCount: number;
   isMuted: boolean;
 }
+
+// Admin: Game form
+export type GameFormMode = { kind: 'create' } | { kind: 'edit'; gameId: string };
+
+export interface GameFormData {
+  title: string;
+  type: GameType;
+  engagementCategory: EngagementCategory;
+  description: string;
+  thumbnailUrl: string;
+  launchUrl: string;
+  placeId: string;
+  accessCode: string;
+  linkCode: string;
+  isActive: boolean;
+}
+
+export interface RobloxLookupResult {
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  placeId: string;
+  launchUrl: string;
+}

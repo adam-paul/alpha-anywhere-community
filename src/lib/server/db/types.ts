@@ -115,3 +115,30 @@ export interface CreateMessageInput {
   content: string;
   image_url?: string | null;
 }
+
+export interface CreateGameInput {
+  id: string;
+  title: string;
+  type: DbGame['type'];
+  engagement_category: DbGame['engagement_category'];
+  launch_url: string;
+  thumbnail_url?: string | null;
+  place_id?: string | null;
+  private_server_access_code?: string | null;
+  link_code?: string | null;
+  description?: string | null;
+  is_active?: number;
+}
+
+export interface UpdateGameInput {
+  title?: string;
+  type?: DbGame['type'];
+  engagement_category?: DbGame['engagement_category'];
+  launch_url?: string;
+  thumbnail_url?: string | null;
+  place_id?: string | null;
+  private_server_access_code?: string | null;
+  link_code?: string | null;
+  description?: string | null;
+  is_active?: number;
+}

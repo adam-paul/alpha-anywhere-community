@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Game } from '$lib/types';
-  import { Card } from '$lib/components/ui';
+  import { Card, IconButton } from '$lib/components/ui';
   import CategoryBadge from './CategoryBadge.svelte';
   import PlayerCount from './PlayerCount.svelte';
 
@@ -8,10 +8,11 @@
     game: Game;
     disabled?: boolean;
     onLaunch?: (game: Game) => void;
+    onEdit?: (game: Game) => void;
     playerCount?: number; // Will come from real-time presence later
   }
 
-  let { game, disabled = false, onLaunch, playerCount }: Props = $props();
+  let { game, disabled = false, onLaunch, onEdit, playerCount }: Props = $props();
 
   function handleClick() {
     if (disabled) return;
@@ -25,6 +26,20 @@
     <div class="thumbnail-overlay">
       <span class="play-label">Play</span>
     </div>
+    {#if onEdit}
+      <div class="edit-overlay">
+        <IconButton
+          icon="edit"
+          shape="circle"
+          size="sm"
+          label="Edit game"
+          onclick={(e) => {
+            e.stopPropagation();
+            onEdit(game);
+          }}
+        />
+      </div>
+    {/if}
   </div>
 
   <div class="card-content">
@@ -77,6 +92,24 @@
 
   :global(.card:hover) .thumbnail-overlay,
   :global(.card:focus-visible) .thumbnail-overlay {
+    opacity: 1;
+  }
+
+  .edit-overlay {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+    z-index: 2;
+  }
+
+  .edit-overlay :global(.icon-btn) {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  :global(.card:hover) .edit-overlay {
     opacity: 1;
   }
 

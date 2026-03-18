@@ -2,15 +2,18 @@
   import type { Snippet } from 'svelte';
   import IconButton from './IconButton.svelte';
 
+  type Size = 'sm' | 'md' | 'lg';
+
   interface Props {
     open: boolean;
     onclose: () => void;
     title: string;
     content: Snippet;
     footer?: Snippet;
+    size?: Size;
   }
 
-  let { open, onclose, title, content, footer }: Props = $props();
+  let { open, onclose, title, content, footer, size = 'sm' }: Props = $props();
 
   function handleBackdropClick(e: MouseEvent) {
     if (e.target === e.currentTarget) onclose();
@@ -20,7 +23,7 @@
 {#if open}
   <!-- svelte-ignore a11y_click_events_have_key_events -->
   <div class="modal-backdrop" role="presentation" onclick={handleBackdropClick}>
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal size-{size}" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <header class="modal-header">
         <h2 id="modal-title" class="modal-title">{title}</h2>
         <IconButton icon="x" shape="ghost" label="Close" onclick={onclose} />
@@ -52,7 +55,6 @@
 
   .modal {
     width: 100%;
-    max-width: 400px;
     max-height: 80vh;
     background: var(--color-surface);
     border: var(--border-width) solid var(--color-border);
@@ -78,6 +80,18 @@
     flex: 1;
     overflow-y: auto;
     padding: var(--space-4);
+  }
+
+  .size-sm {
+    max-width: 400px;
+  }
+
+  .size-md {
+    max-width: 560px;
+  }
+
+  .size-lg {
+    max-width: 720px;
   }
 
   .modal-footer {

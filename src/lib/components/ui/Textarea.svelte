@@ -1,5 +1,6 @@
 <script lang="ts">
   interface Props {
+    id?: string;
     value?: string;
     placeholder?: string;
     disabled?: boolean;
@@ -7,10 +8,10 @@
     oninput?: (e: Event) => void;
   }
 
-  let { value = '', placeholder, disabled = false, rows = 4, oninput }: Props = $props();
+  let { id, value = '', placeholder, disabled = false, rows = 4, oninput }: Props = $props();
 </script>
 
-<textarea class="textarea" {value} {placeholder} {disabled} {rows} {oninput}></textarea>
+<textarea class="textarea" {id} {value} {placeholder} {disabled} {rows} {oninput}></textarea>
 
 <style>
   .textarea {

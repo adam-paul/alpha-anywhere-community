@@ -5,6 +5,7 @@
   }
 
   interface Props {
+    id?: string;
     options: Option[];
     value: string;
     placeholder?: string;
@@ -13,6 +14,7 @@
   }
 
   let {
+    id,
     options,
     value = $bindable(),
     placeholder = 'Select...',
@@ -28,7 +30,7 @@
 </script>
 
 <div class="select-wrapper" class:disabled>
-  <select {value} {disabled} onchange={handleChange}>
+  <select {id} {value} {disabled} onchange={handleChange}>
     {#if placeholder}
       <option value="" disabled={value !== ''}>{placeholder}</option>
     {/if}
@@ -52,23 +54,24 @@
 <style>
   .select-wrapper {
     position: relative;
-    display: inline-flex;
+    display: flex;
     align-items: center;
+    width: 100%;
   }
 
   select {
     appearance: none;
-    padding: var(--space-2) var(--space-8) var(--space-2) var(--space-3);
+    width: 100%;
+    padding: var(--space-3) var(--space-8) var(--space-3) var(--space-3);
     font-family: var(--font-display);
     font-size: var(--font-size-sm);
     font-weight: 500;
     color: var(--color-text);
-    background: var(--color-surface);
+    background: var(--color-bg);
     border: var(--border-width) solid var(--color-border);
     border-radius: var(--radius);
     cursor: pointer;
     transition: all var(--transition-fast);
-    min-width: 140px;
   }
 
   select:hover:not(:disabled) {

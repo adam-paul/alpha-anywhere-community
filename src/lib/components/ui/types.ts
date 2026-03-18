@@ -15,4 +15,5 @@ export type IconName =
   | 'send'
   | 'info'
   | 'more'
-  | 'check';
+  | 'check'
+  | 'trash';

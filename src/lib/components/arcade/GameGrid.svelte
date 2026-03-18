@@ -7,9 +7,10 @@
 
   interface Props {
     disabled?: boolean;
+    onEdit?: (game: Game) => void;
   }
 
-  let { disabled = false }: Props = $props();
+  let { disabled = false, onEdit }: Props = $props();
 
   const arcade = getArcadeStore();
 
@@ -67,7 +68,7 @@
 
 <div class="game-grid">
   {#each games as game (game.id)}
-    <GameCard {game} {disabled} onLaunch={handleLaunch} />
+    <GameCard {game} {disabled} onLaunch={handleLaunch} {onEdit} />
   {/each}
 
   {#if games.length === 0}

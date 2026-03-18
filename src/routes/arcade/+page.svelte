@@ -1,13 +1,15 @@
 <script lang="ts">
+  import { invalidateAll } from '$app/navigation';
   import { createArcadeStore } from '$lib/stores/arcade.svelte';
   import { createGatingStore } from '$lib/stores/gating.svelte';
   import { GATING_UNIT_LABELS } from '$lib/constants';
-  import type { GatingState } from '$lib/types';
-  import { PageHeader } from '$lib/components/ui';
+  import type { Game, GameFormData, GameFormMode, GatingState } from '$lib/types';
+  import { IconButton, PageHeader } from '$lib/components/ui';
   import GameGrid from '$lib/components/arcade/GameGrid.svelte';
   import WorkWall from '$lib/components/arcade/WorkWall.svelte';
   import FilterBar from '$lib/components/arcade/FilterBar.svelte';
-  import DevTools from '$lib/components/arcade/DevTools.svelte';
+  import DevTools from '$lib/components/admin/DevTools.svelte';
+  import GameFormModal from '$lib/components/admin/GameFormModal.svelte';
 
   let { data } = $props();
 
@@ -47,6 +49,39 @@
 
     gating.setDevOverride(override);
   }
+
+  // Admin: game form modal state
+  let gameFormOpen = $state(false);
+  let gameFormMode = $state<GameFormMode>({ kind: 'create' });
+  let gameFormInitialData = $state<GameFormData | undefined>(undefined);
+
+  function openCreateGame() {
+    gameFormMode = { kind: 'create' };
+    gameFormInitialData = undefined;
+    gameFormOpen = true;
+  }
+
+  function openEditGame(game: Game) {
+    gameFormMode = { kind: 'edit', gameId: game.id };
+    gameFormInitialData = {
+      title: game.title,
+      type: game.type,
+      engagementCategory: game.engagementCategory,
+      description: game.description ?? '',
+      thumbnailUrl: game.thumbnailUrl,
+      launchUrl: game.launchUrl ?? '',
+      placeId: game.placeId ?? '',
+      accessCode: '',
+      linkCode: '',
+      isActive: game.isActive ?? true
+    };
+    gameFormOpen = true;
+  }
+
+  async function handleGameSave() {
+    gameFormOpen = false;
+    await invalidateAll();
+  }
 </script>
 
 <svelte:head>
@@ -56,18 +91,21 @@
 <PageHeader title="Arcade">
   {#snippet actions()}
     <FilterBar disabled={gating.showWorkWall} />
+    {#if data.isAdmin}
+      <IconButton icon="plus" shape="circle" label="Add game" onclick={openCreateGame} />
+    {/if}
   {/snippet}
 </PageHeader>
 
 <div class="arcade-content" class:locked={gating.showWorkWall}>
-  <GameGrid disabled={gating.showWorkWall} />
+  <GameGrid disabled={gating.showWorkWall} onEdit={data.isAdmin ? openEditGame : undefined} />
 
   {#if gating.showWorkWall}
     <WorkWall {gating} />
   {/if}
 </div>
 
-{#if gating.serverData}
+{#if data.isAdmin && gating.serverData}
   <DevTools
     bind:isLocked={devIsLocked}
     bind:progressCurrent={devProgressCurrent}
@@ -75,6 +113,16 @@
     progressRequired={gating.serverData.progressRequired}
     {unitLabel}
     onchange={syncDevTools}
+  />
+{/if}
+
+{#if data.isAdmin}
+  <GameFormModal
+    open={gameFormOpen}
+    onclose={() => (gameFormOpen = false)}
+    mode={gameFormMode}
+    initialData={gameFormInitialData}
+    onsave={handleGameSave}
   />
 {/if}
 

@@ -16,7 +16,9 @@ import type {
   UserWithProfile,
   CreateUserInput,
   UpdateProfileInput,
-  CreateMessageInput
+  CreateMessageInput,
+  CreateGameInput,
+  UpdateGameInput
 } from './types';
 
 /**
@@ -600,6 +602,112 @@ export function createDbClient(db: D1Database) {
           .bind(category)
           .all<DbGame>();
         return results;
+      },
+
+      /**
+       * Get all games including inactive. Admin use only.
+       */
+      async findAllAdmin(): Promise<DbGame[]> {
+        const { results } = await db.prepare('SELECT * FROM games ORDER BY title').all<DbGame>();
+        return results;
+      },
+
+      /**
+       * Create a new game.
+       */
+      async create(input: CreateGameInput): Promise<DbGame> {
+        const result = await db
+          .prepare(
+            `
+						INSERT INTO games (id, title, thumbnail_url, type, engagement_category, launch_url, place_id, private_server_access_code, link_code, description, is_active)
+						VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+						RETURNING *
+					`
+          )
+          .bind(
+            input.id,
+            input.title,
+            input.thumbnail_url ?? null,
+            input.type,
+            input.engagement_category,
+            input.launch_url,
+            input.place_id ?? null,
+            input.private_server_access_code ?? null,
+            input.link_code ?? null,
+            input.description ?? null,
+            input.is_active ?? 1
+          )
+          .first<DbGame>();
+
+        if (!result) throw new Error('Failed to create game');
+        return result;
+      },
+
+      /**
+       * Update an existing game. Only provided fields are updated.
+       */
+      async update(id: string, input: UpdateGameInput): Promise<DbGame> {
+        const fields: string[] = [];
+        const values: (string | number | null)[] = [];
+
+        if (input.title !== undefined) {
+          fields.push('title = ?');
+          values.push(input.title);
+        }
+        if (input.type !== undefined) {
+          fields.push('type = ?');
+          values.push(input.type);
+        }
+        if (input.engagement_category !== undefined) {
+          fields.push('engagement_category = ?');
+          values.push(input.engagement_category);
+        }
+        if (input.launch_url !== undefined) {
+          fields.push('launch_url = ?');
+          values.push(input.launch_url);
+        }
+        if (input.thumbnail_url !== undefined) {
+          fields.push('thumbnail_url = ?');
+          values.push(input.thumbnail_url);
+        }
+        if (input.place_id !== undefined) {
+          fields.push('place_id = ?');
+          values.push(input.place_id);
+        }
+        if (input.private_server_access_code !== undefined) {
+          fields.push('private_server_access_code = ?');
+          values.push(input.private_server_access_code);
+        }
+        if (input.link_code !== undefined) {
+          fields.push('link_code = ?');
+          values.push(input.link_code);
+        }
+        if (input.description !== undefined) {
+          fields.push('description = ?');
+          values.push(input.description);
+        }
+        if (input.is_active !== undefined) {
+          fields.push('is_active = ?');
+          values.push(input.is_active);
+        }
+
+        fields.push("updated_at = datetime('now')");
+
+        const result = await db
+          .prepare(`UPDATE games SET ${fields.join(', ')} WHERE id = ? RETURNING *`)
+          .bind(...values, id)
+          .first<DbGame>();
+
+        if (!result) throw new Error('Game not found');
+        return result;
+      },
+
+      /**
+       * Delete a game.
+       */
+      async delete(id: string): Promise<void> {
+        const { meta } = await db.prepare('DELETE FROM games WHERE id = ?').bind(id).run();
+        if (meta.changes === 0) throw new Error('Game not found');
       }
     }
   };
