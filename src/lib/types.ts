@@ -1,3 +1,10 @@
+// Navigation
+export interface NavItem {
+  href: string;
+  label: string;
+  icon: string;
+}
+
 // User types
 export type UserRole = 'student' | 'admin';
 
@@ -97,6 +104,16 @@ export type Interest =
   | 'baking'
   | 'tennis'
   | 'drawing';
+
+// Profile header display data (subset of Student used by ProfileHeader)
+export interface ProfileStudent {
+  displayName: string;
+  handle: string;
+  avatarUrl?: string;
+  coverUrl?: string;
+  location: string;
+  joinedDate: string;
+}
 
 // Friendship status for profile button state
 export type FriendshipStatus =

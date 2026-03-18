@@ -1,12 +1,9 @@
 <script lang="ts">
-  interface Option {
-    value: string;
-    label: string;
-  }
+  import type { SelectOption } from './types';
 
   interface Props {
     id?: string;
-    options: Option[];
+    options: SelectOption[];
     value: string;
     placeholder?: string;
     disabled?: boolean;

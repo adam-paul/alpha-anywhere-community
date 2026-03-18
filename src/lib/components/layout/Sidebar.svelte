@@ -4,15 +4,10 @@
   import { Icon, Avatar } from '$lib/components/ui';
   import { SignInButton } from '@timeback/sdk/svelte';
   import { getUserStore } from '$lib/stores/user.svelte';
+  import type { NavItem } from '$lib/types';
 
   interface Props {
     pendingFriendRequestCount?: number;
-  }
-
-  interface NavItem {
-    href: string;
-    label: string;
-    icon: 'search' | 'chat' | 'gamepad';
   }
 
   let { pendingFriendRequestCount = 0 }: Props = $props();

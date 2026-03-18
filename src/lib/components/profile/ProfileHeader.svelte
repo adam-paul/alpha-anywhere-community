@@ -1,15 +1,6 @@
 <script lang="ts">
   import { Avatar, Button, Icon } from '$lib/components/ui';
-  import type { FriendshipStatus } from '$lib/types';
-
-  interface ProfileStudent {
-    displayName: string;
-    handle: string;
-    avatarUrl?: string;
-    coverUrl?: string;
-    location: string;
-    joinedDate: string;
-  }
+  import type { FriendshipStatus, ProfileStudent } from '$lib/types';
 
   interface Props {
     student: ProfileStudent;
