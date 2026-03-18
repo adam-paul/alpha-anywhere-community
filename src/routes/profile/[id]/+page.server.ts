@@ -7,7 +7,7 @@
 
 import { error, redirect } from '@sveltejs/kit';
 import { createDbClient } from '$lib/server/db/client';
-import type { FriendshipStatus } from '$lib/types';
+import type { FriendshipStatus, FriendSummary, PendingFriendRequest } from '$lib/types';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, locals, platform }) => {
@@ -41,14 +41,9 @@ export const load: PageServerLoad = async ({ params, locals, platform }) => {
 
   // Load friendship data
   let friendshipStatus: FriendshipStatus = isOwnProfile ? { kind: 'self' } : { kind: 'none' };
-  let friends: Array<{ id: string; displayName: string; avatarUrl: string | null }> = [];
-  let mutualFriends: Array<{ id: string; displayName: string; avatarUrl: string | null }> = [];
-  let pendingRequests: Array<{
-    friendshipId: string;
-    id: string;
-    displayName: string;
-    avatarUrl: string | null;
-  }> = [];
+  let friends: FriendSummary[] = [];
+  let mutualFriends: FriendSummary[] = [];
+  let pendingRequests: PendingFriendRequest[] = [];
 
   if (isOwnProfile) {
     // Own profile: load full friends list and pending incoming requests

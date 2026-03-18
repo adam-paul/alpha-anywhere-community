@@ -106,6 +106,17 @@ export type FriendshipStatus =
   | { kind: 'friends'; friendshipId: string }
   | { kind: 'self' };
 
+// Friend list items (used by profile page for friends, mutual friends, pending requests)
+export interface FriendSummary {
+  id: string;
+  displayName: string;
+  avatarUrl: string | null;
+}
+
+export interface PendingFriendRequest extends FriendSummary {
+  friendshipId: string;
+}
+
 // Student profile
 export interface Student {
   id: string;

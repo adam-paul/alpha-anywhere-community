@@ -11,14 +11,15 @@ Scan the codebase for type definitions that violate the "exactly one home" princ
 
 Types are **always abstracted** to dedicated type files. No inline type definitions except `Props`. Keep `types.ts` pure — no runtime code (constants, functions).
 
-| Location                     | What belongs there                                        |
-| ---------------------------- | --------------------------------------------------------- |
-| `src/lib/types.ts`           | All domain types — pure type definitions only             |
-| `src/lib/constants.ts`       | Runtime metadata for types (labels, colors, descriptions) |
-| `src/lib/server/db/types.ts` | Database-specific types (snake_case, D1 schema)           |
-| `src/lib/utils/*.ts`         | Helper functions                                          |
-| Component files              | **Only** `interface Props`                                |
-| Utils/stores/routes          | No type definitions — import from `types.ts`              |
+| Location                         | What belongs there                                                                         |
+| -------------------------------- | ------------------------------------------------------------------------------------------ |
+| `src/lib/types.ts`               | Domain types — pure type definitions only                                                  |
+| `src/lib/components/ui/types.ts` | UI-internal types (e.g., `IconName`) — not exported via barrel, not imported outside `ui/` |
+| `src/lib/constants.ts`           | Runtime metadata for types (labels, colors, descriptions)                                  |
+| `src/lib/server/db/types.ts`     | Database-specific types (snake_case, D1 schema)                                            |
+| `src/lib/utils/*.ts`             | Helper functions                                                                           |
+| Component files                  | **Only** `interface Props` (plus component-local variant types like `Size`, `Variant`)     |
+| Utils/stores/routes              | No type definitions — import from `types.ts`                                               |
 
 **Always use path aliases** for imports:
 
