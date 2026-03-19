@@ -316,6 +316,9 @@
           type="url"
           oninput={(e) => (thumbnailUrl = inputValue(e))}
         />
+        {#if thumbnailUrl}
+          <img class="thumbnail-preview" src={thumbnailUrl} alt="Thumbnail preview" />
+        {/if}
       </fieldset>
 
       <!-- Place ID -->
@@ -429,6 +432,14 @@
 
   .field-row .field-group {
     flex: 1;
+  }
+
+  .thumbnail-preview {
+    max-width: 160px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
   }
 
   .lookup-row {
