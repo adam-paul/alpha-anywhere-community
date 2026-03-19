@@ -8,15 +8,33 @@
   interface Props {
     disabled?: boolean;
     onEdit?: (game: Game) => void;
+    onRobloxLinkNeeded?: () => void;
   }
 
-  let { disabled = false, onEdit }: Props = $props();
+  let { disabled = false, onEdit, onRobloxLinkNeeded }: Props = $props();
 
   const arcade = getArcadeStore();
 
   const games = $derived(arcade.filteredGames);
 
   function handleLaunch(game: Game) {
+    // For Roblox games: check linking and record launch
+    if (game.type === 'roblox') {
+      if (!arcade.robloxLinked) {
+        onRobloxLinkNeeded?.();
+        return;
+      }
+
+      // Record launch in KV (fire and forget — don't block the deep link)
+      fetch('/api/arcade/launch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ gameId: game.id })
+      }).catch(() => {
+        // Non-critical — presence just won't track this session
+      });
+    }
+
     let options: LaunchOptions;
 
     switch (game.type) {
@@ -68,7 +86,13 @@
 
 <div class="game-grid">
   {#each games as game (game.id)}
-    <GameCard {game} {disabled} onLaunch={handleLaunch} {onEdit} />
+    <GameCard
+      {game}
+      {disabled}
+      onLaunch={handleLaunch}
+      {onEdit}
+      playerCount={arcade.presenceCounts[game.id] || undefined}
+    />
   {/each}
 
   {#if games.length === 0}

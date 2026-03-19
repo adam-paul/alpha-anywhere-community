@@ -10,12 +10,13 @@
   import FilterBar from '$lib/components/arcade/FilterBar.svelte';
   import DevTools from '$lib/components/admin/DevTools.svelte';
   import GameFormModal from '$lib/components/admin/GameFormModal.svelte';
+  import RobloxLinkModal from '$lib/components/arcade/RobloxLinkModal.svelte';
 
   let { data } = $props();
 
   // Create stores
   // svelte-ignore state_referenced_locally
-  const arcade = createArcadeStore({ games: data.games });
+  const arcade = createArcadeStore({ games: data.games, robloxLinked: data.robloxLinked });
   // svelte-ignore state_referenced_locally
   const gating = createGatingStore(data.gatingState);
 
@@ -53,6 +54,45 @@
     };
 
     gating.setDevOverride(override);
+  }
+
+  // Presence polling — fetch counts every 30s while arcade is visible
+  $effect(() => {
+    if (gating.showWorkWall) return;
+
+    let active = true;
+
+    async function poll() {
+      try {
+        const res = await fetch('/api/arcade/presence');
+        if (res.ok && active) {
+          const { counts } = await res.json();
+          arcade.setPresenceCounts(counts);
+        }
+      } catch {
+        // Silently ignore polling failures
+      }
+    }
+
+    poll();
+    const interval = setInterval(poll, 15_000);
+
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  });
+
+  // Roblox linking modal
+  let robloxLinkOpen = $state(false);
+
+  function handleRobloxLinkNeeded() {
+    robloxLinkOpen = true;
+  }
+
+  function handleRobloxLinked() {
+    robloxLinkOpen = false;
+    arcade.setRobloxLinked(true);
   }
 
   // Admin: game form modal state
@@ -106,7 +146,11 @@
 </PageHeader>
 
 <div class="arcade-content" class:locked={gating.showWorkWall}>
-  <GameGrid disabled={gating.showWorkWall} onEdit={data.isAdmin ? openEditGame : undefined} />
+  <GameGrid
+    disabled={gating.showWorkWall}
+    onEdit={data.isAdmin ? openEditGame : undefined}
+    onRobloxLinkNeeded={handleRobloxLinkNeeded}
+  />
 
   {#if gating.showWorkWall}
     <WorkWall {gating} />
@@ -134,6 +178,12 @@
     onsave={handleGameSave}
   />
 {/if}
+
+<RobloxLinkModal
+  open={robloxLinkOpen}
+  onclose={() => (robloxLinkOpen = false)}
+  onlinked={handleRobloxLinked}
+/>
 
 <style>
   .arcade-content {

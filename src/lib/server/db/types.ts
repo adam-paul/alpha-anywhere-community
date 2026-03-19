@@ -27,6 +27,9 @@ export interface DbProfile {
   avatar_url: string | null;
   cover_url: string | null;
   interests: string | null; // JSON array string
+  roblox_user_id: string | null;
+  roblox_username: string | null;
+  roblox_avatar_url: string | null;
   updated_at: string;
 }
 
@@ -114,6 +117,12 @@ export interface CreateMessageInput {
   sender_id: string;
   content: string;
   image_url?: string | null;
+}
+
+export interface LinkRobloxInput {
+  roblox_user_id: string;
+  roblox_username: string;
+  roblox_avatar_url: string;
 }
 
 export interface CreateGameInput {

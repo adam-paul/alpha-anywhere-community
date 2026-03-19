@@ -2,7 +2,7 @@
 export interface NavItem {
   href: string;
   label: string;
-  icon: string;
+  icon: 'search' | 'chat' | 'gamepad';
 }
 
 // User types
@@ -170,11 +170,16 @@ export interface ArcadeState {
   theme: Theme;
   readonly games: Game[];
   readonly filteredGames: Game[];
+  readonly presenceCounts: PresenceCounts;
+  readonly robloxLinked: boolean;
   setGames: (games: Game[]) => void;
+  setPresenceCounts: (counts: PresenceCounts) => void;
+  setRobloxLinked: (linked: boolean) => void;
 }
 
 export interface CreateArcadeStoreOptions {
   games?: Game[];
+  robloxLinked?: boolean;
 }
 
 export interface ExploreState {
@@ -277,3 +282,14 @@ export interface RobloxLookupResult {
   placeId: string;
   launchUrl: string;
 }
+
+// Roblox user lookup (for account linking)
+export interface RobloxUserLookupResult {
+  robloxUserId: string;
+  robloxUsername: string;
+  robloxDisplayName: string;
+  robloxAvatarUrl: string;
+}
+
+// Presence counts per game slug
+export type PresenceCounts = Record<string, number>;

@@ -1,5 +1,11 @@
 import { getContext, setContext } from 'svelte';
-import type { ArcadeState, CreateArcadeStoreOptions, EngagementCategory, Theme } from '$lib/types';
+import type {
+  ArcadeState,
+  CreateArcadeStoreOptions,
+  EngagementCategory,
+  PresenceCounts,
+  Theme
+} from '$lib/types';
 
 const ARCADE_CONTEXT_KEY = 'arcade';
 
@@ -7,6 +13,8 @@ export function createArcadeStore(options: CreateArcadeStoreOptions = {}) {
   let activeFilter = $state<EngagementCategory | 'all'>('all');
   let theme = $state<Theme>('cel-shaded');
   let games = $state(options.games ?? []);
+  let presenceCounts = $state<PresenceCounts>({});
+  let robloxLinked = $state(options.robloxLinked ?? false);
 
   const filteredGames = $derived(
     activeFilter === 'all' ? games : games.filter((g) => g.engagementCategory === activeFilter)
@@ -33,9 +41,21 @@ export function createArcadeStore(options: CreateArcadeStoreOptions = {}) {
     get filteredGames() {
       return filteredGames;
     },
+    get presenceCounts() {
+      return presenceCounts;
+    },
+    get robloxLinked() {
+      return robloxLinked;
+    },
 
     setGames(newGames) {
       games = newGames;
+    },
+    setPresenceCounts(counts) {
+      presenceCounts = counts;
+    },
+    setRobloxLinked(linked) {
+      robloxLinked = linked;
     }
   };
 

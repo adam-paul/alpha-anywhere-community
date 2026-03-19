@@ -194,6 +194,13 @@ export const load: PageServerLoad = async ({ platform, locals }) => {
     games.push(...transformedGames);
   }
 
+  // Check if user has linked their Roblox account
+  let robloxLinked = false;
+  if (db && locals.user) {
+    const profile = await db.profiles.findByUserId(locals.user.id);
+    robloxLinked = !!profile?.roblox_user_id;
+  }
+
   // Return games immediately, stream gating data when ready
   // The promise is not awaited, so the page renders instantly
   return {
@@ -202,6 +209,7 @@ export const load: PageServerLoad = async ({ platform, locals }) => {
       locals.user?.email && db
         ? fetchGatingData(locals.user.email, db)
         : Promise.resolve(DEFAULT_UNLOCKED),
-    isAdmin: locals.user?.role === 'admin'
+    isAdmin: locals.user?.role === 'admin',
+    robloxLinked
   };
 };

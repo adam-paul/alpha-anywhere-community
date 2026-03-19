@@ -18,7 +18,8 @@ import type {
   UpdateProfileInput,
   CreateMessageInput,
   CreateGameInput,
-  UpdateGameInput
+  UpdateGameInput,
+  LinkRobloxInput
 } from './types';
 
 /**
@@ -136,7 +137,8 @@ export function createDbClient(db: D1Database) {
 						SELECT
 							u.id, u.timeback_id, u.email, u.display_name, u.role,
 							u.gating_source, u.gating_source_probed_at, u.created_at, u.updated_at,
-							p.bio, p.location, p.avatar_url, p.cover_url, p.interests
+							p.bio, p.location, p.avatar_url, p.cover_url, p.interests,
+							p.roblox_user_id, p.roblox_username, p.roblox_avatar_url
 						FROM users u
 						LEFT JOIN profiles p ON u.id = p.user_id
 						ORDER BY u.created_at DESC
@@ -165,6 +167,9 @@ export function createDbClient(db: D1Database) {
             avatar_url: row.avatar_url as string | null,
             cover_url: row.cover_url as string | null,
             interests: row.interests as string | null,
+            roblox_user_id: row.roblox_user_id as string | null,
+            roblox_username: row.roblox_username as string | null,
+            roblox_avatar_url: row.roblox_avatar_url as string | null,
             updated_at: row.updated_at as string
           }
         }));
@@ -218,6 +223,52 @@ export function createDbClient(db: D1Database) {
 
         if (!result) throw new Error('Failed to upsert profile');
         return result;
+      },
+
+      /** Link a Roblox account to a profile. */
+      async linkRoblox(userId: string, input: LinkRobloxInput): Promise<DbProfile> {
+        const result = await db
+          .prepare(
+            `UPDATE profiles SET
+              roblox_user_id = ?,
+              roblox_username = ?,
+              roblox_avatar_url = ?,
+              updated_at = datetime('now')
+            WHERE user_id = ?
+            RETURNING *`
+          )
+          .bind(input.roblox_user_id, input.roblox_username, input.roblox_avatar_url, userId)
+          .first<DbProfile>();
+
+        if (!result) throw new Error('Profile not found');
+        return result;
+      },
+
+      /** Unlink a Roblox account from a profile. */
+      async unlinkRoblox(userId: string): Promise<DbProfile> {
+        const result = await db
+          .prepare(
+            `UPDATE profiles SET
+              roblox_user_id = NULL,
+              roblox_username = NULL,
+              roblox_avatar_url = NULL,
+              updated_at = datetime('now')
+            WHERE user_id = ?
+            RETURNING *`
+          )
+          .bind(userId)
+          .first<DbProfile>();
+
+        if (!result) throw new Error('Profile not found');
+        return result;
+      },
+
+      /** Get all profiles with linked Roblox accounts (for presence polling). */
+      async findAllWithRoblox(): Promise<Array<{ user_id: string; roblox_user_id: string }>> {
+        const { results } = await db
+          .prepare('SELECT user_id, roblox_user_id FROM profiles WHERE roblox_user_id IS NOT NULL')
+          .all<{ user_id: string; roblox_user_id: string }>();
+        return results;
       }
     },
 
