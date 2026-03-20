@@ -293,3 +293,28 @@ export interface RobloxUserLookupResult {
 
 // Presence counts per game slug
 export type PresenceCounts = Record<string, number>;
+
+// Roblox API response shapes (external API typing)
+export interface RobloxUserResponse {
+  data: Array<{
+    id: number;
+    name: string;
+    displayName: string;
+    hasVerifiedBadge: boolean;
+  }>;
+}
+
+export interface RobloxThumbnailResponse {
+  data: Array<{
+    targetId: number;
+    state: string;
+    imageUrl: string;
+  }>;
+}
+
+export interface RobloxPresenceResponse {
+  userPresences: Array<{
+    userPresenceType: number;
+    userId: number;
+  }>;
+}

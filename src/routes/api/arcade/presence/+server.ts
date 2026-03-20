@@ -14,14 +14,7 @@ import { json, error } from '@sveltejs/kit';
 import { createDbClient } from '$lib/server/db/client';
 import { env } from '$env/dynamic/private';
 import type { RequestHandler } from './$types';
-import type { PresenceCounts } from '$lib/types';
-
-interface RobloxPresenceResponse {
-  userPresences: Array<{
-    userPresenceType: number; // 0=Offline, 1=Online, 2=InGame, 3=InStudio
-    userId: number;
-  }>;
-}
+import type { PresenceCounts, RobloxPresenceResponse } from '$lib/types';
 
 const LAUNCH_TTL = 300; // 5 minutes
 

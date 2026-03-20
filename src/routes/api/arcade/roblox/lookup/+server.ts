@@ -6,24 +6,11 @@
 
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import type { RobloxUserLookupResult } from '$lib/types';
-
-interface RobloxUserResponse {
-  data: Array<{
-    id: number;
-    name: string;
-    displayName: string;
-    hasVerifiedBadge: boolean;
-  }>;
-}
-
-interface RobloxThumbnailResponse {
-  data: Array<{
-    targetId: number;
-    state: string;
-    imageUrl: string;
-  }>;
-}
+import type {
+  RobloxUserLookupResult,
+  RobloxUserResponse,
+  RobloxThumbnailResponse
+} from '$lib/types';
 
 export const POST: RequestHandler = async ({ request, locals }) => {
   if (!locals.user) error(401, 'Not authenticated');

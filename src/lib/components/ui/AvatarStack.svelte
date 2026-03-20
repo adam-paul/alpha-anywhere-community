@@ -1,13 +1,8 @@
 <script lang="ts">
   import Avatar from './Avatar.svelte';
 
-  interface Participant {
-    avatarUrl?: string;
-    displayName: string;
-  }
-
   interface Props {
-    participants: Participant[];
+    participants: Array<{ avatarUrl?: string; displayName: string }>;
     size?: 'sm' | 'md';
   }
 
