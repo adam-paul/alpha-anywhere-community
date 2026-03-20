@@ -1,12 +1,12 @@
 # Alpha Anywhere Community: Roadmap
 
-**Last updated:** 2026-03-18
+**Last updated:** 2026-03-19
 
 ---
 
 ## Current State
 
-Production-quality frontend with complete UI flows. Infrastructure in place: D1 database (local + remote), Timeback SSO, cookie sessions, auto-provisioned users. Roblox private server deep links working. Work-wall gating live for both LWAI (300 min/week via Lambda proxy) and Timeback (120 XP/day via EduBridge Analytics). Per-student gating source detection cached in D1. Friend system fully wired. Admin role gating with inline admin tools (game CRUD with Roblox lookup, DevTools).
+Production-quality frontend with complete UI flows. Infrastructure in place: D1 database (local + remote), KV namespace (ephemeral presence data), Timeback SSO, cookie sessions, auto-provisioned users. Roblox private server deep links working. Work-wall gating live for both LWAI (300 min/week via Lambda proxy) and Timeback (120 XP/day via EduBridge Analytics). Per-student gating source detection cached in D1. Friend system fully wired. Admin role gating with inline admin tools (game CRUD with Roblox lookup, DevTools). Arcade presence live with Roblox account linking and per-game player counts.
 
 ### Infrastructure (Complete)
 
@@ -16,6 +16,7 @@ Production-quality frontend with complete UI flows. Infrastructure in place: D1 
 | **Styling**            | ✅     | Design tokens in `tokens.css`, cel-shaded theme               |
 | **Deployment**         | ✅     | Cloudflare Pages with Workers runtime                         |
 | **Database**           | ✅     | D1 (SQLite at edge), schema applied locally + remote          |
+| **KV Store**           | ✅     | Cloudflare KV for ephemeral data (launch records, TTL-based)  |
 | **Authentication**     | ✅     | Timeback SSO via `@timeback/sdk`, cookie sessions             |
 | **Session Management** | ✅     | HMAC-signed cookies, 7-day expiry                             |
 | **User Provisioning**  | ✅     | Auto-creates D1 user + profile on first authenticated request |
@@ -52,20 +53,21 @@ games (standalone, Roblox private server support)
 - `migrations/0002_games.sql` — Games catalog with private server fields
 - `migrations/0003_gating_source.sql` — Per-student gating source cache columns
 - `migrations/0004_user_roles.sql` — User roles (`student`/`admin`)
+- `migrations/0005_roblox_identity.sql` — Roblox account linking columns on profiles
 - `src/lib/server/db/client.ts` — Type-safe D1 client
 - `src/lib/server/db/types.ts` — TypeScript interfaces
 - `src/lib/server/admin.ts` — Admin role guard
 
 ### Not Yet Wired
 
-| Feature            | Status        | Notes                                                                                    |
-| ------------------ | ------------- | ---------------------------------------------------------------------------------------- |
-| Chat → D1          | Not connected | Still uses `MOCK_CONVERSATIONS`, `MOCK_MESSAGES`                                         |
-| Student Map        | Placeholder   | UI exists, shows "Coming soon"                                                           |
-| Real-time Presence | None          | No "who's online" functionality                                                          |
-| Chat Moderation    | None          | No content filtering                                                                     |
-| Parent Controls    | None          | No ToS, no per-child toggles                                                             |
-| Notifications      | Stopgap       | Pending friend requests shown on profile + sidebar badge; no general notification system |
+| Feature           | Status        | Notes                                                                                    |
+| ----------------- | ------------- | ---------------------------------------------------------------------------------------- |
+| Chat → D1         | Not connected | Still uses `MOCK_CONVERSATIONS`, `MOCK_MESSAGES`                                         |
+| Student Map       | Placeholder   | UI exists, shows "Coming soon"                                                           |
+| Platform Presence | None          | No "who's online" functionality (needs Durable Objects / WebSocket)                      |
+| Chat Moderation   | None          | No content filtering                                                                     |
+| Parent Controls   | None          | No ToS, no per-child toggles                                                             |
+| Notifications     | Stopgap       | Pending friend requests shown on profile + sidebar badge; no general notification system |
 
 ---
 
@@ -145,12 +147,18 @@ Geographic visualization of student locations. Geocode to lat/lng, map component
 
 **Priority:** High — parents frequently ask "who else is in my area?"
 
-#### Presence (Online + In-Game)
+#### Arcade Presence — ✅ Complete
 
-Show who's online and who's playing what.
+Roblox account linking + per-game player counts ("X playing" badges on game cards, polled every 15s). Launch-record + Roblox Presence API confirmation strategy. KV stores ephemeral launch records (5-min TTL, refreshed while in-game). Linking modal prompts on first Roblox game launch (username lookup → avatar confirmation).
 
-- **Online presence:** Heartbeat mechanism, green dot on avatars, sidebar friends list. Architecture: Durable Objects or simple polling with short TTL.
-- **Game presence:** Track launch events with 30-min TTL, show "X students playing" on game cards (UI already supports `playerCount` prop). Advanced: Roblox API presence endpoint (requires OAuth).
+**Known limitations:** Only tracks students who launch from the arcade. `userPresenceType` via API key is undocumented Roblox behavior. Game attribution depends on launch record (not Roblox placeId, which returns null with API key auth).
+
+#### Platform Presence
+
+Show who's online across the app (green dots, sidebar friends list, "X viewing this page"). Fundamentally distinct from arcade presence — requires persistent connections.
+
+- **Architecture:** Durable Objects for WebSocket connections (Cloudflare's equivalent of Django Channels + Redis, used in AlphaLearn LMS)
+- **Deferred to:** Chat implementation (both need the same WebSocket infrastructure)
 
 #### Notifications
 
@@ -236,6 +244,9 @@ AI-generated avatars from clickable trait selection (not free text — prevents 
 | **Admin tools**       | Inline in existing pages           | No separate dashboard; admin sees student view plus admin controls            |
 | **Admin auth**        | Server-side `assertAdmin()`        | Backend is single source of truth; frontend renders conditionally from server |
 | **Parent portal**     | Link to AlphaLearn                 | Don't rebuild, just add toggles                                               |
+| **KV store**          | Cloudflare KV                      | Native TTL for ephemeral data (launch records). 60s minimum TTL.              |
+| **Arcade presence**   | Launch-record + Roblox API poll    | KV launch records (5-min TTL) + Roblox Presence API confirmation every 15s    |
+| **Roblox linking**    | Manual username + avatar confirm   | Soft verification only; OAuth upgrade path if Roblox app review is approved   |
 
 ---
 
@@ -278,7 +289,6 @@ Two seed scripts exist (`seed-games.ts`, `seed-users.ts`) with duplicated utilit
 
 1. **Profile stats:** What metrics to show on student profile pages? Options from LWAI: total levels mastered, active minutes, accuracy rate, streak days.
 2. **Roblox private servers:** API access model? Pre-provisioned vs on-demand? Cost per server?
-3. **Roblox identity linking:** How to connect AAC accounts to Roblox accounts for private server access?
-4. **Minecraft feasibility:** Bedrock vs Java? Realms vs self-hosted?
-5. **Voice provider:** Agora vs Daily.co?
-6. **Avatar generation:** Which image model? Cost?
+3. **Minecraft feasibility:** Bedrock vs Java? Realms vs self-hosted?
+4. **Voice provider:** Agora vs Daily.co?
+5. **Avatar generation:** Which image model? Cost?

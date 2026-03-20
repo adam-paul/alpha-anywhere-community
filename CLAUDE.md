@@ -222,6 +222,10 @@ bun run db:migrate:remote  # Apply pending D1 migrations (remote)
 
 **Do NOT add `account_id` to `wrangler.toml`.** Cloudflare Pages projects reject it — the `pages_build_output_dir` key triggers stricter validation that blocks `account_id`. Use the `CLOUDFLARE_ACCOUNT_ID` env var instead. The developer's Cloudflare login has two accounts; the env var disambiguates which one wrangler targets.
 
+### Cloudflare KV minimum TTL
+
+KV `expirationTtl` must be **at least 60 seconds**. Shorter values cause a 400 error. This is a Cloudflare constraint due to global replication latency.
+
 ---
 
 ## Documentation
