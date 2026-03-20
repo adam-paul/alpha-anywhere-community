@@ -129,7 +129,16 @@
       await invalidateAll();
     } catch (error) {
       console.error(`Friend action failed:`, error);
-      // TODO: Show error toast
+    }
+  }
+
+  async function handleUnlinkRoblox() {
+    try {
+      const response = await fetch('/api/arcade/roblox/unlink', { method: 'POST' });
+      if (!response.ok) throw new Error('Failed to unlink');
+      await invalidateAll();
+    } catch (error) {
+      console.error('Roblox unlink failed:', error);
     }
   }
 </script>
@@ -230,6 +239,26 @@
         </p>
       {/if}
     </section>
+
+    {#if data.isOwnProfile && data.robloxLinked}
+      <section class="profile-section">
+        <h3 class="section-title">Linked Accounts</h3>
+        <div class="roblox-linked">
+          {#if data.robloxLinked.avatarUrl}
+            <img
+              class="roblox-linked-avatar"
+              src={data.robloxLinked.avatarUrl}
+              alt={data.robloxLinked.username}
+            />
+          {/if}
+          <div class="roblox-linked-info">
+            <span class="roblox-linked-label">Roblox</span>
+            <span class="roblox-linked-username">@{data.robloxLinked.username}</span>
+          </div>
+          <Button variant="danger" size="sm" onclick={handleUnlinkRoblox}>Unlink</Button>
+        </div>
+      </section>
+    {/if}
 
     <section class="profile-section">
       <h3 class="section-title">{friendsLabel} ({friendsList.length})</h3>
@@ -458,6 +487,39 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+  }
+
+  .roblox-linked {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .roblox-linked-avatar {
+    width: var(--avatar-size-sm);
+    height: var(--avatar-size-sm);
+    border-radius: var(--radius);
+    border: var(--border-width) solid var(--color-border);
+  }
+
+  .roblox-linked-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    flex: 1;
+  }
+
+  .roblox-linked-label {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+  }
+
+  .roblox-linked-username {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
   }
 
   .edit-actions {

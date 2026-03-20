@@ -1,13 +1,4 @@
-import type { UserContext, Student, Conversation, Message } from './types';
-
-// Mock user (simulates authenticated user - will be replaced by Timeback auth)
-export const MOCK_USER: UserContext = {
-  id: 'user-001',
-  timebackId: 'mock-timeback-001',
-  email: 'alex.t@alpha.school',
-  displayName: 'Alex T.',
-  role: 'student'
-};
+import type { Student, Conversation, Message } from './types';
 
 // Mock students for Explore page
 export const MOCK_STUDENTS: Student[] = [

@@ -100,6 +100,12 @@ export const load: PageServerLoad = async ({ params, locals, platform }) => {
     }));
   }
 
+  // Roblox linked account (own profile only)
+  const robloxLinked =
+    isOwnProfile && dbProfile?.roblox_user_id
+      ? { username: dbProfile.roblox_username!, avatarUrl: dbProfile.roblox_avatar_url! }
+      : null;
+
   return {
     user: {
       id: dbUser.id,
@@ -126,6 +132,7 @@ export const load: PageServerLoad = async ({ params, locals, platform }) => {
     friendshipStatus,
     friends,
     mutualFriends,
-    pendingRequests
+    pendingRequests,
+    robloxLinked
   };
 };

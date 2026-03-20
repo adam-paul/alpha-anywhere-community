@@ -67,6 +67,8 @@ Admin features are inline — they appear within existing pages (e.g., game CRUD
 | Styling   | CSS custom properties + scoped styles |
 | Build     | Vite + SvelteKit                      |
 | Deploy    | Cloudflare Pages                      |
+| Database  | Cloudflare D1 (SQLite at edge)        |
+| KV Store  | Cloudflare KV (ephemeral data, TTL)   |
 
 **Svelte 5 notes:**
 
