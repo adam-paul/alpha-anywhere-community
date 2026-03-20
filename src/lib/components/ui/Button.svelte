@@ -2,7 +2,7 @@
   import type { Snippet } from 'svelte';
 
   type Size = 'sm' | 'md' | 'lg';
-  type Variant = 'primary' | 'secondary' | 'ghost';
+  type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 
   interface Props {
     size?: Size;
@@ -136,5 +136,16 @@
     color: var(--color-text);
     box-shadow: none;
     transform: none;
+  }
+
+  .btn-danger {
+    background: transparent;
+    border-color: var(--color-error);
+    color: var(--color-error);
+  }
+
+  .btn-danger:hover:not(:disabled) {
+    background: var(--color-error);
+    color: var(--color-on-primary);
   }
 </style>

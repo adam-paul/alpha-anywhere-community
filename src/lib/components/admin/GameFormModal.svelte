@@ -390,10 +390,10 @@
       <Button variant="primary" onclick={handleDelete}>Delete</Button>
     {:else}
       {#if isEdit}
-        <button class="delete-btn" onclick={handleDelete} type="button">
+        <Button variant="danger" size="sm" onclick={handleDelete}>
           <Icon name="trash" size={16} />
           Delete
-        </button>
+        </Button>
       {/if}
       <div class="footer-spacer"></div>
       <Button variant="secondary" onclick={onclose} disabled={status === 'saving'}>Cancel</Button>
@@ -515,27 +515,6 @@
     font-size: var(--font-size-sm);
     font-weight: 600;
     border-radius: var(--radius);
-  }
-
-  .delete-btn {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-2) var(--space-3);
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    color: var(--color-error);
-    background: transparent;
-    border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-  }
-
-  .delete-btn:hover {
-    background: var(--color-error);
-    border-color: var(--color-error);
-    color: white;
   }
 
   .delete-confirm-text {

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { invalidateAll } from '$app/navigation';
-  import { Avatar, Button, Icon } from '$lib/components/ui';
+  import { Avatar, Button, IconButton, Input, Textarea, ToggleButton } from '$lib/components/ui';
   import InterestBadge from '$lib/components/InterestBadge.svelte';
   import ProfileHeader from '$lib/components/profile/ProfileHeader.svelte';
   import { INTERESTS } from '$lib/constants';
@@ -151,21 +151,20 @@
   <div class="profile-content">
     <section class="profile-section">
       <h3 class="section-title">About Me</h3>
-      <textarea
-        class="edit-textarea"
-        bind:value={editBio}
+      <Textarea
+        value={editBio}
         placeholder="Tell others about yourself..."
-        rows="4"
-      ></textarea>
+        rows={4}
+        oninput={(e) => (editBio = (e.target as HTMLTextAreaElement).value)}
+      />
     </section>
 
     <section class="profile-section">
       <h3 class="section-title">Location</h3>
-      <input
-        type="text"
-        class="edit-input"
-        bind:value={editLocation}
+      <Input
+        value={editLocation}
         placeholder="City, State (e.g., Austin, TX)"
+        oninput={(e) => (editLocation = (e.target as HTMLInputElement).value)}
       />
     </section>
 
@@ -174,14 +173,14 @@
       <p class="section-hint">Select the interests that describe you</p>
       <div class="interests-picker">
         {#each allInterests as interest (interest)}
-          <button
-            type="button"
-            class="interest-option"
-            class:selected={editInterests.includes(interest)}
+          <ToggleButton
+            active={editInterests.includes(interest)}
             onclick={() => toggleInterest(interest)}
+            variant="outline"
+            size="sm"
           >
             {INTERESTS[interest].label}
-          </button>
+          </ToggleButton>
         {/each}
       </div>
     </section>
@@ -275,20 +274,24 @@
                     <span class="friend-name">{request.displayName}</span>
                   </a>
                   <div class="friend-request-actions">
-                    <button
-                      class="action-btn action-accept"
-                      onclick={() => handleFriendAction('accept', request.friendshipId)}
-                      aria-label="Accept friend request from {request.displayName}"
-                    >
-                      <Icon name="check" size={16} />
-                    </button>
-                    <button
-                      class="action-btn action-decline"
-                      onclick={() => handleFriendAction('remove', request.friendshipId)}
-                      aria-label="Decline friend request from {request.displayName}"
-                    >
-                      <Icon name="x" size={16} />
-                    </button>
+                    <span class="action-accept">
+                      <IconButton
+                        icon="check"
+                        shape="square"
+                        size="sm"
+                        label="Accept friend request from {request.displayName}"
+                        onclick={() => handleFriendAction('accept', request.friendshipId)}
+                      />
+                    </span>
+                    <span class="action-decline">
+                      <IconButton
+                        icon="x"
+                        shape="square"
+                        size="sm"
+                        label="Decline friend request from {request.displayName}"
+                        onclick={() => handleFriendAction('remove', request.friendshipId)}
+                      />
+                    </span>
                   </div>
                 </div>
               {/each}
@@ -419,57 +422,24 @@
     flex-shrink: 0;
   }
 
-  .action-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius);
-    background: transparent;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-  }
-
-  .action-accept {
+  .action-accept :global(.icon-btn) {
     color: var(--color-success);
   }
 
-  .action-accept:hover {
+  .action-accept :global(.icon-btn:hover) {
     background: var(--color-success);
     border-color: var(--color-success);
-    color: white;
+    color: var(--color-surface);
   }
 
-  .action-decline {
+  .action-decline :global(.icon-btn) {
     color: var(--color-error);
   }
 
-  .action-decline:hover {
+  .action-decline :global(.icon-btn:hover) {
     background: var(--color-error);
     border-color: var(--color-error);
-    color: white;
-  }
-
-  /* Edit mode styles */
-  .edit-input,
-  .edit-textarea {
-    width: 100%;
-    padding: var(--space-3);
-    font-family: inherit;
-    font-size: var(--font-size-base);
-    color: var(--color-text);
-    background: var(--color-bg);
-    border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius);
-    resize: vertical;
-  }
-
-  .edit-input:focus,
-  .edit-textarea:focus {
-    outline: none;
-    border-color: var(--color-primary);
+    color: var(--color-surface);
   }
 
   .section-hint {
@@ -484,28 +454,10 @@
     gap: var(--space-2);
   }
 
-  .interest-option {
-    padding: var(--space-1) var(--space-2);
-    font-family: var(--font-display);
-    font-size: var(--font-size-xs);
+  .interests-picker :global(.toggle-btn) {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--color-text-muted);
-    background: transparent;
-    border: 2px solid var(--color-border);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-  }
-
-  .interest-option:hover {
-    border-color: var(--color-text-muted);
-  }
-
-  .interest-option.selected {
-    color: var(--color-primary);
-    border-color: var(--color-primary);
-    background: var(--color-bg);
   }
 
   .edit-actions {

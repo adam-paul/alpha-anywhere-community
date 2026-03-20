@@ -2,7 +2,7 @@
   import type { IconName } from './types';
   import Icon from './Icon.svelte';
 
-  type Shape = 'ghost' | 'circle';
+  type Shape = 'ghost' | 'circle' | 'square';
   type Size = 'sm' | 'md';
 
   interface Props {
@@ -60,6 +60,17 @@
   }
 
   .shape-circle:hover:not(:disabled) {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .shape-square {
+    background: transparent;
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+  }
+
+  .shape-square:hover:not(:disabled) {
     color: var(--color-primary);
     border-color: var(--color-primary);
   }
