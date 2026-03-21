@@ -261,14 +261,6 @@ export function createDbClient(db: D1Database) {
 
         if (!result) throw new Error('Profile not found');
         return result;
-      },
-
-      /** Get all profiles with linked Roblox accounts (for presence polling). */
-      async findAllWithRoblox(): Promise<Array<{ user_id: string; roblox_user_id: string }>> {
-        const { results } = await db
-          .prepare('SELECT user_id, roblox_user_id FROM profiles WHERE roblox_user_id IS NOT NULL')
-          .all<{ user_id: string; roblox_user_id: string }>();
-        return results;
       }
     },
 

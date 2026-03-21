@@ -4,14 +4,13 @@
  * GET - Returns how many students are currently in each game.
  *
  * Flow:
- * 1. Collect all linked Roblox users with active launch records from KV
+ * 1. List active launch records from KV (keys with "launch:" prefix)
  * 2. Batch-query Roblox Presence API for in-game status
- * 3. Reconcile: refresh TTL for in-game users, delete records for offline users
+ * 3. Reconcile: refresh TTL for in-game users, let offline records expire
  * 4. Return aggregated counts
  */
 
 import { json, error } from '@sveltejs/kit';
-import { createDbClient } from '$lib/server/db/client';
 import { env } from '$env/dynamic/private';
 import type { RequestHandler } from './$types';
 import type { PresenceCounts, RobloxPresenceResponse } from '$lib/types';
@@ -20,28 +19,25 @@ const LAUNCH_TTL = 300; // 5 minutes
 
 export const GET: RequestHandler = async ({ locals, platform }) => {
   if (!locals.user) error(401, 'Not authenticated');
-  if (!platform?.env?.DB) error(503, 'Database not available');
   if (!platform?.env?.KV) error(503, 'KV not available');
 
   const kv = platform.env.KV;
-  const db = createDbClient(platform.env.DB);
 
-  // A. Collect launch records
-  const linkedProfiles = await db.profiles.findAllWithRoblox();
-  if (linkedProfiles.length === 0) {
+  // A. List active launch records directly from KV
+  const listed = await kv.list({ prefix: 'launch:' });
+  if (listed.keys.length === 0) {
     return json({ counts: {} });
   }
 
-  // Check KV for active launch records in parallel
-  const launchEntries = await Promise.all(
-    linkedProfiles.map(async (p) => {
-      const gameId = await kv.get(`launch:${p.roblox_user_id}`);
-      return gameId ? { robloxUserId: p.roblox_user_id, gameId } : null;
+  // Get gameId values for each active key
+  const activeLaunches = await Promise.all(
+    listed.keys.map(async (key) => {
+      const gameId = await kv.get(key.name);
+      const robloxUserId = key.name.replace('launch:', '');
+      return gameId ? { robloxUserId, gameId } : null;
     })
-  );
-
-  const activeLaunches = launchEntries.filter(
-    (e): e is { robloxUserId: string; gameId: string } => e !== null
+  ).then((entries) =>
+    entries.filter((e): e is { robloxUserId: string; gameId: string } => e !== null)
   );
 
   if (activeLaunches.length === 0) {

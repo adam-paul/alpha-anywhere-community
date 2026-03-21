@@ -97,28 +97,9 @@ Order: apply remote migrations **before** deploying new code that depends on sch
 
 ## Build Order
 
-### Tier 1: Core Experience — ✅ Mostly Complete
+### Tier 1: Core Experience — ✅ Complete
 
-SSO, Explore, Profiles, Game Launch, LWAI work-wall, Timeback XP gating, private servers, and Timeback ID resolution are all done. See git history for implementation details.
-
-#### Game Catalog Management — ✅ Complete
-
-Admin game CRUD via inline modal on arcade page (`/api/admin/games/*`). Roblox URL lookup auto-populates game metadata. Credentials encrypted at write time via AES-256-GCM. Seed script remains for bulk bootstrapping.
-
-**Remaining:**
-
-#### Game Extensibility (Minecraft & Beyond)
-
-- Evaluate Minecraft server hosting (Bedrock vs Java, Realms vs self-hosted)
-- `minecraft://` protocol handler support (already stubbed in game launcher)
-- Determine if work-wall gating applies per-game or globally
-
-#### Production Deploy ⏳
-
-- Consider separate D1 database for prod vs preview
-- Set secrets for production/master branch
-- Verify SSO callbacks with production domain
-- Smoke test: login → profile → arcade → work-wall flow
+SSO, Explore, Profiles, Game Launch, LWAI work-wall, Timeback XP gating, private servers, Timeback ID resolution, and game catalog management are all done. See git history for implementation details.
 
 ---
 
@@ -173,7 +154,19 @@ Full in-app notification system. Currently friend requests are surfaced via the 
 
 ---
 
-### Tier 3: Gating & Permissions
+### Tier 3: Game Extensibility
+
+**Goal:** Expand the arcade beyond Roblox.
+
+#### Minecraft & Beyond
+
+- Evaluate Minecraft server hosting (Bedrock vs Java, Realms vs self-hosted)
+- `minecraft://` protocol handler support (already stubbed in game launcher)
+- Determine if work-wall gating applies per-game or globally
+
+---
+
+### Tier 4: Gating & Permissions
 
 **Goal:** Role-based access, parent controls.
 
@@ -193,7 +186,7 @@ Connect parent accounts to children, let parents manage per-child feature settin
 
 ---
 
-### Tier 4: Safety & Moderation
+### Tier 5: Safety & Moderation
 
 **Goal:** Make it safe for kids.
 
@@ -211,7 +204,7 @@ Students report messages/users. `reports` table with status tracking.
 
 ---
 
-### Tier 5: Differentiation
+### Tier 6: Differentiation
 
 **Goal:** Unique high-value features.
 
@@ -270,6 +263,19 @@ Unify wrangler (Cloudflare) + SST (AWS) into single `sst deploy`. SST v3 support
 #### Seed Script Architecture
 
 Two seed scripts exist (`seed-games.ts`, `seed-users.ts`) with duplicated utilities (`escapeSQL`, arg parsing, wrangler execution). Extract shared module when adding a third.
+
+---
+
+## Loose Ends
+
+Small items that don't belong to a tier but need attention eventually.
+
+- **Harden Roblox account linking** — Currently accepts any username with no verification. Soft-match only (avatar confirmation). Needs stronger identity proof.
+- **Add Roblox OAuth** — Replace manual username entry with OAuth flow. Requires Roblox app review/approval.
+- **Harden Roblox game launch/auth flow** — If the user isn't logged into Roblox, the deep link loses its params and lands on the Roblox home page (except on Windows). Needs detection or guidance for the user.
+- **Production deploy** — Replicate preview environment in production Cloudflare Pages. Separate D1 database, set secrets, verify SSO callbacks, smoke test.
+- **Clean up Timeback XP fetch** — Unclear whether EduBridge Analytics integration is returning correct data. Needs investigation and validation.
+- **Set up docs** — Pick a documentation stack and stand up a docs site.
 
 ---
 
