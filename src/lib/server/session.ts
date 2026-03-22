@@ -10,7 +10,11 @@ import type { UserContext } from '$lib/types';
 
 const COOKIE_NAME = 'alpha_session';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
-const COOKIE_DOMAIN = '.alpha-community.school'; // Shared across subdomains (ws., dev., etc.)
+
+/** Cookie domain — shared across subdomains in production, omitted for localhost. */
+function getCookieDomain(): string | undefined {
+  return import.meta.env.DEV ? undefined : '.alpha-community.school';
+}
 
 /**
  * Sign data with HMAC-SHA256.
@@ -68,9 +72,10 @@ async function parseSessionValue(value: string): Promise<UserContext | null> {
  */
 export async function setSessionCookie(cookies: Cookies, user: UserContext): Promise<void> {
   const value = await createSessionValue(user);
+  const domain = getCookieDomain();
   cookies.set(COOKIE_NAME, value, {
     path: '/',
-    domain: COOKIE_DOMAIN,
+    ...(domain && { domain }),
     httpOnly: true,
     secure: true,
     sameSite: 'lax',
@@ -91,7 +96,12 @@ export async function getSessionFromCookie(cookies: Cookies): Promise<UserContex
  * Clear the session cookie.
  */
 export function clearSessionCookie(cookies: Cookies): void {
-  cookies.delete(COOKIE_NAME, { path: '/', domain: COOKIE_DOMAIN });
+  const domain = getCookieDomain();
+  // Delete both with and without domain to clear cookies from before the domain change
+  cookies.delete(COOKIE_NAME, { path: '/' });
+  if (domain) {
+    cookies.delete(COOKIE_NAME, { path: '/', domain });
+  }
 }
 
 /**
@@ -101,7 +111,9 @@ export function clearSessionCookie(cookies: Cookies): void {
 export async function createSessionCookieHeader(user: UserContext): Promise<string> {
   const value = await createSessionValue(user);
   const secure = import.meta.env.DEV ? '' : '; Secure';
-  return `${COOKIE_NAME}=${value}; Path=/; Domain=${COOKIE_DOMAIN}; HttpOnly; SameSite=Lax; Max-Age=${COOKIE_MAX_AGE}${secure}`;
+  const domain = getCookieDomain();
+  const domainStr = domain ? `; Domain=${domain}` : '';
+  return `${COOKIE_NAME}=${value}; Path=/${domainStr}; HttpOnly; SameSite=Lax; Max-Age=${COOKIE_MAX_AGE}${secure}`;
 }
 
 /**
