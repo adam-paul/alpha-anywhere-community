@@ -15,3 +15,9 @@ database_id = "a4c3114d-00e1-472a-8c61-e73a0c96f5d5"
 [[kv_namespaces]]
 binding = "KV"
 id = "0d4b18603e20475d969bdad9b056ee47"
+
+# Realtime channel (Durable Object in separate worker)
+[durable_objects]
+bindings = [
+  { name = "REALTIME", class_name = "RealtimeChannel", script_name = "alpha-realtime" }
+]

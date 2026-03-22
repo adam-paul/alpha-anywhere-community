@@ -1,0 +1,20 @@
+# account_id intentionally omitted — use CLOUDFLARE_ACCOUNT_ID env var
+name = "alpha-realtime"
+main = "src/index.ts"
+compatibility_date = "2025-01-13"
+compatibility_flags = ["nodejs_compat"]
+
+# Routes — handle /ws/* on the main domain and all subdomains
+routes = [
+  { pattern = "alpha-community.school/ws/*", zone_name = "alpha-community.school" },
+  { pattern = "*.alpha-community.school/ws/*", zone_name = "alpha-community.school" }
+]
+
+[durable_objects]
+bindings = [
+  { name = "CHANNEL", class_name = "RealtimeChannel" }
+]
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["RealtimeChannel"]

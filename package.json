@@ -2,7 +2,8 @@
   "name": "alpha-anywhere-community",
   "version": "0.1.0",
   "workspaces": [
-    "infra/lwai-proxy"
+    "infra/lwai-proxy",
+    "infra/realtime"
   ],
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260317.1",
@@ -13,7 +14,7 @@
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.1",
     "prettier-plugin-svelte": "^3.5.1",
-    "svelte": "^5.54.0",
+    "svelte": "^5.54.1",
     "svelte-check": "^4.4.5",
     "typescript": "^5.9.3",
     "vite": "^6.4.1"
@@ -34,7 +35,8 @@
     "db:seed": "bun run scripts/seed-games.ts",
     "db:seed:remote": "bun run scripts/seed-games.ts --remote",
     "db:seed:clear": "bun run scripts/seed-games.ts --clear",
-    "db:seed:remote:clear": "bun run scripts/seed-games.ts --remote --clear"
+    "db:seed:remote:clear": "bun run scripts/seed-games.ts --remote --clear",
+    "realtime:deploy": "cd infra/realtime && bunx wrangler deploy"
   },
   "lint-staged": {
     "*.{js,ts,svelte,css,md,json}": "prettier --write"
@@ -43,6 +45,6 @@
   "dependencies": {
     "@timeback/edubridge": "^0.1.5",
     "@timeback/sdk": "0.1.4",
-    "wrangler": "^4.75.0"
+    "wrangler": "^4.76.0"
   }
 }

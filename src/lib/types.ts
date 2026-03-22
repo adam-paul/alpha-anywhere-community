@@ -318,3 +318,48 @@ export interface RobloxPresenceResponse {
     userId: number;
   }>;
 }
+
+// Realtime (Durable Object WebSocket channel)
+
+/** Metadata stored per WebSocket connection. */
+export interface ConnectionMeta {
+  userId: string;
+  displayName: string;
+}
+
+/** Base shape for all channel messages. */
+export interface BaseMessage {
+  type: string;
+  timestamp: number;
+}
+
+/** System messages emitted by the DO itself. */
+export type SystemMessage =
+  | { type: 'system:join'; userId: string; displayName: string; timestamp: number }
+  | { type: 'system:leave'; userId: string; displayName: string; timestamp: number };
+
+/** Application messages sent by clients (relayed by DO with senderId stamped). */
+export interface ClientMessage extends BaseMessage {
+  senderId?: string;
+}
+
+/** Union of all messages that can arrive on the WebSocket. */
+export type ChannelMessage = SystemMessage | ClientMessage;
+
+/** Client-side WebSocket connection state. */
+export type RealtimeConnectionState =
+  | { status: 'disconnected' }
+  | { status: 'connecting' }
+  | { status: 'connected' }
+  | { status: 'reconnecting'; attempt: number }
+  | { status: 'failed'; reason: string };
+
+/** Public API of the realtime connection store. */
+export interface RealtimeStore {
+  readonly state: RealtimeConnectionState;
+  readonly isConnected: boolean;
+  send(message: { type: string; [key: string]: unknown }): void;
+  connect(): void;
+  disconnect(): void;
+  onMessage(handler: (message: ChannelMessage) => void): () => void;
+}
