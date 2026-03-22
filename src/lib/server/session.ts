@@ -10,6 +10,7 @@ import type { UserContext } from '$lib/types';
 
 const COOKIE_NAME = 'alpha_session';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
+const COOKIE_DOMAIN = '.alpha-community.school'; // Shared across subdomains (ws., dev., etc.)
 
 /**
  * Sign data with HMAC-SHA256.
@@ -69,6 +70,7 @@ export async function setSessionCookie(cookies: Cookies, user: UserContext): Pro
   const value = await createSessionValue(user);
   cookies.set(COOKIE_NAME, value, {
     path: '/',
+    domain: COOKIE_DOMAIN,
     httpOnly: true,
     secure: true,
     sameSite: 'lax',
@@ -89,7 +91,7 @@ export async function getSessionFromCookie(cookies: Cookies): Promise<UserContex
  * Clear the session cookie.
  */
 export function clearSessionCookie(cookies: Cookies): void {
-  cookies.delete(COOKIE_NAME, { path: '/' });
+  cookies.delete(COOKIE_NAME, { path: '/', domain: COOKIE_DOMAIN });
 }
 
 /**
@@ -99,7 +101,7 @@ export function clearSessionCookie(cookies: Cookies): void {
 export async function createSessionCookieHeader(user: UserContext): Promise<string> {
   const value = await createSessionValue(user);
   const secure = import.meta.env.DEV ? '' : '; Secure';
-  return `${COOKIE_NAME}=${value}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${COOKIE_MAX_AGE}${secure}`;
+  return `${COOKIE_NAME}=${value}; Path=/; Domain=${COOKIE_DOMAIN}; HttpOnly; SameSite=Lax; Max-Age=${COOKIE_MAX_AGE}${secure}`;
 }
 
 /**

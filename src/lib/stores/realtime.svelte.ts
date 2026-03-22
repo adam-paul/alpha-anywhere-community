@@ -29,8 +29,7 @@ export function createRealtimeStore(channelId: string): RealtimeStore {
     if (ws) return;
     state = { status: 'connecting' };
 
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const url = `${protocol}//${window.location.host}/ws/channel/${channelId}`;
+    const url = `wss://ws.alpha-community.school/channel/${channelId}`;
     ws = new WebSocket(url);
 
     ws.onopen = () => {
