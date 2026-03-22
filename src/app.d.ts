@@ -1,7 +1,7 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
 
-import type { D1Database, KVNamespace, DurableObjectNamespace } from '@cloudflare/workers-types';
+import type { D1Database, KVNamespace } from '@cloudflare/workers-types';
 import type { UserContext } from '$lib/types';
 
 declare global {
@@ -16,7 +16,6 @@ declare global {
       env?: {
         DB: D1Database;
         KV: KVNamespace;
-        REALTIME: DurableObjectNamespace;
       };
     }
   }

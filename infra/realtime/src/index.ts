@@ -25,7 +25,7 @@ export default {
       return new Response('Expected WebSocket', { status: 426 });
     }
 
-    // Authenticate via session cookie (same domain, sent automatically)
+    // Authenticate via session cookie (shared across *.alpha-community.school)
     const user = await getUserFromCookie(request, env.SESSION_SECRET);
     if (!user) {
       return new Response('Not authenticated', { status: 401 });
@@ -61,11 +61,12 @@ async function verifySession(value: string, secret: string): Promise<SessionUser
     const [dataB64, signature] = value.split('.');
     if (!dataB64 || !signature) return null;
 
-    const expectedSig = await sign(dataB64, secret);
+    const data = atob(dataB64);
+    const expectedSig = await sign(data, secret);
     if (signature !== expectedSig) return null;
 
-    const data = JSON.parse(atob(dataB64));
-    return { id: data.id, displayName: data.displayName };
+    const parsed = JSON.parse(data);
+    return { id: parsed.id, displayName: parsed.displayName };
   } catch {
     return null;
   }
