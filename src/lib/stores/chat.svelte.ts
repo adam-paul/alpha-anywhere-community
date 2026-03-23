@@ -4,7 +4,8 @@ import type {
   Conversation,
   Message,
   ChatParticipant,
-  CreateChatStoreOptions
+  CreateChatStoreOptions,
+  MessageLoadState
 } from '$lib/types';
 
 const CHAT_CONTEXT_KEY = 'chat';
@@ -15,7 +16,7 @@ export function createChatStore(options: CreateChatStoreOptions): ChatState {
   let conversations = $state<Conversation[]>(options.conversations);
   let messages = $state<Record<string, Message[]>>({});
   let friends = $state<ChatParticipant[]>(options.friends);
-  let isLoadingMessages = $state(false);
+  let messageLoadStates = $state<Record<string, MessageLoadState>>({});
 
   // UI state
   let activeConversationId = $state<string | null>(null);
@@ -51,6 +52,11 @@ export function createChatStore(options: CreateChatStoreOptions): ChatState {
     return activeConversation?.participants ?? [];
   });
 
+  const messageLoadState = $derived.by((): MessageLoadState => {
+    if (!activeConversationId) return { status: 'idle' };
+    return messageLoadStates[activeConversationId] ?? { status: 'idle' };
+  });
+
   // Actions
   function selectConversation(id: string) {
     activeConversationId = id;
@@ -72,15 +78,18 @@ export function createChatStore(options: CreateChatStoreOptions): ChatState {
   }
 
   async function loadMessages(conversationId: string) {
-    isLoadingMessages = true;
+    messageLoadStates[conversationId] = { status: 'loading' };
     try {
       const res = await fetch(`/api/chat/messages?conversationId=${conversationId}`);
       if (res.ok) {
         const data = await res.json();
         messages[conversationId] = data.messages.map(transformMessage);
+        messageLoadStates[conversationId] = { status: 'loaded' };
+      } else {
+        messageLoadStates[conversationId] = { status: 'error', message: 'Failed to load messages' };
       }
-    } finally {
-      isLoadingMessages = false;
+    } catch {
+      messageLoadStates[conversationId] = { status: 'error', message: 'Failed to load messages' };
     }
   }
 
@@ -243,8 +252,8 @@ export function createChatStore(options: CreateChatStoreOptions): ChatState {
     get friends() {
       return friends;
     },
-    get isLoadingMessages() {
-      return isLoadingMessages;
+    get messageLoadState() {
+      return messageLoadState;
     },
 
     get searchQuery() {

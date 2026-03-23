@@ -54,8 +54,14 @@
     />
 
     <div class="messages-container" bind:this={messagesContainer}>
-      {#if chat.isLoadingMessages}
+      {#if chat.messageLoadState.status === 'loading'}
         <Placeholder size="sm" title="Loading messages..." />
+      {:else if chat.messageLoadState.status === 'error'}
+        <Placeholder
+          size="sm"
+          title="Failed to load messages"
+          description={chat.messageLoadState.message}
+        />
       {:else if chat.activeMessages.length === 0}
         <Placeholder size="sm" title="No messages yet. Say hello!" />
       {:else}

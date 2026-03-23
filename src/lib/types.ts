@@ -245,12 +245,18 @@ export interface CreateChatStoreOptions {
   friends: ChatParticipant[];
 }
 
+export type MessageLoadState =
+  | { status: 'idle' }
+  | { status: 'loading' }
+  | { status: 'error'; message: string }
+  | { status: 'loaded' };
+
 export interface ChatState {
   readonly conversations: Conversation[];
   readonly activeConversationId: string | null;
   readonly currentUserId: string;
   readonly friends: ChatParticipant[];
-  readonly isLoadingMessages: boolean;
+  readonly messageLoadState: MessageLoadState;
   searchQuery: string;
   composeText: string;
   isDetailsPanelOpen: boolean;
