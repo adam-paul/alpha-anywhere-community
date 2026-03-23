@@ -8,6 +8,7 @@
     "remove": "sst remove"
   },
   "dependencies": {
+    "@alpha/shared": "workspace:*",
     "@aws-sdk/client-athena": "^3.750.0",
     "@aws-sdk/client-sts": "^3.750.0"
   },

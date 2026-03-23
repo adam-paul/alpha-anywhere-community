@@ -1,3 +1,5 @@
+import type { ChannelMessage } from '@alpha/shared/types';
+
 // Navigation
 export interface NavItem {
   href: string;
@@ -60,14 +62,6 @@ export interface GatingState {
   progressCurrent: number;
   progressRequired: number;
   source?: GatingSource;
-}
-
-// LWAI proxy response format
-export interface GatingResponse {
-  email: string;
-  weekly_active_minutes: number;
-  threshold: number;
-  eligible: boolean;
 }
 
 export interface UserContext {
@@ -335,32 +329,7 @@ export interface RobloxPresenceResponse {
   }>;
 }
 
-// Realtime (Durable Object WebSocket channel)
-
-/** Metadata stored per WebSocket connection. */
-export interface ConnectionMeta {
-  userId: string;
-  displayName: string;
-}
-
-/** Base shape for all channel messages. */
-export interface BaseMessage {
-  type: string;
-  timestamp: number;
-}
-
-/** System messages emitted by the DO itself. */
-export type SystemMessage =
-  | { type: 'system:join'; userId: string; displayName: string; timestamp: number }
-  | { type: 'system:leave'; userId: string; displayName: string; timestamp: number };
-
-/** Application messages sent by clients (relayed by DO with senderId stamped). */
-export interface ClientMessage extends BaseMessage {
-  senderId?: string;
-}
-
-/** Union of all messages that can arrive on the WebSocket. */
-export type ChannelMessage = SystemMessage | ClientMessage;
+// Realtime (client-side only — shared protocol types re-exported above)
 
 /** Client-side WebSocket connection state. */
 export type RealtimeConnectionState =

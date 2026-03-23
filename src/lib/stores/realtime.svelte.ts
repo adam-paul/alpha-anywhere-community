@@ -10,7 +10,8 @@
  */
 
 import { getContext, setContext, onDestroy } from 'svelte';
-import type { RealtimeConnectionState, RealtimeStore, ChannelMessage } from '$lib/types';
+import type { RealtimeConnectionState, RealtimeStore } from '$lib/types';
+import type { ChannelMessage } from '@alpha/shared/types';
 
 const REALTIME_CONTEXT_KEY = 'realtime';
 const MAX_RECONNECT_ATTEMPTS = 5;

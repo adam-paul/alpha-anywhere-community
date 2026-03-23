@@ -1,6 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { createDbClient, type DbClient } from '$lib/server/db/client';
-import type { Game, GatingResponse, GatingState } from '$lib/types';
+import type { Game, GatingState } from '$lib/types';
+import type { GatingResponse } from '@alpha/shared/types';
 import type { DbGame } from '$lib/server/db/types';
 import { decrypt } from '$lib/server/crypto';
 import { env } from '$env/dynamic/private';

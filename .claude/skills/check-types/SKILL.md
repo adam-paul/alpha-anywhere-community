@@ -13,7 +13,8 @@ Types are **always abstracted** to dedicated type files. No inline type definiti
 
 | Location                         | What belongs there                                                                         |
 | -------------------------------- | ------------------------------------------------------------------------------------------ |
-| `src/lib/types.ts`               | Domain types — pure type definitions only                                                  |
+| `packages/shared/src/types.ts`   | Cross-project contracts (WebSocket protocol, LWAI gating). Imported as `@alpha/shared`.    |
+| `src/lib/types.ts`               | Domain types — pure type definitions only.                                                 |
 | `src/lib/components/ui/types.ts` | UI-internal types (e.g., `IconName`) — not exported via barrel, not imported outside `ui/` |
 | `src/lib/constants.ts`           | Runtime metadata for types (labels, colors, descriptions)                                  |
 | `src/lib/server/db/types.ts`     | Database-specific types (snake_case, D1 schema)                                            |
@@ -62,7 +63,11 @@ Components should only define `interface Props`. Any other types should be in `t
 Files using `../types` or `../../types` instead of `$lib/types`.
 Path aliases are required for type imports — they're more explicit and don't break when files move.
 
-### 7. Runtime Code in types.ts
+### 7. Cross-Project Type Duplication
+
+Search for identical `interface` or `type` declarations across project boundaries (`src/`, `infra/realtime/`, `infra/lwai-proxy/`, `packages/shared/`). Types used by multiple projects must live in `packages/shared/src/types.ts` and be imported as `@alpha/shared/types` directly — no re-exports through `$lib/types`.
+
+### 8. Runtime Code in types.ts
 
 `types.ts` should contain **only** type definitions. Check for:
 

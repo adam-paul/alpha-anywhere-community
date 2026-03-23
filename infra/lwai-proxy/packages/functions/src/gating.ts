@@ -4,12 +4,7 @@ import { createAthenaClient, executeAthenaQuery, sanitizeEmail } from './athena'
 
 const WEEKLY_THRESHOLD = parseInt(process.env.WEEKLY_THRESHOLD ?? '300', 10);
 
-interface GatingResponse {
-  email: string;
-  weekly_active_minutes: number;
-  threshold: number;
-  eligible: boolean;
-}
+import type { GatingResponse } from '@alpha/shared/types';
 
 interface ErrorResponse {
   error: string;

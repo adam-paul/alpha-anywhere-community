@@ -7,7 +7,7 @@
       "dependencies": {
         "@timeback/edubridge": "^0.1.5",
         "@timeback/sdk": "0.1.4",
-        "wrangler": "^4.75.0",
+        "wrangler": "^4.76.0",
       },
       "devDependencies": {
         "@cloudflare/workers-types": "^4.20260317.1",
@@ -18,7 +18,7 @@
         "lint-staged": "^16.4.0",
         "prettier": "^3.8.1",
         "prettier-plugin-svelte": "^3.5.1",
-        "svelte": "^5.54.0",
+        "svelte": "^5.54.1",
         "svelte-check": "^4.4.5",
         "typescript": "^5.9.3",
         "vite": "^6.4.1",
@@ -28,6 +28,7 @@
       "name": "lwai-proxy",
       "version": "1.0.0",
       "dependencies": {
+        "@alpha/shared": "workspace:*",
         "@aws-sdk/client-athena": "^3.750.0",
         "@aws-sdk/client-sts": "^3.750.0",
       },
@@ -40,14 +41,23 @@
     "infra/realtime": {
       "name": "alpha-realtime",
       "version": "1.0.0",
+      "dependencies": {
+        "@alpha/shared": "workspace:*",
+      },
       "devDependencies": {
         "@cloudflare/workers-types": "^4.20260317.1",
         "typescript": "^5.9.3",
         "wrangler": "^4.75.0",
       },
     },
+    "packages/shared": {
+      "name": "@alpha/shared",
+      "version": "1.0.0",
+    },
   },
   "packages": {
+    "@alpha/shared": ["@alpha/shared@workspace:packages/shared"],
+
     "@aws-crypto/sha256-browser": ["@aws-crypto/sha256-browser@5.2.0", "", { "dependencies": { "@aws-crypto/sha256-js": "^5.2.0", "@aws-crypto/supports-web-crypto": "^5.2.0", "@aws-crypto/util": "^5.2.0", "@aws-sdk/types": "^3.222.0", "@aws-sdk/util-locate-window": "^3.0.0", "@smithy/util-utf8": "^2.0.0", "tslib": "^2.6.2" } }, "sha512-AXfN/lGotSQwu6HNcEsIASo7kWXZ5HYWvfOmSNKDsEqC4OashTp8alTmaz+F7TC2L083SFv5RdB+qU3Vs1kZqw=="],
 
     "@aws-crypto/sha256-js": ["@aws-crypto/sha256-js@5.2.0", "", { "dependencies": { "@aws-crypto/util": "^5.2.0", "@aws-sdk/types": "^3.222.0", "tslib": "^2.6.2" } }, "sha512-FFQQyu7edu4ufvIZ+OadFpHHOt+eSTBaYaki44c+akjg7qZg9oOQeLlk77F6tSYqjDAFClrHJk9tMf0HdVyOvA=="],

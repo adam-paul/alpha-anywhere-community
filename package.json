@@ -2,6 +2,7 @@
   "name": "alpha-anywhere-community",
   "version": "0.1.0",
   "workspaces": [
+    "packages/shared",
     "infra/lwai-proxy",
     "infra/realtime"
   ],

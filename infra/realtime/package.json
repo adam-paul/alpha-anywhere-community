@@ -6,6 +6,9 @@
     "dev": "bunx wrangler dev",
     "deploy": "bunx wrangler deploy"
   },
+  "dependencies": {
+    "@alpha/shared": "workspace:*"
+  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260317.1",
     "typescript": "^5.9.3",

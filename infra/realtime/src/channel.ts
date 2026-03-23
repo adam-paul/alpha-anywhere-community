@@ -1,5 +1,5 @@
 import { DurableObject } from 'cloudflare:workers';
-import type { ConnectionMeta, ChannelMessage } from './types';
+import type { ConnectionMeta, ChannelMessage } from '@alpha/shared/types';
 
 export class RealtimeChannel extends DurableObject {
   constructor(ctx: DurableObjectState, env: unknown) {

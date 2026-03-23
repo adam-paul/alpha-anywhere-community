@@ -90,25 +90,27 @@ Admin features are inline — they appear within existing pages (e.g., game CRUD
 
 Types are **always abstracted** to dedicated type files and have exactly one home. No inline type definitions except `Props`. Keep `types.ts` pure — no runtime code.
 
-| Location                         | What belongs there                                                                         |
-| -------------------------------- | ------------------------------------------------------------------------------------------ |
-| `src/lib/types.ts`               | Domain types — pure type definitions only                                                  |
-| `src/lib/components/ui/types.ts` | UI-internal types (e.g., `IconName`) — not exported via barrel, not imported outside `ui/` |
-| `src/lib/constants.ts`           | Runtime metadata for types (labels, colors, descriptions)                                  |
-| `src/lib/server/db/types.ts`     | Database-specific types (snake_case, D1 schema)                                            |
-| `src/lib/utils/*.ts`             | Helper functions                                                                           |
-| Component files                  | **Only** `interface Props` (the component's own API)                                       |
-| Utils/stores                     | No type definitions — import from `types.ts`                                               |
+| Location                         | What belongs there                                                                            |
+| -------------------------------- | --------------------------------------------------------------------------------------------- |
+| `packages/shared/src/types.ts`   | Cross-project contracts (WebSocket protocol, LWAI gating). Imported as `@alpha/shared/types`. |
+| `src/lib/types.ts`               | Domain types — pure type definitions only.                                                    |
+| `src/lib/components/ui/types.ts` | UI-internal types (e.g., `IconName`) — not exported via barrel, not imported outside `ui/`    |
+| `src/lib/constants.ts`           | Runtime metadata for types (labels, colors, descriptions)                                     |
+| `src/lib/server/db/types.ts`     | Database-specific types (snake_case, D1 schema)                                               |
+| `src/lib/utils/*.ts`             | Helper functions                                                                              |
+| Component files                  | **Only** `interface Props` (the component's own API)                                          |
+| Utils/stores                     | No type definitions — import from `types.ts`                                                  |
 
 **Rules:**
 
 - New type? Put it in `types.ts`. Don't colocate with business logic.
+- Type used by multiple projects (Workers, Lambda, SvelteKit)? Put it in `@alpha/shared`.
 - New constant/metadata for a type? Put it in `constants.ts`.
 - New helper function? Put it in the appropriate `utils/*.ts` file.
 - Component needs a type? Import it. Only `Props` is defined inline.
 - Rare exceptions (tiny helper type truly private to one module) require justification.
 - Prefer discriminated unions over optional fields when different variants need different data.
-- No duplicates, no re-exports.
+- No duplicates. Import shared types from `@alpha/shared` directly, not via re-export.
 - **Same-directory imports**: use relative `./` — expresses cohesion within a unit (`import Icon from './Icon.svelte'`).
 - **Cross-directory imports**: use `$lib/` path aliases — expresses location within the project (`import { Icon } from '$lib/components/ui'`, not `'../ui'`).
 - **No barrel exports** for app code. Barrels (`index.ts`) are only for library-style APIs with many consumers (e.g., `ui/`). Feature directories use direct file imports.
