@@ -1,37 +1,39 @@
 # Alpha Anywhere Community: Roadmap
 
-**Last updated:** 2026-03-19
+**Last updated:** 2026-03-23
 
 ---
 
 ## Current State
 
-Production-quality frontend with complete UI flows. Infrastructure in place: D1 database (local + remote), KV namespace (ephemeral presence data), Timeback SSO, cookie sessions, auto-provisioned users. Roblox private server deep links working. Work-wall gating live for both LWAI (300 min/week via Lambda proxy) and Timeback (120 XP/day via EduBridge Analytics). Per-student gating source detection cached in D1. Friend system fully wired. Admin role gating with inline admin tools (game CRUD with Roblox lookup, DevTools). Arcade presence live with Roblox account linking and per-game player counts.
+Full-featured community portal with real-time chat, arcade with work-wall gating, student profiles, friend system, and admin tools. Infrastructure: Cloudflare Pages + D1 + KV, Durable Objects with WebSocket Hibernation API for real-time, LWAI Lambda proxy for learning analytics, Timeback SSO.
 
-### Infrastructure (Complete)
+### Infrastructure
 
-| Component              | Status | Details                                                       |
-| ---------------------- | ------ | ------------------------------------------------------------- |
-| **Framework**          | ✅     | SvelteKit 5 with runes, TypeScript strict                     |
-| **Styling**            | ✅     | Design tokens in `tokens.css`, cel-shaded theme               |
-| **Deployment**         | ✅     | Cloudflare Pages with Workers runtime                         |
-| **Database**           | ✅     | D1 (SQLite at edge), schema applied locally + remote          |
-| **KV Store**           | ✅     | Cloudflare KV for ephemeral data (launch records, TTL-based)  |
-| **Authentication**     | ✅     | Timeback SSO via `@timeback/sdk`, cookie sessions             |
-| **Session Management** | ✅     | HMAC-signed cookies, 7-day expiry                             |
-| **User Provisioning**  | ✅     | Auto-creates D1 user + profile on first authenticated request |
+| Component              | Status | Details                                                                                                              |
+| ---------------------- | ------ | -------------------------------------------------------------------------------------------------------------------- |
+| **Framework**          | ✅     | SvelteKit 5 with runes, TypeScript strict                                                                            |
+| **Styling**            | ✅     | Design tokens in `tokens.css`, cel-shaded theme                                                                      |
+| **Deployment**         | ✅     | Cloudflare Pages with Workers runtime                                                                                |
+| **Database**           | ✅     | D1 (SQLite at edge), schema applied locally + remote                                                                 |
+| **KV Store**           | ✅     | Cloudflare KV for ephemeral data (launch records, TTL-based)                                                         |
+| **Authentication**     | ✅     | Timeback SSO via `@timeback/sdk`, cookie sessions                                                                    |
+| **Session Management** | ✅     | HMAC-signed cookies, 7-day expiry, cross-subdomain sharing                                                           |
+| **User Provisioning**  | ✅     | Auto-creates D1 user + profile on first authenticated request                                                        |
+| **Realtime**           | ✅     | Durable Object Worker (`alpha-realtime`) with WebSocket Hibernation API, cookie auth via `ws.alpha-community.school` |
+| **Shared Types**       | ✅     | `@alpha/shared` workspace package for cross-project contracts                                                        |
 
-### Frontend UI
+### Features
 
-| Feature         | Location             | Status             | Data Source                     |
-| --------------- | -------------------- | ------------------ | ------------------------------- |
-| **Arcade**      | `/arcade`            | Complete           | D1 ✅                           |
-| **Work Wall**   | Integrated in arcade | Complete           | LWAI ✅ / Timeback XP ✅        |
-| **Profiles**    | `/profile/[id]`      | Complete, editable | D1 ✅ (friends, mutual friends) |
-| **Explore**     | `/explore`           | Complete           | D1 ✅                           |
-| **Chat**        | `/chat`              | Complete           | Mock data                       |
-| **Admin Tools** | Inline in arcade     | Complete           | D1 ✅ (game CRUD, DevTools)     |
-| **UI System**   | `$lib/components/ui` | Complete           | N/A                             |
+| Feature         | Location             | Status   | Data Source                     |
+| --------------- | -------------------- | -------- | ------------------------------- |
+| **Arcade**      | `/arcade`            | Complete | D1 ✅                           |
+| **Work Wall**   | Integrated in arcade | Complete | LWAI ✅ / Timeback XP ✅        |
+| **Profiles**    | `/profile/[id]`      | Complete | D1 ✅ (friends, mutual friends) |
+| **Explore**     | `/explore`           | Complete | D1 ✅                           |
+| **Chat**        | `/chat`              | Wired    | D1 ✅ + WebSocket (real-time)   |
+| **Admin Tools** | Inline in arcade     | Complete | D1 ✅ (game CRUD, DevTools)     |
+| **UI System**   | `$lib/components/ui` | Complete | N/A                             |
 
 ### Database Schema
 
@@ -47,51 +49,15 @@ users ←──── profiles (1:1)
 games (standalone, Roblox private server support)
 ```
 
-**Key files:**
+### Not Yet Built
 
-- `migrations/0001_initial.sql` — Core schema (users, profiles, friendships, chat)
-- `migrations/0002_games.sql` — Games catalog with private server fields
-- `migrations/0003_gating_source.sql` — Per-student gating source cache columns
-- `migrations/0004_user_roles.sql` — User roles (`student`/`admin`)
-- `migrations/0005_roblox_identity.sql` — Roblox account linking columns on profiles
-- `src/lib/server/db/client.ts` — Type-safe D1 client
-- `src/lib/server/db/types.ts` — TypeScript interfaces
-- `src/lib/server/admin.ts` — Admin role guard
-
-### Not Yet Wired
-
-| Feature           | Status        | Notes                                                                                    |
-| ----------------- | ------------- | ---------------------------------------------------------------------------------------- |
-| Chat → D1         | Not connected | Still uses `MOCK_CONVERSATIONS`, `MOCK_MESSAGES`                                         |
-| Student Map       | Placeholder   | UI exists, shows "Coming soon"                                                           |
-| Platform Presence | None          | No "who's online" functionality (needs Durable Objects / WebSocket)                      |
-| Chat Moderation   | None          | No content filtering                                                                     |
-| Parent Controls   | None          | No ToS, no per-child toggles                                                             |
-| Notifications     | Stopgap       | Pending friend requests shown on profile + sidebar badge; no general notification system |
-
----
-
-## Development Environment
-
-| Port | Command          | Runtime            | D1 Access |
-| ---- | ---------------- | ------------------ | --------- |
-| 5173 | `bun run dev`    | Vite (hot reload)  | ❌ No     |
-| 6173 | `bun run dev:cf` | Wrangler (Workers) | ✅ Yes    |
-
-Use **6173** (Wrangler) when testing D1 features or auth. Use **5173** (Vite) for fast UI iteration without auth.
-
-**Health check:** `http://localhost:6173/api/health`
-
-**Migrations:**
-
-```bash
-bun run db:migrate              # Apply pending migrations (local)
-bun run db:migrate:remote       # Apply pending migrations (remote)
-bun run db:migrate:status       # List pending migrations (local)
-bun run db:migrate:status:remote # List pending migrations (remote)
-```
-
-Order: apply remote migrations **before** deploying new code that depends on schema changes.
+| Feature           | Status      | Notes                                                                       |
+| ----------------- | ----------- | --------------------------------------------------------------------------- |
+| Student Map       | Placeholder | UI exists, shows "Coming soon"                                              |
+| Platform Presence | Not started | Who's online across the app (needs user-level WebSocket channel)            |
+| Chat Moderation   | Not started | Schema has moderation fields, no AI filtering yet                           |
+| Notifications     | Stopgap     | Friend requests via profile + sidebar badge; no general notification system |
+| Parent Controls   | Not started | No ToS, no per-child toggles                                                |
 
 ---
 
@@ -99,64 +65,49 @@ Order: apply remote migrations **before** deploying new code that depends on sch
 
 ### Tier 1: Core Experience — ✅ Complete
 
-SSO, Explore, Profiles, Game Launch, LWAI work-wall, Timeback XP gating, private servers, Timeback ID resolution, and game catalog management are all done. See git history for implementation details.
+SSO, Explore, Profiles, Game Launch, LWAI work-wall, Timeback XP gating, private servers, Timeback ID resolution, and game catalog management.
 
 ---
 
-### Tier 2: Social & Communication
+### Tier 2: Social & Communication — In Progress
 
-**Goal:** Wire up remaining social features. DB schema already supports these.
+#### Chat — ✅ Wired
 
-#### Wire Chat to Real Messages
+Real-time messaging over WebSocket with D1 persistence. Per-conversation Durable Object channels. Optimistic message sending, lazy-loaded message history, unread counts, mark-as-read.
 
-Chat UI is complete and DB schema + client methods exist. Ready to wire.
+**API routes:** `GET/POST /api/chat/messages`, `POST /api/chat/conversations`, `POST /api/chat/conversations/[id]/read`
 
-- Create `src/routes/chat/+page.server.ts` — fetch conversations
-- `POST /api/messages` — send message
-- `GET /api/conversations/[id]/messages` — paginated fetch
-- Update `chat.svelte.ts` to use API, remove mock data
+**Deferred:** Reactions, message editing/deletion UI, typing indicators, mute, attachments, pagination UI (scroll-to-load-more). Non-functional placeholder buttons remain in the UI for these features.
 
 #### Friend System — ✅ Complete
 
-Send/accept/decline/unfriend with full API (`/api/friends/{request,accept,remove}`), state-aware ProfileHeader button (hover-to-cancel on pending), friends list on own profile, mutual friends on others' profiles. Decline = delete row (re-request always possible). No `declined` status in schema.
-
-**Not yet done:** General notification system (friend requests currently surfaced via profile page + sidebar badge as stopgap), 30-day request expiry, blocking (separate feature).
-
-#### Student Map
-
-Geographic visualization of student locations. Geocode to lat/lng, map component (Mapbox or Leaflet), city-level clustering for privacy.
-
-**Priority:** High — parents frequently ask "who else is in my area?"
+Full API, state-aware profile button, friends list, mutual friends, sidebar badge for pending requests.
 
 #### Arcade Presence — ✅ Complete
 
-Roblox account linking + per-game player counts ("X playing" badges on game cards, polled every 15s). Launch-record + Roblox Presence API confirmation strategy. KV stores ephemeral launch records (5-min TTL, refreshed while in-game). Linking modal prompts on first Roblox game launch (username lookup → avatar confirmation).
+Roblox account linking, per-game player counts via KV launch records + Roblox Presence API.
 
-**Known limitations:** Only tracks students who launch from the arcade. `userPresenceType` via API key is undocumented Roblox behavior. Game attribution depends on launch record (not Roblox placeId, which returns null with API key auth).
+#### Student Map
+
+Geographic visualization of student locations. Geocode to lat/lng, map component (Mapbox or Leaflet), city-level clustering for privacy. High priority — parents frequently ask "who else is in my area?"
 
 #### Platform Presence
 
-Show who's online across the app (green dots, sidebar friends list, "X viewing this page"). Fundamentally distinct from arcade presence — requires persistent connections.
-
-- **Architecture:** Durable Objects for WebSocket connections (Cloudflare's equivalent of Django Channels + Redis, used in AlphaLearn LMS)
-- **Deferred to:** Chat implementation (both need the same WebSocket infrastructure)
+Who's online across the app (green dots, sidebar friends list). Requires a user-level WebSocket channel (distinct from per-conversation chat channels). WebSocket infrastructure is in place; needs a `presence:global` channel with heartbeat protocol.
 
 #### Notifications
 
-Full in-app notification system. Currently friend requests are surfaced via the user's own profile page and a sidebar badge — this is a stopgap. A proper system is needed before chat goes live, since chat messages will also need notifications.
+Full in-app notification system to replace the friend-request stopgap.
 
 - **Migration:** `notifications` table (user_id, type, payload JSON, read_at, created_at)
-- **API:** `GET /api/notifications` (list, paginated), `POST /api/notifications/read` (mark read/all-read)
-- **UI:** Notification bell in sidebar or header with unread count badge, dropdown or dedicated page for notification list
-- **Event sources:** Friend requests (pending), chat messages (new message in conversation), moderation actions, system announcements
-- **Delivery:** Start with poll-on-navigation (layout server load). Upgrade to SSE or WebSocket for real-time later
-- **Cleanup:** Once live, remove the stopgap pending-request count from layout server load and sidebar badge — replace with general notification count
+- **API:** `GET /api/notifications`, `POST /api/notifications/read`
+- **UI:** Notification bell with unread count, dropdown or page
+- **Sources:** Friend requests, chat messages, moderation actions, system announcements
+- **Delivery:** Poll-on-navigation initially, upgrade to WebSocket later
 
 ---
 
 ### Tier 3: Game Extensibility
-
-**Goal:** Expand the arcade beyond Roblox.
 
 #### Minecraft & Beyond
 
@@ -168,78 +119,49 @@ Full in-app notification system. Currently friend requests are surfaced via the 
 
 ### Tier 4: Gating & Permissions
 
-**Goal:** Role-based access, parent controls.
-
 #### User Roles — ✅ Schema + Gating Done
 
-`role` column on users table (`student`/`admin`, default `student`). Server-side `assertAdmin()` guard on all admin API routes. Admin UI conditionally rendered via `isAdmin` from server load. Role currently set manually via SQL.
-
-**Remaining:** OneRoster role mapping during login — `resolveTimebackId()` already makes the M2M call, just needs to capture the role field.
+**Remaining:** OneRoster role mapping during login.
 
 #### Parent Controls
 
-Connect parent accounts to children, let parents manage per-child feature settings.
-
-- **Parent-child linking:** `guardianships` table, sync from Timeback OneRoster or manual linking
-- **Feature settings:** `user_settings` table (community, chat, arcade, voice, location toggles), ToS acceptance flow
-- **UI:** Link to AlphaLearn's existing parent dashboard rather than rebuilding
+- Parent-child linking (`guardianships` table, sync from Timeback OneRoster)
+- Feature settings (`user_settings` table, ToS acceptance)
+- Link to AlphaLearn's existing parent dashboard
 
 ---
 
 ### Tier 5: Safety & Moderation
 
-**Goal:** Make it safe for kids.
-
-#### Chat Moderation
-
-AI moderation (OpenAI Moderation API) — check on send, before persistence. Decision needed: block vs deliver with flag.
-
-#### Staff Escalation
-
-Protected `/admin/moderation` route. List flagged messages, actions (dismiss, warn, suspend), audit log.
-
-#### Report Flow
-
-Students report messages/users. `reports` table with status tracking.
+- **Chat Moderation** — AI moderation (check on send, before persistence). Decision needed: block vs deliver with flag.
+- **Staff Escalation** — Protected `/admin/moderation` route with flagged messages, actions, audit log.
+- **Report Flow** — Students report messages/users. `reports` table with status tracking.
 
 ---
 
 ### Tier 6: Differentiation
 
-**Goal:** Unique high-value features.
-
-#### Alpha Voice
-
-Browser-based voice chat for under-13 students. RTC SDK (Daily.co or Agora), voice pods per game. Safety: panic button, recording indicator.
-
-**Blocked on:** RTC provider selection.
-
-#### Avatar Generation
-
-AI-generated avatars from clickable trait selection (not free text — prevents prompt injection). Image generation API + Cloudflare R2 storage. Low priority.
+- **Alpha Voice** — Browser-based voice chat. RTC SDK (Daily.co or Agora). Blocked on provider selection.
+- **Avatar Generation** — AI-generated avatars from trait selection. Low priority.
 
 ---
 
 ## Architecture Decisions
 
-| Decision              | Choice                             | Rationale                                                                     |
-| --------------------- | ---------------------------------- | ----------------------------------------------------------------------------- |
-| **Database**          | Cloudflare D1                      | Edge-native, no cold starts, simple, sufficient for MVP                       |
-| **Sessions**          | HMAC-signed cookies                | Stateless, no session store needed                                            |
-| **Auth**              | Timeback SSO                       | Already integrated, handles Cognito                                           |
-| **User identity**     | Dual: D1 internal ID + Timeback ID | `locals.user.id` = D1 hex ID (for DB FKs), `timebackId` = OneRoster sourcedId |
-| **LWAI user mapping** | Query by email                     | LWAI uses Alpha's 4-digit IDs, not Timeback UUIDs; email is common key        |
-| **LWAI query**        | Lambda proxy (SST)                 | CF Workers can't do STS AssumeRole; Lambda in AlphaLearn account              |
-| **Timeback XP**       | EduBridge Analytics API            | `@timeback/edubridge` client, 120 XP/day threshold, fail-open                 |
-| **Gating state**      | Discriminated union store          | Eliminates boolean flag creep; see `gating.svelte.ts`                         |
-| **Gating source**     | LWAI Athena probe, cached in D1    | One-time `/probe` checks `daily_learning_metrics` existence; result persists  |
-| **Credentials**       | Encrypted D1 columns               | AES-256-GCM, app-level encrypt at seed/admin write, decrypt at runtime        |
-| **Admin tools**       | Inline in existing pages           | No separate dashboard; admin sees student view plus admin controls            |
-| **Admin auth**        | Server-side `assertAdmin()`        | Backend is single source of truth; frontend renders conditionally from server |
-| **Parent portal**     | Link to AlphaLearn                 | Don't rebuild, just add toggles                                               |
-| **KV store**          | Cloudflare KV                      | Native TTL for ephemeral data (launch records). 60s minimum TTL.              |
-| **Arcade presence**   | Launch-record + Roblox API poll    | KV launch records (5-min TTL) + Roblox Presence API confirmation every 15s    |
-| **Roblox linking**    | Manual username + avatar confirm   | Soft verification only; OAuth upgrade path if Roblox app review is approved   |
+| Decision             | Choice                            | Rationale                                                                       |
+| -------------------- | --------------------------------- | ------------------------------------------------------------------------------- |
+| **Database**         | Cloudflare D1                     | Edge-native, no cold starts, sufficient for MVP                                 |
+| **Sessions**         | HMAC-signed cookies               | Stateless, cross-subdomain (`.alpha-community.school`)                          |
+| **Auth**             | Timeback SSO                      | Already integrated, handles Cognito                                             |
+| **Realtime**         | Durable Objects + WebSocket       | Hibernation API (cost-efficient), per-channel DO instances                      |
+| **Realtime routing** | Separate Worker + custom domain   | SvelteKit can't proxy WebSocket upgrades; Worker at `ws.alpha-community.school` |
+| **Shared types**     | `@alpha/shared` workspace package | Cross-project contracts (WebSocket protocol, LWAI gating) — one home            |
+| **Credentials**      | Encrypted D1 columns              | AES-256-GCM, app-level encrypt at write, decrypt at runtime                     |
+| **Admin tools**      | Inline in existing pages          | No separate dashboard; admin sees student view plus admin controls              |
+| **Arcade presence**  | KV launch records + Roblox API    | 5-min TTL, refreshed while in-game, polled every 15s                            |
+| **Roblox linking**   | Manual username + avatar confirm  | Soft verification only; OAuth upgrade path pending                              |
+| **LWAI query**       | Lambda proxy (SST)                | CF Workers can't do STS AssumeRole                                              |
+| **Gating state**     | Discriminated union store         | Eliminates boolean flag creep                                                   |
 
 ---
 
@@ -264,6 +186,15 @@ Unify wrangler (Cloudflare) + SST (AWS) into single `sst deploy`. SST v3 support
 
 Two seed scripts exist (`seed-games.ts`, `seed-users.ts`) with duplicated utilities (`escapeSQL`, arg parsing, wrangler execution). Extract shared module when adding a third.
 
+#### Auth Strategy Beyond Timeback SSO
+
+Currently Timeback SSO is the only auth path — no one without a Timeback account (tied to a `.school` email) can sign in. This creates two problems:
+
+- **Testing:** Only one account per developer. Can't open two browser sessions as different users to test chat, friend requests, presence, etc. No way to simulate multi-user flows.
+- **Access scope:** If the community ever needs to support users outside the Timeback ecosystem (parents, mentors, alumni), there's no path for that.
+
+Needs thinking. Options include: test/seed user impersonation (admin-only, dev/preview environments only), additional OAuth providers alongside Timeback, or a lightweight invite-code flow. No public username/password auth — the platform is for a gated community, not open registration.
+
 ---
 
 ## Loose Ends
@@ -276,6 +207,7 @@ Small items that don't belong to a tier but need attention eventually.
 - **Production deploy** — Replicate preview environment in production Cloudflare Pages. Separate D1 database, set secrets, verify SSO callbacks, smoke test.
 - **Clean up Timeback XP fetch** — Unclear whether EduBridge Analytics integration is returning correct data. Needs investigation and validation.
 - **Set up docs** — Pick a documentation stack and stand up a docs site.
+- **Local dev WebSocket** — WebSocket connects to deployed Worker only (`ws.alpha-community.school`); no local dev real-time testing. Chat loads conversations and persists messages locally, but real-time delivery between tabs requires the deployed preview environment.
 
 ---
 
@@ -287,7 +219,6 @@ Small items that don't belong to a tier but need attention eventually.
 - **Timeback Electron as launcher** — Community will run inside Electron wrapper
 - **Private servers first** — Public Roblox games are a liability; private servers give control
 - **Minecraft is a stretch goal** — Architecture should support it, Roblox is primary
-- **Chat is ready but not urgent** — Wire when socialization features become the focus
 
 ---
 
