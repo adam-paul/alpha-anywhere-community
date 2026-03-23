@@ -94,6 +94,23 @@ export interface UserWithProfile extends DbUser {
   profile: DbProfile;
 }
 
+export interface ConversationWithDetails {
+  id: string;
+  name: string | null;
+  participants: Array<{
+    userId: string;
+    displayName: string;
+    avatarUrl: string | null;
+    handle: string;
+  }>;
+  lastMessage: {
+    content: string;
+    senderId: string;
+    createdAt: string;
+  } | null;
+  unreadCount: number;
+}
+
 // =============================================================================
 // Input Types (for inserts/updates)
 // =============================================================================

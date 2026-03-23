@@ -19,7 +19,8 @@ import type {
   CreateMessageInput,
   CreateGameInput,
   UpdateGameInput,
-  LinkRobloxInput
+  LinkRobloxInput,
+  ConversationWithDetails
 } from './types';
 
 /**
@@ -520,6 +521,139 @@ export function createDbClient(db: D1Database) {
           )
           .bind(userId1, userId2)
           .first<DbConversation>();
+      },
+
+      /** Mark a conversation as read for a user. */
+      async markAsRead(conversationId: string, userId: string): Promise<void> {
+        await db
+          .prepare(
+            `UPDATE conversation_participants SET last_read_at = datetime('now')
+             WHERE conversation_id = ? AND user_id = ?`
+          )
+          .bind(conversationId, userId)
+          .run();
+      },
+
+      /** Load all conversations for a user with participants, last message, and unread counts. */
+      async getWithDetails(userId: string): Promise<ConversationWithDetails[]> {
+        // 1. Get user's conversations
+        const convResult = await db
+          .prepare(
+            `SELECT c.id, c.name, c.created_at, c.updated_at
+             FROM conversations c
+             JOIN conversation_participants cp ON c.id = cp.conversation_id AND cp.user_id = ?
+             ORDER BY c.updated_at DESC`
+          )
+          .bind(userId)
+          .all<{ id: string; name: string | null; created_at: string; updated_at: string }>();
+
+        const convIds = convResult.results.map((c) => c.id);
+        if (convIds.length === 0) return [];
+
+        const placeholders = convIds.map(() => '?').join(', ');
+
+        // Run remaining queries in batch
+        const [participantsResult, lastMessagesResult, unreadResult] = await db.batch([
+          // 2. All participants for these conversations
+          db
+            .prepare(
+              `SELECT cp.conversation_id, u.id as user_id, u.display_name,
+                      p.avatar_url, u.email
+               FROM conversation_participants cp
+               JOIN users u ON cp.user_id = u.id
+               LEFT JOIN profiles p ON u.id = p.user_id
+               WHERE cp.conversation_id IN (${placeholders})`
+            )
+            .bind(...convIds),
+
+          // 3. Last message per conversation (window function)
+          db
+            .prepare(
+              `SELECT * FROM (
+                 SELECT m.conversation_id, m.content, m.sender_id, m.created_at,
+                        ROW_NUMBER() OVER (PARTITION BY m.conversation_id ORDER BY m.created_at DESC) as rn
+                 FROM messages m
+                 WHERE m.conversation_id IN (${placeholders}) AND m.deleted_at IS NULL
+               ) WHERE rn = 1`
+            )
+            .bind(...convIds),
+
+          // 4. Unread counts per conversation
+          db
+            .prepare(
+              `SELECT m.conversation_id, COUNT(*) as unread_count
+               FROM messages m
+               JOIN conversation_participants cp
+                 ON cp.conversation_id = m.conversation_id AND cp.user_id = ?
+               WHERE m.conversation_id IN (${placeholders})
+                 AND m.sender_id != ?
+                 AND m.deleted_at IS NULL
+                 AND (cp.last_read_at IS NULL OR m.created_at > cp.last_read_at)
+               GROUP BY m.conversation_id`
+            )
+            .bind(userId, ...convIds, userId)
+        ]);
+
+        // Build lookup maps
+        type ParticipantRow = {
+          conversation_id: string;
+          user_id: string;
+          display_name: string;
+          avatar_url: string | null;
+          email: string;
+        };
+        type LastMessageRow = {
+          conversation_id: string;
+          content: string;
+          sender_id: string;
+          created_at: string;
+        };
+        type UnreadRow = { conversation_id: string; unread_count: number };
+
+        const participantsByConv = new Map<string, ParticipantRow[]>();
+        for (const row of participantsResult.results as unknown as ParticipantRow[]) {
+          const list = participantsByConv.get(row.conversation_id) ?? [];
+          list.push(row);
+          participantsByConv.set(row.conversation_id, list);
+        }
+
+        const lastMessageByConv = new Map<string, LastMessageRow>();
+        for (const row of lastMessagesResult.results as unknown as LastMessageRow[]) {
+          lastMessageByConv.set(row.conversation_id, row);
+        }
+
+        const unreadByConv = new Map<string, number>();
+        for (const row of unreadResult.results as unknown as UnreadRow[]) {
+          unreadByConv.set(row.conversation_id, row.unread_count);
+        }
+
+        // Assemble results
+        return convResult.results.map((conv) => {
+          const participants = (participantsByConv.get(conv.id) ?? [])
+            .filter((p) => p.user_id !== userId)
+            .map((p) => ({
+              userId: p.user_id,
+              displayName: p.display_name,
+              avatarUrl: p.avatar_url,
+              handle: p.email.split('@')[0]
+            }));
+
+          const lastMsg = lastMessageByConv.get(conv.id);
+
+          return {
+            id: conv.id,
+            name: conv.name,
+            participants,
+            lastMessage: lastMsg
+              ? {
+                  content: lastMsg.content,
+                  senderId: lastMsg.sender_id,
+                  createdAt: lastMsg.created_at
+                }
+              : null,
+            unreadCount: unreadByConv.get(conv.id) ?? 0
+          };
+        });
       }
     },
 

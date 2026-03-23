@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { Conversation, Student } from '$lib/types';
+  import type { Conversation } from '$lib/types';
   import { Avatar, AvatarStack } from '$lib/components/ui';
-  import { MOCK_STUDENTS } from '$lib/mock-data';
+  import { getChatStore } from '$lib/stores/chat.svelte';
 
   interface Props {
     conversation: Conversation;
@@ -11,14 +11,10 @@
 
   let { conversation, isSelected = false, onclick }: Props = $props();
 
-  // Resolve participants from IDs
-  const participants = $derived(
-    conversation.participantIds
-      .map((id) => MOCK_STUDENTS.find((s) => s.id === id))
-      .filter((s): s is Student => s !== undefined)
-  );
+  const chat = getChatStore();
 
-  // Get display name (custom name or participant names)
+  const participants = $derived(conversation.participants);
+
   const displayName = $derived.by(() => {
     if (conversation.name) return conversation.name;
     if (participants.length === 0) return 'Unknown';
@@ -32,7 +28,7 @@
     const diffMs = now.getTime() - date.getTime();
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 0) {
+    if (diffDays <= 0) {
       return date
         .toLocaleTimeString('en-US', {
           hour: 'numeric',
@@ -55,7 +51,7 @@
   // Get last message preview with sender prefix
   const lastMessagePreview = $derived.by(() => {
     if (!conversation.lastMessage) return '';
-    const prefix = conversation.lastMessage.senderId === 'me' ? 'You: ' : '';
+    const prefix = conversation.lastMessage.senderId === chat.currentUserId ? 'You: ' : '';
     return prefix + conversation.lastMessage.content;
   });
 </script>
@@ -63,10 +59,15 @@
 <button class="conversation-item" class:selected={isSelected} {onclick} type="button">
   <div class="avatar-container">
     {#if participants.length >= 2}
-      <AvatarStack {participants} />
+      <AvatarStack
+        participants={participants.slice(0, 2).map((p) => ({
+          displayName: p.displayName,
+          avatarUrl: p.avatarUrl ?? undefined
+        }))}
+      />
     {:else}
       <Avatar
-        src={participants[0]?.avatarUrl}
+        src={participants[0]?.avatarUrl ?? undefined}
         alt={participants[0]?.displayName ?? ''}
         size="md"
         fallback={participants[0]?.displayName.charAt(0) ?? '?'}

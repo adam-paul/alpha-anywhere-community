@@ -1,7 +1,6 @@
 <script lang="ts">
-  import type { Conversation, Student } from '$lib/types';
-  import { Avatar, AvatarStack, IconButton, Button } from '$lib/components/ui';
-  import { MOCK_STUDENTS } from '$lib/mock-data';
+  import type { Conversation } from '$lib/types';
+  import { Avatar, AvatarStack, IconButton } from '$lib/components/ui';
 
   interface Props {
     conversation: Conversation;
@@ -10,14 +9,8 @@
 
   let { conversation, onInfoClick }: Props = $props();
 
-  // Resolve participants
-  const participants = $derived(
-    conversation.participantIds
-      .map((id) => MOCK_STUDENTS.find((s) => s.id === id))
-      .filter((s): s is Student => s !== undefined)
-  );
+  const participants = $derived(conversation.participants);
 
-  // Get display name
   const displayName = $derived.by(() => {
     if (conversation.name) return conversation.name;
     if (participants.length === 0) return 'Unknown';
@@ -25,18 +18,22 @@
     return participants.map((p) => p.displayName.split(' ')[0]).join(' and ');
   });
 
-  // Get member count
-  const memberCount = $derived(participants.length + 1); // +1 for current user
+  const memberCount = $derived(participants.length + 1);
 </script>
 
 <header class="chat-header">
   <div class="header-left">
     <div class="avatar-container">
       {#if participants.length >= 2}
-        <AvatarStack participants={participants.slice(0, 2)} />
+        <AvatarStack
+          participants={participants.slice(0, 2).map((p) => ({
+            displayName: p.displayName,
+            avatarUrl: p.avatarUrl ?? undefined
+          }))}
+        />
       {:else if participants.length === 1}
         <Avatar
-          src={participants[0].avatarUrl}
+          src={participants[0].avatarUrl ?? undefined}
           alt={participants[0].displayName}
           size="md"
           fallback={participants[0].displayName.charAt(0)}

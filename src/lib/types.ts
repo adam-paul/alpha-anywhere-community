@@ -215,10 +215,48 @@ export type GatingLoadState =
   | { status: 'error' }
   | { status: 'ready'; data: GatingState; dismissed: boolean };
 
-export interface ChatState {
+// Chat types
+
+export interface ChatParticipant {
+  id: string;
+  displayName: string;
+  avatarUrl: string | null;
+  handle: string;
+}
+
+export interface Message {
+  id: string;
+  conversationId: string;
+  senderId: string;
+  content: string;
+  imageUrl?: string;
+  timestamp: Date;
+}
+
+export interface Conversation {
+  id: string;
+  name?: string;
+  participants: ChatParticipant[];
+  lastMessage?: {
+    content: string;
+    senderId: string;
+    timestamp: Date;
+  };
+  unreadCount: number;
+}
+
+export interface CreateChatStoreOptions {
   conversations: Conversation[];
-  messages: Record<string, Message[]>;
-  activeConversationId: string | null;
+  currentUserId: string;
+  friends: ChatParticipant[];
+}
+
+export interface ChatState {
+  readonly conversations: Conversation[];
+  readonly activeConversationId: string | null;
+  readonly currentUserId: string;
+  readonly friends: ChatParticipant[];
+  readonly isLoadingMessages: boolean;
   searchQuery: string;
   composeText: string;
   isDetailsPanelOpen: boolean;
@@ -226,37 +264,15 @@ export interface ChatState {
   readonly filteredConversations: Conversation[];
   readonly activeConversation: Conversation | null;
   readonly activeMessages: Message[];
-  readonly activeParticipants: Student[];
+  readonly activeParticipants: ChatParticipant[];
   selectConversation(id: string): void;
-  sendMessage(text: string): void;
+  sendMessage(text: string): Promise<void>;
   toggleDetailsPanel(): void;
   openNewChatModal(): void;
   closeNewChatModal(): void;
-  createConversation(participantIds: string[]): string;
-}
-
-// Chat types
-export interface Message {
-  id: string;
-  conversationId: string;
-  senderId: string; // 'me' for current user, or student ID
-  content: string;
-  imageUrl?: string;
-  timestamp: Date;
-  reactions?: string[];
-}
-
-export interface Conversation {
-  id: string;
-  name?: string; // Custom name for groups, undefined for 1:1
-  participantIds: string[]; // Student IDs (not including current user)
-  lastMessage?: {
-    content: string;
-    senderId: string;
-    timestamp: Date;
-  };
-  unreadCount: number;
-  isMuted: boolean;
+  createConversation(participantIds: string[]): Promise<string>;
+  handleIncomingMessage(msg: Message): void;
+  setRealtimeSend(fn: ((msg: object) => void) | null): void;
 }
 
 // Admin: Game form

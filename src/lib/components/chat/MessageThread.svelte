@@ -23,7 +23,7 @@
 
   // Check if this is a group chat (multiple participants)
   const isGroupChat = $derived(
-    chat.activeConversation !== null && chat.activeConversation.participantIds.length > 1
+    chat.activeConversation !== null && chat.activeConversation.participants.length > 1
   );
 
   function handleSend() {
@@ -54,14 +54,19 @@
     />
 
     <div class="messages-container" bind:this={messagesContainer}>
-      {#if chat.activeMessages.length === 0}
+      {#if chat.isLoadingMessages}
+        <Placeholder size="sm" title="Loading messages..." />
+      {:else if chat.activeMessages.length === 0}
         <Placeholder size="sm" title="No messages yet. Say hello!" />
       {:else}
         {#each chat.activeMessages as message, index (message.id)}
           {#if shouldShowDateSeparator(chat.activeMessages, index)}
             <DateSeparator date={message.timestamp} />
           {/if}
-          <MessageBubble {message} showSenderName={isGroupChat && message.senderId !== 'me'} />
+          <MessageBubble
+            {message}
+            showSenderName={isGroupChat && message.senderId !== chat.currentUserId}
+          />
         {/each}
       {/if}
     </div>

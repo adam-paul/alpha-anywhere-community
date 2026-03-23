@@ -148,7 +148,7 @@ export function getTimeback() {
             role: 'student'
           };
 
-          const cookieHeader = await createSessionCookieHeader(session);
+          const cookieHeader = await createSessionCookieHeader(session, env.AUTH_CALLBACK_URL);
           const returnTo = (state as { returnTo?: string })?.returnTo ?? '/';
 
           return redirect(returnTo, {

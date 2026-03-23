@@ -12,8 +12,16 @@ const COOKIE_NAME = 'alpha_session';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
 /** Cookie domain — shared across subdomains in production, omitted for localhost. */
-function getCookieDomain(): string | undefined {
-  return import.meta.env.DEV ? undefined : '.alpha-community.school';
+function getCookieDomain(url?: string): string | undefined {
+  if (url) {
+    try {
+      const hostname = new URL(url).hostname;
+      if (hostname === 'localhost' || hostname === '127.0.0.1') return undefined;
+    } catch {
+      // Fall through to production default
+    }
+  }
+  return '.alpha-community.school';
 }
 
 /**
@@ -70,9 +78,13 @@ async function parseSessionValue(value: string): Promise<UserContext | null> {
 /**
  * Set the session cookie.
  */
-export async function setSessionCookie(cookies: Cookies, user: UserContext): Promise<void> {
+export async function setSessionCookie(
+  cookies: Cookies,
+  user: UserContext,
+  requestUrl?: string
+): Promise<void> {
   const value = await createSessionValue(user);
-  const domain = getCookieDomain();
+  const domain = getCookieDomain(requestUrl);
   cookies.set(COOKIE_NAME, value, {
     path: '/',
     ...(domain && { domain }),
@@ -95,8 +107,8 @@ export async function getSessionFromCookie(cookies: Cookies): Promise<UserContex
 /**
  * Clear the session cookie.
  */
-export function clearSessionCookie(cookies: Cookies): void {
-  const domain = getCookieDomain();
+export function clearSessionCookie(cookies: Cookies, requestUrl?: string): void {
+  const domain = getCookieDomain(requestUrl);
   // Delete both with and without domain to clear cookies from before the domain change
   cookies.delete(COOKIE_NAME, { path: '/' });
   if (domain) {
@@ -108,10 +120,16 @@ export function clearSessionCookie(cookies: Cookies): void {
  * Create session cookie header for use in redirect responses.
  * Used by the Timeback SDK callback which doesn't have access to SvelteKit cookies API.
  */
-export async function createSessionCookieHeader(user: UserContext): Promise<string> {
+export async function createSessionCookieHeader(
+  user: UserContext,
+  requestUrl?: string
+): Promise<string> {
   const value = await createSessionValue(user);
-  const secure = import.meta.env.DEV ? '' : '; Secure';
-  const domain = getCookieDomain();
+  const isLocalhost = requestUrl
+    ? new URL(requestUrl).hostname === 'localhost'
+    : import.meta.env.DEV;
+  const secure = isLocalhost ? '' : '; Secure';
+  const domain = getCookieDomain(requestUrl);
   const domainStr = domain ? `; Domain=${domain}` : '';
   return `${COOKIE_NAME}=${value}; Path=/${domainStr}; HttpOnly; SameSite=Lax; Max-Age=${COOKIE_MAX_AGE}${secure}`;
 }

@@ -1,43 +1,23 @@
 <script lang="ts">
   import { getChatStore } from '$lib/stores/chat.svelte';
   import { getUserStore } from '$lib/stores/user.svelte';
-  import { Avatar, Icon, IconButton, Button, Toggle } from '$lib/components/ui';
-  import { MOCK_STUDENTS } from '$lib/mock-data';
-  import type { Student } from '$lib/types';
+  import { Avatar, IconButton, Button } from '$lib/components/ui';
 
   const chat = getChatStore();
   const userStore = getUserStore();
 
-  // Get display name
   const displayName = $derived.by(() => {
     const conv = chat.activeConversation;
     if (!conv) return '';
     if (conv.name) return conv.name;
 
-    const participants = conv.participantIds
-      .map((id) => MOCK_STUDENTS.find((s) => s.id === id))
-      .filter((s): s is Student => s !== undefined);
-
+    const participants = conv.participants;
     if (participants.length === 0) return 'Unknown';
     if (participants.length === 1) return participants[0].displayName;
     return participants.map((p) => p.displayName.split(' ')[0]).join(' and ');
   });
 
-  // Resolve participants
-  const participants = $derived.by(() => {
-    const conv = chat.activeConversation;
-    if (!conv) return [];
-
-    return conv.participantIds
-      .map((id) => MOCK_STUDENTS.find((s) => s.id === id))
-      .filter((s): s is Student => s !== undefined);
-  });
-
-  function toggleMute() {
-    if (chat.activeConversation) {
-      chat.activeConversation.isMuted = !chat.activeConversation.isMuted;
-    }
-  }
+  const participants = $derived(chat.activeParticipants);
 </script>
 
 <div class="chat-details">
@@ -54,23 +34,9 @@
     </section>
 
     <section class="section">
-      <div class="mute-row">
-        <span class="mute-label">Mute Chat</span>
-        <Toggle
-          checked={chat.activeConversation?.isMuted ?? false}
-          onchange={toggleMute}
-          label="Mute chat"
-        />
-      </div>
-    </section>
-
-    <section class="section">
       <div class="section-header">
         <h3 class="section-title">Members</h3>
-        <button class="add-btn">
-          <Icon name="plus" size={14} />
-          <span>Add</span>
-        </button>
+        <Button variant="ghost" size="sm">Add</Button>
       </div>
 
       <div class="members-list">
@@ -94,7 +60,7 @@
         {#each participants as participant (participant.id)}
           <div class="member-item">
             <Avatar
-              src={participant.avatarUrl}
+              src={participant.avatarUrl ?? undefined}
               alt={participant.displayName}
               size="sm"
               fallback={participant.displayName.charAt(0)}
@@ -163,17 +129,6 @@
     font-weight: 600;
   }
 
-  .mute-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .mute-label {
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-  }
-
   .section-header {
     display: flex;
     align-items: center;
@@ -185,24 +140,6 @@
     font-size: var(--font-size-sm);
     font-weight: 600;
     margin: 0;
-  }
-
-  .add-btn {
-    display: flex;
-    align-items: center;
-    gap: var(--space-1);
-    padding: var(--space-1) var(--space-2);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--color-primary);
-    font-size: var(--font-size-xs);
-    font-weight: 600;
-    transition: opacity var(--transition-fast);
-  }
-
-  .add-btn:hover {
-    opacity: 0.8;
   }
 
   .members-list {

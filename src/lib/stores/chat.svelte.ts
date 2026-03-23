@@ -1,42 +1,40 @@
 import { getContext, setContext } from 'svelte';
-import type { ChatState, Conversation, Message, Student } from '$lib/types';
-import { MOCK_CONVERSATIONS, MOCK_MESSAGES, MOCK_STUDENTS } from '../mock-data';
+import type {
+  ChatState,
+  Conversation,
+  Message,
+  ChatParticipant,
+  CreateChatStoreOptions
+} from '$lib/types';
 
 const CHAT_CONTEXT_KEY = 'chat';
 
-export function createChatStore(): ChatState {
-  // Make copies so we can mutate
-  let conversations = $state<Conversation[]>([...MOCK_CONVERSATIONS]);
-  let messages = $state<Record<string, Message[]>>(
-    Object.fromEntries(Object.entries(MOCK_MESSAGES).map(([k, v]) => [k, [...v]]))
-  );
+export function createChatStore(options: CreateChatStoreOptions): ChatState {
+  const currentUserId = options.currentUserId;
 
-  // UI State
-  let activeConversationId = $state<string | null>(MOCK_CONVERSATIONS[0]?.id ?? null);
+  let conversations = $state<Conversation[]>(options.conversations);
+  let messages = $state<Record<string, Message[]>>({});
+  let friends = $state<ChatParticipant[]>(options.friends);
+  let isLoadingMessages = $state(false);
+
+  // UI state
+  let activeConversationId = $state<string | null>(null);
   let searchQuery = $state('');
   let composeText = $state('');
   let isDetailsPanelOpen = $state(false);
   let isNewChatModalOpen = $state(false);
 
+  // Realtime send function — set by the page when WebSocket connects
+  let realtimeSend: ((msg: object) => void) | null = null;
+
   // Derived state
   const filteredConversations = $derived.by(() => {
-    if (!searchQuery.trim()) {
-      return conversations;
-    }
+    if (!searchQuery.trim()) return conversations;
 
     const query = searchQuery.toLowerCase().trim();
     return conversations.filter((conv) => {
-      // Search by conversation name
-      if (conv.name?.toLowerCase().includes(query)) {
-        return true;
-      }
-
-      // Search by participant names
-      const participants = conv.participantIds
-        .map((id) => MOCK_STUDENTS.find((s) => s.id === id))
-        .filter((s): s is Student => s !== undefined);
-
-      return participants.some((p) => p.displayName.toLowerCase().includes(query));
+      if (conv.name?.toLowerCase().includes(query)) return true;
+      return conv.participants.some((p) => p.displayName.toLowerCase().includes(query));
     });
   });
 
@@ -50,12 +48,7 @@ export function createChatStore(): ChatState {
   });
 
   const activeParticipants = $derived.by(() => {
-    const conv = conversations.find((c) => c.id === activeConversationId);
-    if (!conv) return [];
-
-    return conv.participantIds
-      .map((id) => MOCK_STUDENTS.find((s) => s.id === id))
-      .filter((s): s is Student => s !== undefined);
+    return activeConversation?.participants ?? [];
   });
 
   // Actions
@@ -63,42 +56,118 @@ export function createChatStore(): ChatState {
     activeConversationId = id;
     composeText = '';
 
-    // Mark as read
+    // Mark as read locally
     const conv = conversations.find((c) => c.id === id);
     if (conv && conv.unreadCount > 0) {
       conv.unreadCount = 0;
     }
+
+    // Fire-and-forget mark as read on server
+    fetch(`/api/chat/conversations/${id}/read`, { method: 'POST' }).catch(() => {});
+
+    // Lazy-load messages if not already loaded
+    if (!messages[id]) {
+      loadMessages(id);
+    }
   }
 
-  function sendMessage(text: string) {
+  async function loadMessages(conversationId: string) {
+    isLoadingMessages = true;
+    try {
+      const res = await fetch(`/api/chat/messages?conversationId=${conversationId}`);
+      if (res.ok) {
+        const data = await res.json();
+        messages[conversationId] = data.messages.map(transformMessage);
+      }
+    } finally {
+      isLoadingMessages = false;
+    }
+  }
+
+  async function sendMessage(text: string) {
     if (!activeConversationId || !text.trim()) return;
 
-    const newMessage: Message = {
-      id: `msg-${Date.now()}`,
-      conversationId: activeConversationId,
-      senderId: 'me',
-      content: text.trim(),
+    const convId = activeConversationId;
+    const trimmed = text.trim();
+
+    // Optimistic append
+    const tempId = `temp-${Date.now()}`;
+    const optimistic: Message = {
+      id: tempId,
+      conversationId: convId,
+      senderId: currentUserId,
+      content: trimmed,
       timestamp: new Date()
     };
 
-    // Add message to conversation
-    if (!messages[activeConversationId]) {
-      messages[activeConversationId] = [];
-    }
-    messages[activeConversationId] = [...messages[activeConversationId], newMessage];
+    if (!messages[convId]) messages[convId] = [];
+    messages[convId] = [...messages[convId], optimistic];
 
-    // Update last message on conversation
-    const conv = conversations.find((c) => c.id === activeConversationId);
+    // Update last message preview
+    const conv = conversations.find((c) => c.id === convId);
     if (conv) {
-      conv.lastMessage = {
-        content: text.trim(),
-        senderId: 'me',
-        timestamp: new Date()
-      };
+      conv.lastMessage = { content: trimmed, senderId: currentUserId, timestamp: new Date() };
     }
 
-    // Clear compose
     composeText = '';
+
+    // Persist to D1
+    try {
+      const res = await fetch('/api/chat/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conversationId: convId, content: trimmed })
+      });
+
+      if (res.ok) {
+        const serverMsg = await res.json();
+        // Replace temp message with server response
+        messages[convId] = messages[convId].map((m) =>
+          m.id === tempId ? transformMessage(serverMsg) : m
+        );
+        // Broadcast via WebSocket for real-time delivery
+        realtimeSend?.({
+          type: 'chat:message',
+          messageId: serverMsg.id,
+          conversationId: convId,
+          content: trimmed
+        });
+      } else {
+        // Remove failed message
+        messages[convId] = messages[convId].filter((m) => m.id !== tempId);
+      }
+    } catch {
+      messages[convId] = messages[convId].filter((m) => m.id !== tempId);
+    }
+  }
+
+  function handleIncomingMessage(msg: Message) {
+    const convId = msg.conversationId;
+    if (!messages[convId]) messages[convId] = [];
+    messages[convId] = [...messages[convId], msg];
+
+    // Update conversation's last message and bump to top
+    const convIndex = conversations.findIndex((c) => c.id === convId);
+    if (convIndex >= 0) {
+      const conv = conversations[convIndex];
+      conv.lastMessage = {
+        content: msg.content,
+        senderId: msg.senderId,
+        timestamp: msg.timestamp
+      };
+      // Bump conversation to top
+      if (convIndex > 0) {
+        conversations = [conv, ...conversations.filter((c) => c.id !== convId)];
+      }
+      // Increment unread if not the active conversation
+      if (convId !== activeConversationId) {
+        conv.unreadCount++;
+      }
+    }
+  }
+
+  function setRealtimeSend(fn: ((msg: object) => void) | null) {
+    realtimeSend = fn;
   }
 
   function toggleDetailsPanel() {
@@ -113,55 +182,69 @@ export function createChatStore(): ChatState {
     isNewChatModalOpen = false;
   }
 
-  function createConversation(participantIds: string[]): string {
-    // Check if conversation already exists with same participants
-    const existing = conversations.find((c) => {
-      if (c.participantIds.length !== participantIds.length) return false;
-      return participantIds.every((id) => c.participantIds.includes(id));
-    });
+  async function createConversation(participantIds: string[]): Promise<string> {
+    try {
+      const res = await fetch('/api/chat/conversations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ participantIds })
+      });
 
-    if (existing) {
-      activeConversationId = existing.id;
+      if (!res.ok) throw new Error('Failed to create conversation');
+
+      const { conversation: raw } = await res.json();
+      const conv: Conversation = {
+        id: raw.id,
+        name: raw.name ?? undefined,
+        participants: raw.participants.map(
+          (p: { userId: string; displayName: string; avatarUrl: string | null; handle: string }) =>
+            ({
+              id: p.userId,
+              displayName: p.displayName,
+              avatarUrl: p.avatarUrl,
+              handle: p.handle
+            }) as ChatParticipant
+        ),
+        lastMessage: raw.lastMessage
+          ? {
+              content: raw.lastMessage.content,
+              senderId: raw.lastMessage.senderId,
+              timestamp: new Date(raw.lastMessage.createdAt)
+            }
+          : undefined,
+        unreadCount: raw.unreadCount ?? 0
+      };
+
+      // Check if already in list (existing 1:1 returned)
+      if (!conversations.some((c) => c.id === conv.id)) {
+        conversations = [conv, ...conversations];
+      }
+
+      messages[conv.id] = [];
+      activeConversationId = conv.id;
       isNewChatModalOpen = false;
-      return existing.id;
+
+      return conv.id;
+    } catch {
+      throw new Error('Failed to create conversation');
     }
-
-    // Create new conversation
-    const newConv: Conversation = {
-      id: `conv-${Date.now()}`,
-      participantIds,
-      unreadCount: 0,
-      isMuted: false
-    };
-
-    conversations = [newConv, ...conversations];
-    messages[newConv.id] = [];
-    activeConversationId = newConv.id;
-    isNewChatModalOpen = false;
-
-    return newConv.id;
   }
 
   const store: ChatState = {
     get conversations() {
       return conversations;
     },
-    set conversations(value) {
-      conversations = value;
-    },
-
-    get messages() {
-      return messages;
-    },
-    set messages(value) {
-      messages = value;
-    },
-
     get activeConversationId() {
       return activeConversationId;
     },
-    set activeConversationId(value) {
-      activeConversationId = value;
+    get currentUserId() {
+      return currentUserId;
+    },
+    get friends() {
+      return friends;
+    },
+    get isLoadingMessages() {
+      return isLoadingMessages;
     },
 
     get searchQuery() {
@@ -170,21 +253,18 @@ export function createChatStore(): ChatState {
     set searchQuery(value) {
       searchQuery = value;
     },
-
     get composeText() {
       return composeText;
     },
     set composeText(value) {
       composeText = value;
     },
-
     get isDetailsPanelOpen() {
       return isDetailsPanelOpen;
     },
     set isDetailsPanelOpen(value) {
       isDetailsPanelOpen = value;
     },
-
     get isNewChatModalOpen() {
       return isNewChatModalOpen;
     },
@@ -210,7 +290,9 @@ export function createChatStore(): ChatState {
     toggleDetailsPanel,
     openNewChatModal,
     closeNewChatModal,
-    createConversation
+    createConversation,
+    handleIncomingMessage,
+    setRealtimeSend
   };
 
   setContext(CHAT_CONTEXT_KEY, store);
@@ -225,4 +307,22 @@ export function getChatStore(): ChatState {
     );
   }
   return store;
+}
+
+function transformMessage(raw: {
+  id: string;
+  conversationId: string;
+  senderId: string;
+  content: string;
+  imageUrl?: string | null;
+  timestamp: string;
+}): Message {
+  return {
+    id: raw.id,
+    conversationId: raw.conversationId,
+    senderId: raw.senderId,
+    content: raw.content,
+    imageUrl: raw.imageUrl ?? undefined,
+    timestamp: new Date(raw.timestamp)
+  };
 }

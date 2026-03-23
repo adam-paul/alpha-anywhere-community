@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { Message, Student } from '$lib/types';
+  import type { Message } from '$lib/types';
   import { Avatar } from '$lib/components/ui';
-  import { MOCK_STUDENTS } from '$lib/mock-data';
+  import { getChatStore } from '$lib/stores/chat.svelte';
 
   interface Props {
     message: Message;
@@ -10,10 +10,13 @@
 
   let { message, showSenderName = false }: Props = $props();
 
-  const isSent = $derived(message.senderId === 'me');
+  const chat = getChatStore();
 
-  // Resolve sender for received messages
-  const sender = $derived(!isSent ? MOCK_STUDENTS.find((s) => s.id === message.senderId) : null);
+  const isSent = $derived(message.senderId === chat.currentUserId);
+
+  const sender = $derived(
+    !isSent ? (chat.activeParticipants.find((p) => p.id === message.senderId) ?? null) : null
+  );
 
   function formatTime(date: Date): string {
     return date
@@ -29,7 +32,7 @@
 <div class="message" class:sent={isSent}>
   {#if !isSent && sender}
     <Avatar
-      src={sender.avatarUrl}
+      src={sender.avatarUrl ?? undefined}
       alt={sender.displayName}
       size="sm"
       fallback={sender.displayName.charAt(0)}
@@ -49,14 +52,6 @@
       {/if}
 
       <p class="content">{message.content}</p>
-
-      {#if message.reactions && message.reactions.length > 0}
-        <div class="reactions">
-          {#each message.reactions as reaction}
-            <span class="reaction">{reaction}</span>
-          {/each}
-        </div>
-      {/if}
     </div>
 
     <span class="timestamp">{formatTime(message.timestamp)}</span>
@@ -128,16 +123,6 @@
     height: auto;
     object-fit: cover;
     background: var(--color-bg);
-  }
-
-  .reactions {
-    display: flex;
-    gap: var(--space-1);
-    margin-top: var(--space-2);
-  }
-
-  .reaction {
-    font-size: var(--font-size-sm);
   }
 
   .timestamp {

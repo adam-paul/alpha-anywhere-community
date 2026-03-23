@@ -3,20 +3,18 @@
   import { Avatar, Icon, Button, Modal } from '$lib/components/ui';
   import { SearchBar } from '$lib/components/ui';
   import { Placeholder } from '$lib/components/ui';
-  import { MOCK_STUDENTS } from '$lib/mock-data';
 
   const chat = getChatStore();
 
   let searchQuery = $state('');
   let selectedIds = $state<string[]>([]);
 
-  // Filter students by search
-  const filteredStudents = $derived.by(() => {
-    if (!searchQuery.trim()) return MOCK_STUDENTS;
+  const filteredFriends = $derived.by(() => {
+    if (!searchQuery.trim()) return chat.friends;
 
     const query = searchQuery.toLowerCase().trim();
-    return MOCK_STUDENTS.filter(
-      (s) => s.displayName.toLowerCase().includes(query) || s.handle.toLowerCase().includes(query)
+    return chat.friends.filter(
+      (f) => f.displayName.toLowerCase().includes(query) || f.handle.toLowerCase().includes(query)
     );
   });
 
@@ -28,10 +26,9 @@
     }
   }
 
-  function handleCreate() {
+  async function handleCreate() {
     if (selectedIds.length === 0) return;
-    chat.createConversation(selectedIds);
-    // Reset
+    await chat.createConversation(selectedIds);
     searchQuery = '';
     selectedIds = [];
   }
@@ -46,7 +43,7 @@
 <Modal open={chat.isNewChatModalOpen} onclose={handleClose} title="New Chat">
   {#snippet content()}
     <div class="search-container">
-      <SearchBar bind:value={searchQuery} placeholder="Search students" />
+      <SearchBar bind:value={searchQuery} placeholder="Search friends" />
     </div>
 
     {#if selectedIds.length > 0}
@@ -54,9 +51,9 @@
         <span class="selected-label">Selected:</span>
         <div class="selected-names">
           {#each selectedIds as id}
-            {@const student = MOCK_STUDENTS.find((s) => s.id === id)}
-            {#if student}
-              <span class="selected-name">{student.displayName}</span>
+            {@const friend = chat.friends.find((f) => f.id === id)}
+            {#if friend}
+              <span class="selected-name">{friend.displayName}</span>
             {/if}
           {/each}
         </div>
@@ -64,30 +61,30 @@
     {/if}
 
     <div class="students-list">
-      {#each filteredStudents as student (student.id)}
+      {#each filteredFriends as friend (friend.id)}
         <button
           class="student-item"
-          class:selected={selectedIds.includes(student.id)}
-          onclick={() => toggleStudent(student.id)}
+          class:selected={selectedIds.includes(friend.id)}
+          onclick={() => toggleStudent(friend.id)}
         >
           <Avatar
-            src={student.avatarUrl}
-            alt={student.displayName}
+            src={friend.avatarUrl ?? undefined}
+            alt={friend.displayName}
             size="sm"
-            fallback={student.displayName.charAt(0)}
+            fallback={friend.displayName.charAt(0)}
           />
           <div class="student-info">
-            <span class="student-name">{student.displayName}</span>
-            <span class="student-handle">@{student.handle}</span>
+            <span class="student-name">{friend.displayName}</span>
+            <span class="student-handle">@{friend.handle}</span>
           </div>
-          {#if selectedIds.includes(student.id)}
+          {#if selectedIds.includes(friend.id)}
             <div class="check-icon">
               <Icon name="check" size={16} />
             </div>
           {/if}
         </button>
       {:else}
-        <Placeholder size="sm" title="No students found" />
+        <Placeholder size="sm" title="No friends found" />
       {/each}
     </div>
   {/snippet}

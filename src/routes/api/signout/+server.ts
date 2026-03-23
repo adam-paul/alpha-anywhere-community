@@ -9,7 +9,7 @@ import { clearSessionCookie } from '$lib/server/session';
 
 import type { RequestHandler } from './$types';
 
-export const GET: RequestHandler = ({ cookies }) => {
-  clearSessionCookie(cookies);
+export const GET: RequestHandler = ({ cookies, url }) => {
+  clearSessionCookie(cookies, url.href);
   throw redirect(302, '/');
 };
