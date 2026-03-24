@@ -85,11 +85,12 @@ export async function setSessionCookie(
 ): Promise<void> {
   const value = await createSessionValue(user);
   const domain = getCookieDomain(requestUrl);
+  const isLocalhost = requestUrl ? new URL(requestUrl).hostname === 'localhost' : false;
   cookies.set(COOKIE_NAME, value, {
     path: '/',
     ...(domain && { domain }),
     httpOnly: true,
-    secure: true,
+    secure: !isLocalhost,
     sameSite: 'lax',
     maxAge: COOKIE_MAX_AGE
   });
@@ -125,9 +126,7 @@ export async function createSessionCookieHeader(
   requestUrl?: string
 ): Promise<string> {
   const value = await createSessionValue(user);
-  const isLocalhost = requestUrl
-    ? new URL(requestUrl).hostname === 'localhost'
-    : import.meta.env.DEV;
+  const isLocalhost = requestUrl ? new URL(requestUrl).hostname === 'localhost' : false;
   const secure = isLocalhost ? '' : '; Secure';
   const domain = getCookieDomain(requestUrl);
   const domainStr = domain ? `; Domain=${domain}` : '';

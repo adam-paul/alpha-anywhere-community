@@ -230,6 +230,30 @@ bun run db:migrate:remote  # Apply pending D1 migrations (remote)
 
 KV `expirationTtl` must be **at least 60 seconds**. Shorter values cause a 400 error. This is a Cloudflare constraint due to global replication latency.
 
+### Cloudflare Pages Secrets
+
+```bash
+# Set a secret (prompts for value). Run from project root.
+bunx wrangler pages secret put SECRET_NAME --env preview
+bunx wrangler pages secret put SECRET_NAME --env production
+
+# List secrets
+bunx wrangler pages secret list --env preview
+
+# Delete a secret
+bunx wrangler pages secret delete SECRET_NAME --env preview
+```
+
+The `--env` flag targets preview vs production. Project name is read from `wrangler.toml` (`name = "alpha-anywhere-community"`).
+
+### Environment Variables
+
+All server-side env vars use `$env/dynamic/private` (SvelteKit's runtime accessor). No `import.meta.env`, no `process.env` in app code. The `.env` file is the single source for local secrets. Cloudflare bindings (`DB`, `KV`) come from `platform.env`, not env vars.
+
+### Impersonation (Dev/Preview Only)
+
+`GET /api/admin/impersonate?userId=<id>` mints a session cookie for any D1 user. Requires `ALLOW_IMPERSONATION=true` in `.env` (local) or Pages secrets (preview). Never set in production — route returns 404 when unset. Use with seed users (`bun run scripts/seed-users.ts`) to test multi-user flows (chat, friends, presence) from a second browser or incognito window.
+
 ---
 
 ## Documentation

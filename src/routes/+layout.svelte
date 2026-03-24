@@ -22,10 +22,11 @@
   // svelte-ignore state_referenced_locally
   createUserStore(data.user);
 
-  // Create app-wide presence WebSocket for authenticated users
+  // Create app-wide presence — always create stores so components never crash,
+  // but only connect WebSocket when authenticated
+  const realtime = createRealtimeStore('presence:global');
+  createPresenceStore(realtime);
   if (data.user) {
-    const realtime = createRealtimeStore('presence:global');
-    createPresenceStore(realtime);
     realtime.connect();
   }
 </script>
