@@ -6,9 +6,10 @@
     alt?: string;
     size?: Size;
     fallback?: string; // Initials or text to show if no image
+    online?: boolean;
   }
 
-  let { src, alt = '', size = 'md', fallback = '?' }: Props = $props();
+  let { src, alt = '', size = 'md', fallback = '?', online }: Props = $props();
 
   let imageError = $state(false);
 
@@ -25,18 +26,41 @@
   {:else}
     <img {src} {alt} onerror={handleError} />
   {/if}
+  {#if online}
+    <span class="online-indicator"></span>
+  {/if}
 </div>
 
 <style>
   .avatar {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     border: var(--border-width) solid var(--color-border);
     background: var(--color-surface);
-    overflow: hidden;
+    overflow: visible;
     flex-shrink: 0;
+  }
+
+  .avatar img,
+  .avatar .fallback {
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .online-indicator {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 25%;
+    height: 25%;
+    min-width: 8px;
+    min-height: 8px;
+    background: var(--color-online);
+    border-radius: 50%;
+    border: 2px solid var(--color-bg);
   }
 
   .avatar img {

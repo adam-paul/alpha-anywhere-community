@@ -2,6 +2,7 @@
   import type { Conversation } from '$lib/types';
   import { Avatar, AvatarStack } from '$lib/components/ui';
   import { getChatStore } from '$lib/stores/chat.svelte';
+  import { getPresenceStore } from '$lib/stores/presence.svelte';
 
   interface Props {
     conversation: Conversation;
@@ -12,8 +13,14 @@
   let { conversation, isSelected = false, onclick }: Props = $props();
 
   const chat = getChatStore();
+  const presence = getPresenceStore();
 
   const participants = $derived(conversation.participants);
+
+  // For 1:1 conversations, show online status of the other participant
+  const isParticipantOnline = $derived(
+    participants.length === 1 ? presence.isOnline(participants[0].id) : false
+  );
 
   const displayName = $derived.by(() => {
     if (conversation.name) return conversation.name;
@@ -71,9 +78,9 @@
         alt={participants[0]?.displayName ?? ''}
         size="md"
         fallback={participants[0]?.displayName.charAt(0) ?? '?'}
+        online={isParticipantOnline}
       />
     {/if}
-    <span class="online-indicator"></span>
   </div>
 
   <div class="content">
@@ -122,23 +129,7 @@
   }
 
   .avatar-container {
-    position: relative;
     flex-shrink: 0;
-  }
-
-  .online-indicator {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 10px;
-    height: 10px;
-    background: var(--color-online);
-    border: 2px solid var(--color-surface);
-    border-radius: 50%;
-  }
-
-  .selected .online-indicator {
-    border-color: var(--color-primary);
   }
 
   .content {

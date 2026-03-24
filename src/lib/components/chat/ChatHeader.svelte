@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Conversation } from '$lib/types';
   import { Avatar, AvatarStack, IconButton } from '$lib/components/ui';
+  import { getPresenceStore } from '$lib/stores/presence.svelte';
 
   interface Props {
     conversation: Conversation;
@@ -9,6 +10,7 @@
 
   let { conversation, onInfoClick }: Props = $props();
 
+  const presence = getPresenceStore();
   const participants = $derived(conversation.participants);
 
   const displayName = $derived.by(() => {
@@ -19,6 +21,18 @@
   });
 
   const memberCount = $derived(participants.length + 1);
+
+  const statusText = $derived.by(() => {
+    if (participants.length === 1) {
+      return presence.isOnline(participants[0].id) ? 'Online' : 'Offline';
+    }
+    const onlineCount = participants.filter((p) => presence.isOnline(p.id)).length;
+    return onlineCount > 0 ? `${onlineCount} of ${memberCount} online` : `${memberCount} Members`;
+  });
+
+  const isDirectOnline = $derived(
+    participants.length === 1 && presence.isOnline(participants[0].id)
+  );
 </script>
 
 <header class="chat-header">
@@ -37,13 +51,14 @@
           alt={participants[0].displayName}
           size="md"
           fallback={participants[0].displayName.charAt(0)}
+          online={isDirectOnline}
         />
       {/if}
     </div>
 
     <div class="header-info">
       <h2 class="name">{displayName}</h2>
-      <span class="member-count">{memberCount} Members</span>
+      <span class="member-count">{statusText}</span>
     </div>
   </div>
 

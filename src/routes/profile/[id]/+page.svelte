@@ -149,6 +149,7 @@
 
 <ProfileHeader
   {student}
+  userId={data.user.id}
   friendshipStatus={data.friendshipStatus}
   isEditing={editMode !== 'view'}
   onEdit={startEditing}

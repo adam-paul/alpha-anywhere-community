@@ -16,12 +16,14 @@ import type { ChannelMessage } from '@alpha/shared/types';
 const REALTIME_CONTEXT_KEY = 'realtime';
 const MAX_RECONNECT_ATTEMPTS = 5;
 const BASE_RECONNECT_DELAY = 1000;
+const KEEPALIVE_INTERVAL = 30_000;
 
 export function createRealtimeStore(channelId: string): RealtimeStore {
   let state = $state<RealtimeConnectionState>({ status: 'disconnected' });
   let ws: WebSocket | null = null;
   let reconnectAttempt = 0;
   let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+  let keepaliveTimer: ReturnType<typeof setInterval> | null = null;
   const messageHandlers = new Set<(message: ChannelMessage) => void>();
 
   const isConnected = $derived(state.status === 'connected');
@@ -36,6 +38,9 @@ export function createRealtimeStore(channelId: string): RealtimeStore {
     ws.onopen = () => {
       state = { status: 'connected' };
       reconnectAttempt = 0;
+      keepaliveTimer = setInterval(() => {
+        if (ws?.readyState === WebSocket.OPEN) ws.send('ping');
+      }, KEEPALIVE_INTERVAL);
     };
 
     ws.onmessage = (event) => {
@@ -51,6 +56,10 @@ export function createRealtimeStore(channelId: string): RealtimeStore {
 
     ws.onclose = (event) => {
       ws = null;
+      if (keepaliveTimer) {
+        clearInterval(keepaliveTimer);
+        keepaliveTimer = null;
+      }
       if (event.code === 1000) {
         state = { status: 'disconnected' };
         return;
@@ -67,6 +76,10 @@ export function createRealtimeStore(channelId: string): RealtimeStore {
     if (reconnectTimer) {
       clearTimeout(reconnectTimer);
       reconnectTimer = null;
+    }
+    if (keepaliveTimer) {
+      clearInterval(keepaliveTimer);
+      keepaliveTimer = null;
     }
     reconnectAttempt = 0;
     if (ws) {

@@ -2,6 +2,7 @@
   import type { Student } from '$lib/types';
   import { Card, Avatar, Badge } from '$lib/components/ui';
   import InterestBadge from '$lib/components/InterestBadge.svelte';
+  import { getPresenceStore } from '$lib/stores/presence.svelte';
 
   interface Props {
     student: Student;
@@ -9,6 +10,8 @@
   }
 
   let { student, disabled = false }: Props = $props();
+
+  const presence = getPresenceStore();
 
   // Show max 4 interests, with overflow indicator
   const displayInterests = $derived(student.interests.slice(0, 4));
@@ -29,6 +32,7 @@
           alt={student.displayName}
           size="md"
           fallback={student.displayName.charAt(0)}
+          online={presence.isOnline(student.id)}
         />
         <div class="header-info">
           <h3 class="student-name">{student.displayName}</h3>

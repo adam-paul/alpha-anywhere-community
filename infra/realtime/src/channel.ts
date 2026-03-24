@@ -1,5 +1,5 @@
 import { DurableObject } from 'cloudflare:workers';
-import type { ConnectionMeta, ChannelMessage } from '@alpha/shared/types';
+import type { ConnectionMeta, ChannelMessage, PresenceSnapshotMessage } from '@alpha/shared/types';
 
 export class RealtimeChannel extends DurableObject {
   constructor(ctx: DurableObjectState, env: unknown) {
@@ -26,6 +26,24 @@ export class RealtimeChannel extends DurableObject {
     this.ctx.acceptWebSocket(server);
     server.serializeAttachment(meta);
 
+    // Send snapshot of currently connected users to the new client
+    const users: PresenceSnapshotMessage['users'] = [];
+    for (const existing of this.ctx.getWebSockets()) {
+      if (existing === server) continue;
+      const existingMeta: ConnectionMeta | null = existing.deserializeAttachment();
+      if (existingMeta) {
+        users.push({ userId: existingMeta.userId, displayName: existingMeta.displayName });
+      }
+    }
+    server.send(
+      JSON.stringify({
+        type: 'presence:snapshot',
+        users,
+        timestamp: Date.now()
+      } satisfies PresenceSnapshotMessage)
+    );
+
+    // Broadcast join to all other clients
     this.broadcast(
       {
         type: 'system:join',

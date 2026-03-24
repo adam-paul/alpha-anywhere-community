@@ -1,10 +1,12 @@
 <script lang="ts">
   import { getChatStore } from '$lib/stores/chat.svelte';
   import { getUserStore } from '$lib/stores/user.svelte';
+  import { getPresenceStore } from '$lib/stores/presence.svelte';
   import { Avatar, IconButton, Button } from '$lib/components/ui';
 
   const chat = getChatStore();
   const userStore = getUserStore();
+  const presence = getPresenceStore();
 
   const displayName = $derived.by(() => {
     const conv = chat.activeConversation;
@@ -64,9 +66,13 @@
               alt={participant.displayName}
               size="sm"
               fallback={participant.displayName.charAt(0)}
+              online={presence.isOnline(participant.id)}
             />
             <div class="member-info">
               <span class="member-name">{participant.displayName}</span>
+              <span class="member-status"
+                >{presence.isOnline(participant.id) ? 'Online' : 'Offline'}</span
+              >
             </div>
             <IconButton icon="more" shape="ghost" size="sm" label="Member options" />
           </div>

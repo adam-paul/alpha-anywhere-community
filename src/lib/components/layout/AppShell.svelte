@@ -1,18 +1,20 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import type { FriendSummary } from '$lib/types';
   import Sidebar from './Sidebar.svelte';
   import AppHeader from './AppHeader.svelte';
 
   interface Props {
     children: Snippet;
     pendingFriendRequestCount?: number;
+    friends?: FriendSummary[];
   }
 
-  let { children, pendingFriendRequestCount = 0 }: Props = $props();
+  let { children, pendingFriendRequestCount = 0, friends = [] }: Props = $props();
 </script>
 
 <div class="app-shell">
-  <Sidebar {pendingFriendRequestCount} />
+  <Sidebar {pendingFriendRequestCount} {friends} />
 
   <div class="app-main">
     <AppHeader />

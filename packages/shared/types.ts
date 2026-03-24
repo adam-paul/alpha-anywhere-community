@@ -32,8 +32,15 @@ export interface ClientMessage extends BaseMessage {
   senderId?: string;
 }
 
+/** Snapshot of currently connected users, sent to a newly connected client. */
+export interface PresenceSnapshotMessage {
+  type: 'presence:snapshot';
+  users: Array<{ userId: string; displayName: string }>;
+  timestamp: number;
+}
+
 /** Union of all messages that can arrive on the WebSocket. */
-export type ChannelMessage = SystemMessage | ClientMessage;
+export type ChannelMessage = SystemMessage | PresenceSnapshotMessage | ClientMessage;
 
 // =============================================================================
 // LWAI Gating Protocol

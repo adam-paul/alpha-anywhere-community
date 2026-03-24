@@ -1,16 +1,27 @@
 <script lang="ts">
   import { Avatar, Button, Icon } from '$lib/components/ui';
+  import { getPresenceStore } from '$lib/stores/presence.svelte';
   import type { FriendshipStatus, ProfileStudent } from '$lib/types';
 
   interface Props {
     student: ProfileStudent;
+    userId: string;
     friendshipStatus: FriendshipStatus;
     isEditing?: boolean;
     onEdit?: () => void;
     onFriendAction?: (action: 'request' | 'accept' | 'remove', friendshipId?: string) => void;
   }
 
-  let { student, friendshipStatus, isEditing = false, onEdit, onFriendAction }: Props = $props();
+  let {
+    student,
+    userId,
+    friendshipStatus,
+    isEditing = false,
+    onEdit,
+    onFriendAction
+  }: Props = $props();
+
+  const presence = getPresenceStore();
 </script>
 
 <div class="profile-header">
@@ -25,6 +36,7 @@
         alt={student.displayName}
         size="lg"
         fallback={student.displayName.charAt(0)}
+        online={presence.isOnline(userId)}
       />
     </div>
 

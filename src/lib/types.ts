@@ -335,6 +335,19 @@ export interface RobloxPresenceResponse {
   }>;
 }
 
+// Presence
+
+export interface PresenceUser {
+  userId: string;
+  displayName: string;
+}
+
+export interface PresenceStore {
+  readonly onlineUsers: ReadonlyMap<string, PresenceUser>;
+  readonly onlineCount: number;
+  isOnline(userId: string): boolean;
+}
+
 // Realtime (client-side only — shared protocol types re-exported above)
 
 /** Client-side WebSocket connection state. */

@@ -54,7 +54,7 @@ games (standalone, Roblox private server support)
 | Feature           | Status      | Notes                                                                       |
 | ----------------- | ----------- | --------------------------------------------------------------------------- |
 | Student Map       | Placeholder | UI exists, shows "Coming soon"                                              |
-| Platform Presence | Not started | Who's online across the app (needs user-level WebSocket channel)            |
+| Platform Presence | Complete    | Green dots on avatars, online friends in sidebar, chat status integration   |
 | Chat Moderation   | Not started | Schema has moderation fields, no AI filtering yet                           |
 | Notifications     | Stopgap     | Friend requests via profile + sidebar badge; no general notification system |
 | Parent Controls   | Not started | No ToS, no per-child toggles                                                |
@@ -91,9 +91,9 @@ Roblox account linking, per-game player counts via KV launch records + Roblox Pr
 
 Geographic visualization of student locations. Geocode to lat/lng, map component (Mapbox or Leaflet), city-level clustering for privacy. High priority — parents frequently ask "who else is in my area?"
 
-#### Platform Presence
+#### Platform Presence — ✅ Complete
 
-Who's online across the app (green dots, sidebar friends list). Requires a user-level WebSocket channel (distinct from per-conversation chat channels). WebSocket infrastructure is in place; needs a `presence:global` channel with heartbeat protocol.
+App-wide `presence:global` WebSocket channel via existing Durable Object. DO sends `presence:snapshot` on connect (full online user list), then `system:join`/`system:leave` events in real-time. Client-side presence store subscribes via `onMessage()`, maintains online user set. Avatar component gained `online` prop with green indicator dot. Online friends section in sidebar (pinned above footer). Chat components show real online/offline status (conversation list, header, details panel). Explore and profile pages show online dots on avatars. 30s keepalive ping via Hibernation API auto-response.
 
 #### Notifications
 

@@ -4,13 +4,19 @@
   import { Icon, Avatar } from '$lib/components/ui';
   import { SignInButton } from '@timeback/sdk/svelte';
   import { getUserStore } from '$lib/stores/user.svelte';
-  import type { NavItem } from '$lib/types';
+  import { getPresenceStore } from '$lib/stores/presence.svelte';
+  import type { NavItem, FriendSummary } from '$lib/types';
 
   interface Props {
     pendingFriendRequestCount?: number;
+    friends?: FriendSummary[];
   }
 
-  let { pendingFriendRequestCount = 0 }: Props = $props();
+  let { pendingFriendRequestCount = 0, friends = [] }: Props = $props();
+
+  const presence = getUserStore().user ? getPresenceStore() : null;
+
+  const onlineFriends = $derived(presence ? friends.filter((f) => presence.isOnline(f.id)) : []);
 
   const userStore = getUserStore();
 
@@ -44,6 +50,28 @@
       </a>
     {/each}
   </nav>
+
+  {#if onlineFriends.length > 0}
+    <div class="online-friends">
+      <span class="online-friends-label">Online — {onlineFriends.length}</span>
+      <ul class="online-friends-list">
+        {#each onlineFriends as friend (friend.id)}
+          <li>
+            <a href="/profile/{friend.id}" class="online-friend-link">
+              <Avatar
+                src={friend.avatarUrl ?? undefined}
+                alt={friend.displayName}
+                size="sm"
+                fallback={friend.displayName.charAt(0)}
+                online
+              />
+              <span class="online-friend-name">{friend.displayName}</span>
+            </a>
+          </li>
+        {/each}
+      </ul>
+    </div>
+  {/if}
 
   <div class="sidebar-user">
     {#if userStore.user}
@@ -115,6 +143,50 @@
 
   .nav-label {
     font-size: var(--font-size-sm);
+  }
+
+  .online-friends {
+    padding: var(--space-4);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .online-friends-label {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .online-friends-list {
+    list-style: none;
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .online-friend-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    text-decoration: none;
+    color: var(--color-text);
+    border-radius: var(--radius);
+    transition: background var(--transition-fast);
+  }
+
+  .online-friend-link:hover {
+    background: var(--color-bg);
+  }
+
+  .online-friend-name {
+    font-size: var(--font-size-sm);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .sidebar-user {
