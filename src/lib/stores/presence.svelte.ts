@@ -16,6 +16,14 @@ export function createPresenceStore(realtime: RealtimeStore): PresenceStore {
 
   const onlineCount = $derived(onlineUsers.size);
 
+  // Request snapshot once connected (can't send eagerly from DO's fetch
+  // because the client WebSocket isn't open yet when the 101 is returned)
+  $effect(() => {
+    if (realtime.isConnected) {
+      realtime.send({ type: 'presence:snapshot-request' });
+    }
+  });
+
   realtime.onMessage((message) => {
     if (message.type === 'presence:snapshot') {
       const next = new Map<string, PresenceUser>();
