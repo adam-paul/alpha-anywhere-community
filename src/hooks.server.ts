@@ -8,7 +8,7 @@
 
 import { building } from '$app/environment';
 import { getTimeback } from '$lib/server/timeback';
-import { getSessionFromCookie } from '$lib/server/session';
+import { getSessionFromCookie, setSessionCookie } from '$lib/server/session';
 import { createDbClient } from '$lib/server/db/client';
 import { svelteKitHandler } from '@timeback/sdk/svelte-kit';
 
@@ -35,13 +35,20 @@ export const handle: Handle = async ({ event, resolve }) => {
         display_name: cookieUser.displayName
       });
       await db.profiles.upsert(dbUser.id, {});
-      event.locals.user = {
+      const enrichedUser = {
         id: dbUser.id,
         timebackId: dbUser.timeback_id,
         email: dbUser.email,
         displayName: dbUser.display_name,
         role: dbUser.role
       };
+      event.locals.user = enrichedUser;
+
+      // Re-set cookie if the ID was stale (e.g., SSO callback sets timebackId
+      // as a temporary ID before D1 provisioning)
+      if (cookieUser.id !== dbUser.id) {
+        await setSessionCookie(event.cookies, enrichedUser, event.url.origin);
+      }
     } catch (error) {
       console.error('Failed to provision user in D1:', error);
     }
