@@ -5,13 +5,13 @@
  * Usage:
  *   bun run scripts/seed-users.ts              # Seed local D1
  *   bun run scripts/seed-users.ts --remote     # Seed remote D1
- *   bun run scripts/seed-users.ts --clear      # Clear test users first
+ *   bun run scripts/seed-users.ts --reset      # Clear test data, then re-seed
+ *   bun run scripts/seed-users.ts --clear      # Clear test data only (no re-seed)
  *
- * Creates test users with profiles so you can test the friend system
- * with a single SSO account. Your real SSO user can send/accept/decline
- * friend requests to these seeded users via the UI or API.
+ * Creates test users with profiles for multi-user testing via the
+ * impersonation endpoint (/api/admin/impersonate?userId=test-user-sophia).
  *
- * Test users have timeback_id prefixed with "test-" so they're easy to identify.
+ * Test users have IDs prefixed with "test-user-" so they're easy to identify.
  */
 
 import { $ } from 'bun';
@@ -111,16 +111,20 @@ function escapeSQL(value: string | null): string {
   return `'${value.replace(/'/g, "''")}'`;
 }
 
+function generateClearSQL(): string {
+  return [
+    '-- Clear test data',
+    "DELETE FROM friendships WHERE requester_id LIKE 'test-user-%' OR addressee_id LIKE 'test-user-%';",
+    "DELETE FROM profiles WHERE user_id LIKE 'test-user-%';",
+    "DELETE FROM users WHERE id LIKE 'test-user-%';"
+  ].join('\n');
+}
+
 function generateSQL(shouldClear: boolean): string {
   const statements: string[] = [];
 
   if (shouldClear) {
-    statements.push('-- Clear test data');
-    statements.push(
-      "DELETE FROM friendships WHERE requester_id LIKE 'test-user-%' OR addressee_id LIKE 'test-user-%';"
-    );
-    statements.push("DELETE FROM profiles WHERE user_id LIKE 'test-user-%';");
-    statements.push("DELETE FROM users WHERE id LIKE 'test-user-%';");
+    statements.push(generateClearSQL());
     statements.push('');
   }
 
@@ -166,15 +170,38 @@ async function main() {
   const args = process.argv.slice(2);
   const isRemote = args.includes('--remote');
   const shouldClear = args.includes('--clear');
+  const shouldReset = args.includes('--reset');
 
   const target = isRemote ? 'remote' : 'local';
-  console.log(`\nSeeding test users to ${target} D1...\n`);
+  const wranglerArgs = isRemote ? '--remote' : '--local';
 
-  const sql = generateSQL(shouldClear);
+  // --clear: remove test data only
+  if (shouldClear) {
+    console.log(`\nClearing test users from ${target} D1...\n`);
+    const sql = generateClearSQL();
+    const tmpFile = '/tmp/seed-users.sql';
+    await Bun.write(tmpFile, sql);
+
+    try {
+      const result =
+        await $`bunx wrangler d1 execute alpha-community ${wranglerArgs} --file=${tmpFile}`.text();
+      console.log(result);
+    } catch (error) {
+      console.error('Failed to execute SQL:', error);
+      process.exit(1);
+    }
+
+    console.log(`\nCleared all test users from ${target} D1.`);
+    return;
+  }
+
+  // --reset: clear then re-seed, default: seed only
+  const action = shouldReset ? 'Resetting' : 'Seeding';
+  console.log(`\n${action} test users on ${target} D1...\n`);
+
+  const sql = generateSQL(shouldReset);
   const tmpFile = '/tmp/seed-users.sql';
   await Bun.write(tmpFile, sql);
-
-  const wranglerArgs = isRemote ? '--remote' : '--local';
 
   try {
     const result =
@@ -187,18 +214,13 @@ async function main() {
 
   console.log(`\nSeeded ${TEST_USERS.length} test users to ${target} D1.`);
   console.log(`Seeded ${TEST_FRIENDSHIPS.length} friendships between test users.`);
-  if (shouldClear) {
+  if (shouldReset) {
     console.log('(Previous test data was cleared first.)');
   }
   console.log('\nTest users:');
   for (const user of TEST_USERS) {
     console.log(`  - ${user.displayName} (${user.id})`);
   }
-  console.log('\nYou can now:');
-  console.log('  1. Browse /explore to see test users');
-  console.log('  2. Visit /profile/test-user-sophia to see a test profile');
-  console.log('  3. Click "Add Friend" to send a friend request');
-  console.log("  4. Use curl to accept/decline from the test user's perspective");
 }
 
 main().catch(console.error);

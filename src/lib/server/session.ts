@@ -92,7 +92,8 @@ export async function setSessionCookie(
     httpOnly: true,
     secure: !isLocalhost,
     sameSite: 'lax',
-    maxAge: COOKIE_MAX_AGE
+    maxAge: COOKIE_MAX_AGE,
+    encode: (v) => v
   });
 }
 
