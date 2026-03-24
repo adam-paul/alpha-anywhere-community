@@ -50,21 +50,21 @@
 
   .variant-success {
     --badge-color: var(--color-side-by-side);
-    --badge-bg: var(--color-side-by-side-bg, #d1fae5);
+    --badge-bg: var(--color-side-by-side-bg);
   }
 
   .variant-warning {
     --badge-color: var(--color-trust-builder);
-    --badge-bg: var(--color-trust-builder-bg, #fef3c7);
+    --badge-bg: var(--color-trust-builder-bg);
   }
 
   .variant-info {
     --badge-color: var(--color-ice-breaker);
-    --badge-bg: var(--color-ice-breaker-bg, #cffafe);
+    --badge-bg: var(--color-ice-breaker-bg);
   }
 
   .variant-danger {
     --badge-color: var(--color-rivalry);
-    --badge-bg: var(--color-rivalry-bg, #fee2e2);
+    --badge-bg: var(--color-rivalry-bg);
   }
 </style>

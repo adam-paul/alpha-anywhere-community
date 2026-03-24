@@ -55,12 +55,30 @@
   --color-overlay: rgba(0, 0, 0, 0.6);
   --color-backdrop: rgba(0, 0, 0, 0.5);
 
+  /* Primary variants */
+  --color-primary-alpha: rgba(59, 130, 246, 0.2);
+
+  /* Overlay */
+  --color-locked-overlay: rgba(0, 0, 0, 0.4);
+
+  /* Progress */
+  --color-progress-track: #e2e8f0;
+  --color-progress-incomplete: #f97316;
+  --color-progress-fill: #10b981;
+
   /* Engagement category colors */
   --color-side-by-side: #10b981;
   --color-town-square: #8b5cf6;
   --color-ice-breaker: #06b6d4;
   --color-trust-builder: #f59e0b;
   --color-rivalry: #ef4444;
+
+  /* Engagement category backgrounds */
+  --color-side-by-side-bg: #d1fae5;
+  --color-town-square-bg: #ede9fe;
+  --color-ice-breaker-bg: #cffafe;
+  --color-trust-builder-bg: #fef3c7;
+  --color-rivalry-bg: #fee2e2;
 
   /* Transitions */
   --transition-fast: 150ms ease;

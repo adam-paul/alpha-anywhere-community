@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { IconButton } from '$lib/components/ui';
+  import { IconButton, Input } from '$lib/components/ui';
 
   interface Props {
     value: string;
@@ -34,14 +34,9 @@
 <div class="message-composer">
   <IconButton icon="plus" shape="circle" label="Add attachment" />
 
-  <input
-    type="text"
-    class="input"
-    placeholder="Send a message"
-    {value}
-    oninput={handleInput}
-    onkeydown={handleKeydown}
-  />
+  <div class="input-wrapper" onkeydown={handleKeydown}>
+    <Input {value} placeholder="Send a message" oninput={handleInput} />
+  </div>
 
   <IconButton
     icon="send"
@@ -64,24 +59,11 @@
     background: var(--color-surface);
   }
 
-  .input {
+  .input-wrapper {
     flex: 1;
-    height: 40px;
-    padding: 0 var(--space-4);
-    background: var(--color-bg);
-    border: var(--border-width) solid var(--color-border);
+  }
+
+  .input-wrapper :global(.input) {
     border-radius: var(--radius-chat);
-    font-size: var(--font-size-sm);
-    color: var(--color-text);
-    outline: none;
-    transition: border-color var(--transition-fast);
-  }
-
-  .input::placeholder {
-    color: var(--color-text-muted);
-  }
-
-  .input:focus {
-    border-color: var(--color-primary);
   }
 </style>

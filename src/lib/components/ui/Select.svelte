@@ -78,7 +78,7 @@
   select:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 2px var(--color-primary-alpha, rgba(59, 130, 246, 0.2));
+    box-shadow: 0 0 0 2px var(--color-primary-alpha);
   }
 
   select:disabled {
