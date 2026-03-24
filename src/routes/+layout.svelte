@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte';
   import '../lib/styles/tokens.css';
   import '../lib/styles/themes/cel-shaded.css';
   import AppShell from '$lib/components/layout/AppShell.svelte';
@@ -29,6 +30,7 @@
   if (data.user) {
     realtime.connect();
   }
+  onDestroy(() => realtime.disconnect());
 </script>
 
 <div class="app-root" data-theme="cel-shaded">

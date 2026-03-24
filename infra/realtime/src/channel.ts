@@ -1,5 +1,5 @@
 import { DurableObject } from 'cloudflare:workers';
-import type { ConnectionMeta, ChannelMessage, PresenceSnapshotMessage } from '@alpha/shared/types';
+import type { ConnectionMeta, ClientRequest, PresenceSnapshotMessage } from '@alpha/shared/types';
 
 export class RealtimeChannel extends DurableObject {
   constructor(ctx: DurableObjectState, env: unknown) {
@@ -43,7 +43,7 @@ export class RealtimeChannel extends DurableObject {
   async webSocketMessage(ws: WebSocket, message: string | ArrayBuffer): Promise<void> {
     if (typeof message !== 'string') return;
 
-    let parsed: ChannelMessage;
+    let parsed: ClientRequest;
     try {
       parsed = JSON.parse(message);
     } catch {

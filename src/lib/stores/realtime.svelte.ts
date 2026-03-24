@@ -1,19 +1,20 @@
 /**
  * Realtime WebSocket connection store.
  *
- * Connects to the alpha-realtime Worker via a Workers Route on the
- * same domain (/ws/channel/*). Authentication uses the existing
- * session cookie (sent automatically, same origin).
+ * Connects to the alpha-realtime Worker via cookie-authenticated
+ * WebSocket at ws.alpha-community.school/channel/{channelId}.
+ *
+ * Used for both persistent connections (presence:global in layout)
+ * and per-conversation connections (chat:conv-{id} in chat page).
+ * Callers manage lifecycle — call disconnect() when done.
  *
  * Feature stores (chat, presence) subscribe via onMessage() and
  * handle their own message types.
  */
 
-import { getContext, setContext, onDestroy } from 'svelte';
 import type { RealtimeConnectionState, RealtimeStore } from '$lib/types';
 import type { ChannelMessage } from '@alpha/shared/types';
 
-const REALTIME_CONTEXT_KEY = 'realtime';
 const MAX_RECONNECT_ATTEMPTS = 5;
 const BASE_RECONNECT_DELAY = 1000;
 const KEEPALIVE_INTERVAL = 30_000;
@@ -114,8 +115,6 @@ export function createRealtimeStore(channelId: string): RealtimeStore {
     return () => messageHandlers.delete(handler);
   }
 
-  onDestroy(() => disconnect());
-
   const store: RealtimeStore = {
     get state() {
       return state;
@@ -129,16 +128,5 @@ export function createRealtimeStore(channelId: string): RealtimeStore {
     onMessage
   };
 
-  setContext(REALTIME_CONTEXT_KEY, store);
-  return store;
-}
-
-export function getRealtimeStore(): RealtimeStore {
-  const store = getContext<RealtimeStore>(REALTIME_CONTEXT_KEY);
-  if (!store) {
-    throw new Error(
-      'Realtime store not found. Ensure createRealtimeStore() is called in a parent component.'
-    );
-  }
   return store;
 }

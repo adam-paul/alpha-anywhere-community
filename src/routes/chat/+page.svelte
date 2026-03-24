@@ -1,13 +1,30 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
   import { page } from '$app/stores';
   import { createChatStore } from '$lib/stores/chat.svelte';
+  import { createRealtimeStore } from '$lib/stores/realtime.svelte';
   import ChatLayout from '$lib/components/chat/ChatLayout.svelte';
   import ConversationList from '$lib/components/chat/ConversationList.svelte';
   import MessageThread from '$lib/components/chat/MessageThread.svelte';
   import ChatDetails from '$lib/components/chat/ChatDetails.svelte';
   import NewChatModal from '$lib/components/chat/NewChatModal.svelte';
   import type { Message } from '$lib/types';
+  import type { ChatBroadcast } from '@alpha/shared/types';
+
+  function isChatMessage(data: unknown): data is ChatBroadcast {
+    return (
+      typeof data === 'object' &&
+      data !== null &&
+      'type' in data &&
+      data.type === 'chat:message' &&
+      'messageId' in data &&
+      typeof (data as ChatBroadcast).messageId === 'string' &&
+      'senderId' in data &&
+      typeof (data as ChatBroadcast).senderId === 'string' &&
+      'content' in data &&
+      typeof (data as ChatBroadcast).content === 'string' &&
+      'timestamp' in data
+    );
+  }
 
   let { data } = $props();
   const user = $page.data.user;
@@ -18,62 +35,48 @@
     friends: data.friends
   });
 
-  // Per-conversation WebSocket lifecycle
-  let ws: WebSocket | null = null;
+  // Per-conversation WebSocket lifecycle via realtime store
+  let channel: ReturnType<typeof createRealtimeStore> | null = null;
 
   $effect(() => {
     const convId = chat.activeConversationId;
 
-    // Clean up previous connection
-    if (ws) {
-      ws.close(1000);
-      ws = null;
+    // Clean up previous channel
+    if (channel) {
+      channel.disconnect();
+      channel = null;
       chat.setRealtimeSend(null);
     }
 
     if (!convId) return;
 
-    const socket = new WebSocket(`wss://ws.alpha-community.school/channel/chat:conv-${convId}`);
+    const ch = createRealtimeStore(`chat:conv-${convId}`);
 
-    socket.onopen = () => {
-      chat.setRealtimeSend((msg) => socket.send(JSON.stringify(msg)));
-    };
+    ch.onMessage((msg) => {
+      if (!isChatMessage(msg) || msg.senderId === user.id) return;
+      chat.handleIncomingMessage({
+        id: msg.messageId,
+        conversationId: convId,
+        senderId: msg.senderId,
+        content: msg.content,
+        timestamp: new Date(msg.timestamp)
+      });
+    });
 
-    socket.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        if (data.type === 'chat:message' && data.senderId && data.senderId !== user.id) {
-          const msg: Message = {
-            id: data.messageId,
-            conversationId: convId,
-            senderId: data.senderId,
-            content: data.content,
-            timestamp: new Date(data.timestamp)
-          };
-          chat.handleIncomingMessage(msg);
-        }
-      } catch {
-        // Ignore malformed messages
+    ch.connect();
+    channel = ch;
+
+    // Wire send once connected
+    $effect(() => {
+      if (ch.isConnected) {
+        chat.setRealtimeSend((msg) => ch.send(msg as { type: string; [key: string]: unknown }));
       }
-    };
-
-    socket.onclose = () => {
-      chat.setRealtimeSend(null);
-    };
-
-    ws = socket;
+    });
 
     return () => {
-      socket.close(1000);
+      ch.disconnect();
       chat.setRealtimeSend(null);
     };
-  });
-
-  onDestroy(() => {
-    if (ws) {
-      ws.close(1000);
-      ws = null;
-    }
   });
 </script>
 

@@ -29,17 +29,34 @@ export type SystemMessage =
 
 /** Application messages sent by clients (relayed by DO with senderId stamped). */
 export interface ClientMessage extends BaseMessage {
-  senderId?: string;
+  senderId: string;
 }
 
-/** Snapshot of currently connected users, sent to a newly connected client. */
+/** Client request for the current list of online users. */
+export interface PresenceSnapshotRequest {
+  type: 'presence:snapshot-request';
+}
+
+/** Snapshot of currently connected users, sent in response to a snapshot request. */
 export interface PresenceSnapshotMessage {
   type: 'presence:snapshot';
   users: Array<{ userId: string; displayName: string }>;
   timestamp: number;
 }
 
-/** Union of all messages that can arrive on the WebSocket. */
+/** Chat message relayed by the DO (typed for client-side validation). */
+export interface ChatBroadcast {
+  type: 'chat:message';
+  messageId: string;
+  senderId: string;
+  content: string;
+  timestamp: number;
+}
+
+/** Messages sent by clients to the DO. */
+export type ClientRequest = PresenceSnapshotRequest | ClientMessage;
+
+/** Messages that can arrive on the WebSocket (from DO to client). */
 export type ChannelMessage = SystemMessage | PresenceSnapshotMessage | ClientMessage;
 
 // =============================================================================
