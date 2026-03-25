@@ -57,7 +57,7 @@
       <ul class="online-friends-list">
         {#each onlineFriends as friend (friend.id)}
           <li>
-            <a href="/profile/{friend.id}" class="online-friend-link">
+            <a href="/chat?with={friend.id}" class="online-friend-link">
               <Avatar
                 src={friend.avatarUrl ?? undefined}
                 alt={friend.displayName}

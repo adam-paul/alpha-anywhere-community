@@ -36,6 +36,20 @@
     friends: data.friends
   });
 
+  // Auto-open conversation if ?with= param is present (e.g., from sidebar online friends)
+  const withUserId = $page.url.searchParams.get('with');
+  if (withUserId) {
+    // Find existing 1:1 conversation or create one
+    const existing = data.conversations.find(
+      (c) => !c.name && c.participants.length === 1 && c.participants[0].id === withUserId
+    );
+    if (existing) {
+      chat.selectConversation(existing.id);
+    } else {
+      chat.createConversation([withUserId]);
+    }
+  }
+
   // Per-conversation WebSocket lifecycle via realtime store
   let channel: ReturnType<typeof createRealtimeStore> | null = null;
 
