@@ -24,19 +24,6 @@
   --color-primary: #2563eb;
   --color-primary-hover: #1d4ed8;
   --color-accent: #f59e0b;
-  --color-accent-hover: #d97706;
-
-  /* Engagement category colors - vibrant and distinct */
-  --color-side-by-side: #10b981;
-  --color-side-by-side-bg: #d1fae5;
-  --color-town-square: #8b5cf6;
-  --color-town-square-bg: #ede9fe;
-  --color-ice-breaker: #06b6d4;
-  --color-ice-breaker-bg: #cffafe;
-  --color-trust-builder: #f59e0b;
-  --color-trust-builder-bg: #fef3c7;
-  --color-rivalry: #ef4444;
-  --color-rivalry-bg: #fee2e2;
 
   /* Overlay & contrast colors */
   --color-on-primary: #ffffff;
@@ -46,7 +33,6 @@
   /* Work wall colors */
   --color-locked-overlay: rgba(0, 0, 0, 0.7);
   --color-progress-track: #e5e5e5;
-  --color-progress-fill: #10b981;
   --color-progress-incomplete: #f97316;
 
   /* Interactive states */

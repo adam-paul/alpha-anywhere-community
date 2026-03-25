@@ -118,7 +118,7 @@
   }
 
   .work-wall-content.complete {
-    border-color: var(--color-progress-fill);
+    border-color: var(--color-positive);
   }
 
   .lock-icon,
@@ -129,7 +129,7 @@
   }
 
   .unlock-icon {
-    color: var(--color-progress-fill);
+    color: var(--color-positive);
   }
 
   .loading-icon {
@@ -155,7 +155,7 @@
   }
 
   .work-wall-content.complete .work-wall-title {
-    color: var(--color-progress-fill);
+    color: var(--color-positive);
   }
 
   .work-wall-message {
@@ -182,7 +182,7 @@
   }
 
   .progress-current.complete {
-    color: var(--color-progress-fill);
+    color: var(--color-positive);
   }
 
   .progress-separator {
@@ -205,7 +205,7 @@
   .congrats-text {
     font-size: var(--font-size-base);
     font-weight: 600;
-    color: var(--color-progress-fill);
+    color: var(--color-positive);
     margin-bottom: var(--space-6);
   }
 

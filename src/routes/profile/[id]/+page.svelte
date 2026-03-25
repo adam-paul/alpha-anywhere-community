@@ -453,12 +453,12 @@
   }
 
   .action-accept :global(.icon-btn) {
-    color: var(--color-success);
+    color: var(--color-positive);
   }
 
   .action-accept :global(.icon-btn:hover) {
-    background: var(--color-success);
-    border-color: var(--color-success);
+    background: var(--color-positive);
+    border-color: var(--color-positive);
     color: var(--color-surface);
   }
 

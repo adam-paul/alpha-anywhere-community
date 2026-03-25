@@ -78,7 +78,7 @@
   }
 
   .progress-ring.complete .progress-fill {
-    stroke: var(--color-progress-fill);
+    stroke: var(--color-positive);
   }
 
   .progress-text {

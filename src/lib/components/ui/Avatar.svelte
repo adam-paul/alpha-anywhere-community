@@ -58,7 +58,7 @@
     height: 25%;
     min-width: 8px;
     min-height: 8px;
-    background: var(--color-online);
+    background: var(--color-positive);
     border-radius: 50%;
     border: 2px solid var(--color-bg);
   }
