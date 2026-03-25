@@ -6,12 +6,21 @@
     disabled?: boolean;
     type?: 'text' | 'email' | 'password' | 'url';
     oninput?: (e: Event) => void;
+    onkeydown?: (e: KeyboardEvent) => void;
   }
 
-  let { id, value = '', placeholder, disabled = false, type = 'text', oninput }: Props = $props();
+  let {
+    id,
+    value = '',
+    placeholder,
+    disabled = false,
+    type = 'text',
+    oninput,
+    onkeydown
+  }: Props = $props();
 </script>
 
-<input class="input" {id} {type} {value} {placeholder} {disabled} {oninput} />
+<input class="input" {id} {type} {value} {placeholder} {disabled} {oninput} {onkeydown} />
 
 <style>
   .input {

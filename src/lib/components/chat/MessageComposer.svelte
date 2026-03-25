@@ -34,8 +34,8 @@
 <div class="message-composer">
   <IconButton icon="plus" shape="circle" label="Add attachment" />
 
-  <div class="input-wrapper" onkeydown={handleKeydown}>
-    <Input {value} placeholder="Send a message" oninput={handleInput} />
+  <div class="input-wrapper">
+    <Input {value} placeholder="Send a message" oninput={handleInput} onkeydown={handleKeydown} />
   </div>
 
   <IconButton

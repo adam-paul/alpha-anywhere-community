@@ -27,6 +27,7 @@
   // but only connect WebSocket when authenticated
   const realtime = createRealtimeStore('presence:global');
   createPresenceStore(realtime);
+  // svelte-ignore state_referenced_locally
   if (data.user) {
     realtime.connect();
   }

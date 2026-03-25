@@ -29,6 +29,7 @@
   let { data } = $props();
   const user = $page.data.user;
 
+  // svelte-ignore state_referenced_locally
   const chat = createChatStore({
     conversations: data.conversations,
     currentUserId: user.id,
