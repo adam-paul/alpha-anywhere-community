@@ -44,8 +44,8 @@
   },
   "type": "module",
   "dependencies": {
-    "@timeback/edubridge": "^0.1.5",
-    "@timeback/sdk": "0.1.4",
+    "@timeback/edubridge": "^0.2.0",
+    "@timeback/sdk": "^0.2.2",
     "wrangler": "^4.77.0"
   }
 }

@@ -39,7 +39,7 @@
   // Auto-open conversation if ?with= param is present (e.g., from sidebar online friends)
   const withUserId = $page.url.searchParams.get('with');
   if (withUserId) {
-    // Find existing 1:1 conversation or create one
+    // svelte-ignore state_referenced_locally
     const existing = data.conversations.find(
       (c) => !c.name && c.participants.length === 1 && c.participants[0].id === withUserId
     );

@@ -2,14 +2,15 @@
  * Timeback SDK server configuration
  *
  * Handles SSO authentication with cookie-based sessions.
- * Uses edge-compatible createTimebackIdentity for SSO, plus direct
- * OneRoster API calls for M2M user lookup (since @timeback/core isn't edge-compatible).
+ * Uses createTimebackIdentity (edge-compatible, identity-only) for SSO.
+ * Uses EdubridgeClient directly for XP analytics (the full createTimeback
+ * requires a config file which isn't available on Cloudflare's edge runtime).
  *
  * Lazy-initialized on first request so the server starts even if auth
  * secrets aren't configured (local dev without SSO).
  */
 
-import { createTimebackIdentity } from '@timeback/sdk/edge';
+import { createTimebackIdentity } from '@timeback/sdk/identity';
 import { EdubridgeClient, aggregateActivityMetrics } from '@timeback/edubridge';
 import { env } from '$env/dynamic/private';
 import { createSessionCookieHeader, getSessionFromRequest } from './session';
@@ -24,7 +25,7 @@ let _edubridge: InstanceType<typeof EdubridgeClient>;
 function getEdubridgeClient() {
   if (!_edubridge) {
     _edubridge = new EdubridgeClient({
-      env: 'staging',
+      env: 'production',
       auth: {
         clientId: env.TIMEBACK_API_CLIENT_ID!,
         clientSecret: env.TIMEBACK_API_CLIENT_SECRET!
@@ -42,8 +43,8 @@ export async function fetchTimebackDailyXp(email: string): Promise<number> {
   const today = new Date().toISOString().slice(0, 10);
   const activity = await client.analytics.getActivity({
     email,
-    startDate: today,
-    endDate: today,
+    startDate: `${today}T00:00:00.000Z`,
+    endDate: `${today}T23:59:59.999Z`,
     timezone: 'America/Chicago'
   });
   const { totalXp } = aggregateActivityMetrics(activity);
@@ -111,15 +112,17 @@ async function resolveTimebackId(email: string): Promise<string | undefined> {
 /**
  * Timeback Identity instance (edge-compatible), lazy-initialized.
  *
- * Uses createTimebackIdentity for SSO, then resolves Timeback ID via
- * M2M OneRoster lookup in the callback.
+ * Identity-only mode: handles SSO sign-in/callback/sign-out.
+ * Resolves Timeback ID via M2M OneRoster lookup in the callback.
+ * Does not support user.verify or user.me — those require the full
+ * createTimeback which needs filesystem access for timeback.config.json.
  */
 let _timeback: ReturnType<typeof createTimebackIdentity>;
 
 export function getTimeback() {
   if (!_timeback) {
     _timeback = createTimebackIdentity({
-      env: 'staging',
+      env: 'production',
       identity: {
         mode: 'sso',
         clientId: env.AWS_COGNITO_CLIENT_ID!,

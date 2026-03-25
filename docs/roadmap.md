@@ -1,6 +1,6 @@
 # Alpha Anywhere Community: Roadmap
 
-**Last updated:** 2026-03-23
+**Last updated:** 2026-03-25
 
 ---
 
@@ -17,23 +17,25 @@ Full-featured community portal with real-time chat, arcade with work-wall gating
 | **Deployment**         | ✅     | Cloudflare Pages with Workers runtime                                                                                |
 | **Database**           | ✅     | D1 (SQLite at edge), schema applied locally + remote                                                                 |
 | **KV Store**           | ✅     | Cloudflare KV for ephemeral data (launch records, TTL-based)                                                         |
-| **Authentication**     | ✅     | Timeback SSO via `@timeback/sdk`, cookie sessions                                                                    |
-| **Session Management** | ✅     | HMAC-signed cookies, 7-day expiry, cross-subdomain sharing                                                           |
+| **Authentication**     | ✅     | Timeback SSO via `@timeback/sdk`, cookie sessions, admin impersonation (dev/preview)                                 |
+| **Session Management** | ✅     | HMAC-signed cookies, 7-day expiry, cross-subdomain sharing, D1 ID auto-correction on login                           |
 | **User Provisioning**  | ✅     | Auto-creates D1 user + profile on first authenticated request                                                        |
 | **Realtime**           | ✅     | Durable Object Worker (`alpha-realtime`) with WebSocket Hibernation API, cookie auth via `ws.alpha-community.school` |
 | **Shared Types**       | ✅     | `@alpha/shared` workspace package for cross-project contracts                                                        |
 
 ### Features
 
-| Feature         | Location             | Status   | Data Source                     |
-| --------------- | -------------------- | -------- | ------------------------------- |
-| **Arcade**      | `/arcade`            | Complete | D1 ✅                           |
-| **Work Wall**   | Integrated in arcade | Complete | LWAI ✅ / Timeback XP ✅        |
-| **Profiles**    | `/profile/[id]`      | Complete | D1 ✅ (friends, mutual friends) |
-| **Explore**     | `/explore`           | Complete | D1 ✅                           |
-| **Chat**        | `/chat`              | Wired    | D1 ✅ + WebSocket (real-time)   |
-| **Admin Tools** | Inline in arcade     | Complete | D1 ✅ (game CRUD, DevTools)     |
-| **UI System**   | `$lib/components/ui` | Complete | N/A                             |
+| Feature               | Location             | Status   | Data Source                        |
+| --------------------- | -------------------- | -------- | ---------------------------------- |
+| **Arcade**            | `/arcade`            | Complete | D1 ✅                              |
+| **Work Wall**         | Integrated in arcade | Complete | LWAI ✅ / Timeback XP ✅           |
+| **Profiles**          | `/profile/[id]`      | Complete | D1 ✅ (friends, mutual friends)    |
+| **Explore**           | `/explore`           | Complete | D1 ✅                              |
+| **Chat**              | `/chat`              | Complete | D1 ✅ + Durable Object (real-time) |
+| **Arcade Presence**   | Integrated in arcade | Complete | KV ✅ + Roblox Presence API        |
+| **Platform Presence** | App-wide             | Complete | Durable Object (real-time)         |
+| **Admin Tools**       | Inline in arcade     | Complete | D1 ✅ (game CRUD, DevTools)        |
+| **UI System**         | `$lib/components/ui` | Complete | N/A                                |
 
 ### Database Schema
 
@@ -51,13 +53,12 @@ games (standalone, Roblox private server support)
 
 ### Not Yet Built
 
-| Feature           | Status      | Notes                                                                       |
-| ----------------- | ----------- | --------------------------------------------------------------------------- |
-| Student Map       | Placeholder | UI exists, shows "Coming soon"                                              |
-| Platform Presence | Complete    | Green dots on avatars, online friends in sidebar, chat status integration   |
-| Chat Moderation   | Not started | Schema has moderation fields, no AI filtering yet                           |
-| Notifications     | Stopgap     | Friend requests via profile + sidebar badge; no general notification system |
-| Parent Controls   | Not started | No ToS, no per-child toggles                                                |
+| Feature         | Status      | Notes                                                                       |
+| --------------- | ----------- | --------------------------------------------------------------------------- |
+| Student Map     | Placeholder | UI exists, shows "Coming soon"                                              |
+| Chat Moderation | Not started | Schema has moderation fields, no AI filtering yet                           |
+| Notifications   | Stopgap     | Friend requests via profile + sidebar badge; no general notification system |
+| Parent Controls | Not started | No ToS, no per-child toggles                                                |
 
 ---
 
@@ -69,11 +70,11 @@ SSO, Explore, Profiles, Game Launch, LWAI work-wall, Timeback XP gating, private
 
 ---
 
-### Tier 2: Social & Communication — In Progress
+### Tier 2: Social & Communication — ✅ Complete
 
-#### Chat — ✅ Wired
+#### Chat — ✅ Complete
 
-Real-time messaging over WebSocket with D1 persistence. Per-conversation Durable Object channels. Optimistic message sending, lazy-loaded message history, unread counts, mark-as-read.
+Real-time messaging over WebSocket with D1 persistence. Unified realtime store for both presence and per-conversation chat channels — keepalive, reconnection, and lifecycle managed in one place. Optimistic message sending, lazy-loaded message history, unread counts, mark-as-read. Deep-link to conversations via `?with={userId}` (used by sidebar online friends).
 
 **API routes:** `GET/POST /api/chat/messages`, `POST /api/chat/conversations`, `POST /api/chat/conversations/[id]/read`
 
@@ -93,7 +94,7 @@ Geographic visualization of student locations. Geocode to lat/lng, map component
 
 #### Platform Presence — ✅ Complete
 
-App-wide `presence:global` WebSocket channel via existing Durable Object. DO sends `presence:snapshot` on connect (full online user list), then `system:join`/`system:leave` events in real-time. Client-side presence store subscribes via `onMessage()`, maintains online user set. Avatar component gained `online` prop with green indicator dot. Online friends section in sidebar (pinned above footer). Chat components show real online/offline status (conversation list, header, details panel). Explore and profile pages show online dots on avatars. 30s keepalive ping via Hibernation API auto-response.
+App-wide `presence:global` WebSocket channel via Durable Object. Client requests snapshot after connecting; DO responds with current online users, then broadcasts `system:join`/`system:leave` in real-time. Presence store maintains online user set. Online indicators on avatars across all pages. Online friends section in sidebar links directly to chat. 30s keepalive ping via Hibernation API auto-response.
 
 #### Notifications
 
@@ -186,14 +187,9 @@ Unify wrangler (Cloudflare) + SST (AWS) into single `sst deploy`. SST v3 support
 
 Two seed scripts exist (`seed-games.ts`, `seed-users.ts`) with duplicated utilities (`escapeSQL`, arg parsing, wrangler execution). Extract shared module when adding a third.
 
-#### Auth Strategy Beyond Timeback SSO
+#### Auth Beyond Timeback SSO
 
-Currently Timeback SSO is the only auth path — no one without a Timeback account (tied to a `.school` email) can sign in. This creates two problems:
-
-- **Testing:** Only one account per developer. Can't open two browser sessions as different users to test chat, friend requests, presence, etc. No way to simulate multi-user flows.
-- **Access scope:** If the community ever needs to support users outside the Timeback ecosystem (parents, mentors, alumni), there's no path for that.
-
-Needs thinking. Options include: test/seed user impersonation (admin-only, dev/preview environments only), additional OAuth providers alongside Timeback, or a lightweight invite-code flow. No public username/password auth — the platform is for a gated community, not open registration.
+Timeback SSO is the only production auth path. If the community ever needs users outside the Timeback ecosystem (parents, mentors, alumni), additional OAuth providers or an invite-code flow would be needed.
 
 ---
 
@@ -205,7 +201,7 @@ Small items that don't belong to a tier but need attention eventually.
 - **Add Roblox OAuth** — Replace manual username entry with OAuth flow. Requires Roblox app review/approval.
 - **Harden Roblox game launch/auth flow** — If the user isn't logged into Roblox, the deep link loses its params and lands on the Roblox home page (except on Windows). Needs detection or guidance for the user.
 - **Production deploy** — Replicate preview environment in production Cloudflare Pages. Separate D1 database, set secrets, verify SSO callbacks, smoke test.
-- **Clean up Timeback XP fetch** — Unclear whether EduBridge Analytics integration is returning correct data. Needs investigation and validation.
+- **Timeback env + date workaround** — SDK `env` and EduBridge `env` are both hardcoded to `'production'`. Same-day date range uses explicit ISO datetime as a workaround for an SDK transform issue (reported). Both should revert to config-driven once the SDK fix lands and env strategy is finalized.
 - **Set up docs** — Pick a documentation stack and stand up a docs site.
 - **Local dev WebSocket** — WebSocket connects to deployed Worker only (`ws.alpha-community.school`); no local dev real-time testing. Chat loads conversations and persists messages locally, but real-time delivery between tabs requires the deployed preview environment.
 
