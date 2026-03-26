@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import '../lib/styles/tokens.css';
   import '../lib/styles/themes/cel-shaded.css';
   import AppShell from '$lib/components/layout/AppShell.svelte';
@@ -32,6 +32,15 @@
     realtime.connect();
   }
   onDestroy(() => realtime.disconnect());
+
+  // Set timezone cookie so the server can query XP for the correct local date.
+  // Session-scoped (no max-age) — refreshes when the browser reopens.
+  onMount(() => {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (tz && !document.cookie.includes(`tz=${tz}`)) {
+      document.cookie = `tz=${tz};path=/;SameSite=Lax`;
+    }
+  });
 </script>
 
 <div class="app-root" data-theme="cel-shaded">

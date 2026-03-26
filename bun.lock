@@ -5,7 +5,7 @@
     "": {
       "name": "alpha-anywhere-community",
       "dependencies": {
-        "@timeback/edubridge": "^0.2.0",
+        "@timeback/edubridge": "^0.2.1-beta.20260326001827",
         "@timeback/sdk": "^0.2.2",
         "wrangler": "^4.77.0",
       },
@@ -408,7 +408,7 @@
 
     "@timeback/core": ["@timeback/core@0.2.2", "", { "peerDependencies": { "typescript": "^5", "zod": "^4.2.1" } }, "sha512-V5g6YYaMHq1Mkkz0DxV3aa/QxkiinOZYtIbom4TjT0aqhTzFY3uH+pxq23UudyO4taoQW707c33E83flX+Nsqw=="],
 
-    "@timeback/edubridge": ["@timeback/edubridge@0.2.0", "", { "dependencies": { "zod": "^4.2.1" }, "peerDependencies": { "typescript": "^5" } }, "sha512-/K5UdSGObeX32s/fHZ2dU5ezXbCW9b1DjCcpqIchjdVsO75uHMhS4jcBAlT97EUqsjI/zRiovhrPsHjEjt5Vtw=="],
+    "@timeback/edubridge": ["@timeback/edubridge@0.2.1-beta.20260326001827", "", { "dependencies": { "zod": "^4.2.1" }, "peerDependencies": { "typescript": "^5" } }, "sha512-4k4BO0Dd+hdxlFSBl0jYMeekDlnwTwOW+N8uvuI9wSWxdOur8pa4lC2apUe58FmQ+tfjqVdZlAHy86gZ5fFNiA=="],
 
     "@timeback/sdk": ["@timeback/sdk@0.2.2", "", { "dependencies": { "@timeback/core": "0.2.2", "zod": "^4.2.1" }, "peerDependencies": { "react": "^18 || ^19", "solid-js": "^1.9.10", "svelte": "^4 || ^5", "typescript": "^5", "vue": "^3" }, "optionalPeers": ["react", "solid-js", "svelte", "vue"] }, "sha512-cPOWuoOOnT9JQ1+nv8CNr0iM03BAsT9k1ROdSCSGnooVEiX/pDF/BiVlR5E7mQ5uyNm4quHR5f2ACYr7PpC97Q=="],
 

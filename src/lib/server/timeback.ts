@@ -38,14 +38,17 @@ function getEdubridgeClient() {
 /**
  * Fetch a student's total XP earned today via the EduBridge Analytics API.
  */
-export async function fetchTimebackDailyXp(email: string): Promise<number> {
+export async function fetchTimebackDailyXp(
+  email: string,
+  timezone = 'America/Chicago'
+): Promise<number> {
   const client = getEdubridgeClient();
-  const today = new Date().toISOString().slice(0, 10);
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: timezone });
   const activity = await client.analytics.getActivity({
     email,
-    startDate: `${today}T00:00:00.000Z`,
-    endDate: `${today}T23:59:59.999Z`,
-    timezone: 'America/Chicago'
+    startDate: today,
+    endDate: today,
+    timezone
   });
   const { totalXp } = aggregateActivityMetrics(activity);
   return totalXp;

@@ -39,9 +39,9 @@ async function probeIsLwaiStudent(email: string): Promise<boolean> {
 /**
  * Fetch Timeback gating data (daily XP).
  */
-async function fetchTimebackGating(email: string): Promise<GatingState> {
+async function fetchTimebackGating(email: string, timezone?: string): Promise<GatingState> {
   try {
-    const dailyXp = await fetchTimebackDailyXp(email);
+    const dailyXp = await fetchTimebackDailyXp(email, timezone);
     return {
       mode: 'daily',
       isUnlocked: dailyXp >= TIMEBACK_DAILY_XP_REQUIRED,
@@ -100,7 +100,11 @@ async function fetchLwaiGating(email: string): Promise<GatingState> {
  * 3. If 'lwai' → fetch LWAI gating data
  * 4. If null → probe LWAI to detect source, cache result, then gate accordingly
  */
-async function fetchGatingData(email: string, db: DbClient): Promise<GatingState> {
+async function fetchGatingData(
+  email: string,
+  db: DbClient,
+  timezone?: string
+): Promise<GatingState> {
   // Check cached gating source
   let cachedSource: 'lwai' | 'timeback' | null = null;
   try {
@@ -111,7 +115,7 @@ async function fetchGatingData(email: string, db: DbClient): Promise<GatingState
   }
 
   if (cachedSource === 'timeback') {
-    return fetchTimebackGating(email);
+    return fetchTimebackGating(email, timezone);
   }
 
   if (cachedSource === 'lwai') {
@@ -128,7 +132,7 @@ async function fetchGatingData(email: string, db: DbClient): Promise<GatingState
     .catch((err) => console.error('Failed to cache gating source:', err));
 
   if (source === 'timeback') {
-    return fetchTimebackGating(email);
+    return fetchTimebackGating(email, timezone);
   }
 
   return fetchLwaiGating(email);
@@ -163,7 +167,7 @@ async function decryptCredentials(
   }
 }
 
-export const load: PageServerLoad = async ({ platform, locals }) => {
+export const load: PageServerLoad = async ({ platform, locals, cookies }) => {
   const games: Game[] = [];
   const db = platform?.env?.DB ? createDbClient(platform.env.DB) : null;
 
@@ -208,7 +212,7 @@ export const load: PageServerLoad = async ({ platform, locals }) => {
     games,
     gatingState:
       locals.user?.email && db
-        ? fetchGatingData(locals.user.email, db)
+        ? fetchGatingData(locals.user.email, db, cookies.get('tz') || undefined)
         : Promise.resolve(DEFAULT_UNLOCKED),
     isAdmin: locals.user?.role === 'admin',
     robloxLinked
