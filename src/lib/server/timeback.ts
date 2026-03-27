@@ -25,7 +25,7 @@ let _edubridge: InstanceType<typeof EdubridgeClient>;
 function getEdubridgeClient() {
   if (!_edubridge) {
     _edubridge = new EdubridgeClient({
-      env: 'production',
+      env: (env.TIMEBACK_ENV as 'staging' | 'production') ?? 'staging',
       auth: {
         clientId: env.TIMEBACK_API_CLIENT_ID!,
         clientSecret: env.TIMEBACK_API_CLIENT_SECRET!
@@ -125,7 +125,7 @@ let _timeback: ReturnType<typeof createTimebackIdentity>;
 export function getTimeback() {
   if (!_timeback) {
     _timeback = createTimebackIdentity({
-      env: 'production',
+      env: (env.TIMEBACK_ENV as 'staging' | 'production') ?? 'staging',
       identity: {
         mode: 'sso',
         clientId: env.AWS_COGNITO_CLIENT_ID!,

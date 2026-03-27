@@ -201,7 +201,6 @@ Small items that don't belong to a tier but need attention eventually.
 - **Add Roblox OAuth** — Replace manual username entry with OAuth flow. Requires Roblox app review/approval.
 - **Harden Roblox game launch/auth flow** — If the user isn't logged into Roblox, the deep link loses its params and lands on the Roblox home page (except on Windows). Needs detection or guidance for the user.
 - **Production deploy** — Replicate preview environment in production Cloudflare Pages. Separate D1 database, set secrets, verify SSO callbacks, smoke test.
-- **Timeback env + date workaround** — SDK `env` and EduBridge `env` are both hardcoded to `'production'`. Same-day date range uses explicit ISO datetime as a workaround for an SDK transform issue (reported). Both should revert to config-driven once the SDK fix lands and env strategy is finalized.
 - **Set up docs** — Pick a documentation stack and stand up a docs site.
 - **Local dev WebSocket** — WebSocket connects to deployed Worker only (`ws.alpha-community.school`); no local dev real-time testing. Chat loads conversations and persists messages locally, but real-time delivery between tabs requires the deployed preview environment.
 
