@@ -2,19 +2,22 @@
  * Realtime WebSocket connection store.
  *
  * Connects to the alpha-realtime Worker via cookie-authenticated
- * WebSocket at ws.alpha-community.school/channel/{channelId}.
+ * WebSocket. URL controlled by PUBLIC_REALTIME_URL env var
+ * (defaults to wss://ws.alpha-community.school).
  *
  * Used for both persistent connections (presence:global in layout)
  * and per-conversation connections (chat:conv-{id} in chat page).
  * Callers manage lifecycle — call disconnect() when done.
  *
- * Feature stores (chat, presence) subscribe via onMessage() and
- * handle their own message types.
+ * Feature stores (chat, presence, notifications) subscribe via
+ * onMessage() and handle their own message types.
  */
 
+import { env } from '$env/dynamic/public';
 import type { RealtimeConnectionState, RealtimeStore } from '$lib/types';
 import type { ChannelMessage } from '@alpha/shared/types';
 
+const REALTIME_BASE_URL = env.PUBLIC_REALTIME_URL;
 const MAX_RECONNECT_ATTEMPTS = 5;
 const BASE_RECONNECT_DELAY = 1000;
 const KEEPALIVE_INTERVAL = 30_000;
@@ -33,7 +36,7 @@ export function createRealtimeStore(channelId: string): RealtimeStore {
     if (ws) return;
     state = { status: 'connecting' };
 
-    const url = `wss://ws.alpha-community.school/channel/${channelId}`;
+    const url = `${REALTIME_BASE_URL}/channel/${channelId}`;
     ws = new WebSocket(url);
 
     ws.onopen = () => {

@@ -1,10 +1,12 @@
 <script lang="ts">
   import { getChatStore } from '$lib/stores/chat.svelte';
+  import { getNotificationStore } from '$lib/stores/notifications.svelte';
   import { Avatar, Icon, Button, Modal } from '$lib/components/ui';
   import { SearchBar } from '$lib/components/ui';
   import { Placeholder } from '$lib/components/ui';
 
   const chat = getChatStore();
+  const notificationStore = getNotificationStore();
 
   let searchQuery = $state('');
   let selectedIds = $state<string[]>([]);
@@ -28,7 +30,11 @@
 
   async function handleCreate() {
     if (selectedIds.length === 0) return;
-    await chat.createConversation(selectedIds);
+    const ids = [...selectedIds];
+    await chat.createConversation(ids);
+    for (const id of ids) {
+      notificationStore.sendPush(id);
+    }
     searchQuery = '';
     selectedIds = [];
   }

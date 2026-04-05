@@ -24,6 +24,7 @@
   "scripts": {
     "dev": "vite dev",
     "dev:cf": "vite build && wrangler pages dev .svelte-kit/cloudflare --port 6173",
+    "dev:realtime": "cd infra/realtime && wrangler dev",
     "build": "vite build",
     "preview": "wrangler pages dev .svelte-kit/cloudflare",
     "format": "prettier --write .",

@@ -2,6 +2,7 @@
   import { page } from '$app/stores';
   import { createChatStore } from '$lib/stores/chat.svelte';
   import { createRealtimeStore } from '$lib/stores/realtime.svelte';
+  import { getNotificationStore } from '$lib/stores/notifications.svelte';
   import ChatLayout from '$lib/components/chat/ChatLayout.svelte';
   import ConversationList from '$lib/components/chat/ConversationList.svelte';
   import MessageThread from '$lib/components/chat/MessageThread.svelte';
@@ -36,6 +37,12 @@
     friends: data.friends
   });
 
+  const notificationStore = getNotificationStore();
+
+  // Clear chat badge on entering the chat page — user is now looking at their conversations
+  // svelte-ignore state_referenced_locally
+  notificationStore.decrementChatUnread(notificationStore.chatUnreadCount);
+
   // Auto-open conversation if ?with= param is present (e.g., from sidebar online friends)
   const withUserId = $page.url.searchParams.get('with');
   if (withUserId) {
@@ -46,7 +53,9 @@
     if (existing) {
       chat.selectConversation(existing.id);
     } else {
-      chat.createConversation([withUserId]);
+      chat.createConversation([withUserId]).then(() => {
+        notificationStore.sendPush(withUserId);
+      });
     }
   }
 
@@ -81,10 +90,19 @@
     ch.connect();
     channel = ch;
 
-    // Wire send once connected
+    // Wire send once connected — also send chat:unread signal to participants
     $effect(() => {
       if (ch.isConnected) {
-        chat.setRealtimeSend((msg) => ch.send(msg as { type: string; [key: string]: unknown }));
+        chat.setRealtimeSend((msg) => {
+          ch.send(msg as { type: string; [key: string]: unknown });
+          // Notify participants of new unread message via global channel
+          const conv = chat.activeConversation;
+          if (conv) {
+            for (const p of conv.participants) {
+              notificationStore.sendChatUnread(p.id);
+            }
+          }
+        });
       }
     });
 

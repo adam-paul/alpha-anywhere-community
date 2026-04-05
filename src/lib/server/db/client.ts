@@ -13,12 +13,15 @@ import type {
   DbMessage,
   DbConversationParticipant,
   DbGame,
+  DbNotification,
+  NotificationWithActor,
   UserWithProfile,
   CreateUserInput,
   UpdateProfileInput,
   CreateMessageInput,
   CreateGameInput,
   UpdateGameInput,
+  CreateNotificationInput,
   LinkRobloxInput,
   ConversationWithDetails
 } from './types';
@@ -417,22 +420,6 @@ export function createDbClient(db: D1Database) {
           .bind(userId)
           .all<DbFriendship>();
         return results;
-      },
-
-      /**
-       * Count pending incoming friend requests for a user.
-       */
-      async getPendingRequestCount(userId: string): Promise<number> {
-        const result = await db
-          .prepare(
-            `
-						SELECT COUNT(*) as count FROM friendships
-						WHERE addressee_id = ? AND status = 'pending'
-					`
-          )
-          .bind(userId)
-          .first<{ count: number }>();
-        return result?.count ?? 0;
       }
     },
 
@@ -654,6 +641,26 @@ export function createDbClient(db: D1Database) {
             unreadCount: unreadByConv.get(conv.id) ?? 0
           };
         });
+      },
+
+      /**
+       * Get total unread message count across all conversations for a user.
+       */
+      async getTotalUnreadCount(userId: string): Promise<number> {
+        const result = await db
+          .prepare(
+            `
+						SELECT COUNT(*) as count FROM messages m
+						JOIN conversation_participants cp
+							ON cp.conversation_id = m.conversation_id AND cp.user_id = ?
+						WHERE m.sender_id != ?
+							AND m.deleted_at IS NULL
+							AND (cp.last_read_at IS NULL OR m.created_at > cp.last_read_at)
+					`
+          )
+          .bind(userId, userId)
+          .first<{ count: number }>();
+        return result?.count ?? 0;
       }
     },
 
@@ -885,6 +892,97 @@ export function createDbClient(db: D1Database) {
       async delete(id: string): Promise<void> {
         const { meta } = await db.prepare('DELETE FROM games WHERE id = ?').bind(id).run();
         if (meta.changes === 0) throw new Error('Game not found');
+      }
+    },
+
+    // =========================================================================
+    // NOTIFICATIONS
+    // =========================================================================
+    notifications: {
+      /**
+       * Create a notification.
+       */
+      async create(input: CreateNotificationInput): Promise<DbNotification> {
+        const result = await db
+          .prepare(
+            `
+						INSERT INTO notifications (recipient_id, actor_id, type, reference_id)
+						VALUES (?, ?, ?, ?)
+						RETURNING *
+					`
+          )
+          .bind(input.recipient_id, input.actor_id, input.type, input.reference_id ?? null)
+          .first<DbNotification>();
+
+        if (!result) throw new Error('Failed to create notification');
+        return result;
+      },
+
+      /**
+       * Get recent notifications for a user, with actor display info.
+       */
+      async getForUser(userId: string, limit: number = 20): Promise<NotificationWithActor[]> {
+        const { results } = await db
+          .prepare(
+            `
+						SELECT n.*, u.display_name as actor_display_name, p.avatar_url as actor_avatar_url
+						FROM notifications n
+						JOIN users u ON u.id = n.actor_id
+						LEFT JOIN profiles p ON p.user_id = n.actor_id
+						WHERE n.recipient_id = ?
+						ORDER BY n.created_at DESC
+						LIMIT ?
+					`
+          )
+          .bind(userId, limit)
+          .all<NotificationWithActor>();
+        return results;
+      },
+
+      /**
+       * Get count of unread notifications for a user.
+       */
+      async getUnreadCount(userId: string): Promise<number> {
+        const result = await db
+          .prepare(
+            `
+						SELECT COUNT(*) as count FROM notifications
+						WHERE recipient_id = ? AND read_at IS NULL
+					`
+          )
+          .bind(userId)
+          .first<{ count: number }>();
+        return result?.count ?? 0;
+      },
+
+      /**
+       * Mark a single notification as read. Recipient check prevents marking others' notifications.
+       */
+      async markAsRead(notificationId: string, userId: string): Promise<void> {
+        await db
+          .prepare(
+            `
+						UPDATE notifications SET read_at = datetime('now')
+						WHERE id = ? AND recipient_id = ? AND read_at IS NULL
+					`
+          )
+          .bind(notificationId, userId)
+          .run();
+      },
+
+      /**
+       * Mark all notifications as read for a user.
+       */
+      async markAllAsRead(userId: string): Promise<void> {
+        await db
+          .prepare(
+            `
+						UPDATE notifications SET read_at = datetime('now')
+						WHERE recipient_id = ? AND read_at IS NULL
+					`
+          )
+          .bind(userId)
+          .run();
       }
     }
   };

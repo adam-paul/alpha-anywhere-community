@@ -6,13 +6,16 @@
   import { createUserStore } from '$lib/stores/user.svelte';
   import { createRealtimeStore } from '$lib/stores/realtime.svelte';
   import { createPresenceStore } from '$lib/stores/presence.svelte';
-  import type { FriendSummary } from '$lib/types';
+  import { createNotificationStore } from '$lib/stores/notifications.svelte';
+  import type { FriendSummary, Notification } from '$lib/types';
 
   interface Props {
     data: {
       user: import('$lib/types').UserContext | null;
-      pendingFriendRequestCount: number;
       friends: FriendSummary[];
+      notifications: Notification[];
+      notificationUnreadCount: number;
+      chatUnreadCount: number;
     };
     children: import('svelte').Snippet;
   }
@@ -27,6 +30,14 @@
   // but only connect WebSocket when authenticated
   const realtime = createRealtimeStore('presence:global');
   createPresenceStore(realtime);
+  // svelte-ignore state_referenced_locally
+  createNotificationStore(
+    data.notifications,
+    data.notificationUnreadCount,
+    data.chatUnreadCount,
+    realtime,
+    data.user?.id ?? ''
+  );
   // svelte-ignore state_referenced_locally
   if (data.user) {
     realtime.connect();
@@ -44,7 +55,7 @@
 </script>
 
 <div class="app-root" data-theme="cel-shaded">
-  <AppShell pendingFriendRequestCount={data.pendingFriendRequestCount} friends={data.friends}>
+  <AppShell friends={data.friends}>
     {@render children()}
   </AppShell>
 </div>

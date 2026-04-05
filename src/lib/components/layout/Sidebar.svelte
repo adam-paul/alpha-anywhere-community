@@ -5,16 +5,17 @@
   import { SignInButton } from '@timeback/sdk/svelte';
   import { getUserStore } from '$lib/stores/user.svelte';
   import { getPresenceStore } from '$lib/stores/presence.svelte';
+  import { getNotificationStore } from '$lib/stores/notifications.svelte';
   import type { NavItem, FriendSummary } from '$lib/types';
 
   interface Props {
-    pendingFriendRequestCount?: number;
     friends?: FriendSummary[];
   }
 
-  let { pendingFriendRequestCount = 0, friends = [] }: Props = $props();
+  let { friends = [] }: Props = $props();
 
   const presence = getUserStore().user ? getPresenceStore() : null;
+  const notificationStore = getUserStore().user ? getNotificationStore() : null;
 
   const onlineFriends = $derived(presence ? friends.filter((f) => presence.isOnline(f.id)) : []);
 
@@ -47,6 +48,9 @@
       >
         <Icon name={item.icon} size={20} />
         <span class="nav-label">{item.label}</span>
+        {#if item.href === '/chat' && notificationStore && notificationStore.chatUnreadCount > 0}
+          <span class="nav-badge">{notificationStore.chatUnreadCount}</span>
+        {/if}
       </a>
     {/each}
   </nav>
@@ -82,14 +86,6 @@
           size="sm"
           fallback={userStore.user.displayName.charAt(0)}
         />
-        {#if pendingFriendRequestCount > 0}
-          <span
-            class="notification-badge"
-            aria-label="{pendingFriendRequestCount} pending friend requests"
-          >
-            {pendingFriendRequestCount}
-          </span>
-        {/if}
       </a>
       <div class="user-info">
         <a href="/profile/me" class="user-name-link">{userStore.user.displayName}</a>
@@ -143,6 +139,21 @@
 
   .nav-label {
     font-size: var(--font-size-sm);
+  }
+
+  .nav-badge {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: white;
+    background: var(--color-error);
+    border-radius: var(--radius-pill);
   }
 
   .online-friends {
@@ -208,24 +219,6 @@
 
   .user-profile-link:hover {
     opacity: 0.8;
-  }
-
-  .notification-badge {
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 18px;
-    height: 18px;
-    padding: 0 4px;
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-    color: white;
-    background: var(--color-error);
-    border-radius: var(--radius-pill);
-    border: 2px solid var(--color-bg);
   }
 
   .user-info {

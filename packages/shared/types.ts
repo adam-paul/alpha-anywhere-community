@@ -53,6 +53,18 @@ export interface ChatBroadcast {
   timestamp: number;
 }
 
+/** Notification push signal relayed by the DO (lightweight ping, no payload). */
+export interface NotificationPush extends ClientMessage {
+  type: 'notification:push';
+  recipientId: string;
+}
+
+/** Chat unread signal — tells a user they have a new unread message. */
+export interface ChatUnreadSignal extends ClientMessage {
+  type: 'chat:unread';
+  recipientId: string;
+}
+
 /** Messages sent by clients to the DO. */
 export type ClientRequest = PresenceSnapshotRequest | ClientMessage;
 

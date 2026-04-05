@@ -86,6 +86,16 @@ export interface DbGame {
   updated_at: string;
 }
 
+export interface DbNotification {
+  id: string;
+  recipient_id: string;
+  actor_id: string;
+  type: 'friend_request_received' | 'friend_request_accepted' | 'conversation_created';
+  reference_id: string | null;
+  read_at: string | null;
+  created_at: string;
+}
+
 // =============================================================================
 // Joined/Computed Types
 // =============================================================================
@@ -109,6 +119,11 @@ export interface ConversationWithDetails {
     createdAt: string;
   } | null;
   unreadCount: number;
+}
+
+export interface NotificationWithActor extends DbNotification {
+  actor_display_name: string;
+  actor_avatar_url: string | null;
 }
 
 // =============================================================================
@@ -167,4 +182,11 @@ export interface UpdateGameInput {
   link_code?: string | null;
   description?: string | null;
   is_active?: number;
+}
+
+export interface CreateNotificationInput {
+  recipient_id: string;
+  actor_id: string;
+  type: DbNotification['type'];
+  reference_id?: string;
 }

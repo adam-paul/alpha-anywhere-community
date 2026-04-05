@@ -131,6 +131,39 @@ export interface PendingFriendRequest extends FriendSummary {
   friendshipId: string;
 }
 
+// Notification types
+export type NotificationType =
+  | 'friend_request_received'
+  | 'friend_request_accepted'
+  | 'conversation_created';
+
+export interface Notification {
+  id: string;
+  type: NotificationType;
+  actorId: string;
+  actorDisplayName: string;
+  actorAvatarUrl: string | null;
+  referenceId: string | null;
+  read: boolean;
+  createdAt: string;
+}
+
+export interface NotificationStore {
+  readonly notifications: Notification[];
+  readonly unreadCount: number;
+  readonly chatUnreadCount: number;
+  readonly isOpen: boolean;
+  open(): void;
+  close(): void;
+  toggle(): void;
+  markAsRead(notificationId: string): Promise<void>;
+  markAllAsRead(): Promise<void>;
+  refresh(): Promise<void>;
+  sendPush(recipientId: string): void;
+  sendChatUnread(recipientId: string): void;
+  decrementChatUnread(n: number): void;
+}
+
 // Student profile
 export interface Student {
   id: string;

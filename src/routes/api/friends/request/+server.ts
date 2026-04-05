@@ -34,6 +34,12 @@ export const POST: RequestHandler = async ({ request, locals, platform }) => {
     if (existing.status === 'pending' && existing.addressee_id === locals.user.id) {
       // They already sent us a request — auto-accept instead of creating a duplicate
       const accepted = await db.friendships.accept(existing.id);
+      await db.notifications.create({
+        recipient_id: existing.requester_id,
+        actor_id: locals.user.id,
+        type: 'friend_request_accepted',
+        reference_id: existing.id
+      });
       return json({ success: true, friendship: accepted });
     }
     error(409, 'Friend request already exists');
@@ -41,6 +47,12 @@ export const POST: RequestHandler = async ({ request, locals, platform }) => {
 
   try {
     const friendship = await db.friendships.sendRequest(locals.user.id, addresseeId);
+    await db.notifications.create({
+      recipient_id: addresseeId,
+      actor_id: locals.user.id,
+      type: 'friend_request_received',
+      reference_id: friendship.id
+    });
     return json({ success: true, friendship });
   } catch (err) {
     // UNIQUE constraint violation means request already exists (race condition fallback)

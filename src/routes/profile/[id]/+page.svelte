@@ -4,8 +4,12 @@
   import InterestBadge from '$lib/components/InterestBadge.svelte';
   import ProfileHeader from '$lib/components/profile/ProfileHeader.svelte';
   import { INTERESTS } from '$lib/constants';
+  import { getNotificationStore } from '$lib/stores/notifications.svelte';
+  import { getUserStore } from '$lib/stores/user.svelte';
   import type { EditMode, Interest } from '$lib/types';
   import type { PageData } from './$types';
+
+  const notificationStore = getUserStore().user ? getNotificationStore() : null;
 
   let { data }: { data: PageData } = $props();
 
@@ -124,6 +128,18 @@
 
       if (!response.ok) {
         throw new Error(`Failed to ${action} friend`);
+      }
+
+      // Push real-time notification signal to the other user
+      if (notificationStore) {
+        if (action === 'request') {
+          notificationStore.sendPush(data.user.id);
+        } else if (action === 'accept') {
+          const result = await response.clone().json();
+          if (result.friendship?.requester_id) {
+            notificationStore.sendPush(result.friendship.requester_id);
+          }
+        }
       }
 
       await invalidateAll();

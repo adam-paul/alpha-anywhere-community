@@ -37,6 +37,18 @@ export const POST: RequestHandler = async ({ locals, platform, request }) => {
   const allParticipantIds = [locals.user.id, ...participantIds];
   const conversation = await db.conversations.create(allParticipantIds);
 
+  // Notify other participants about the new conversation
+  await Promise.all(
+    participantIds.map((pid) =>
+      db.notifications.create({
+        recipient_id: pid,
+        actor_id: locals.user.id,
+        type: 'conversation_created',
+        reference_id: conversation.id
+      })
+    )
+  );
+
   // Load the full details for the response
   const allConvs = await db.conversations.getWithDetails(locals.user.id);
   const conv = allConvs.find((c) => c.id === conversation.id);

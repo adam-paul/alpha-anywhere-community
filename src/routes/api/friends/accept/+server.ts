@@ -35,5 +35,11 @@ export const POST: RequestHandler = async ({ request, locals, platform }) => {
   }
 
   const accepted = await db.friendships.accept(friendshipId);
+  await db.notifications.create({
+    recipient_id: friendship.requester_id,
+    actor_id: locals.user.id,
+    type: 'friend_request_accepted',
+    reference_id: friendshipId
+  });
   return json({ success: true, friendship: accepted });
 };

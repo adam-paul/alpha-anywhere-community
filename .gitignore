@@ -39,6 +39,7 @@ coverage
 
 # Wrangler local state
 .wrangler
+.dev.vars
 
 # SST build artifacts
 .sst

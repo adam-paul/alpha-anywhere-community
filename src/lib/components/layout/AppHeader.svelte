@@ -1,5 +1,8 @@
 <script lang="ts">
   import { Icon, Button } from '$lib/components/ui';
+  import { getNotificationStore } from '$lib/stores/notifications.svelte';
+  import { getUserStore } from '$lib/stores/user.svelte';
+  import NotificationTray from './NotificationTray.svelte';
 
   interface Props {
     title?: string;
@@ -8,6 +11,23 @@
 
   let { title = 'Alpha Anywhere Community', subtitle = 'Prototype Demo - staging' }: Props =
     $props();
+
+  const userStore = getUserStore();
+  const notifications = userStore.user ? getNotificationStore() : null;
+
+  let triggerEl: HTMLDivElement | undefined = $state();
+
+  // Close tray on click outside
+  $effect(() => {
+    if (!notifications?.isOpen) return;
+    function onClickOutside(e: MouseEvent) {
+      if (triggerEl && !triggerEl.contains(e.target as Node)) {
+        notifications!.close();
+      }
+    }
+    window.addEventListener('click', onClickOutside, true);
+    return () => window.removeEventListener('click', onClickOutside, true);
+  });
 </script>
 
 <header class="app-header">
@@ -19,9 +39,23 @@
   </div>
 
   <div class="header-actions">
-    <Button variant="ghost" size="sm">
-      <Icon name="bell" size={20} />
-    </Button>
+    {#if notifications}
+      <div class="notification-trigger" bind:this={triggerEl}>
+        <Button variant="ghost" size="sm" onclick={() => notifications.toggle()}>
+          <Icon name="bell" size={20} />
+          {#if notifications.unreadCount > 0}
+            <span class="unread-badge">{notifications.unreadCount}</span>
+          {/if}
+        </Button>
+        {#if notifications.isOpen}
+          <NotificationTray />
+        {/if}
+      </div>
+    {:else}
+      <Button variant="ghost" size="sm">
+        <Icon name="bell" size={20} />
+      </Button>
+    {/if}
   </div>
 </header>
 
@@ -58,5 +92,28 @@
     display: flex;
     align-items: center;
     gap: var(--space-2);
+  }
+
+  .notification-trigger {
+    position: relative;
+  }
+
+  .unread-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    font-size: 10px;
+    font-weight: 700;
+    color: white;
+    background: var(--color-error);
+    border-radius: var(--radius-pill);
+    border: 2px solid var(--color-surface);
+    pointer-events: none;
   }
 </style>

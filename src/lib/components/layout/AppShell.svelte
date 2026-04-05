@@ -6,15 +6,14 @@
 
   interface Props {
     children: Snippet;
-    pendingFriendRequestCount?: number;
     friends?: FriendSummary[];
   }
 
-  let { children, pendingFriendRequestCount = 0, friends = [] }: Props = $props();
+  let { children, friends = [] }: Props = $props();
 </script>
 
 <div class="app-shell">
-  <Sidebar {pendingFriendRequestCount} {friends} />
+  <Sidebar {friends} />
 
   <div class="app-main">
     <AppHeader />
