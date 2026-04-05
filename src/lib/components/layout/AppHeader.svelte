@@ -112,7 +112,7 @@
     font-weight: 700;
     color: white;
     background: var(--color-error);
-    border-radius: var(--radius-pill);
+    border-radius: var(--radius-md);
     border: 2px solid var(--color-surface);
     pointer-events: none;
   }

@@ -159,7 +159,7 @@
     align-items: center;
     gap: var(--space-3);
     padding: var(--space-2);
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
   }
 
   .member-info {

@@ -29,7 +29,7 @@
     height: 1.5rem;
     background: var(--color-border);
     border: none;
-    border-radius: var(--radius-pill);
+    border-radius: var(--radius-md);
     cursor: pointer;
     transition: background var(--transition-fast);
   }

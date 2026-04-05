@@ -359,7 +359,7 @@
   .profile-section {
     background: var(--color-surface);
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
     padding: var(--space-5);
   }
 
@@ -395,7 +395,7 @@
     gap: var(--space-2);
     padding: var(--space-2) var(--space-3);
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
     text-decoration: none;
     color: inherit;
     transition: background var(--transition-fast);
@@ -515,7 +515,7 @@
   .roblox-linked-avatar {
     width: var(--avatar-size-sm);
     height: var(--avatar-size-sm);
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
     border: var(--border-width) solid var(--color-border);
   }
 

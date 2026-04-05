@@ -42,7 +42,7 @@
   .card {
     background: var(--color-surface);
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
     overflow: hidden;
   }
 

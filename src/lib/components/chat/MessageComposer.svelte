@@ -64,6 +64,6 @@
   }
 
   .input-wrapper :global(.input) {
-    border-radius: var(--radius-chat);
+    border-radius: var(--radius-lg);
   }
 </style>

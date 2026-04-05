@@ -107,7 +107,7 @@
   .profile-header {
     background: var(--color-surface);
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
     overflow: hidden;
     margin-bottom: var(--space-6);
   }

@@ -66,7 +66,7 @@
     color: var(--color-text);
     background: var(--color-bg);
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
     cursor: pointer;
     transition: all var(--transition-fast);
   }

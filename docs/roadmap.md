@@ -1,12 +1,12 @@
 # Alpha Anywhere Community: Roadmap
 
-**Last updated:** 2026-03-25
+**Last updated:** 2026-04-05
 
 ---
 
 ## Current State
 
-Full-featured community portal with real-time chat, arcade with work-wall gating, student profiles, friend system, and admin tools. Infrastructure: Cloudflare Pages + D1 + KV, Durable Objects with WebSocket Hibernation API for real-time, LWAI Lambda proxy for learning analytics, Timeback SSO.
+Full-featured community portal with real-time chat, arcade with work-wall gating, student profiles, friend system, notifications, and admin tools. Infrastructure: Cloudflare Pages + D1 + KV, Durable Objects with WebSocket Hibernation API for real-time, LWAI Lambda proxy for learning analytics, Timeback SSO.
 
 ### Infrastructure
 
@@ -22,6 +22,7 @@ Full-featured community portal with real-time chat, arcade with work-wall gating
 | **User Provisioning**  | ✅     | Auto-creates D1 user + profile on first authenticated request                                                        |
 | **Realtime**           | ✅     | Durable Object Worker (`alpha-realtime`) with WebSocket Hibernation API, cookie auth via `ws.alpha-community.school` |
 | **Shared Types**       | ✅     | `@alpha/shared` workspace package for cross-project contracts                                                        |
+| **Local Dev Realtime** | ✅     | `PUBLIC_REALTIME_URL` env var, `bun run dev:realtime` starts Worker locally on port 8787                             |
 
 ### Features
 
@@ -34,6 +35,7 @@ Full-featured community portal with real-time chat, arcade with work-wall gating
 | **Chat**              | `/chat`              | Complete | D1 ✅ + Durable Object (real-time) |
 | **Arcade Presence**   | Integrated in arcade | Complete | KV ✅ + Roblox Presence API        |
 | **Platform Presence** | App-wide             | Complete | Durable Object (real-time)         |
+| **Notifications**     | App-wide             | Complete | D1 ✅ + WebSocket (real-time)      |
 | **Admin Tools**       | Inline in arcade     | Complete | D1 ✅ (game CRUD, DevTools)        |
 | **UI System**         | `$lib/components/ui` | Complete | N/A                                |
 
@@ -44,6 +46,8 @@ users ←──── profiles (1:1)
   │
   ├──── friendships (M:M, directional with status)
   │
+  ├──── notifications (actor → recipient, polymorphic reference_id)
+  │
   └──── conversation_participants (M:M) ────→ conversations
                                                     │
                                                     └──→ messages (with moderation fields)
@@ -53,12 +57,11 @@ games (standalone, Roblox private server support)
 
 ### Not Yet Built
 
-| Feature         | Status      | Notes                                                                       |
-| --------------- | ----------- | --------------------------------------------------------------------------- |
-| Student Map     | Placeholder | UI exists, shows "Coming soon"                                              |
-| Chat Moderation | Not started | Schema has moderation fields, no AI filtering yet                           |
-| Notifications   | Stopgap     | Friend requests via profile + sidebar badge; no general notification system |
-| Parent Controls | Not started | No ToS, no per-child toggles                                                |
+| Feature         | Status      | Notes                                             |
+| --------------- | ----------- | ------------------------------------------------- |
+| Student Map     | Placeholder | UI exists, shows "Coming soon"                    |
+| Chat Moderation | Not started | Schema has moderation fields, no AI filtering yet |
+| Parent Controls | Not started | No ToS, no per-child toggles                      |
 
 ---
 
@@ -74,7 +77,7 @@ SSO, Explore, Profiles, Game Launch, LWAI work-wall, Timeback XP gating, private
 
 #### Chat — ✅ Complete
 
-Real-time messaging over WebSocket with D1 persistence. Unified realtime store for both presence and per-conversation chat channels — keepalive, reconnection, and lifecycle managed in one place. Optimistic message sending, lazy-loaded message history, unread counts, mark-as-read. Deep-link to conversations via `?with={userId}` (used by sidebar online friends).
+Real-time messaging over WebSocket with D1 persistence. Unified realtime store for both presence and per-conversation chat channels — keepalive, reconnection, and lifecycle managed in one place. Optimistic message sending, lazy-loaded message history, unread counts, mark-as-read. Deep-link to conversations via `?with={userId}` (used by sidebar online friends). Unread badge on sidebar Chat nav item, updated in real-time via `chat:unread` signal on `presence:global`.
 
 **API routes:** `GET/POST /api/chat/messages`, `POST /api/chat/conversations`, `POST /api/chat/conversations/[id]/read`
 
@@ -82,7 +85,7 @@ Real-time messaging over WebSocket with D1 persistence. Unified realtime store f
 
 #### Friend System — ✅ Complete
 
-Full API, state-aware profile button, friends list, mutual friends, sidebar badge for pending requests.
+Full API, state-aware profile button, friends list, mutual friends.
 
 #### Arcade Presence — ✅ Complete
 
@@ -96,15 +99,17 @@ Geographic visualization of student locations. Geocode to lat/lng, map component
 
 App-wide `presence:global` WebSocket channel via Durable Object. Client requests snapshot after connecting; DO responds with current online users, then broadcasts `system:join`/`system:leave` in real-time. Presence store maintains online user set. Online indicators on avatars across all pages. Online friends section in sidebar links directly to chat. 30s keepalive ping via Hibernation API auto-response.
 
-#### Notifications
+#### Notifications — ✅ Complete
 
-Full in-app notification system to replace the friend-request stopgap.
+Platform-wide notification system replacing the ad-hoc friend request badge.
 
-- **Migration:** `notifications` table (user_id, type, payload JSON, read_at, created_at)
-- **API:** `GET /api/notifications`, `POST /api/notifications/read`
-- **UI:** Notification bell with unread count, dropdown or page
-- **Sources:** Friend requests, chat messages, moderation actions, system announcements
-- **Delivery:** Poll-on-navigation initially, upgrade to WebSocket later
+- **Migration:** `notifications` table (recipient_id, actor_id, type, reference_id, read_at, created_at). Partial index on unread for fast count queries.
+- **API:** `GET /api/notifications`, `POST /api/notifications/read` (single or mark-all)
+- **UI:** Bell icon in AppHeader with unread count badge, dropdown tray with notification list. Inline accept/decline on friend request notifications. Relative timestamps.
+- **Types:** `friend_request_received`, `friend_request_accepted`, `conversation_created`. Extensible via CHECK constraint migration.
+- **Delivery:** D1 source of truth, server-loaded initial state, real-time via `notification:push` signal on `presence:global`. Client-side recipient filtering, API fetch on push.
+- **Side effects:** Notifications auto-created in friend request, accept, and conversation creation API routes.
+- **Chat unread badge:** Separate from notifications. Real-time `chat:unread` signal on `presence:global`, reactive count in notification store, badge on sidebar Chat nav item.
 
 ---
 
@@ -156,6 +161,7 @@ Full in-app notification system to replace the friend-request stopgap.
 | **Auth**             | Timeback SSO                      | Already integrated, handles Cognito                                             |
 | **Realtime**         | Durable Objects + WebSocket       | Hibernation API (cost-efficient), per-channel DO instances                      |
 | **Realtime routing** | Separate Worker + custom domain   | SvelteKit can't proxy WebSocket upgrades; Worker at `ws.alpha-community.school` |
+| **Realtime URL**     | `PUBLIC_REALTIME_URL` env var     | Configurable per environment; local dev points to `ws://localhost:8787`         |
 | **Shared types**     | `@alpha/shared` workspace package | Cross-project contracts (WebSocket protocol, LWAI gating) — one home            |
 | **Credentials**      | Encrypted D1 columns              | AES-256-GCM, app-level encrypt at write, decrypt at runtime                     |
 | **Admin tools**      | Inline in existing pages          | No separate dashboard; admin sees student view plus admin controls              |
@@ -163,6 +169,7 @@ Full in-app notification system to replace the friend-request stopgap.
 | **Roblox linking**   | Manual username + avatar confirm  | Soft verification only; OAuth upgrade path pending                              |
 | **LWAI query**       | Lambda proxy (SST)                | CF Workers can't do STS AssumeRole                                              |
 | **Gating state**     | Discriminated union store         | Eliminates boolean flag creep                                                   |
+| **Notifications**    | D1 + WebSocket signal             | DB source of truth, `notification:push` on `presence:global` for real-time      |
 
 ---
 
@@ -181,7 +188,7 @@ Every `/arcade` navigation makes a live API call (LWAI Lambda or EduBridge). Nee
 
 #### SST Infrastructure Consolidation
 
-Unify wrangler (Cloudflare) + SST (AWS) into single `sst deploy`. SST v3 supports multi-provider. Low priority — current setup works.
+Unify wrangler (Cloudflare) + SST (AWS) into single `sst deploy`. SST v3 supports multi-provider. Would also unify local dev into a single `sst dev` command (currently requires two terminals: `bun run dev:cf` + `bun run dev:realtime`). Low priority — current setup works.
 
 #### Seed Script Architecture
 
@@ -202,14 +209,12 @@ Small items that don't belong to a tier but need attention eventually.
 - **Harden Roblox game launch/auth flow** — If the user isn't logged into Roblox, the deep link loses its params and lands on the Roblox home page (except on Windows). Needs detection or guidance for the user.
 - **Production deploy** — Replicate preview environment in production Cloudflare Pages. Separate D1 database, set secrets, verify SSO callbacks, smoke test.
 - **Set up docs** — Pick a documentation stack and stand up a docs site.
-- **Local dev WebSocket** — WebSocket connects to deployed Worker only (`ws.alpha-community.school`); no local dev real-time testing. Chat loads conversations and persists messages locally, but real-time delivery between tabs requires the deployed preview environment.
 
 ---
 
 ## Strategic Context
 
 - **Weekly goals > daily** — High schoolers plan weekly (LWAI uses weekly; Timeback uses daily)
-- **Don't rebuild AlphaLearn** — It's maintenance mode, link don't extend
 - **Map is high priority** — Parents constantly ask about nearby students
 - **Timeback Electron as launcher** — Community will run inside Electron wrapper
 - **Private servers first** — Public Roblox games are a liability; private servers give control

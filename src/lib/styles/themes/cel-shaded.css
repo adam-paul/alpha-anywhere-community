@@ -11,7 +11,7 @@
   --font-body: 'Inter', system-ui, sans-serif;
 
   /* Sharp edges, bold outlines */
-  --radius: 0;
+  --radius-zero: 0;
   --border-width: 3px;
   --shadow: none;
 

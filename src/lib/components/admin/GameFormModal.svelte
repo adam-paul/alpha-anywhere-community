@@ -439,7 +439,7 @@
     aspect-ratio: 16 / 9;
     object-fit: cover;
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
   }
 
   .lookup-row {
@@ -464,7 +464,7 @@
 
   .credentials-section {
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
     padding: var(--space-4);
     background: var(--color-bg);
     display: flex;
@@ -514,7 +514,7 @@
     color: white;
     font-size: var(--font-size-sm);
     font-weight: 600;
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
   }
 
   .delete-confirm-text {

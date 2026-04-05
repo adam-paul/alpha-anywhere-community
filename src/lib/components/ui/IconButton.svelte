@@ -67,7 +67,7 @@
   .shape-square {
     background: transparent;
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
   }
 
   .shape-square:hover:not(:disabled) {

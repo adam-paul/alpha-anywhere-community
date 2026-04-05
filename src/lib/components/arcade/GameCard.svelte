@@ -148,7 +148,7 @@
     text-transform: uppercase;
     letter-spacing: 0.1em;
     padding: var(--space-2) var(--space-4);
-    border: 3px solid var(--color-on-primary);
+    border: var(--border-width) solid var(--color-on-primary);
   }
 
   .card-content {

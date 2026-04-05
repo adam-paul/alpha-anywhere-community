@@ -122,7 +122,7 @@
     color: var(--color-text-muted);
     text-decoration: none;
     font-weight: 500;
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
     transition: all var(--transition-fast);
   }
 
@@ -153,7 +153,7 @@
     font-weight: 700;
     color: white;
     background: var(--color-error);
-    border-radius: var(--radius-pill);
+    border-radius: var(--radius-md);
   }
 
   .online-friends {
@@ -185,7 +185,7 @@
     padding: var(--space-1) var(--space-2);
     text-decoration: none;
     color: var(--color-text);
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
     transition: background var(--transition-fast);
   }
 

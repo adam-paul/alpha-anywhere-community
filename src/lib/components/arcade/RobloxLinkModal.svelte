@@ -209,13 +209,13 @@
     padding: var(--space-4);
     background: var(--color-bg);
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
   }
 
   .roblox-avatar {
     width: 64px;
     height: 64px;
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
     border: var(--border-width) solid var(--color-border);
   }
 
@@ -248,6 +248,6 @@
     color: white;
     font-size: var(--font-size-sm);
     font-weight: 600;
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
   }
 </style>

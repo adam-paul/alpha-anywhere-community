@@ -35,7 +35,7 @@
     padding: var(--space-2) var(--space-3);
     background: var(--color-surface);
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius);
+    border-radius: var(--radius-zero);
     transition: all var(--transition-fast);
     flex: 1;
     max-width: 400px;
