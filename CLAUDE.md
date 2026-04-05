@@ -212,6 +212,8 @@ See `/check-ui` skill for the full audit checklist.
 ```bash
 bun install                # Install dependencies
 bun run dev                # Start dev server (http://localhost:5174)
+bun run dev:cf             # Build + Cloudflare Pages local dev (http://localhost:6173)
+bun run dev:realtime       # Start realtime WebSocket Worker locally (ws://localhost:8787)
 bun run build              # Production build
 bun run preview            # Preview production build
 bun run db:migrate         # Apply pending D1 migrations (local)
@@ -248,7 +250,7 @@ The `--env` flag targets preview vs production. Project name is read from `wrang
 
 ### Environment Variables
 
-All server-side env vars use `$env/dynamic/private` (SvelteKit's runtime accessor). No `import.meta.env`, no `process.env` in app code. The `.env` file is the single source for local secrets. Cloudflare bindings (`DB`, `KV`) come from `platform.env`, not env vars.
+Server-side env vars use `$env/dynamic/private`, client-side use `$env/dynamic/public` (prefix `PUBLIC_`). No `import.meta.env`, no `process.env` in app code. The `.env` file is the single source for local secrets. Cloudflare bindings (`DB`, `KV`) come from `platform.env`, not env vars.
 
 ### Impersonation (Dev/Preview Only)
 

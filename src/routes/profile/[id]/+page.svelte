@@ -135,7 +135,7 @@
         if (action === 'request') {
           notificationStore.sendPush(data.user.id);
         } else if (action === 'accept') {
-          const result = await response.clone().json();
+          const result = await response.json();
           if (result.friendship?.requester_id) {
             notificationStore.sendPush(result.friendship.requester_id);
           }
