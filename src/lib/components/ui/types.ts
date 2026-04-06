@@ -21,4 +21,8 @@ export type IconName =
   | 'info'
   | 'more'
   | 'check'
-  | 'trash';
+  | 'trash'
+  | 'phone'
+  | 'phone-off'
+  | 'mic'
+  | 'mic-off';
