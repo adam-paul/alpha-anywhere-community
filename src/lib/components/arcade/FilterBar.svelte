@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getArcadeStore } from '$lib/stores/arcade.svelte';
   import { ENGAGEMENT_CATEGORIES } from '$lib/constants';
-  import type { EngagementCategory } from '$lib/types';
+  import type { EngagementCategory, EngagementFilter } from '$lib/types';
   import { ToggleButton } from '$lib/components/ui';
 
   interface Props {
@@ -12,9 +12,7 @@
 
   const arcade = getArcadeStore();
 
-  type FilterOption = EngagementCategory | 'all';
-
-  const filters: { value: FilterOption; label: string }[] = [
+  const filters: { value: EngagementFilter; label: string }[] = [
     { value: 'all', label: 'All Games' },
     ...Object.entries(ENGAGEMENT_CATEGORIES).map(([key, meta]) => ({
       value: key as EngagementCategory,
@@ -22,7 +20,7 @@
     }))
   ];
 
-  function setFilter(filter: FilterOption) {
+  function setFilter(filter: EngagementFilter) {
     if (disabled) return;
     arcade.activeFilter = filter;
   }

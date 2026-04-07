@@ -1,8 +1,6 @@
 <script lang="ts">
   import { Button, Input, Modal } from '$lib/components/ui';
-  import type { RobloxUserLookupResult } from '$lib/types';
-
-  type LinkStatus = 'idle' | 'looking-up' | 'confirming' | 'linking' | 'error';
+  import type { RobloxLinkStatus, RobloxUserLookupResult } from '$lib/types';
 
   interface Props {
     open: boolean;
@@ -13,7 +11,7 @@
   let { open, onclose, onlinked }: Props = $props();
 
   let username = $state('');
-  let status = $state<LinkStatus>('idle');
+  let status = $state<RobloxLinkStatus>('idle');
   let errorMessage = $state('');
   let lookupResult = $state<RobloxUserLookupResult | null>(null);
 

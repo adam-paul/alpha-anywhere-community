@@ -2,7 +2,7 @@ import { getContext, setContext } from 'svelte';
 import type {
   ArcadeState,
   CreateArcadeStoreOptions,
-  EngagementCategory,
+  EngagementFilter,
   PresenceCounts,
   Theme
 } from '$lib/types';
@@ -10,7 +10,7 @@ import type {
 const ARCADE_CONTEXT_KEY = 'arcade';
 
 export function createArcadeStore(options: CreateArcadeStoreOptions = {}) {
-  let activeFilter = $state<EngagementCategory | 'all'>('all');
+  let activeFilter = $state<EngagementFilter>('all');
   let theme = $state<Theme>('cel-shaded');
   let games = $state(options.games ?? []);
   let presenceCounts = $state<PresenceCounts>({});

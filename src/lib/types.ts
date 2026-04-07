@@ -20,6 +20,8 @@ export type EngagementCategory =
   | 'trust-builder'
   | 'rivalry';
 
+export type EngagementFilter = EngagementCategory | 'all';
+
 export type GatingMode = 'daily' | 'weekly';
 
 export type GatingSource = 'lwai' | 'timeback';
@@ -194,7 +196,7 @@ export interface Student {
 export type ViewMode = 'grid' | 'map';
 
 export interface ArcadeState {
-  activeFilter: EngagementCategory | 'all';
+  activeFilter: EngagementFilter;
   theme: Theme;
   readonly games: Game[];
   readonly filteredGames: Game[];
@@ -310,6 +312,7 @@ export interface ChatState {
 }
 
 // Admin: Game form
+export type GameFormStatus = 'idle' | 'looking-up' | 'saving' | 'confirm-delete';
 export type GameFormMode = { kind: 'create' } | { kind: 'edit'; gameId: string };
 
 export interface GameFormData {
@@ -334,6 +337,8 @@ export interface RobloxLookupResult {
 }
 
 // Roblox user lookup (for account linking)
+export type RobloxLinkStatus = 'idle' | 'looking-up' | 'confirming' | 'linking' | 'error';
+
 export interface RobloxUserLookupResult {
   robloxUserId: string;
   robloxUsername: string;

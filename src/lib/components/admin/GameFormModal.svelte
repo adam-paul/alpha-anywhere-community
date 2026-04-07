@@ -5,11 +5,10 @@
     EngagementCategory,
     GameFormData,
     GameFormMode,
+    GameGameFormStatus,
     GameType,
     RobloxLookupResult
   } from '$lib/types';
-
-  type FormStatus = 'idle' | 'looking-up' | 'saving' | 'confirm-delete';
 
   interface Props {
     open: boolean;
@@ -36,7 +35,7 @@
   let linkCode = $state('');
   let isActive = $state(false);
   let robloxUrl = $state('');
-  let status = $state<FormStatus>('idle');
+  let status = $state<GameFormStatus>('idle');
   let errorMessage = $state('');
 
   const isEdit = $derived(mode.kind === 'edit');
