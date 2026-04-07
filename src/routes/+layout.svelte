@@ -7,6 +7,7 @@
   import { createRealtimeStore } from '$lib/stores/realtime.svelte';
   import { createPresenceStore } from '$lib/stores/presence.svelte';
   import { createNotificationStore } from '$lib/stores/notifications.svelte';
+  import { createVoiceStore } from '$lib/stores/voice.svelte';
   import type { FriendSummary, Notification } from '$lib/types';
 
   interface Props {
@@ -38,6 +39,7 @@
     realtime,
     data.user?.id ?? ''
   );
+  createVoiceStore();
   // svelte-ignore state_referenced_locally
   if (data.user) {
     realtime.connect();

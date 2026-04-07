@@ -1,121 +1,10 @@
 <script lang="ts">
-  import { env } from '$env/dynamic/public';
+  import { getVoiceStore } from '$lib/stores/voice.svelte';
   import { Button, Input, Icon, IconButton } from '$lib/components/ui';
 
-  type Participant = {
-    identity: string;
-    name: string;
-    isSpeaking: boolean;
-  };
+  const voice = getVoiceStore();
 
   let roomName = $state('test-room');
-  let status = $state<'disconnected' | 'connecting' | 'connected'>('disconnected');
-  let errorMsg = $state('');
-  let isMuted = $state(false);
-  let participants = $state<Participant[]>([]);
-  let localIdentity = $state('');
-
-  // LiveKit Room reference (loaded dynamically to avoid SSR)
-  let room: import('livekit-client').Room | null = null;
-
-  async function joinRoom() {
-    if (!roomName.trim()) return;
-    status = 'connecting';
-    errorMsg = '';
-
-    try {
-      // Get token from our API
-      const res = await fetch('/api/voice/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ roomName: roomName.trim() })
-      });
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message || 'Failed to get token');
-      }
-      const { token } = await res.json();
-
-      // Dynamic import to avoid SSR issues
-      const { Room, RoomEvent } = await import('livekit-client');
-
-      room = new Room();
-
-      // Wire events
-      room.on(RoomEvent.ParticipantConnected, (participant) => {
-        participants = [
-          ...participants,
-          {
-            identity: participant.identity,
-            name: participant.name ?? participant.identity,
-            isSpeaking: false
-          }
-        ];
-      });
-
-      room.on(RoomEvent.ParticipantDisconnected, (participant) => {
-        participants = participants.filter((p) => p.identity !== participant.identity);
-      });
-
-      room.on(RoomEvent.ActiveSpeakersChanged, (speakers) => {
-        const speakingIds = new Set(speakers.map((s) => s.identity));
-        participants = participants.map((p) => ({
-          ...p,
-          isSpeaking: speakingIds.has(p.identity)
-        }));
-      });
-
-      // Attach remote audio tracks to DOM for playback
-      room.on(RoomEvent.TrackSubscribed, (track, _publication, _participant) => {
-        if (track.kind === 'audio') {
-          const el = track.attach();
-          document.body.appendChild(el);
-        }
-      });
-
-      room.on(RoomEvent.TrackUnsubscribed, (track) => {
-        track.detach().forEach((el) => el.remove());
-      });
-
-      room.on(RoomEvent.Disconnected, () => {
-        leaveRoom();
-      });
-
-      // Connect
-      await room.connect(env.PUBLIC_LIVEKIT_URL!, token);
-      localIdentity = room.localParticipant.identity;
-
-      // Enable microphone
-      await room.localParticipant.setMicrophoneEnabled(true);
-
-      // Populate existing participants
-      participants = Array.from(room.remoteParticipants.values()).map((p) => ({
-        identity: p.identity,
-        name: p.name ?? p.identity,
-        isSpeaking: p.isSpeaking
-      }));
-
-      status = 'connected';
-    } catch (e) {
-      errorMsg = e instanceof Error ? e.message : 'Failed to connect';
-      status = 'disconnected';
-    }
-  }
-
-  function leaveRoom() {
-    room?.disconnect();
-    room = null;
-    participants = [];
-    isMuted = false;
-    localIdentity = '';
-    status = 'disconnected';
-  }
-
-  function toggleMute() {
-    if (!room) return;
-    isMuted = !isMuted;
-    room.localParticipant.setMicrophoneEnabled(!isMuted);
-  }
 </script>
 
 <svelte:head>
@@ -128,46 +17,49 @@
     Test LiveKit voice connectivity. Open two browser windows and join the same room.
   </p>
 
-  {#if status === 'disconnected'}
+  {#if voice.state.status === 'disconnected' || voice.state.status === 'error'}
     <div class="join-form">
       <Input bind:value={roomName} placeholder="Room name" />
-      <Button variant="primary" onclick={joinRoom}>Join Room</Button>
+      <Button variant="primary" onclick={() => voice.joinRoom(roomName.trim())}>Join Room</Button>
     </div>
-    {#if errorMsg}
-      <p class="error">{errorMsg}</p>
+    {#if voice.state.status === 'error'}
+      <p class="error">{voice.state.message}</p>
     {/if}
-  {:else if status === 'connecting'}
-    <p class="connecting">Connecting...</p>
+  {:else if voice.state.status === 'connecting'}
+    <p class="connecting">Connecting to {voice.state.roomName}...</p>
   {:else}
     <div class="room-info">
       <div class="room-header">
-        <h2>Room: {roomName}</h2>
-        <span class="you">You: {localIdentity}</span>
+        <h2>Room: {voice.roomName}</h2>
+        <span class="you">Participants: {voice.participantCount}</span>
       </div>
 
       <div class="controls">
         <IconButton
-          icon={isMuted ? 'mic-off' : 'mic'}
+          icon={voice.isMuted ? 'mic-off' : 'mic'}
           shape="circle"
-          label={isMuted ? 'Unmute' : 'Mute'}
-          onclick={toggleMute}
+          label={voice.isMuted ? 'Unmute' : 'Mute'}
+          onclick={() => voice.toggleMute()}
         />
-        <Button variant="danger" onclick={leaveRoom}>
+        <Button variant="danger" onclick={() => voice.leaveRoom()}>
           <Icon name="phone-off" size={16} />
           Leave
         </Button>
       </div>
 
       <div class="participants">
-        <h3>Participants ({participants.length})</h3>
-        {#if participants.length === 0}
+        <h3>Remote Participants ({voice.participants.size})</h3>
+        {#if voice.participants.size === 0}
           <p class="empty">No one else is here yet...</p>
         {:else}
           <ul>
-            {#each participants as p (p.identity)}
+            {#each [...voice.participants.values()] as p (p.identity)}
               <li class:speaking={p.isSpeaking}>
                 <span class="dot" class:active={p.isSpeaking}></span>
                 {p.name}
+                {#if p.isMuted}
+                  <span class="muted-label">muted</span>
+                {/if}
                 {#if p.isSpeaking}
                   <span class="speaking-label">speaking</span>
                 {/if}
@@ -285,6 +177,12 @@
 
   .dot.active {
     background: var(--color-positive);
+  }
+
+  .muted-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-error);
+    margin-left: auto;
   }
 
   .speaking-label {

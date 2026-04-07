@@ -21,7 +21,6 @@
 </script>
 
 {#if open}
-  <!-- svelte-ignore a11y_click_events_have_key_events -->
   <div class="modal-backdrop" role="presentation" onclick={handleBackdropClick}>
     <div class="modal size-{size}" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <header class="modal-header">

@@ -1,8 +1,10 @@
 <script lang="ts">
   import { Icon, Button } from '$lib/components/ui';
   import { getNotificationStore } from '$lib/stores/notifications.svelte';
+  import { getVoiceStore } from '$lib/stores/voice.svelte';
   import { getUserStore } from '$lib/stores/user.svelte';
   import NotificationTray from './NotificationTray.svelte';
+  import VoiceIndicator from '$lib/components/voice/VoiceIndicator.svelte';
 
   interface Props {
     title?: string;
@@ -14,6 +16,7 @@
 
   const userStore = getUserStore();
   const notifications = userStore.user ? getNotificationStore() : null;
+  const voice = userStore.user ? getVoiceStore() : null;
 
   let triggerEl: HTMLDivElement | undefined = $state();
 
@@ -39,6 +42,9 @@
   </div>
 
   <div class="header-actions">
+    {#if voice?.isConnected}
+      <VoiceIndicator store={voice} />
+    {/if}
     {#if notifications}
       <div class="notification-trigger" bind:this={triggerEl}>
         <Button variant="ghost" size="sm" onclick={() => notifications.toggle()}>

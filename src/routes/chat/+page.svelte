@@ -3,6 +3,7 @@
   import { createChatStore } from '$lib/stores/chat.svelte';
   import { createRealtimeStore } from '$lib/stores/realtime.svelte';
   import { getNotificationStore } from '$lib/stores/notifications.svelte';
+  import { getVoiceStore } from '$lib/stores/voice.svelte';
   import ChatLayout from '$lib/components/chat/ChatLayout.svelte';
   import ConversationList from '$lib/components/chat/ConversationList.svelte';
   import MessageThread from '$lib/components/chat/MessageThread.svelte';
@@ -38,6 +39,56 @@
   });
 
   const notificationStore = getNotificationStore();
+  const voice = getVoiceStore();
+
+  // Track remote voice participants in the active conversation via realtime broadcasts
+  let remoteVoiceUsers = $state(new Set<string>());
+
+  const activeConvVoiceRoom = $derived(
+    chat.activeConversationId ? `chat:${chat.activeConversationId}` : null
+  );
+  const isInCall = $derived(
+    voice.isConnected && activeConvVoiceRoom !== null && voice.roomName === activeConvVoiceRoom
+  );
+  const hasActiveCall = $derived(isInCall || remoteVoiceUsers.size > 0);
+
+  async function handleCallClick() {
+    const convId = chat.activeConversationId;
+    if (!convId) return;
+    const voiceRoomName = `chat:${convId}`;
+
+    if (voice.isConnected && voice.roomName === voiceRoomName) {
+      // Leave — broadcast and disconnect
+      if (channel?.isConnected) {
+        channel.send({ type: 'voice:left', userId: user.id });
+      }
+      voice.leaveRoom();
+    } else {
+      // Join — connect, broadcast, and notify only if starting (no one else in room)
+      await voice.joinRoom(voiceRoomName);
+      if (voice.isConnected && channel?.isConnected) {
+        channel.send({
+          type: 'voice:joined',
+          userId: user.id,
+          displayName: user.displayName
+        });
+      }
+      // Only notify if we're the first in the room (starting a call, not joining one)
+      if (voice.isConnected && voice.participants.size === 0) {
+        fetch('/api/voice/notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ conversationId: convId })
+        });
+        const conv = chat.activeConversation;
+        if (conv) {
+          for (const p of conv.participants) {
+            notificationStore.sendPush(p.id);
+          }
+        }
+      }
+    }
+  }
 
   // Clear chat badge on entering the chat page — user is now looking at their conversations
   // svelte-ignore state_referenced_locally
@@ -71,20 +122,34 @@
       channel = null;
       chat.setRealtimeSend(null);
     }
+    remoteVoiceUsers = new Set();
 
     if (!convId) return;
 
     const ch = createRealtimeStore(`chat:conv-${convId}`);
 
     ch.onMessage((msg) => {
-      if (!isChatMessage(msg) || msg.senderId === user.id) return;
-      chat.handleIncomingMessage({
-        id: msg.messageId,
-        conversationId: convId,
-        senderId: msg.senderId,
-        content: msg.content,
-        timestamp: new Date(msg.timestamp)
-      });
+      // Chat messages
+      if (isChatMessage(msg) && msg.senderId !== user.id) {
+        chat.handleIncomingMessage({
+          id: msg.messageId,
+          conversationId: convId,
+          senderId: msg.senderId,
+          content: msg.content,
+          timestamp: new Date(msg.timestamp)
+        });
+        return;
+      }
+      // Voice state broadcasts
+      if (msg.type === 'voice:joined' && msg.userId !== user.id) {
+        const next = new Set(remoteVoiceUsers);
+        next.add(msg.userId as string);
+        remoteVoiceUsers = next;
+      } else if (msg.type === 'voice:left' && msg.userId !== user.id) {
+        const next = new Set(remoteVoiceUsers);
+        next.delete(msg.userId as string);
+        remoteVoiceUsers = next;
+      }
     });
 
     ch.connect();
@@ -124,7 +189,7 @@
     {/snippet}
 
     {#snippet messageThread()}
-      <MessageThread />
+      <MessageThread onCallClick={handleCallClick} {isInCall} {hasActiveCall} />
     {/snippet}
 
     {#snippet detailsPanel()}

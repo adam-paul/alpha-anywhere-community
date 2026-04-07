@@ -12,6 +12,7 @@
 
 import { json, error } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
+import { createDbClient } from '$lib/server/db/client';
 import type { RequestHandler } from './$types';
 import type { PresenceCounts, RobloxPresenceResponse } from '$lib/types';
 
@@ -22,6 +23,14 @@ export const GET: RequestHandler = async ({ locals, platform }) => {
   if (!platform?.env?.KV) error(503, 'KV not available');
 
   const kv = platform.env.KV;
+
+  // Look up current user's Roblox ID for per-user presence
+  let currentUserRobloxId: string | null = null;
+  if (platform?.env?.DB) {
+    const db = createDbClient(platform.env.DB);
+    const profile = await db.profiles.findByUserId(locals.user.id);
+    currentUserRobloxId = profile?.roblox_user_id ?? null;
+  }
 
   // A. List active launch records directly from KV
   const listed = await kv.list({ prefix: 'launch:' });
@@ -76,6 +85,7 @@ export const GET: RequestHandler = async ({ locals, platform }) => {
 
   // C. Reconcile
   const counts: PresenceCounts = {};
+  let currentUserGameId: string | null = null;
 
   await Promise.all(
     activeLaunches.map(async ({ robloxUserId, gameId }) => {
@@ -84,6 +94,7 @@ export const GET: RequestHandler = async ({ locals, platform }) => {
       if (presenceType === undefined) {
         // No Roblox API response (API failed or no key) — count based on launch record alone
         counts[gameId] = (counts[gameId] ?? 0) + 1;
+        if (robloxUserId === currentUserRobloxId) currentUserGameId = gameId;
         return;
       }
 
@@ -91,9 +102,10 @@ export const GET: RequestHandler = async ({ locals, platform }) => {
         // In-game: refresh TTL and count
         await kv.put(`launch:${robloxUserId}`, gameId, { expirationTtl: LAUNCH_TTL });
         counts[gameId] = (counts[gameId] ?? 0) + 1;
+        if (robloxUserId === currentUserRobloxId) currentUserGameId = gameId;
       }
     })
   );
 
-  return json({ counts });
+  return json({ counts, currentUserGameId });
 };

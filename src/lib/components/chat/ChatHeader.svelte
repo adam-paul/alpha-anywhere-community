@@ -6,9 +6,22 @@
   interface Props {
     conversation: Conversation;
     onInfoClick?: () => void;
+    onCallClick?: () => void;
+    isInCall?: boolean;
+    hasActiveCall?: boolean;
   }
 
-  let { conversation, onInfoClick }: Props = $props();
+  let {
+    conversation,
+    onInfoClick,
+    onCallClick,
+    isInCall = false,
+    hasActiveCall = false
+  }: Props = $props();
+
+  const callLabel = $derived(
+    isInCall ? 'Leave voice call' : hasActiveCall ? 'Join voice call' : 'Start voice call'
+  );
 
   const presence = getPresenceStore();
   const participants = $derived(conversation.participants);
@@ -63,6 +76,18 @@
   </div>
 
   <div class="header-right">
+    {#if onCallClick}
+      <button
+        class="call-button"
+        class:in-call={isInCall}
+        class:active-call={hasActiveCall && !isInCall}
+        onclick={onCallClick}
+        aria-label={callLabel}
+        title={callLabel}
+      >
+        <IconButton icon={isInCall ? 'phone-off' : 'phone'} shape="circle" label={callLabel} />
+      </button>
+    {/if}
     <IconButton icon="info" shape="circle" label="Toggle chat details" onclick={onInfoClick} />
   </div>
 </header>
@@ -110,5 +135,33 @@
     display: flex;
     align-items: center;
     gap: var(--space-2);
+  }
+
+  .call-button {
+    all: unset;
+    display: flex;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  .call-button.in-call :global(button) {
+    color: var(--color-error);
+    border-color: var(--color-error);
+  }
+
+  .call-button.active-call :global(button) {
+    color: var(--color-positive);
+    border-color: var(--color-positive);
+    animation: call-pulse 1.5s infinite;
+  }
+
+  @keyframes call-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
   }
 </style>

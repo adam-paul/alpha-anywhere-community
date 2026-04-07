@@ -1,6 +1,14 @@
 <script lang="ts">
   import { getChatStore } from '$lib/stores/chat.svelte';
   import ChatHeader from './ChatHeader.svelte';
+
+  interface Props {
+    onCallClick?: () => void;
+    isInCall?: boolean;
+    hasActiveCall?: boolean;
+  }
+
+  let { onCallClick, isInCall, hasActiveCall }: Props = $props();
   import MessageBubble from './MessageBubble.svelte';
   import MessageComposer from './MessageComposer.svelte';
   import DateSeparator from './DateSeparator.svelte';
@@ -51,6 +59,9 @@
     <ChatHeader
       conversation={chat.activeConversation}
       onInfoClick={() => chat.toggleDetailsPanel()}
+      {onCallClick}
+      {isInCall}
+      {hasActiveCall}
     />
 
     <div class="messages-container" bind:this={messagesContainer}>

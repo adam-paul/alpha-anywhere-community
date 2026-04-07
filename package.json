@@ -24,7 +24,7 @@
   "scripts": {
     "dev": "vite dev",
     "dev:cf": "vite build && wrangler pages dev .svelte-kit/cloudflare --port 6173",
-    "dev:realtime": "cd infra/realtime && wrangler dev",
+    "dev:realtime": "cd infra/realtime && wrangler dev & PID=$!; trap 'kill -9 -$PID 2>/dev/null; exit' INT TERM; wait $PID",
     "build": "vite build",
     "preview": "wrangler pages dev .svelte-kit/cloudflare",
     "format": "prettier --write .",

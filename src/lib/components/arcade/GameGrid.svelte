@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getArcadeStore } from '$lib/stores/arcade.svelte';
+  import { getVoiceStore } from '$lib/stores/voice.svelte';
   import type { Game, LaunchOptions } from '$lib/types';
   import { launchGame } from '$lib/utils/game-launcher';
   import { Placeholder } from '$lib/components/ui';
@@ -14,6 +15,7 @@
   let { disabled = false, onEdit, onRobloxLinkNeeded }: Props = $props();
 
   const arcade = getArcadeStore();
+  const voice = getVoiceStore();
 
   const games = $derived(arcade.filteredGames);
 
@@ -79,7 +81,8 @@
     if (!result.success) {
       console.error('Failed to launch game:', result.error);
     } else {
-      console.log(`Launched via ${result.method}:`, game.id);
+      // Auto-join voice room for this game (leaves any current room)
+      voice.joinRoom(`game:${game.id}`);
     }
   }
 </script>

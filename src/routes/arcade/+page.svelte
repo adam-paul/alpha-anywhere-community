@@ -2,6 +2,7 @@
   import { invalidateAll } from '$app/navigation';
   import { createArcadeStore } from '$lib/stores/arcade.svelte';
   import { createGatingStore } from '$lib/stores/gating.svelte';
+  import { getVoiceStore } from '$lib/stores/voice.svelte';
   import { GATING_UNIT_LABELS } from '$lib/constants';
   import type { Game, GameFormData, GameFormMode, GatingState } from '$lib/types';
   import { IconButton, PageHeader } from '$lib/components/ui';
@@ -17,6 +18,7 @@
   // Create stores
   // svelte-ignore state_referenced_locally
   const arcade = createArcadeStore({ games: data.games, robloxLinked: data.robloxLinked });
+  const voice = getVoiceStore();
   // svelte-ignore state_referenced_locally
   const gating = createGatingStore(data.gatingState);
 
@@ -66,8 +68,17 @@
       try {
         const res = await fetch('/api/arcade/presence');
         if (res.ok && active) {
-          const { counts } = await res.json();
+          const { counts, currentUserGameId } = await res.json();
           arcade.setPresenceCounts(counts);
+
+          // Auto-leave voice if user is in a game voice room but no longer in-game
+          if (
+            voice.isConnected &&
+            voice.roomName?.startsWith('game:') &&
+            currentUserGameId === null
+          ) {
+            voice.leaveRoom();
+          }
         }
       } catch {
         // Silently ignore polling failures

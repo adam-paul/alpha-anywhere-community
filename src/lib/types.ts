@@ -135,6 +135,7 @@ export interface PendingFriendRequest extends FriendSummary {
 export type NotificationType =
   | 'friend_request_received'
   | 'friend_request_accepted'
+  | 'voice_call_started'
   | 'conversation_created';
 
 export interface Notification {
@@ -399,4 +400,32 @@ export interface RealtimeStore {
   connect(): void;
   disconnect(): void;
   onMessage(handler: (message: ChannelMessage) => void): () => void;
+}
+
+// Voice chat
+
+export interface VoiceParticipant {
+  identity: string;
+  name: string;
+  isSpeaking: boolean;
+  isMuted: boolean;
+}
+
+export type VoiceConnectionState =
+  | { status: 'disconnected' }
+  | { status: 'connecting'; roomName: string }
+  | { status: 'connected'; roomName: string }
+  | { status: 'error'; message: string };
+
+export interface VoiceStore {
+  readonly state: VoiceConnectionState;
+  readonly isConnected: boolean;
+  readonly roomName: string | null;
+  readonly participants: ReadonlyMap<string, VoiceParticipant>;
+  readonly participantCount: number;
+  readonly isMuted: boolean;
+  readonly localParticipant: VoiceParticipant | null;
+  joinRoom(roomName: string): Promise<void>;
+  leaveRoom(): void;
+  toggleMute(): void;
 }

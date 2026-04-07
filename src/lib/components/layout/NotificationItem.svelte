@@ -23,6 +23,8 @@
         return `${name} accepted your friend request`;
       case 'conversation_created':
         return `${name} started a conversation with you`;
+      case 'voice_call_started':
+        return `${name} is waiting for you in a voice call`;
     }
   });
 
@@ -33,6 +35,8 @@
       case 'friend_request_accepted':
         return `/profile/${notification.actorId}`;
       case 'conversation_created':
+        return '/chat';
+      case 'voice_call_started':
         return '/chat';
     }
   });
@@ -111,7 +115,6 @@
   {#if notification.type === 'friend_request_received' && !notification.read}
     <div
       class="notification-actions"
-      role="toolbar"
       onclick={(e) => e.stopPropagation()}
       onkeydown={(e) => e.stopPropagation()}
     >
