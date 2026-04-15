@@ -1,6 +1,7 @@
 import { getContext, setContext } from 'svelte';
 import type {
   ChatState,
+  ChatSendError,
   Conversation,
   Message,
   ChatParticipant,
@@ -24,6 +25,7 @@ export function createChatStore(options: CreateChatStoreOptions): ChatState {
   let composeText = $state('');
   let isDetailsPanelOpen = $state(false);
   let isNewChatModalOpen = $state(false);
+  let sendError = $state<ChatSendError | null>(null);
 
   // Realtime send function — set by the page when WebSocket connects
   let realtimeSend: ((msg: object) => void) | null = null;
@@ -144,6 +146,17 @@ export function createChatStore(options: CreateChatStoreOptions): ChatState {
       } else {
         // Remove failed message
         messages[convId] = messages[convId].filter((m) => m.id !== tempId);
+        // Surface a moderation rejection so the user sees why the send failed.
+        // Non-moderation failures keep the existing silent-drop behavior.
+        const body = await res.json().catch(() => null);
+        if (body?.error === 'moderation_rejected' && typeof body.message === 'string') {
+          sendError = { category: String(body.category ?? 'harmful'), message: body.message };
+          // Restore the user's text so they can edit it rather than retype.
+          composeText = trimmed;
+        } else if (body?.error === 'moderation_unavailable') {
+          sendError = { category: 'unavailable', message: body.message };
+          composeText = trimmed;
+        }
       }
     } catch {
       messages[convId] = messages[convId].filter((m) => m.id !== tempId);
@@ -267,6 +280,12 @@ export function createChatStore(options: CreateChatStoreOptions): ChatState {
     },
     set composeText(value) {
       composeText = value;
+      // Any keystroke clears a pending moderation error — if the user
+      // is editing, they haven't retried the rejected content yet.
+      if (sendError !== null) sendError = null;
+    },
+    get sendError() {
+      return sendError;
     },
     get isDetailsPanelOpen() {
       return isDetailsPanelOpen;

@@ -24,6 +24,9 @@
   // svelte-ignore state_referenced_locally
   let editInterests = $state<Interest[]>([...data.profile.interests]);
 
+  // Moderation rejection surface — cleared when the offending field is edited.
+  let saveError = $state<{ field: 'bio' | 'location'; message: string } | null>(null);
+
   // Format joined date from ISO string
   const joinedDate = $derived(
     new Date(data.user.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
@@ -73,6 +76,7 @@
 
   async function saveProfile() {
     editMode = 'saving';
+    saveError = null;
     try {
       const response = await fetch('/api/profile', {
         method: 'PATCH',
@@ -85,6 +89,23 @@
       });
 
       if (!response.ok) {
+        const body = await response.json().catch(() => null);
+        if (
+          body?.error === 'moderation_rejected' &&
+          (body.field === 'bio' || body.field === 'location')
+        ) {
+          saveError = { field: body.field, message: String(body.message ?? '') };
+          editMode = 'editing';
+          return;
+        }
+        if (body?.error === 'moderation_unavailable') {
+          saveError = {
+            field: body.field === 'location' ? 'location' : 'bio',
+            message: String(body.message ?? 'Moderation is temporarily unavailable.')
+          };
+          editMode = 'editing';
+          return;
+        }
         throw new Error('Failed to save profile');
       }
 
@@ -181,8 +202,14 @@
         value={editBio}
         placeholder="Tell others about yourself..."
         rows={4}
-        oninput={(e) => (editBio = (e.target as HTMLTextAreaElement).value)}
+        oninput={(e) => {
+          editBio = (e.target as HTMLTextAreaElement).value;
+          if (saveError?.field === 'bio') saveError = null;
+        }}
       />
+      {#if saveError?.field === 'bio'}
+        <p class="field-error" role="alert">{saveError.message}</p>
+      {/if}
     </section>
 
     <section class="profile-section">
@@ -190,8 +217,14 @@
       <Input
         value={editLocation}
         placeholder="City, State (e.g., Austin, TX)"
-        oninput={(e) => (editLocation = (e.target as HTMLInputElement).value)}
+        oninput={(e) => {
+          editLocation = (e.target as HTMLInputElement).value;
+          if (saveError?.field === 'location') saveError = null;
+        }}
       />
+      {#if saveError?.field === 'location'}
+        <p class="field-error" role="alert">{saveError.message}</p>
+      {/if}
     </section>
 
     <section class="profile-section">
@@ -369,6 +402,13 @@
     margin: 0 0 var(--space-4) 0;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+  }
+
+  .field-error {
+    margin: var(--space-2) 0 0 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-danger, #b91c1c);
+    line-height: 1.4;
   }
 
   .about-text {

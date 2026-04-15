@@ -88,7 +88,11 @@
       {/if}
     </div>
 
-    <MessageComposer bind:value={chat.composeText} onsubmit={handleSend} />
+    <MessageComposer
+      bind:value={chat.composeText}
+      error={chat.sendError?.message ?? null}
+      onsubmit={handleSend}
+    />
   {:else}
     <div class="no-conversation">
       <Placeholder

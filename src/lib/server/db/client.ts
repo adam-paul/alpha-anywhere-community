@@ -23,7 +23,9 @@ import type {
   UpdateGameInput,
   CreateNotificationInput,
   LinkRobloxInput,
-  ConversationWithDetails
+  ConversationWithDetails,
+  DbModerationEvent,
+  CreateModerationEventInput
 } from './types';
 
 /**
@@ -983,6 +985,44 @@ export function createDbClient(db: D1Database) {
           )
           .bind(userId)
           .run();
+      }
+    },
+
+    // =========================================================================
+    // MODERATION
+    // =========================================================================
+    moderation: {
+      /**
+       * Persist a flagged moderation decision. Clean decisions produce no row.
+       */
+      async createEvent(input: CreateModerationEventInput): Promise<DbModerationEvent> {
+        const result = await db
+          .prepare(
+            `
+							INSERT INTO moderation_events (
+								user_id, source, category, subcategory, severity,
+								detected_by, confidence, flagged_content, detection_details, latency_ms
+							)
+							VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+							RETURNING *
+						`
+          )
+          .bind(
+            input.user_id,
+            input.source,
+            input.category,
+            input.subcategory,
+            input.severity,
+            input.detected_by,
+            input.confidence ?? null,
+            input.flagged_content,
+            input.detection_details ?? null,
+            input.latency_ms ?? null
+          )
+          .first<DbModerationEvent>();
+
+        if (!result) throw new Error('Failed to create moderation event');
+        return result;
       }
     }
   };

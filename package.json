@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "workspaces": [
     "packages/shared",
+    "packages/evals",
     "infra/lwai-proxy",
     "infra/realtime"
   ],
@@ -11,6 +12,7 @@
     "@sveltejs/adapter-cloudflare": "^7.2.8",
     "@sveltejs/kit": "^2.56.1",
     "@sveltejs/vite-plugin-svelte": "^5.1.1",
+    "@types/bun": "^1.3.12",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.1",
@@ -38,7 +40,8 @@
     "db:seed:remote": "bun run scripts/seed-games.ts --remote",
     "db:seed:clear": "bun run scripts/seed-games.ts --clear",
     "db:seed:remote:clear": "bun run scripts/seed-games.ts --remote --clear",
-    "realtime:deploy": "cd infra/realtime && bunx wrangler deploy"
+    "realtime:deploy": "cd infra/realtime && bunx wrangler deploy",
+    "test:evals": "cd packages/evals && bun test"
   },
   "lint-staged": {
     "*.{js,ts,svelte,css,md,json}": "prettier --write"

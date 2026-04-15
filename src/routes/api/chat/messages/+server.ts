@@ -1,5 +1,6 @@
 import { json, error } from '@sveltejs/kit';
 import { createDbClient } from '$lib/server/db/client';
+import { getEvaluator } from '$lib/server/evals';
 import type { RequestHandler } from './$types';
 
 /** GET — Load messages for a conversation (paginated). */
@@ -67,10 +68,50 @@ export const POST: RequestHandler = async ({ locals, platform, request }) => {
     error(403, 'Not a participant');
   }
 
+  const trimmed = content.trim();
+
+  // Moderation gate — block before any D1 write.
+  const evaluator = getEvaluator();
+  const decision = await evaluator.moderate(trimmed, 'chat_message');
+
+  if (decision.status === 'flagged') {
+    const primary = decision.categories[0];
+    await db.moderation.createEvent({
+      user_id: locals.user.id,
+      source: 'chat_message',
+      category: primary.category,
+      subcategory: primary.subcategory,
+      severity: decision.severity ?? 'medium',
+      detected_by: decision.detectedBy === 'none' ? 'gemini' : decision.detectedBy,
+      confidence: primary.confidence,
+      flagged_content: trimmed,
+      detection_details: JSON.stringify({ gemini: decision.gemini, openai: decision.openai }),
+      latency_ms: decision.latencyMs
+    });
+    return json(
+      {
+        error: 'moderation_rejected',
+        category: primary.category,
+        message: decision.userMessage
+      },
+      { status: 400 }
+    );
+  }
+
+  if (decision.status === 'unavailable') {
+    return json(
+      {
+        error: 'moderation_unavailable',
+        message: decision.userMessage
+      },
+      { status: 503 }
+    );
+  }
+
   const message = await db.messages.create({
     conversation_id: conversationId,
     sender_id: locals.user.id,
-    content: content.trim()
+    content: trimmed
   });
 
   return json({

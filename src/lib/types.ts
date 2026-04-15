@@ -287,12 +287,19 @@ export type MessageLoadState =
   | { status: 'error'; message: string }
   | { status: 'loaded' };
 
+/** Transient send-failure surface — cleared on next composer keystroke. */
+export interface ChatSendError {
+  category: string; // free-form for now; domain type lives in @alpha/evals
+  message: string;
+}
+
 export interface ChatState {
   readonly conversations: Conversation[];
   readonly activeConversationId: string | null;
   readonly currentUserId: string;
   readonly friends: ChatParticipant[];
   readonly messageLoadState: MessageLoadState;
+  readonly sendError: ChatSendError | null;
   searchQuery: string;
   composeText: string;
   isDetailsPanelOpen: boolean;

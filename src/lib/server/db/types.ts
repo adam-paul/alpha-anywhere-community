@@ -11,6 +11,13 @@ import type {
   NotificationType,
   UserRole
 } from '$lib/types';
+import type {
+  DetectedBy,
+  FlaggedCategory,
+  ModerationSeverity,
+  ModerationSource,
+  ModerationSubcategory
+} from '@alpha/evals/types';
 
 // =============================================================================
 // Core Tables
@@ -197,4 +204,41 @@ export interface CreateNotificationInput {
   actor_id: string;
   type: DbNotification['type'];
   reference_id?: string;
+}
+
+// =============================================================================
+// Moderation Events (migration 0008)
+// =============================================================================
+
+// The CHECK constraint on moderation_events.detected_by excludes 'none' —
+// clean decisions produce no row, so 'none' is never written.
+type PersistedDetectedBy = Exclude<DetectedBy, 'none'>;
+
+export interface DbModerationEvent {
+  id: string;
+  user_id: string;
+  source: ModerationSource;
+  category: FlaggedCategory;
+  subcategory: ModerationSubcategory;
+  severity: ModerationSeverity;
+  detected_by: PersistedDetectedBy;
+  confidence: number | null;
+  flagged_content: string;
+  detection_details: string | null; // JSON blob of provider responses
+  latency_ms: number | null;
+  created_at: string;
+  content_expires_at: string;
+}
+
+export interface CreateModerationEventInput {
+  user_id: string;
+  source: ModerationSource;
+  category: FlaggedCategory;
+  subcategory: ModerationSubcategory;
+  severity: ModerationSeverity;
+  detected_by: PersistedDetectedBy;
+  confidence?: number | null;
+  flagged_content: string;
+  detection_details?: string | null;
+  latency_ms?: number | null;
 }
