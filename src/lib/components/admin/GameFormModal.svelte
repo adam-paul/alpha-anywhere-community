@@ -5,7 +5,7 @@
     EngagementCategory,
     GameFormData,
     GameFormMode,
-    GameGameFormStatus,
+    GameFormStatus,
     GameType,
     RobloxLookupResult
   } from '$lib/types';

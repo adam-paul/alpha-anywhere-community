@@ -11,7 +11,7 @@
 
   let {
     id,
-    value = '',
+    value = $bindable(''),
     placeholder,
     disabled = false,
     type = 'text',

@@ -65,11 +65,30 @@ export interface ChatUnreadSignal extends ClientMessage {
   recipientId: string;
 }
 
+/** Voice state broadcast — user joined a voice room. */
+export interface VoiceJoinedBroadcast extends ClientMessage {
+  type: 'voice:joined';
+  userId: string;
+}
+
+/** Voice state broadcast — user left a voice room. */
+export interface VoiceLeftBroadcast extends ClientMessage {
+  type: 'voice:left';
+  userId: string;
+}
+
 /** Messages sent by clients to the DO. */
 export type ClientRequest = PresenceSnapshotRequest | ClientMessage;
 
 /** Messages that can arrive on the WebSocket (from DO to client). */
-export type ChannelMessage = SystemMessage | PresenceSnapshotMessage | ClientMessage;
+export type ChannelMessage =
+  | SystemMessage
+  | PresenceSnapshotMessage
+  | ChatBroadcast
+  | NotificationPush
+  | ChatUnreadSignal
+  | VoiceJoinedBroadcast
+  | VoiceLeftBroadcast;
 
 // =============================================================================
 // LWAI Gating Protocol

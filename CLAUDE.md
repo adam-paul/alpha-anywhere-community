@@ -111,6 +111,9 @@ Types are **always abstracted** to dedicated type files and have exactly one hom
 - Rare exceptions (tiny helper type truly private to one module) require justification.
 - Prefer discriminated unions over optional fields when different variants need different data.
 - No duplicates. Import shared types from `@alpha/shared` directly, not via re-export.
+- **No redeclared unions across layers.** When two types describe the same enum (e.g., `UserRole` in `$lib/types.ts` and `'student' | 'admin'` in `db/types.ts`), one must import from the other — never redeclare the literal values in two places. The compiler can't detect drift between two independent-but-equal types; only eliminating the duplication prevents it. Safe direction: server/DB types import from domain. Never the reverse (would pull server code into the client bundle).
+- **Discriminator fields must be literal types.** In a discriminated union (`type Foo = A | B | C` where each variant has a `type` field), every variant's `type` must be a specific string literal — never `string` or another wide type. One open-ended variant destroys narrowing for the entire union, because any literal string is assignable to `string`.
+- **DB `CHECK` constraints and TS unions must mirror each other.** Every SQLite `CHECK (col IN (...))` in a migration must be mirrored in exactly one TS union (usually the domain type in `$lib/types.ts`, referenced by the DB type). Adding a value in one place and not the other produces silent drift that the compiler cannot catch.
 - **Same-directory imports**: use relative `./` — expresses cohesion within a unit (`import Icon from './Icon.svelte'`).
 - **Cross-directory imports**: use `$lib/` path aliases — expresses location within the project (`import { Icon } from '$lib/components/ui'`, not `'../ui'`).
 - **No barrel exports** for app code. Barrels (`index.ts`) are only for library-style APIs with many consumers (e.g., `ui/`). Feature directories use direct file imports.

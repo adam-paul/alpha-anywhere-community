@@ -42,7 +42,7 @@ export const POST: RequestHandler = async ({ locals, platform, request }) => {
     participantIds.map((pid) =>
       db.notifications.create({
         recipient_id: pid,
-        actor_id: locals.user.id,
+        actor_id: locals.user!.id,
         type: 'conversation_created',
         reference_id: conversation.id
       })

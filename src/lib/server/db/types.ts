@@ -4,6 +4,14 @@
  * TypeScript interfaces matching the D1 schema.
  */
 
+import type {
+  EngagementCategory,
+  GameType,
+  GatingSource,
+  NotificationType,
+  UserRole
+} from '$lib/types';
+
 // =============================================================================
 // Core Tables
 // =============================================================================
@@ -13,10 +21,10 @@ export interface DbUser {
   timeback_id: string;
   email: string;
   display_name: string;
-  role: 'student' | 'admin';
+  role: UserRole;
   created_at: string;
   updated_at: string;
-  gating_source: 'lwai' | 'timeback' | null;
+  gating_source: GatingSource | null;
   gating_source_probed_at: string | null;
 }
 
@@ -74,8 +82,8 @@ export interface DbGame {
   id: string;
   title: string;
   thumbnail_url: string | null;
-  type: 'roblox' | 'minecraft' | 'web' | 'iframe';
-  engagement_category: 'side-by-side' | 'town-square' | 'ice-breaker' | 'trust-builder' | 'rivalry';
+  type: GameType;
+  engagement_category: EngagementCategory;
   launch_url: string;
   place_id: string | null; // Roblox place ID for deep links
   private_server_access_code: string | null; // UUID access code for private servers
@@ -90,7 +98,7 @@ export interface DbNotification {
   id: string;
   recipient_id: string;
   actor_id: string;
-  type: 'friend_request_received' | 'friend_request_accepted' | 'conversation_created';
+  type: NotificationType;
   reference_id: string | null;
   read_at: string | null;
   created_at: string;
