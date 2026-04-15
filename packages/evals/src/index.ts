@@ -13,7 +13,6 @@
  */
 
 export { createEvaluator } from './evaluator';
-export { PROMPT_VERSION } from './prompts/version';
 
 // Pure scoring exports — used by Plan B's eval harness.
 export { computeMetrics, computeCompositeScore, checkConstraints } from './core/scoring';

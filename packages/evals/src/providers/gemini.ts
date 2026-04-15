@@ -7,14 +7,15 @@
  */
 
 import { GEMINI_TEMPERATURE } from '../core/config';
-import { loadPrompt } from '../prompts/loader';
+import { prompts } from '../prompts';
 import type {
   CategoryFlag,
   FlaggedCategory,
   ModerationSubcategory,
+  Provider,
+  ProviderCheckOptions,
   SingleCheckResult
 } from '../types';
-import type { Provider, ProviderCheckOptions } from './provider';
 
 const GEMINI_MODEL = 'gemini-2.0-flash';
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
@@ -69,7 +70,7 @@ export function createGeminiProvider({ apiKey }: { apiKey: string }): Provider {
         return errorResult('GEMINI_API_KEY not configured', Date.now() - start);
       }
 
-      const systemPrompt = loadPrompt(opts.source);
+      const systemPrompt = prompts[opts.source];
       const userContent = `<user_content>\n${sanitizeInput(text)}\n</user_content>`;
 
       const payload = {

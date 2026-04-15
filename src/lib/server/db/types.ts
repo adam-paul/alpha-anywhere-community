@@ -16,6 +16,7 @@ import type {
   FlaggedCategory,
   ModerationSeverity,
   ModerationSource,
+  ModerationStatus,
   ModerationSubcategory
 } from '@alpha/evals/types';
 
@@ -77,7 +78,7 @@ export interface DbMessage {
   sender_id: string;
   content: string;
   image_url: string | null;
-  moderation_status: 'clean' | 'flagged' | 'reviewed' | 'removed';
+  moderation_status: ModerationStatus;
   moderation_flags: string | null; // JSON array string
   moderation_notes: string | null;
   created_at: string;

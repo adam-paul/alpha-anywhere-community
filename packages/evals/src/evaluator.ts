@@ -15,14 +15,7 @@ import { mergeResults } from './core/merge';
 import { determineSeverity, userFacingMessage } from './core/severity';
 import { createGeminiProvider } from './providers/gemini';
 import { createOpenAIProvider } from './providers/openai';
-import type { Provider } from './providers/provider';
-import type {
-  Evaluator,
-  EvaluatorConfig,
-  ModerationDecision,
-  ModerationSource,
-  SingleCheckResult
-} from './types';
+import type { Evaluator, EvaluatorConfig, ModerationDecision, ModerationSource } from './types';
 
 const DEFAULT_TIMEOUT_MS = 5000;
 
@@ -36,11 +29,11 @@ export function createEvaluator(config: EvaluatorConfig): Evaluator {
       const start = Date.now();
 
       // Run providers in parallel with independent per-provider timeouts.
-      // `runWithTimeout` never throws (catches inside) so Promise.all is
-      // safe here — one provider's failure cannot abort the other.
+      // Both providers capture errors internally and return SingleCheckResult
+      // with `.error` set, so one provider's failure cannot abort the other.
       const [geminiResult, openaiResult] = await Promise.all([
-        runWithTimeout(gemini, text, source, timeoutMs),
-        runWithTimeout(openai, text, source, timeoutMs)
+        gemini.check(text, { source, signal: AbortSignal.timeout(timeoutMs) }),
+        openai.check(text, { source, signal: AbortSignal.timeout(timeoutMs) })
       ]);
 
       const latencyMs = Date.now() - start;
@@ -89,31 +82,4 @@ export function createEvaluator(config: EvaluatorConfig): Evaluator {
       };
     }
   };
-}
-
-/**
- * Run a provider with its own AbortSignal.timeout so one slow provider
- * doesn't affect the other. Providers never throw — but we still wrap in
- * try/catch as a belt-and-suspenders measure for unexpected errors.
- */
-async function runWithTimeout(
-  provider: Provider,
-  text: string,
-  source: ModerationSource,
-  timeoutMs: number
-): Promise<SingleCheckResult> {
-  const signal = AbortSignal.timeout(timeoutMs);
-  try {
-    return await provider.check(text, { source, signal });
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    return {
-      flagged: false,
-      categories: [],
-      explanation: null,
-      error: `${provider.name}: ${msg}`,
-      latencyMs: timeoutMs, // worst-case bound; the clock is already gone
-      rawResponse: null
-    };
-  }
 }

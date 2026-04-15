@@ -89,31 +89,26 @@ export interface SingleCheckResult {
   rawResponse: unknown;
 }
 
-/** Result of merging both providers (either-can-veto). */
-export interface MergedModerationResult {
+/**
+ * What the evaluator returns to the caller.
+ *
+ * `status` discriminates three outcomes:
+ *   - 'clean': nothing flagged; caller proceeds with the write.
+ *   - 'flagged': one or both providers flagged; caller persists a
+ *     `moderation_events` row and returns a rejection response.
+ *   - 'unavailable': both providers errored; caller rejects with a generic
+ *     "try again" message and does NOT persist a moderation_events row.
+ *
+ * `gemini` and `openai` carry the raw provider results so the callsite can
+ * persist them to moderation_events.detection_details without re-running.
+ */
+export interface ModerationDecision {
+  status: 'clean' | 'flagged' | 'unavailable';
   flagged: boolean;
   categories: CategoryFlag[];
   severity: ModerationSeverity | null;
   userMessage: string | null;
   detectedBy: DetectedBy;
-}
-
-/**
- * Three possible outcomes of a moderation call. `unavailable` means both
- * providers errored; the caller should reject the write but distinguish the
- * reason in UX (generic "try again") and not persist a moderation_events
- * row (nothing was actually flagged).
- */
-export type ModerationStatusOutcome = 'clean' | 'flagged' | 'unavailable';
-
-/**
- * What the evaluator returns to the caller.
- *
- * `gemini` and `openai` carry the raw provider results so the callsite can
- * persist them to moderation_events.detection_details without re-running.
- */
-export interface ModerationDecision extends MergedModerationResult {
-  status: ModerationStatusOutcome;
   latencyMs: number;
   gemini: SingleCheckResult;
   openai: SingleCheckResult;
@@ -132,6 +127,25 @@ export interface EvaluatorConfig {
 
 export interface Evaluator {
   moderate(text: string, source: ModerationSource): Promise<ModerationDecision>;
+}
+
+// =============================================================================
+// Provider API — contract both Gemini and OpenAI impls satisfy
+// =============================================================================
+
+export interface ProviderCheckOptions {
+  source: ModerationSource;
+  signal: AbortSignal;
+}
+
+export interface Provider {
+  readonly name: 'gemini' | 'openai';
+  /**
+   * Never throws — failures (timeout, HTTP error, parse error) become
+   * `SingleCheckResult.error`. Preserves independent fate-tracking when
+   * the evaluator runs providers in parallel.
+   */
+  check(text: string, opts: ProviderCheckOptions): Promise<SingleCheckResult>;
 }
 
 // =============================================================================

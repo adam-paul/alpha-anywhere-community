@@ -13,9 +13,10 @@ import type {
   CategoryFlag,
   FlaggedCategory,
   ModerationSubcategory,
+  Provider,
+  ProviderCheckOptions,
   SingleCheckResult
 } from '../types';
-import type { Provider, ProviderCheckOptions } from './provider';
 
 const OPENAI_URL = 'https://api.openai.com/v1/moderations';
 const OPENAI_MODEL = 'omni-moderation-latest';
