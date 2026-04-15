@@ -1,12 +1,12 @@
 # Alpha Anywhere Community: Roadmap
 
-**Last updated:** 2026-04-05
+**Last updated:** 2026-04-06
 
 ---
 
 ## Current State
 
-Full-featured community portal with real-time chat, arcade with work-wall gating, student profiles, friend system, notifications, and admin tools. Infrastructure: Cloudflare Pages + D1 + KV, Durable Objects with WebSocket Hibernation API for real-time, LWAI Lambda proxy for learning analytics, Timeback SSO.
+Full-featured community portal with real-time chat, voice chat, arcade with work-wall gating, student profiles, friend system, notifications, and admin tools. Infrastructure: Cloudflare Pages + D1 + KV, Durable Objects for real-time, self-hosted LiveKit for voice, LWAI Lambda proxy for learning analytics, Timeback SSO.
 
 ### Infrastructure
 
@@ -22,6 +22,7 @@ Full-featured community portal with real-time chat, arcade with work-wall gating
 | **User Provisioning**  | ✅     | Auto-creates D1 user + profile on first authenticated request                                                        |
 | **Realtime**           | ✅     | Durable Object Worker (`alpha-realtime`) with WebSocket Hibernation API, cookie auth via `ws.alpha-community.school` |
 | **Shared Types**       | ✅     | `@alpha/shared` workspace package for cross-project contracts                                                        |
+| **Voice Chat**         | ✅     | Self-hosted LiveKit on DigitalOcean, Caddy reverse proxy for TLS, TURN on port 3478                                  |
 | **Local Dev Realtime** | ✅     | `PUBLIC_REALTIME_URL` env var, `bun run dev:realtime` starts Worker locally on port 8787                             |
 
 ### Features
@@ -36,6 +37,7 @@ Full-featured community portal with real-time chat, arcade with work-wall gating
 | **Arcade Presence**   | Integrated in arcade | Complete | KV ✅ + Roblox Presence API        |
 | **Platform Presence** | App-wide             | Complete | Durable Object (real-time)         |
 | **Notifications**     | App-wide             | Complete | D1 ✅ + WebSocket (real-time)      |
+| **Voice Chat**        | Chat + Arcade        | Complete | LiveKit (self-hosted, WebRTC)      |
 | **Admin Tools**       | Inline in arcade     | Complete | D1 ✅ (game CRUD, DevTools)        |
 | **UI System**         | `$lib/components/ui` | Complete | N/A                                |
 
@@ -99,6 +101,20 @@ Geographic visualization of student locations. Geocode to lat/lng, map component
 
 App-wide `presence:global` WebSocket channel via Durable Object. Client requests snapshot after connecting; DO responds with current online users, then broadcasts `system:join`/`system:leave` in real-time. Presence store maintains online user set. Online indicators on avatars across all pages. Online friends section in sidebar links directly to chat. 30s keepalive ping via Hibernation API auto-response.
 
+#### Voice Chat — ✅ Complete
+
+Browser-based voice chat via self-hosted LiveKit on DigitalOcean. Solves Roblox's 13+ age restriction on Spatial Voice — audio runs in the browser while games play fullscreen.
+
+- **Infrastructure:** LiveKit Server (Go binary) on a 2-vCPU DO droplet, Caddy for TLS termination, TURN on port 3478. ~$18/mo at current scale. See `docs/voice-chat-discovery.md` for SDK evaluation and architecture diagrams.
+- **Voice store:** `voice.svelte.ts` wraps LiveKit client SDK. Dynamic import avoids SSR. One room at a time enforced — joining a new room auto-leaves the current one. Map reassignment for Svelte 5 reactivity on participant changes.
+- **Token auth:** `POST /api/voice/token` mints LiveKit JWTs server-side. Identity = D1 user ID, grants scoped to specific room. Client connects directly to LiveKit (audio never touches Cloudflare).
+- **Chat integration:** Phone icon in ChatHeader with three states (start / join / leave). `voice:joined`/`voice:left` broadcast on per-conversation realtime channel for live state. `voice_call_started` notification fires only when starting a call (not joining). Room name convention: `chat:{conversationId}`.
+- **Game integration:** Auto-joins `game:{gameId}` voice room on game launch. Presence poll (`/api/arcade/presence`) returns `currentUserGameId` for the current user. Auto-leaves voice when presence shows user is no longer in-game.
+- **Header indicator:** `VoiceIndicator` component in AppHeader (left of bell, separated). Shows room context ("Voice Call" / "In Game"), participant count, mute toggle, leave button. Persists across page navigation.
+- **API routes:** `POST /api/voice/token`, `POST /api/voice/notify`
+
+**Deferred:** Voice moderation (STT + AI filtering via LiveKit Agents framework), public/persistent rooms (`is_public` flag on conversations), push-to-talk option, video, COPPA legal review. See `docs/voice-chat-discovery.md`.
+
 #### Notifications — ✅ Complete
 
 Platform-wide notification system replacing the ad-hoc friend request badge.
@@ -147,29 +163,33 @@ Platform-wide notification system replacing the ad-hoc friend request badge.
 
 ### Tier 6: Differentiation
 
-- **Alpha Voice** — Browser-based voice chat. RTC SDK (Daily.co or Agora). Blocked on provider selection.
+- **Voice Moderation** — LiveKit Agents framework: silent observer joins rooms, runs STT (Deepgram/Whisper), pipes transcripts through AI content filter. Panic button, auto-mute, staff alerts.
+- **Public Voice Rooms** — `is_public` flag on conversations. Admin-seeded persistent rooms ("Homework Hangout"). Student-created ad-hoc rooms (auto-close when empty).
 - **Avatar Generation** — AI-generated avatars from trait selection. Low priority.
 
 ---
 
 ## Architecture Decisions
 
-| Decision             | Choice                            | Rationale                                                                       |
-| -------------------- | --------------------------------- | ------------------------------------------------------------------------------- |
-| **Database**         | Cloudflare D1                     | Edge-native, no cold starts, sufficient for MVP                                 |
-| **Sessions**         | HMAC-signed cookies               | Stateless, cross-subdomain (`.alpha-community.school`)                          |
-| **Auth**             | Timeback SSO                      | Already integrated, handles Cognito                                             |
-| **Realtime**         | Durable Objects + WebSocket       | Hibernation API (cost-efficient), per-channel DO instances                      |
-| **Realtime routing** | Separate Worker + custom domain   | SvelteKit can't proxy WebSocket upgrades; Worker at `ws.alpha-community.school` |
-| **Realtime URL**     | `PUBLIC_REALTIME_URL` env var     | Configurable per environment; local dev points to `ws://localhost:8787`         |
-| **Shared types**     | `@alpha/shared` workspace package | Cross-project contracts (WebSocket protocol, LWAI gating) — one home            |
-| **Credentials**      | Encrypted D1 columns              | AES-256-GCM, app-level encrypt at write, decrypt at runtime                     |
-| **Admin tools**      | Inline in existing pages          | No separate dashboard; admin sees student view plus admin controls              |
-| **Arcade presence**  | KV launch records + Roblox API    | 5-min TTL, refreshed while in-game, polled every 15s                            |
-| **Roblox linking**   | Manual username + avatar confirm  | Soft verification only; OAuth upgrade path pending                              |
-| **LWAI query**       | Lambda proxy (SST)                | CF Workers can't do STS AssumeRole                                              |
-| **Gating state**     | Discriminated union store         | Eliminates boolean flag creep                                                   |
-| **Notifications**    | D1 + WebSocket signal             | DB source of truth, `notification:push` on `presence:global` for real-time      |
+| Decision             | Choice                            | Rationale                                                                           |
+| -------------------- | --------------------------------- | ----------------------------------------------------------------------------------- |
+| **Database**         | Cloudflare D1                     | Edge-native, no cold starts, sufficient for MVP                                     |
+| **Sessions**         | HMAC-signed cookies               | Stateless, cross-subdomain (`.alpha-community.school`)                              |
+| **Auth**             | Timeback SSO                      | Already integrated, handles Cognito                                                 |
+| **Realtime**         | Durable Objects + WebSocket       | Hibernation API (cost-efficient), per-channel DO instances                          |
+| **Realtime routing** | Separate Worker + custom domain   | SvelteKit can't proxy WebSocket upgrades; Worker at `ws.alpha-community.school`     |
+| **Realtime URL**     | `PUBLIC_REALTIME_URL` env var     | Configurable per environment; local dev points to `ws://localhost:8787`             |
+| **Shared types**     | `@alpha/shared` workspace package | Cross-project contracts (WebSocket protocol, LWAI gating) — one home                |
+| **Credentials**      | Encrypted D1 columns              | AES-256-GCM, app-level encrypt at write, decrypt at runtime                         |
+| **Admin tools**      | Inline in existing pages          | No separate dashboard; admin sees student view plus admin controls                  |
+| **Arcade presence**  | KV launch records + Roblox API    | 5-min TTL, refreshed while in-game, polled every 15s                                |
+| **Roblox linking**   | Manual username + avatar confirm  | Soft verification only; OAuth upgrade path pending                                  |
+| **LWAI query**       | Lambda proxy (SST)                | CF Workers can't do STS AssumeRole                                                  |
+| **Gating state**     | Discriminated union store         | Eliminates boolean flag creep                                                       |
+| **Notifications**    | D1 + WebSocket signal             | DB source of truth, `notification:push` on `presence:global` for real-time          |
+| **Voice chat**       | Self-hosted LiveKit on DO         | Open source, $0 per-minute, full data sovereignty for COPPA, Agents for moderation  |
+| **Voice TLS**        | Caddy reverse proxy               | Auto Let's Encrypt, WebSocket upgrade support, simpler than nginx for this use case |
+| **Voice rooms**      | One room at a time per user       | Safety: no side-channel cliques within game servers. Simplifies client state        |
 
 ---
 
@@ -208,7 +228,8 @@ Small items that don't belong to a tier but need attention eventually.
 - **Add Roblox OAuth** — Replace manual username entry with OAuth flow. Requires Roblox app review/approval.
 - **Harden Roblox game launch/auth flow** — If the user isn't logged into Roblox, the deep link loses its params and lands on the Roblox home page (except on Windows). Needs detection or guidance for the user.
 - **Production deploy** — Replicate preview environment in production Cloudflare Pages. Separate D1 database, set secrets, verify SSO callbacks, smoke test.
-- **Set up docs** — Pick a documentation stack and stand up a docs site.
+- **Codebase docs** — Developer-facing: API reference, component catalog, deployment guides. Evaluate Starlight, VitePress, or in-app `/docs` route.
+- **Knowledge base** — Team-facing: specs, discovery docs, research, context dumps. Evaluate Obsidian, Notion, or similar. Currently scattered across `docs/` markdown files.
 
 ---
 
@@ -227,5 +248,4 @@ Small items that don't belong to a tier but need attention eventually.
 1. **Profile stats:** What metrics to show on student profile pages? Options from LWAI: total levels mastered, active minutes, accuracy rate, streak days.
 2. **Roblox private servers:** API access model? Pre-provisioned vs on-demand? Cost per server?
 3. **Minecraft feasibility:** Bedrock vs Java? Realms vs self-hosted?
-4. **Voice provider:** Agora vs Daily.co?
-5. **Avatar generation:** Which image model? Cost?
+4. **Avatar generation:** Which image model? Cost?

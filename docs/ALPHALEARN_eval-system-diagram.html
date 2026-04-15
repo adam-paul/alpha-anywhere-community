@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Content Moderation Eval System</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"
+            integrity="sha384-rbtjAdnIQE/aQJGEgXrVUlMibdfTSa4PQju4HDhN3sR2PmaKFzhEafuePsl9H/9I"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0f1117;
+            color: #e1e4e8;
+            padding: 40px;
+        }
+        h1 { font-size: 28px; margin-bottom: 8px; color: #fff; }
+        h2 { font-size: 20px; margin: 48px 0 8px; color: #c9d1d9; }
+        .subtitle { color: #8b949e; font-size: 15px; margin-bottom: 40px; }
+        .description { color: #8b949e; font-size: 14px; margin-bottom: 24px; max-width: 800px; line-height: 1.6; }
+        .diagram-container {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+        }
+        .diagram-label {
+            font-size: 13px;
+            color: #58a6ff;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        .legend {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            padding: 16px;
+            background: #1c2128;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-color {
+            width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0;
+        }
+        hr { border: none; border-top: 1px solid #30363d; margin: 48px 0; }
+    </style>
+</head>
+<body>
+
+<h1>Content Moderation Eval System</h1>
+<p class="subtitle">Autonomous optimization of moderation prompts via Karpathy Loop</p>
+
+<!-- ===== DIAGRAM 1: SYSTEM OVERVIEW ===== -->
+
+<h2>System Overview</h2>
+<p class="description">
+    The full system has three connected cycles: the optimization loop (agent experiments overnight),
+    the deploy path (human reviews and ships), and the production feedback flywheel (real usage
+    grows the corpus). Phase 1 implements the optimization loop. Phase 2 adds the feedback flywheel.
+</p>
+
+<div class="diagram-container">
+    <div class="diagram-label">Full System — Three Connected Cycles</div>
+    <pre class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '14px' }}}%%
+flowchart LR
+
+    subgraph CORPUS["&nbsp;&nbsp;Corpus&nbsp;&nbsp;"]
+        direction TB
+        OPT["optimize.json\n(agent sees)"]
+        HOLD["holdout.json\n(human checks)"]
+    end
+
+    subgraph LOOP["&nbsp;&nbsp;Karpathy Loop  · autonomous · overnight&nbsp;&nbsp;"]
+        direction TB
+        L1["Hypothesize\nchange"] --> L2["Modify prompt\nor thresholds"]
+        L2 --> L3["Run eval\nharness"]
+        L3 --> L4{"Improved?\nConstraints\npass?"}
+        L4 -->|"Yes"| L5["✓ KEEP\nadvance branch"]
+        L4 -->|"No"| L6["✗ DISCARD\ngit reset"]
+        L5 --> L1
+        L6 --> L1
+    end
+
+    subgraph REVIEW["&nbsp;&nbsp;Human Review&nbsp;&nbsp;"]
+        direction TB
+        R1["Review\nbranch diff"] --> R2["Run holdout\neval"]
+        R2 --> R5{"Holdout\npass?"}
+        R5 -->|"Yes"| R3["Merge + bump\nprompt version"]
+        R3 --> R4["Deploy"]
+        R5 -->|"No"| R6["Diagnose:\nwhat did holdout\ncatch?"]
+    end
+
+    subgraph PROD["&nbsp;&nbsp;Production&nbsp;&nbsp;"]
+        direction TB
+        P1["Student\nsubmits text"] --> P2["Moderation\nGemini + OpenAI"]
+        P2 --> P3{"Flagged?"}
+        P3 -->|"No"| P4["Save\nallowed"]
+        P3 -->|"Yes"| P5["Flag created\n+ admin queue"]
+    end
+
+    subgraph MINING["&nbsp;&nbsp;Case Mining  · Phase 2&nbsp;&nbsp;"]
+        direction TB
+        M1["Mine disagreements\n+ admin overrides"] --> M2["Anonymize\nfor COPPA"]
+        M2 --> M3["Human\nlabels"]
+    end
+
+    OPT --> L1
+    L5 --> R1
+    HOLD --> R2
+    R4 --> P2
+    P2 --> M1
+    P5 --> M1
+    M3 --> OPT
+    R6 -->|"Add missing\ncase types"| OPT
+    R6 -->|"Cherry-pick\ngood experiments"| R1
+
+    classDef phase1 fill:#1a3a2a,stroke:#3fb950,color:#e1e4e8
+    classDef human fill:#1a2a40,stroke:#58a6ff,color:#e1e4e8
+    classDef phase2 fill:#1c1c1c,stroke:#484f58,color:#8b949e
+
+    class OPT,HOLD,L1,L2,L3,L4,L5,L6 phase1
+    class R1,R2,R3,R4,R5,R6 human
+    class M1,M2,M3 phase2
+    class P1,P2,P3,P4,P5 phase1
+    </pre>
+
+    <div class="legend">
+        <div class="legend-item"><div class="legend-color" style="background:#3fb950"></div> Phase 1 — built</div>
+        <div class="legend-item"><div class="legend-color" style="background:#58a6ff"></div> Human touchpoints</div>
+        <div class="legend-item"><div class="legend-color" style="background:#484f58"></div> Phase 2 — planned</div>
+    </div>
+</div>
+
+<hr>
+
+<!-- ===== DIAGRAM 2: THE KARPATHY LOOP IN DETAIL ===== -->
+
+<h2>The Optimization Loop (Detail)</h2>
+<p class="description">
+    A single experiment cycle. The agent modifies the Gemini classification prompt or the
+    tunable parameters (temperature, per-category OpenAI thresholds), runs the full eval corpus through
+    the production moderation pipeline, and keeps or discards based on the composite metric.
+    Each cycle takes ~2-3 minutes. The agent runs ~20-30 experiments per hour.
+</p>
+
+<div class="diagram-container">
+    <div class="diagram-label">Single Experiment Cycle</div>
+    <pre class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '14px' }}}%%
+flowchart TB
+    START(["Start experiment"]) --> READ["Read current prompts\n+ recent misclassifications"]
+    READ --> HYPO["Hypothesize a change\n(e.g. 'add coded Snapchat examples')"]
+    HYPO --> MODIFY["Modify optimization targets"]
+
+    MODIFY --> PROMPT["about_me.txt\nchat_message.txt"]
+    MODIFY --> PARAMS["optimization_surface.py\ntemperature · per-category thresholds"]
+
+    PROMPT --> COMMIT["Git commit\nwith description"]
+    PARAMS --> COMMIT
+
+    COMMIT --> EVAL["Run eval harness\n(~400 cases × Gemini + OpenAI)"]
+
+    EVAL --> GEMINI["Each case:\nGemini classifies\n(uses modified prompt)"]
+    EVAL --> OPENAI["Each case:\nOpenAI classifies\n(fixed API, per-category thresholds)"]
+
+    GEMINI --> MERGE["Merge results\n(either can veto)"]
+    OPENAI --> MERGE
+
+    MERGE --> SCORE["Compute metrics\nprecision / recall / F1\nper category"]
+    SCORE --> COMPOSITE["Composite score\n(severity-weighted F1)"]
+    COMPOSITE --> CONSTRAINTS{"Hard constraints?"}
+
+    CONSTRAINTS -->|"self_harm recall ≥ 0.99\npii recall ≥ 0.95\nharmful recall ≥ 0.92\nclean recall ≥ 0.85"| CHECK{"Score\nimproved?"}
+    CONSTRAINTS -->|"ANY violated"| DISCARD
+
+    CHECK -->|"Yes"| KEEP["✓ KEEP\nBranch advances\nNew baseline"]
+    CHECK -->|"No"| DISCARD["✗ DISCARD\ngit reset --hard HEAD~1"]
+
+    KEEP --> LOG["Log to results.tsv"]
+    DISCARD --> LOG
+    LOG --> CONVERGE{"15 consecutive\ndiscards?"}
+    CONVERGE -->|"No"| READ
+    CONVERGE -->|"Yes"| STOP(["Stop — converged"])
+    </pre>
+</div>
+
+<hr>
+
+<!-- ===== DIAGRAM 3: WHAT THE AGENT CAN TOUCH ===== -->
+
+<h2>Optimization Surface</h2>
+<p class="description">
+    The agent has a deliberately narrow modification surface. It can only change 3 files —
+    2 prompt files and 1 parameter file. Everything else (the moderation service, the eval harness,
+    the scoring engine, the corpus, escalation rules) is fixed.
+</p>
+
+<div class="diagram-container">
+    <div class="diagram-label">Agent Boundary — What's Modifiable vs. Fixed</div>
+    <pre class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '14px' }}}%%
+flowchart LR
+    subgraph MODIFIABLE["&nbsp;&nbsp;Agent CAN modify  ·  optimization surface&nbsp;&nbsp;"]
+        direction TB
+        A1["about_me.txt\nGemini prompt for bios"]
+        A2["chat_message.txt\nGemini prompt for chat"]
+        A3["optimization_surface.py\nGEMINI_TEMPERATURE\nOPENAI_CATEGORY_THRESHOLDS"]
+    end
+
+    subgraph FIXED["&nbsp;&nbsp;Agent CANNOT modify  ·  fixed infrastructure&nbsp;&nbsp;"]
+        direction TB
+        F1["content_moderation.py\nService logic, merge, escalation"]
+        F2["eval_moderation.py\nEval harness"]
+        F3["scoring.py\nMetric definitions, constraints"]
+        F4["optimize.json\nCorpus cases"]
+        F5["OpenAI Moderation API\nFixed model, fixed categories"]
+    end
+
+    A1 --> |"system prompt"| GEM["Gemini 2.0 Flash\nClassification call"]
+    A3 --> |"temperature"| GEM
+    A3 --> |"per-category thresholds"| OAI["OpenAI Moderation\nAPI call"]
+    GEM --> F1
+    OAI --> F1
+    F1 --> |"merged result"| F2
+    F4 --> |"test cases"| F2
+    F2 --> |"results"| F3
+    </pre>
+</div>
+
+<hr>
+
+<!-- ===== DIAGRAM 4: PRODUCTION FEEDBACK (PHASE 2) ===== -->
+
+<h2>Production Feedback Flywheel (Phase 2)</h2>
+<p class="description">
+    Once alpha testing generates real traffic, admin review decisions become labeled training
+    data. Dismissed flags = false positives. Confirmed flags = true positives. Model disagreements
+    surface ambiguous cases worth labeling. The corpus grows from real usage.
+</p>
+
+<div class="diagram-container">
+    <div class="diagram-label">How Production Data Enters the Corpus</div>
+    <pre class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '14px' }}}%%
+flowchart TB
+    P1["Student submits text"] --> MOD["Moderation pipeline\nGemini + OpenAI"]
+
+    MOD --> GE["GenerationEvent\n(every call logged)"]
+    MOD --> FLAG["ModerationFlag\n(if flagged)"]
+
+    FLAG --> ADMIN{"Admin\nreview"}
+    ADMIN -->|"Dismiss"| FP["Labeled:\nFALSE POSITIVE"]
+    ADMIN -->|"Confirm"| TP["Labeled:\nTRUE POSITIVE"]
+
+    GE --> DISAGREE{"Models\ndisagree?"}
+    DISAGREE -->|"Yes"| AMB["High-value\nambiguous case"]
+
+    GE --> CONF{"Low\nconfidence?"}
+    CONF -->|"0.3 - 0.7"| UNC["Uncertain\nclassification"]
+
+    FP --> SIGNAL["Signal captures case\nimmediately on admin action\n(before COPPA expiry)"]
+    TP --> SIGNAL
+
+    AMB --> MINER["Daily miner task\n(midnight UTC)"]
+    UNC --> MINER
+
+    SIGNAL --> ANON["Anonymize PII"]
+    MINER --> ANON
+
+    ANON --> CANDIDATE["EvalCandidate\n(pending review)"]
+    CANDIDATE --> LABEL["Developer assigns\nground truth label"]
+    LABEL --> CORPUS["Corpus grows\noptimize.json"]
+
+    CORPUS --> NEXT["Next Karpathy Loop\noptimizes against\nlarger dataset"]
+
+    style SIGNAL fill:#1f6feb,color:#fff
+    style MINER fill:#1f6feb,color:#fff
+    </pre>
+</div>
+
+<hr>
+
+<p class="description" style="margin-top: 24px; color: #484f58; font-size: 12px;">
+    Draft — for iteration. Final version will be a React component in the Evals admin dashboard.
+</p>
+
+</body>
+<script>
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'dark',
+        flowchart: {
+            useMaxWidth: true,
+            htmlLabels: true,
+            curve: 'basis',
+        },
+    });
+</script>
+</html>
