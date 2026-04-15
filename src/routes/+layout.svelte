@@ -8,15 +8,16 @@
   import { createPresenceStore } from '$lib/stores/presence.svelte';
   import { createNotificationStore } from '$lib/stores/notifications.svelte';
   import { createVoiceStore } from '$lib/stores/voice.svelte';
-  import type { FriendSummary, Notification } from '$lib/types';
+  import { createChatStore } from '$lib/stores/chat.svelte';
+  import type { ChatParticipant, Conversation, Notification } from '$lib/types';
 
   interface Props {
     data: {
       user: import('$lib/types').UserContext | null;
-      friends: FriendSummary[];
+      friends: ChatParticipant[];
       notifications: Notification[];
       notificationUnreadCount: number;
-      chatUnreadCount: number;
+      conversations: Conversation[];
     };
     children: import('svelte').Snippet;
   }
@@ -35,11 +36,19 @@
   createNotificationStore(
     data.notifications,
     data.notificationUnreadCount,
-    data.chatUnreadCount,
     realtime,
     data.user?.id ?? ''
   );
   createVoiceStore();
+  // Chat store lives at layout level so the sidebar badge (chatUnreadCount)
+  // and any future cross-route chat surfaces share one source of truth.
+  // svelte-ignore state_referenced_locally
+  createChatStore({
+    conversations: data.conversations,
+    currentUserId: data.user?.id ?? '',
+    friends: data.friends,
+    realtime
+  });
   // svelte-ignore state_referenced_locally
   if (data.user) {
     realtime.connect();

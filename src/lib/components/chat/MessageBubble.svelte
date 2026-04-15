@@ -13,6 +13,7 @@
   const chat = getChatStore();
 
   const isSent = $derived(message.senderId === chat.currentUserId);
+  const isPending = $derived(message.status === 'pending');
 
   const sender = $derived(
     !isSent ? (chat.activeParticipants.find((p) => p.id === message.senderId) ?? null) : null
@@ -29,7 +30,7 @@
   }
 </script>
 
-<div class="message" class:sent={isSent}>
+<div class="message" class:sent={isSent} class:pending={isPending}>
   {#if !isSent && sender}
     <Avatar
       src={sender.avatarUrl ?? undefined}
@@ -54,7 +55,13 @@
       <p class="content">{message.content}</p>
     </div>
 
-    <span class="timestamp">{formatTime(message.timestamp)}</span>
+    <span class="timestamp">
+      {#if isPending}
+        sending<span class="dots" aria-hidden="true">…</span>
+      {:else}
+        {formatTime(message.timestamp)}
+      {/if}
+    </span>
   </div>
 </div>
 
@@ -133,5 +140,28 @@
 
   .message.sent .timestamp {
     text-align: right;
+  }
+
+  .message.pending .bubble {
+    opacity: 0.55;
+  }
+
+  .message.pending .timestamp {
+    font-style: italic;
+  }
+
+  .dots {
+    display: inline-block;
+    animation: pending-pulse 1s ease-in-out infinite;
+  }
+
+  @keyframes pending-pulse {
+    0%,
+    100% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 </style>

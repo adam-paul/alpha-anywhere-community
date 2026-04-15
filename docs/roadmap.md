@@ -224,6 +224,7 @@ Timeback SSO is the only production auth path. If the community ever needs users
 
 Small items that don't belong to a tier but need attention eventually.
 
+- **Voice presence pulse doesn't persist across navigation** — The pulsing phone icon indicating an active voice call in a conversation only shows while the `voice:joined` broadcast is in-flight. Navigating away and returning drops it back to the plain icon because the conversation DO doesn't replay current voice state on connect. Fix options: (a) client pulls current LiveKit room participants via a small API endpoint on mount, (b) DO tracks voice participants in its per-conversation state and broadcasts a `voice:snapshot` on connect (mirrors the existing `presence:snapshot`). (b) is the right long-term answer; pair with voice moderation work.
 - **Harden Roblox account linking** — Currently accepts any username with no verification. Soft-match only (avatar confirmation). Needs stronger identity proof.
 - **Add Roblox OAuth** — Replace manual username entry with OAuth flow. Requires Roblox app review/approval.
 - **Harden Roblox game launch/auth flow** — If the user isn't logged into Roblox, the deep link loses its params and lands on the Roblox home page (except on Windows). Needs detection or guidance for the user.

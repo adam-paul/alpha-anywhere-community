@@ -59,10 +59,15 @@ export interface NotificationPush extends ClientMessage {
   recipientId: string;
 }
 
-/** Chat unread signal — tells a user they have a new unread message. */
+/**
+ * Chat unread signal — tells `recipientId` that a new message has arrived
+ * in `conversationId`. The receiver decides whether to bump its unread
+ * counter based on whether it's currently viewing that conversation.
+ */
 export interface ChatUnreadSignal extends ClientMessage {
   type: 'chat:unread';
   recipientId: string;
+  conversationId: string;
 }
 
 /** Voice state broadcast — user joined a voice room. */

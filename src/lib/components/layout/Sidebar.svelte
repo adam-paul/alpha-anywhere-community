@@ -5,7 +5,7 @@
   import { SignInButton } from '@timeback/sdk/svelte';
   import { getUserStore } from '$lib/stores/user.svelte';
   import { getPresenceStore } from '$lib/stores/presence.svelte';
-  import { getNotificationStore } from '$lib/stores/notifications.svelte';
+  import { getChatStore } from '$lib/stores/chat.svelte';
   import type { NavItem, FriendSummary } from '$lib/types';
 
   interface Props {
@@ -15,7 +15,7 @@
   let { friends = [] }: Props = $props();
 
   const presence = getUserStore().user ? getPresenceStore() : null;
-  const notificationStore = getUserStore().user ? getNotificationStore() : null;
+  const chat = getUserStore().user ? getChatStore() : null;
 
   const onlineFriends = $derived(presence ? friends.filter((f) => presence.isOnline(f.id)) : []);
 
@@ -48,8 +48,8 @@
       >
         <Icon name={item.icon} size={20} />
         <span class="nav-label">{item.label}</span>
-        {#if item.href === '/chat' && notificationStore && notificationStore.chatUnreadCount > 0}
-          <span class="nav-badge">{notificationStore.chatUnreadCount}</span>
+        {#if item.href === '/chat' && chat && chat.chatUnreadCount > 0}
+          <span class="nav-badge">{chat.chatUnreadCount}</span>
         {/if}
       </a>
     {/each}

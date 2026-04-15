@@ -1,11 +1,9 @@
 /**
  * Notification store — manages notification state, real-time delivery, and tray UI.
  *
- * Also tracks chat unread count for the sidebar badge, since both
- * piggyback on the same presence:global WebSocket channel.
- *
- * Subscribes to the realtime store's message stream on presence:global
- * and listens for notification:push and chat:unread signals.
+ * Scope: bell-tray notifications only (friend requests, voice calls, etc.).
+ * Chat unread state lives on the chat store (derived from per-conversation
+ * `unreadCount`); this store no longer participates in that concern.
  */
 
 import { getContext, setContext } from 'svelte';
@@ -16,13 +14,11 @@ const NOTIFICATION_CONTEXT_KEY = 'notifications';
 export function createNotificationStore(
   initial: Notification[],
   initialUnreadCount: number,
-  initialChatUnreadCount: number,
   realtime: RealtimeStore,
   currentUserId: string
 ): NotificationStore {
   let notifications = $state<Notification[]>(initial);
   let unreadCount = $state(initialUnreadCount);
-  let chatUnreadCount = $state(initialChatUnreadCount);
   let isOpen = $state(false);
 
   function open() {
@@ -97,14 +93,6 @@ export function createNotificationStore(
     realtime.send({ type: 'notification:push', recipientId });
   }
 
-  function sendChatUnread(recipientId: string): void {
-    realtime.send({ type: 'chat:unread', recipientId });
-  }
-
-  function decrementChatUnread(n: number): void {
-    chatUnreadCount = Math.max(0, chatUnreadCount - n);
-  }
-
   // Listen for real-time signals on presence:global
   realtime.onMessage((message) => {
     const recipientId =
@@ -113,8 +101,6 @@ export function createNotificationStore(
 
     if (message.type === 'notification:push') {
       refresh();
-    } else if (message.type === 'chat:unread') {
-      chatUnreadCount++;
     }
   });
 
@@ -125,9 +111,6 @@ export function createNotificationStore(
     get unreadCount() {
       return unreadCount;
     },
-    get chatUnreadCount() {
-      return chatUnreadCount;
-    },
     get isOpen() {
       return isOpen;
     },
@@ -137,9 +120,7 @@ export function createNotificationStore(
     markAsRead,
     markAllAsRead,
     refresh,
-    sendPush,
-    sendChatUnread,
-    decrementChatUnread
+    sendPush
   };
 
   setContext(NOTIFICATION_CONTEXT_KEY, store);

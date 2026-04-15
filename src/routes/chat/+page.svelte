@@ -1,6 +1,7 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte';
   import { page } from '$app/stores';
-  import { createChatStore } from '$lib/stores/chat.svelte';
+  import { getChatStore } from '$lib/stores/chat.svelte';
   import { createRealtimeStore } from '$lib/stores/realtime.svelte';
   import { getNotificationStore } from '$lib/stores/notifications.svelte';
   import { getVoiceStore } from '$lib/stores/voice.svelte';
@@ -9,7 +10,6 @@
   import MessageThread from '$lib/components/chat/MessageThread.svelte';
   import ChatDetails from '$lib/components/chat/ChatDetails.svelte';
   import NewChatModal from '$lib/components/chat/NewChatModal.svelte';
-  import type { Message } from '$lib/types';
   import type { ChatBroadcast } from '@alpha/shared/types';
 
   function isChatMessage(data: unknown): data is ChatBroadcast {
@@ -28,18 +28,17 @@
     );
   }
 
-  let { data } = $props();
   const user = $page.data.user;
-
-  // svelte-ignore state_referenced_locally
-  const chat = createChatStore({
-    conversations: data.conversations,
-    currentUserId: user.id,
-    friends: data.friends
-  });
 
   const notificationStore = getNotificationStore();
   const voice = getVoiceStore();
+  // Chat store is created at layout level — read from context here.
+  const chat = getChatStore();
+
+  // Clear the active-conversation marker when we leave /chat so the layout-
+  // level chat:unread handler doesn't wrongly treat the last-viewed conv as
+  // "still being viewed" from other routes.
+  onDestroy(() => chat.clearActive());
 
   // Track remote voice participants in the active conversation via realtime broadcasts
   let remoteVoiceUsers = $state(new Set<string>());
@@ -90,15 +89,10 @@
     }
   }
 
-  // Clear chat badge on entering the chat page — user is now looking at their conversations
-  // svelte-ignore state_referenced_locally
-  notificationStore.decrementChatUnread(notificationStore.chatUnreadCount);
-
   // Auto-open conversation if ?with= param is present (e.g., from sidebar online friends)
   const withUserId = $page.url.searchParams.get('with');
   if (withUserId) {
-    // svelte-ignore state_referenced_locally
-    const existing = data.conversations.find(
+    const existing = chat.conversations.find(
       (c) => !c.name && c.participants.length === 1 && c.participants[0].id === withUserId
     );
     if (existing) {
@@ -155,18 +149,13 @@
     ch.connect();
     channel = ch;
 
-    // Wire send once connected — also send chat:unread signal to participants
+    // Wire send once connected. chat:unread broadcasting is handled inside
+    // chat.sendMessage via the global realtime store — the send function here
+    // only needs to relay chat:message on the per-conversation channel.
     $effect(() => {
       if (ch.isConnected) {
         chat.setRealtimeSend((msg) => {
           ch.send(msg as { type: string; [key: string]: unknown });
-          // Notify participants of new unread message via global channel
-          const conv = chat.activeConversation;
-          if (conv) {
-            for (const p of conv.participants) {
-              notificationStore.sendChatUnread(p.id);
-            }
-          }
         });
       }
     });

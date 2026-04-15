@@ -1,11 +1,13 @@
 /**
  * Root layout server load
  *
- * Passes session, friend list, and app-wide counts to all pages via event.locals (populated in hooks.server.ts).
+ * Loads app-wide state: user session, friends, notifications, and the
+ * conversations list. Chat state (including unread counts) lives at layout
+ * level so the sidebar badge and the chat page share one source of truth.
  */
 
 import { createDbClient } from '$lib/server/db/client';
-import type { FriendSummary, Notification } from '$lib/types';
+import type { ChatParticipant, Conversation, Notification } from '$lib/types';
 import type { NotificationWithActor } from '$lib/server/db/types';
 import type { LayoutServerLoad } from './$types';
 
@@ -23,22 +25,40 @@ function toNotification(row: NotificationWithActor): Notification {
 }
 
 export const load: LayoutServerLoad = async ({ locals, platform }) => {
-  let friends: FriendSummary[] = [];
+  let friends: ChatParticipant[] = [];
   let notifications: Notification[] = [];
   let notificationUnreadCount = 0;
-  let chatUnreadCount = 0;
+  let conversations: Conversation[] = [];
 
   if (locals.user && platform?.env?.DB) {
     const db = createDbClient(platform.env.DB);
-    const [friendUsers, notifRows, notifUnread, chatUnread] = await Promise.all([
+    const [friendUsers, notifRows, notifUnread, rawConversations] = await Promise.all([
       db.friendships.getFriends(locals.user.id),
       db.notifications.getForUser(locals.user.id),
       db.notifications.getUnreadCount(locals.user.id),
-      db.conversations.getTotalUnreadCount(locals.user.id)
+      db.conversations.getWithDetails(locals.user.id)
     ]);
     notifications = notifRows.map(toNotification);
     notificationUnreadCount = notifUnread;
-    chatUnreadCount = chatUnread;
+
+    conversations = rawConversations.map((c) => ({
+      id: c.id,
+      name: c.name ?? undefined,
+      participants: c.participants.map((p) => ({
+        id: p.userId,
+        displayName: p.displayName,
+        avatarUrl: p.avatarUrl,
+        handle: p.handle
+      })),
+      lastMessage: c.lastMessage
+        ? {
+            content: c.lastMessage.content,
+            senderId: c.lastMessage.senderId,
+            timestamp: new Date(c.lastMessage.createdAt)
+          }
+        : undefined,
+      unreadCount: c.unreadCount
+    }));
 
     const friendProfiles = await Promise.all(
       friendUsers.map((u) => db.profiles.findByUserId(u.id))
@@ -46,7 +66,8 @@ export const load: LayoutServerLoad = async ({ locals, platform }) => {
     friends = friendUsers.map((u, i) => ({
       id: u.id,
       displayName: u.display_name,
-      avatarUrl: friendProfiles[i]?.avatar_url ?? null
+      avatarUrl: friendProfiles[i]?.avatar_url ?? null,
+      handle: u.email.split('@')[0]
     }));
   }
 
@@ -55,6 +76,6 @@ export const load: LayoutServerLoad = async ({ locals, platform }) => {
     friends,
     notifications,
     notificationUnreadCount,
-    chatUnreadCount
+    conversations
   };
 };

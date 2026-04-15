@@ -154,7 +154,6 @@ export interface Notification {
 export interface NotificationStore {
   readonly notifications: Notification[];
   readonly unreadCount: number;
-  readonly chatUnreadCount: number;
   readonly isOpen: boolean;
   open(): void;
   close(): void;
@@ -163,8 +162,6 @@ export interface NotificationStore {
   markAllAsRead(): Promise<void>;
   refresh(): Promise<void>;
   sendPush(recipientId: string): void;
-  sendChatUnread(recipientId: string): void;
-  decrementChatUnread(n: number): void;
 }
 
 // Student profile
@@ -261,6 +258,13 @@ export interface Message {
   content: string;
   imageUrl?: string;
   timestamp: Date;
+  /**
+   * Local-only send state. 'pending' = optimistic-inserted, server confirmation
+   * outstanding (rendered greyed with a spinner). 'sent' = confirmed by server
+   * or received from realtime. Undefined is treated as 'sent' for backwards
+   * compatibility with messages loaded from the API.
+   */
+  status?: 'pending' | 'sent';
 }
 
 export interface Conversation {
@@ -279,6 +283,8 @@ export interface CreateChatStoreOptions {
   conversations: Conversation[];
   currentUserId: string;
   friends: ChatParticipant[];
+  /** Global realtime store (presence:global) used for chat:unread signaling. */
+  realtime: RealtimeStore;
 }
 
 export type MessageLoadState =
@@ -300,6 +306,11 @@ export interface ChatState {
   readonly friends: ChatParticipant[];
   readonly messageLoadState: MessageLoadState;
   readonly sendError: ChatSendError | null;
+  /**
+   * Total unread messages across all conversations. Derived sum of
+   * `conversations[].unreadCount`; the sidebar badge reads this directly.
+   */
+  readonly chatUnreadCount: number;
   searchQuery: string;
   composeText: string;
   isDetailsPanelOpen: boolean;
@@ -309,6 +320,7 @@ export interface ChatState {
   readonly activeMessages: Message[];
   readonly activeParticipants: ChatParticipant[];
   selectConversation(id: string): void;
+  clearActive(): void;
   sendMessage(text: string): Promise<void>;
   toggleDetailsPanel(): void;
   openNewChatModal(): void;

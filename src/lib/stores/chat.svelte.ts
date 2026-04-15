@@ -13,6 +13,7 @@ const CHAT_CONTEXT_KEY = 'chat';
 
 export function createChatStore(options: CreateChatStoreOptions): ChatState {
   const currentUserId = options.currentUserId;
+  const realtime = options.realtime;
 
   let conversations = $state<Conversation[]>(options.conversations);
   let messages = $state<Record<string, Message[]>>({});
@@ -26,6 +27,71 @@ export function createChatStore(options: CreateChatStoreOptions): ChatState {
   let isDetailsPanelOpen = $state(false);
   let isNewChatModalOpen = $state(false);
   let sendError = $state<ChatSendError | null>(null);
+
+  // Derived: total unread across all conversations. Drives the sidebar badge.
+  const chatUnreadCount = $derived(conversations.reduce((sum, c) => sum + c.unreadCount, 0));
+
+  // Listen for chat:unread signals on presence:global. The sender broadcasts
+  // one per recipient per message; we only act on those targeted at us and
+  // skip bumping if we're already viewing that conversation.
+  //
+  // The signal intentionally carries no message content — it rides on
+  // presence:global, which every online user receives. To refresh the
+  // sidebar preview for the target conversation, the recipient fetches
+  // the latest message from the authenticated /api/chat/messages endpoint.
+  realtime.onMessage((message) => {
+    if (message.type !== 'chat:unread') return;
+    const msg = message as { recipientId: string; conversationId: string };
+    if (msg.recipientId !== currentUserId) return;
+    const conv = conversations.find((c) => c.id === msg.conversationId);
+    if (!conv) return;
+    if (msg.conversationId === activeConversationId) {
+      // Already viewing this conversation — the per-conversation chat:message
+      // channel delivers the actual message, and selectConversation's server
+      // mark-read keeps things tidy. Nothing to do here.
+      return;
+    }
+    conv.unreadCount++;
+    // Invalidate cached thread messages so the next selectConversation refetches
+    // and shows the new message. Otherwise the user navigates back to /chat,
+    // clicks the conversation, and sees stale content from before.
+    delete messages[msg.conversationId];
+    // Fetch the latest message to refresh the sidebar preview and timestamp.
+    refreshConversationPreview(msg.conversationId);
+  });
+
+  /**
+   * Refresh one conversation's `lastMessage` preview from the server and bump
+   * the conversation to the top of the list. Called when a chat:unread signal
+   * tells us a new message arrived for a conversation we're not currently
+   * viewing (so handleIncomingMessage can't do it for us).
+   */
+  async function refreshConversationPreview(conversationId: string) {
+    try {
+      const res = await fetch(`/api/chat/messages?conversationId=${conversationId}&limit=1`);
+      if (!res.ok) return;
+      const data = (await res.json()) as {
+        messages: Array<{ senderId: string; content: string; timestamp: string }>;
+      };
+      const last = data.messages?.[data.messages.length - 1];
+      if (!last) return;
+      const convIndex = conversations.findIndex((c) => c.id === conversationId);
+      if (convIndex < 0) return;
+      const conv = conversations[convIndex];
+      conv.lastMessage = {
+        content: last.content,
+        senderId: last.senderId,
+        timestamp: new Date(last.timestamp)
+      };
+      // Bump to top so the conversation list reflects recency.
+      if (convIndex > 0) {
+        conversations = [conv, ...conversations.filter((c) => c.id !== conversationId)];
+      }
+    } catch {
+      // Silent fail — badge + unread still bumped, preview will update on
+      // next refresh or when the user opens the conversation.
+    }
+  }
 
   // Realtime send function — set by the page when WebSocket connects
   let realtimeSend: ((msg: object) => void) | null = null;
@@ -79,6 +145,15 @@ export function createChatStore(options: CreateChatStoreOptions): ChatState {
     }
   }
 
+  /**
+   * Clear the active conversation marker. Called when the chat page unmounts
+   * so the chat:unread handler doesn't wrongly treat the previously-active
+   * conversation as "still being viewed" from other routes.
+   */
+  function clearActive() {
+    activeConversationId = null;
+  }
+
   async function loadMessages(conversationId: string) {
     messageLoadStates[conversationId] = { status: 'loading' };
     try {
@@ -101,24 +176,21 @@ export function createChatStore(options: CreateChatStoreOptions): ChatState {
     const convId = activeConversationId;
     const trimmed = text.trim();
 
-    // Optimistic append
+    // Optimistic append as a PENDING bubble. Sidebar preview is NOT updated
+    // here — the message hasn't been confirmed yet. This prevents flagged
+    // content from appearing in the sidebar preview.
     const tempId = `temp-${Date.now()}`;
     const optimistic: Message = {
       id: tempId,
       conversationId: convId,
       senderId: currentUserId,
       content: trimmed,
-      timestamp: new Date()
+      timestamp: new Date(),
+      status: 'pending'
     };
 
     if (!messages[convId]) messages[convId] = [];
     messages[convId] = [...messages[convId], optimistic];
-
-    // Update last message preview
-    const conv = conversations.find((c) => c.id === convId);
-    if (conv) {
-      conv.lastMessage = { content: trimmed, senderId: currentUserId, timestamp: new Date() };
-    }
 
     composeText = '';
 
@@ -132,11 +204,30 @@ export function createChatStore(options: CreateChatStoreOptions): ChatState {
 
       if (res.ok) {
         const serverMsg = await res.json();
-        // Replace temp message with server response
-        messages[convId] = messages[convId].map((m) =>
-          m.id === tempId ? transformMessage(serverMsg) : m
-        );
-        // Broadcast via WebSocket for real-time delivery
+        const confirmed = { ...transformMessage(serverMsg), status: 'sent' as const };
+        // Replace the pending bubble with the confirmed server message.
+        messages[convId] = messages[convId].map((m) => (m.id === tempId ? confirmed : m));
+        // Only NOW update the sidebar preview — using the server's confirmed content/timestamp.
+        const conv = conversations.find((c) => c.id === convId);
+        if (conv) {
+          conv.lastMessage = {
+            content: confirmed.content,
+            senderId: confirmed.senderId,
+            timestamp: confirmed.timestamp
+          };
+          // Broadcast chat:unread on presence:global for each other participant.
+          // Carries conversationId so recipients can decide whether to bump
+          // their unread count (they skip if they're already viewing the conv).
+          for (const p of conv.participants) {
+            if (p.id === currentUserId) continue;
+            realtime.send({
+              type: 'chat:unread',
+              recipientId: p.id,
+              conversationId: convId
+            });
+          }
+        }
+        // Broadcast via per-conversation WebSocket for real-time message relay.
         realtimeSend?.({
           type: 'chat:message',
           messageId: serverMsg.id,
@@ -168,7 +259,12 @@ export function createChatStore(options: CreateChatStoreOptions): ChatState {
     if (!messages[convId]) messages[convId] = [];
     messages[convId] = [...messages[convId], msg];
 
-    // Update conversation's last message and bump to top
+    // Update conversation's last message and bump to top. handleIncomingMessage
+    // is only ever called from the per-conversation channel, which is only
+    // subscribed for the active conversation — so the user is, by definition,
+    // viewing this message live. Keep server last_read_at in sync so a future
+    // page load doesn't show a stale unread count. Cross-conversation unread
+    // bumps flow through the chat:unread signal on presence:global (see above).
     const convIndex = conversations.findIndex((c) => c.id === convId);
     if (convIndex >= 0) {
       const conv = conversations[convIndex];
@@ -177,14 +273,10 @@ export function createChatStore(options: CreateChatStoreOptions): ChatState {
         senderId: msg.senderId,
         timestamp: msg.timestamp
       };
-      // Bump conversation to top
       if (convIndex > 0) {
         conversations = [conv, ...conversations.filter((c) => c.id !== convId)];
       }
-      // Increment unread if not the active conversation
-      if (convId !== activeConversationId) {
-        conv.unreadCount++;
-      }
+      fetch(`/api/chat/conversations/${convId}/read`, { method: 'POST' }).catch(() => {});
     }
   }
 
@@ -253,6 +345,9 @@ export function createChatStore(options: CreateChatStoreOptions): ChatState {
   }
 
   const store: ChatState = {
+    get chatUnreadCount() {
+      return chatUnreadCount;
+    },
     get conversations() {
       return conversations;
     },
@@ -314,6 +409,7 @@ export function createChatStore(options: CreateChatStoreOptions): ChatState {
     },
 
     selectConversation,
+    clearActive,
     sendMessage,
     toggleDetailsPanel,
     openNewChatModal,
