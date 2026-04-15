@@ -213,7 +213,7 @@ export interface CreateNotificationInput {
 
 // The CHECK constraint on moderation_events.detected_by excludes 'none' —
 // clean decisions produce no row, so 'none' is never written.
-type PersistedDetectedBy = Exclude<DetectedBy, 'none'>;
+export type PersistedDetectedBy = Exclude<DetectedBy, 'none'>;
 
 export interface DbModerationEvent {
   id: string;
@@ -242,4 +242,71 @@ export interface CreateModerationEventInput {
   flagged_content: string;
   detection_details?: string | null;
   latency_ms?: number | null;
+}
+
+// =============================================================================
+// Generation Events + Eval Runs (migration 0009)
+// =============================================================================
+
+/** Runtime audit log for every moderation call — clean + flagged. */
+export interface DbGenerationEvent {
+  id: string;
+  user_id_hash: string; // HMAC-SHA256, never a raw user id (COPPA)
+  event_type: ModerationSource;
+  input_text: string;
+  output_data: string | null; // JSON: { gemini, openai, merged }
+  success: number; // 0 | 1
+  error_message: string | null;
+  latency_ms: number | null;
+  created_at: string;
+  content_expires_at: string;
+}
+
+export interface CreateGenerationEventInput {
+  user_id_hash: string;
+  event_type: ModerationSource;
+  input_text: string;
+  output_data?: string | null;
+  success: boolean;
+  error_message?: string | null;
+  latency_ms?: number | null;
+}
+
+/** Persisted eval harness run — aggregate metrics + constraint status. */
+export interface DbEvalRun {
+  id: string;
+  created_at: string;
+  corpus_set: 'optimize' | 'holdout';
+  corpus_size: number;
+  corpus_hash: string;
+  composite_score: number;
+  constraints_passed: number; // 0 | 1
+  constraint_violations: string | null; // JSON string[]
+  metrics: string | null; // JSON MetricsByCategory
+  gemini_metrics: string | null;
+  openai_metrics: string | null;
+  eval_time_s: number | null;
+  avg_latency_ms: number | null;
+  eval_errors: number;
+  triggered_by: 'manual' | 'agent';
+  notes: string | null;
+}
+
+/** Per-case breakdown within an eval run. */
+export interface DbEvalCaseResult {
+  id: string;
+  run_id: string;
+  case_id: string;
+  input_text: string;
+  expected_flagged: number; // 0 | 1
+  category: string;
+  subcategory: string | null;
+  actual_flagged: number; // 0 | 1
+  gemini_flagged: number | null; // null if provider errored
+  openai_flagged: number | null;
+  merged_flagged: number; // 0 | 1
+  detected_by: string | null;
+  latency_ms: number | null;
+  gemini_error: string | null;
+  openai_error: string | null;
 }

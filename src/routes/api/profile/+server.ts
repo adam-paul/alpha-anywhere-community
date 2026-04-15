@@ -6,7 +6,7 @@
 
 import { json, error } from '@sveltejs/kit';
 import { createDbClient } from '$lib/server/db/client';
-import { getEvaluator } from '$lib/server/evals';
+import { moderateAndPersist } from '$lib/server/evals';
 import type { RequestHandler } from './$types';
 
 type ProfileField = 'bio' | 'location';
@@ -37,7 +37,6 @@ export const PATCH: RequestHandler = async ({ request, locals, platform }) => {
 
   // Moderate free-text fields before writing. `interests` is an enum list,
   // no moderation needed.
-  const evaluator = getEvaluator();
   const fieldsToModerate: Array<{ name: ProfileField; value: string }> = [];
   if (typeof bio === 'string' && bio.trim().length > 0) {
     fieldsToModerate.push({ name: 'bio', value: bio.trim() });
@@ -47,26 +46,19 @@ export const PATCH: RequestHandler = async ({ request, locals, platform }) => {
   }
 
   for (const field of fieldsToModerate) {
-    const decision = await evaluator.moderate(field.value, 'about_me');
+    const decision = await moderateAndPersist(
+      db,
+      userId,
+      field.value,
+      'about_me',
+      platform.context
+    );
     if (decision.status === 'flagged') {
-      const primary = decision.categories[0];
-      await db.moderation.createEvent({
-        user_id: userId,
-        source: 'about_me',
-        category: primary.category,
-        subcategory: primary.subcategory,
-        severity: decision.severity ?? 'medium',
-        detected_by: decision.detectedBy === 'none' ? 'gemini' : decision.detectedBy,
-        confidence: primary.confidence,
-        flagged_content: field.value,
-        detection_details: JSON.stringify({ gemini: decision.gemini, openai: decision.openai }),
-        latency_ms: decision.latencyMs
-      });
       return json(
         {
           error: 'moderation_rejected',
           field: field.name,
-          category: primary.category,
+          category: decision.categories[0].category,
           message: decision.userMessage
         },
         { status: 400 }
@@ -74,11 +66,7 @@ export const PATCH: RequestHandler = async ({ request, locals, platform }) => {
     }
     if (decision.status === 'unavailable') {
       return json(
-        {
-          error: 'moderation_unavailable',
-          field: field.name,
-          message: decision.userMessage
-        },
+        { error: 'moderation_unavailable', field: field.name, message: decision.userMessage },
         { status: 503 }
       );
     }

@@ -17,37 +17,48 @@ export type ModerationCategory = 'self_harm' | 'pii' | 'harmful' | 'clean';
 /** Categories that produce a moderation flag. Clean content produces no flag. */
 export type FlaggedCategory = Exclude<ModerationCategory, 'clean'>;
 
-export type SelfHarmSubcategory = 'ideation' | 'intent' | 'instructions';
+// Subcategory enums are declared as `as const` arrays so the harness can do
+// runtime validation against the same source the TS types derive from. Single
+// source, drift-proof.
+export const SELF_HARM_SUBCATEGORIES = ['ideation', 'intent', 'instructions'] as const;
 
-export type PiiSubcategory =
-  | 'phone_number'
-  | 'email_address'
-  | 'social_media'
-  | 'physical_address'
-  | 'school_name'
-  | 'full_name'
-  | 'off_platform_contact';
+export const PII_SUBCATEGORIES = [
+  'phone_number',
+  'email_address',
+  'social_media',
+  'physical_address',
+  'school_name',
+  'full_name',
+  'off_platform_contact'
+] as const;
 
-export type HarmfulSubcategory =
-  | 'hate'
-  | 'harassment'
-  | 'threat'
-  | 'sexual'
-  | 'profanity'
-  | 'grooming'
-  | 'violence'
-  | 'illicit';
+export const HARMFUL_SUBCATEGORIES = [
+  'hate',
+  'harassment',
+  'threat',
+  'sexual',
+  'profanity',
+  'grooming',
+  'violence',
+  'illicit'
+] as const;
 
-export type CleanSubcategory =
-  | 'hobbies'
-  | 'sports'
-  | 'animals'
-  | 'creative'
-  | 'gaming_language'
-  | 'hyperbole'
-  | 'idiomatic'
-  | 'metaphorical_violence'
-  | 'pii_adjacent_allowed';
+export const CLEAN_SUBCATEGORIES = [
+  'hobbies',
+  'sports',
+  'animals',
+  'creative',
+  'gaming_language',
+  'hyperbole',
+  'idiomatic',
+  'metaphorical_violence',
+  'pii_adjacent_allowed'
+] as const;
+
+export type SelfHarmSubcategory = (typeof SELF_HARM_SUBCATEGORIES)[number];
+export type PiiSubcategory = (typeof PII_SUBCATEGORIES)[number];
+export type HarmfulSubcategory = (typeof HARMFUL_SUBCATEGORIES)[number];
+export type CleanSubcategory = (typeof CLEAN_SUBCATEGORIES)[number];
 
 export type ModerationSubcategory =
   | SelfHarmSubcategory
@@ -65,7 +76,8 @@ export type ModerationStatus = 'clean' | 'flagged' | 'reviewed' | 'removed';
 export type ModerationSeverity = 'critical' | 'high' | 'medium' | 'low';
 
 /** Which moderation prompt to apply. Add new sources as new surfaces are added. */
-export type ModerationSource = 'about_me' | 'chat_message';
+export const MODERATION_SOURCES = ['about_me', 'chat_message'] as const;
+export type ModerationSource = (typeof MODERATION_SOURCES)[number];
 
 export type DetectedBy = 'gemini' | 'openai' | 'both' | 'none';
 

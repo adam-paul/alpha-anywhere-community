@@ -25,7 +25,9 @@ import type {
   LinkRobloxInput,
   ConversationWithDetails,
   DbModerationEvent,
-  CreateModerationEventInput
+  CreateModerationEventInput,
+  DbGenerationEvent,
+  CreateGenerationEventInput
 } from './types';
 
 /**
@@ -1022,6 +1024,43 @@ export function createDbClient(db: D1Database) {
           .first<DbModerationEvent>();
 
         if (!result) throw new Error('Failed to create moderation event');
+        return result;
+      }
+    },
+
+    // =========================================================================
+    // EVALS
+    // =========================================================================
+    evals: {
+      /**
+       * Log a moderation call to generation_events. Written for every call —
+       * clean AND flagged — so the clean path has observability. Callers
+       * should fire-and-forget; failures here should not block the request.
+       */
+      async createGenerationEvent(input: CreateGenerationEventInput): Promise<DbGenerationEvent> {
+        const result = await db
+          .prepare(
+            `
+							INSERT INTO generation_events (
+								user_id_hash, event_type, input_text,
+								output_data, success, error_message, latency_ms
+							)
+							VALUES (?, ?, ?, ?, ?, ?, ?)
+							RETURNING *
+						`
+          )
+          .bind(
+            input.user_id_hash,
+            input.event_type,
+            input.input_text,
+            input.output_data ?? null,
+            input.success ? 1 : 0,
+            input.error_message ?? null,
+            input.latency_ms ?? null
+          )
+          .first<DbGenerationEvent>();
+
+        if (!result) throw new Error('Failed to create generation event');
         return result;
       }
     }

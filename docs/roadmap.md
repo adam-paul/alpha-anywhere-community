@@ -155,9 +155,22 @@ Platform-wide notification system replacing the ad-hoc friend request badge.
 
 ### Tier 5: Safety & Moderation
 
-- **Chat Moderation** — AI moderation (check on send, before persistence). Decision needed: block vs deliver with flag.
-- **Staff Escalation** — Protected `/admin/moderation` route with flagged messages, actions, audit log.
-- **Report Flow** — Students report messages/users. `reports` table with status tracking.
+#### Text Moderation — ✅ Runtime + harness complete
+
+Dual-provider content moderation (Gemini 2.0 Flash + OpenAI omni-moderation-latest, either-can-veto) gates chat send and profile edit. Flagged content is rejected before D1 write with a kid-friendly reason; every call is audit-logged to `generation_events` via `waitUntil` (zero request latency). Eval harness (`bun run eval:moderation`) runs the 527-case AlphaLearn corpus through the live pipeline and persists run + per-case results for drift tracking.
+
+- **Package:** `packages/evals` — pure core (scoring, merge, severity), prompts, providers, harness. Built stack-agnostic so future surfaces (tutor responses, imagen) plug in via `Provider` / `Scorer` interfaces.
+- **Wiring:** `moderateAndPersist` in `src/lib/server/evals.ts` owns the runtime contract (moderation_events on flag, generation_events always).
+- **Admin:** `POST /api/admin/evals/debug/classify` for on-the-fly prompt probing. No full admin UI yet.
+- See `docs/EVAL_STRATEGY.md` for the layered eval philosophy, hard-constraint floors, and the Karpathy-loop framing.
+
+**Remaining for production:**
+
+- **Admin review UI** — `/admin/moderation` route with flagged-content queue, dismiss/escalate actions, corpus CRUD, run history browser.
+- **Escalation thresholds** — `ModerationFlag.status` lifecycle (open/reviewed/dismissed), 3-in-24h PII → parent-notify signal, self-harm → immediate escalation. Tied to parent-contact infra.
+- **Report flow** — Students report messages/users. `reports` table with status tracking.
+- **Content expiry cron** — `content_expires_at` columns exist on both audit tables for COPPA; scheduled Worker to delete expired `input_text` / `flagged_content` is pending.
+- **Autoresearch loop (Plan C)** — agent-driven prompt iteration via git commit/reset; gated on a few manual harness runs first.
 
 ---
 
