@@ -17,20 +17,14 @@ import type { Handle } from '@sveltejs/kit';
 export const handle: Handle = async ({ event, resolve }) => {
   // Populate user from session cookie (enriched from D1 below)
   const cookieUser = await getSessionFromCookie(event.cookies);
-  event.locals.user = cookieUser
-    ? {
-        ...cookieUser,
-        timebackId: cookieUser.timebackId ?? cookieUser.id,
-        role: cookieUser.role ?? 'student'
-      }
-    : null;
+  event.locals.user = cookieUser;
 
   // If user is authenticated and D1 is available, ensure they exist in database
   if (cookieUser && event.platform?.env?.DB) {
     try {
       const db = createDbClient(event.platform.env.DB);
       const dbUser = await db.users.upsert({
-        timeback_id: cookieUser.timebackId ?? cookieUser.id,
+        timeback_id: cookieUser.timebackId,
         email: cookieUser.email,
         display_name: cookieUser.displayName
       });
