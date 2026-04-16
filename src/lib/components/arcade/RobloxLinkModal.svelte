@@ -119,6 +119,12 @@
             </Button>
           </div>
         </fieldset>
+        <p class="no-account">
+          Don't have a Roblox account?
+          <a href="https://www.roblox.com/CreateAccount" target="_blank" rel="noopener noreferrer">
+            Create one
+          </a>
+        </p>
       {:else if status === 'confirming' && lookupResult}
         <p class="description">Is this your Roblox account?</p>
         <div class="roblox-identity">
@@ -238,6 +244,22 @@
     color: var(--color-text-muted);
     margin: 0;
     font-style: italic;
+  }
+
+  .no-account {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .no-account a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .no-account a:hover {
+    text-decoration: underline;
   }
 
   .error-banner {

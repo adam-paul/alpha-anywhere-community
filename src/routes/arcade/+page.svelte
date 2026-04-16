@@ -4,7 +4,15 @@
   import { createGatingStore } from '$lib/stores/gating.svelte';
   import { getVoiceStore } from '$lib/stores/voice.svelte';
   import { GATING_UNIT_LABELS } from '$lib/constants';
-  import type { Game, GameFormData, GameFormMode, GatingState } from '$lib/types';
+  import type {
+    Game,
+    GameFormData,
+    GameFormMode,
+    GatingState,
+    LaunchOptions,
+    PresenceApiResponse
+  } from '$lib/types';
+  import { launchGame } from '$lib/utils/game-launcher';
   import { IconButton, PageHeader } from '$lib/components/ui';
   import GameGrid from '$lib/components/arcade/GameGrid.svelte';
   import WorkWall from '$lib/components/arcade/WorkWall.svelte';
@@ -26,6 +34,77 @@
   $effect(() => {
     arcade.setGames(data.games);
   });
+
+  // Launch handling (lifted from GameGrid so the Roblox-link flow can
+  // resume the original launch after linking completes)
+  let pendingLaunch = $state<Game | null>(null);
+
+  function handleLaunch(game: Game) {
+    if (game.type === 'roblox') {
+      if (!arcade.robloxLinked) {
+        pendingLaunch = game;
+        robloxLinkOpen = true;
+        return;
+      }
+
+      // Record launch in KV (fire and forget — don't block the deep link)
+      fetch('/api/arcade/launch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ gameId: game.id })
+      }).catch(() => {
+        // Non-critical — presence just won't track this session
+      });
+    }
+
+    let options: LaunchOptions;
+
+    switch (game.type) {
+      case 'roblox':
+        if (!game.placeId || !game.accessCode || !game.linkCode) {
+          console.error('Roblox games require placeId, accessCode, and linkCode');
+          return;
+        }
+        options = {
+          type: 'roblox',
+          gameId: game.id,
+          placeId: game.placeId,
+          accessCode: game.accessCode,
+          linkCode: game.linkCode
+        };
+        break;
+
+      case 'web':
+      case 'minecraft':
+        if (!game.launchUrl) {
+          console.error(`${game.type} games require launchUrl`);
+          return;
+        }
+        options = {
+          type: game.type,
+          gameId: game.id,
+          launchUrl: game.launchUrl
+        };
+        break;
+
+      case 'iframe':
+        options = {
+          type: 'iframe',
+          gameId: game.id,
+          launchUrl: game.launchUrl
+        };
+        break;
+    }
+
+    const result = launchGame(options);
+
+    if (!result.success) {
+      console.error('Failed to launch game:', result.error);
+    }
+    // Voice room entry is deferred to the presence poll below, which waits
+    // for Roblox to confirm the student is actually in-game. Joining here
+    // would risk an immediate disconnect before the game finishes loading.
+  }
 
   // Dev tools bindings
   let devIsLocked = $state(false);
@@ -58,7 +137,10 @@
     gating.setDevOverride(override);
   }
 
-  // Presence polling — fetch counts every 30s while arcade is visible
+  // Presence polling — fetch counts every 15s while arcade is visible.
+  // Also the single source of truth for per-game voice lobbies: voice
+  // only joins once Roblox confirms the student is in-game, and leaves
+  // as soon as presence drops.
   $effect(() => {
     if (gating.showWorkWall) return;
 
@@ -68,15 +150,13 @@
       try {
         const res = await fetch('/api/arcade/presence');
         if (res.ok && active) {
-          const { counts, currentUserGameId } = await res.json();
+          const { counts, currentUserGameId } = (await res.json()) as PresenceApiResponse;
           arcade.setPresenceCounts(counts);
 
-          // Auto-leave voice if user is in a game voice room but no longer in-game
-          if (
-            voice.isConnected &&
-            voice.roomName?.startsWith('game:') &&
-            currentUserGameId === null
-          ) {
+          if (currentUserGameId) {
+            const wantedRoom = `game:${currentUserGameId}`;
+            if (voice.roomName !== wantedRoom) voice.joinRoom(wantedRoom);
+          } else if (voice.roomName?.startsWith('game:')) {
             voice.leaveRoom();
           }
         }
@@ -97,13 +177,19 @@
   // Roblox linking modal
   let robloxLinkOpen = $state(false);
 
-  function handleRobloxLinkNeeded() {
-    robloxLinkOpen = true;
-  }
-
   function handleRobloxLinked() {
     robloxLinkOpen = false;
     arcade.setRobloxLinked(true);
+
+    // Resume the launch that triggered the link flow, if any
+    const resume = pendingLaunch;
+    pendingLaunch = null;
+    if (resume) handleLaunch(resume);
+  }
+
+  function handleRobloxLinkClose() {
+    robloxLinkOpen = false;
+    pendingLaunch = null;
   }
 
   // Admin: game form modal state
@@ -159,8 +245,8 @@
 <div class="arcade-content" class:locked={gating.showWorkWall}>
   <GameGrid
     disabled={gating.showWorkWall}
+    onLaunch={handleLaunch}
     onEdit={data.isAdmin ? openEditGame : undefined}
-    onRobloxLinkNeeded={handleRobloxLinkNeeded}
   />
 
   {#if gating.showWorkWall}
@@ -192,7 +278,7 @@
 
 <RobloxLinkModal
   open={robloxLinkOpen}
-  onclose={() => (robloxLinkOpen = false)}
+  onclose={handleRobloxLinkClose}
   onlinked={handleRobloxLinked}
 />
 

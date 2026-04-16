@@ -14,7 +14,7 @@ import { json, error } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import { createDbClient } from '$lib/server/db/client';
 import type { RequestHandler } from './$types';
-import type { PresenceCounts, RobloxPresenceResponse } from '$lib/types';
+import type { PresenceApiResponse, PresenceCounts, RobloxPresenceResponse } from '$lib/types';
 
 const LAUNCH_TTL = 300; // 5 minutes
 
@@ -35,7 +35,7 @@ export const GET: RequestHandler = async ({ locals, platform }) => {
   // A. List active launch records directly from KV
   const listed = await kv.list({ prefix: 'launch:' });
   if (listed.keys.length === 0) {
-    return json({ counts: {} });
+    return json({ counts: {}, currentUserGameId: null } satisfies PresenceApiResponse);
   }
 
   // Get gameId values for each active key
@@ -50,7 +50,7 @@ export const GET: RequestHandler = async ({ locals, platform }) => {
   );
 
   if (activeLaunches.length === 0) {
-    return json({ counts: {} });
+    return json({ counts: {}, currentUserGameId: null } satisfies PresenceApiResponse);
   }
 
   // B. Query Roblox Presence API
@@ -92,9 +92,13 @@ export const GET: RequestHandler = async ({ locals, platform }) => {
       const presenceType = presenceMap.get(Number(robloxUserId));
 
       if (presenceType === undefined) {
-        // No Roblox API response (API failed or no key) — count based on launch record alone
+        // No Roblox API response (API failed, no key, or this user's presence is private).
+        // Count the user based on the launch record alone — aggregate counts can tolerate
+        // a stale click-record estimate for up to 5 min (KV TTL). Do NOT set
+        // currentUserGameId here: that signal drives voice auto-join, which cannot
+        // tolerate false positives (would pull the user into audio before they're
+        // actually in-game, or on stale clicks after they've quit).
         counts[gameId] = (counts[gameId] ?? 0) + 1;
-        if (robloxUserId === currentUserRobloxId) currentUserGameId = gameId;
         return;
       }
 
@@ -107,5 +111,5 @@ export const GET: RequestHandler = async ({ locals, platform }) => {
     })
   );
 
-  return json({ counts, currentUserGameId });
+  return json({ counts, currentUserGameId } satisfies PresenceApiResponse);
 };
