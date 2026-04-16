@@ -13,6 +13,19 @@ export type UserRole = 'student' | 'admin';
 // Avatar source — mirrors the CHECK constraint on profiles.avatar_source.
 export type AvatarSource = 'roblox' | 'ai' | 'custom';
 
+// External game platforms a student can link. Only Roblox is wired up today;
+// the others are surfaced as "Coming soon" placeholders on the profile page.
+export type LinkablePlatform = 'roblox' | 'minecraft' | 'factorio';
+
+export interface LinkedAccount {
+  username: string;
+  avatarUrl: string;
+}
+
+export interface LinkedAccountsData {
+  roblox: LinkedAccount | null;
+}
+
 // Game types
 export type GameType = 'roblox' | 'minecraft' | 'web' | 'iframe';
 

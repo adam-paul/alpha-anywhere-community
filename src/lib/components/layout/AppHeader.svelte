@@ -50,7 +50,9 @@
         <Button variant="ghost" size="sm" onclick={() => notifications.toggle()}>
           <Icon name="bell" size={20} />
           {#if notifications.unreadCount > 0}
-            <span class="unread-badge">{notifications.unreadCount}</span>
+            <span class="unread-badge">
+              {notifications.unreadCount >= 20 ? '20+' : notifications.unreadCount}
+            </span>
           {/if}
         </Button>
         {#if notifications.isOpen}

@@ -25,13 +25,9 @@ export const GET: RequestHandler = async ({ locals, platform, url }) => {
   const limit = Math.min(Number(url.searchParams.get('limit') ?? 20), 50);
   const db = createDbClient(platform.env.DB);
 
-  const [rows, unreadCount] = await Promise.all([
-    db.notifications.getForUser(locals.user.id, limit),
-    db.notifications.getUnreadCount(locals.user.id)
-  ]);
+  const rows = await db.notifications.getForUser(locals.user.id, limit);
 
   return json({
-    notifications: rows.map(toNotification),
-    unreadCount
+    notifications: rows.map(toNotification)
   });
 };

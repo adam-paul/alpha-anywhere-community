@@ -3,10 +3,12 @@
   import { Avatar, Button, IconButton, Input, Textarea, ToggleButton } from '$lib/components/ui';
   import InterestBadge from '$lib/components/InterestBadge.svelte';
   import ProfileHeader from '$lib/components/profile/ProfileHeader.svelte';
+  import LinkedAccounts from '$lib/components/profile/LinkedAccounts.svelte';
+  import RobloxLinkModal from '$lib/components/arcade/RobloxLinkModal.svelte';
   import { INTERESTS } from '$lib/constants';
   import { getNotificationStore } from '$lib/stores/notifications.svelte';
   import { getUserStore } from '$lib/stores/user.svelte';
-  import type { EditMode, Interest } from '$lib/types';
+  import type { EditMode, Interest, LinkablePlatform } from '$lib/types';
   import type { PageData } from './$types';
 
   const notificationStore = getUserStore().user ? getNotificationStore() : null;
@@ -169,7 +171,16 @@
     }
   }
 
-  async function handleUnlinkRoblox() {
+  // Linked Accounts — link is a modal flow (RobloxLinkModal self-invalidates on
+  // success); unlink is a direct fetch. Only Roblox is wired up today.
+  let linkModalPlatform = $state<LinkablePlatform | null>(null);
+
+  function handleLinkAccount(platform: LinkablePlatform) {
+    if (platform === 'roblox') linkModalPlatform = 'roblox';
+  }
+
+  async function handleUnlinkAccount(platform: LinkablePlatform) {
+    if (platform !== 'roblox') return;
     try {
       const response = await fetch('/api/arcade/roblox/unlink', { method: 'POST' });
       if (!response.ok) throw new Error('Failed to unlink');
@@ -290,23 +301,15 @@
       {/if}
     </section>
 
-    {#if data.isOwnProfile && data.robloxLinked}
+    {#if data.isOwnProfile || data.linkedAccounts.roblox}
       <section class="profile-section">
         <h3 class="section-title">Linked Accounts</h3>
-        <div class="roblox-linked">
-          {#if data.robloxLinked.avatarUrl}
-            <img
-              class="roblox-linked-avatar"
-              src={data.robloxLinked.avatarUrl}
-              alt={data.robloxLinked.username}
-            />
-          {/if}
-          <div class="roblox-linked-info">
-            <span class="roblox-linked-label">Roblox</span>
-            <span class="roblox-linked-username">@{data.robloxLinked.username}</span>
-          </div>
-          <Button variant="danger" size="sm" onclick={handleUnlinkRoblox}>Unlink</Button>
-        </div>
+        <LinkedAccounts
+          isOwnProfile={data.isOwnProfile}
+          linkedAccounts={data.linkedAccounts}
+          onlink={handleLinkAccount}
+          onunlink={handleUnlinkAccount}
+        />
       </section>
     {/if}
 
@@ -381,6 +384,12 @@
     </section>
   </div>
 {/if}
+
+<RobloxLinkModal
+  open={linkModalPlatform === 'roblox'}
+  onclose={() => (linkModalPlatform = null)}
+  onlinked={() => (linkModalPlatform = null)}
+/>
 
 <style>
   .profile-content {
@@ -544,39 +553,6 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-  }
-
-  .roblox-linked {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-  }
-
-  .roblox-linked-avatar {
-    width: var(--avatar-size-sm);
-    height: var(--avatar-size-sm);
-    border-radius: var(--radius-zero);
-    border: var(--border-width) solid var(--color-border);
-  }
-
-  .roblox-linked-info {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    flex: 1;
-  }
-
-  .roblox-linked-label {
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-text-muted);
-  }
-
-  .roblox-linked-username {
-    font-size: var(--font-size-sm);
-    font-weight: 600;
   }
 
   .edit-actions {

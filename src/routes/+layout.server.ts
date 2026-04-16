@@ -27,19 +27,16 @@ function toNotification(row: NotificationWithActor): Notification {
 export const load: LayoutServerLoad = async ({ locals, platform }) => {
   let friends: ChatParticipant[] = [];
   let notifications: Notification[] = [];
-  let notificationUnreadCount = 0;
   let conversations: Conversation[] = [];
 
   if (locals.user && platform?.env?.DB) {
     const db = createDbClient(platform.env.DB);
-    const [friendUsers, notifRows, notifUnread, rawConversations] = await Promise.all([
+    const [friendUsers, notifRows, rawConversations] = await Promise.all([
       db.friendships.getFriends(locals.user.id),
       db.notifications.getForUser(locals.user.id),
-      db.notifications.getUnreadCount(locals.user.id),
       db.conversations.getWithDetails(locals.user.id)
     ]);
     notifications = notifRows.map(toNotification);
-    notificationUnreadCount = notifUnread;
 
     conversations = rawConversations.map((c) => ({
       id: c.id,
@@ -75,7 +72,6 @@ export const load: LayoutServerLoad = async ({ locals, platform }) => {
     user: locals.user,
     friends,
     notifications,
-    notificationUnreadCount,
     conversations
   };
 };

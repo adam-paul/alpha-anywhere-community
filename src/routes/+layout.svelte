@@ -16,7 +16,6 @@
       user: import('$lib/types').UserContext | null;
       friends: ChatParticipant[];
       notifications: Notification[];
-      notificationUnreadCount: number;
       conversations: Conversation[];
     };
     children: import('svelte').Snippet;
@@ -38,12 +37,7 @@
   const realtime = createRealtimeStore('presence:global');
   createPresenceStore(realtime);
   // svelte-ignore state_referenced_locally
-  createNotificationStore(
-    data.notifications,
-    data.notificationUnreadCount,
-    realtime,
-    data.user?.id ?? ''
-  );
+  createNotificationStore(data.notifications, realtime, data.user?.id ?? '');
   createVoiceStore();
   // Chat store lives at layout level so the sidebar badge (chatUnreadCount)
   // and any future cross-route chat surfaces share one source of truth.

@@ -7,7 +7,12 @@
 
 import { error, redirect } from '@sveltejs/kit';
 import { createDbClient } from '$lib/server/db/client';
-import type { FriendshipStatus, FriendSummary, PendingFriendRequest } from '$lib/types';
+import type {
+  FriendshipStatus,
+  FriendSummary,
+  LinkedAccountsData,
+  PendingFriendRequest
+} from '$lib/types';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, locals, platform }) => {
@@ -100,11 +105,13 @@ export const load: PageServerLoad = async ({ params, locals, platform }) => {
     }));
   }
 
-  // Roblox linked account (own profile only)
-  const robloxLinked =
-    isOwnProfile && dbProfile?.roblox_user_id
+  // Linked external accounts. Visible on any profile (read-only for non-owners);
+  // the page only renders the full section when owned or at least one is linked.
+  const linkedAccounts: LinkedAccountsData = {
+    roblox: dbProfile?.roblox_user_id
       ? { username: dbProfile.roblox_username!, avatarUrl: dbProfile.roblox_avatar_url! }
-      : null;
+      : null
+  };
 
   return {
     user: {
@@ -133,6 +140,6 @@ export const load: PageServerLoad = async ({ params, locals, platform }) => {
     friends,
     mutualFriends,
     pendingRequests,
-    robloxLinked
+    linkedAccounts
   };
 };

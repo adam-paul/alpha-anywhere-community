@@ -4,6 +4,11 @@
  * Scope: bell-tray notifications only (friend requests, voice calls, etc.).
  * Chat unread state lives on the chat store (derived from per-conversation
  * `unreadCount`); this store no longer participates in that concern.
+ *
+ * `unreadCount` is derived from `notifications.filter(n => !n.read).length`
+ * — one source of truth. The array is bounded by the server load limit
+ * (currently 20), so the derived count saturates there; the AppHeader
+ * badge renders "20+" at the cap.
  */
 
 import { getContext, setContext } from 'svelte';
@@ -13,13 +18,13 @@ const NOTIFICATION_CONTEXT_KEY = 'notifications';
 
 export function createNotificationStore(
   initial: Notification[],
-  initialUnreadCount: number,
   realtime: RealtimeStore,
   currentUserId: string
 ): NotificationStore {
   let notifications = $state<Notification[]>(initial);
-  let unreadCount = $state(initialUnreadCount);
   let isOpen = $state(false);
+
+  const unreadCount = $derived(notifications.filter((n) => !n.read).length);
 
   function open() {
     isOpen = true;
@@ -35,11 +40,9 @@ export function createNotificationStore(
 
   async function markAsRead(notificationId: string): Promise<void> {
     const prev = notifications.map((n) => ({ ...n }));
-    const prevCount = unreadCount;
 
     // Optimistic update
     notifications = notifications.map((n) => (n.id === notificationId ? { ...n, read: true } : n));
-    unreadCount = Math.max(0, unreadCount - 1);
 
     try {
       const res = await fetch('/api/notifications/read', {
@@ -49,19 +52,15 @@ export function createNotificationStore(
       });
       if (!res.ok) throw new Error('Failed to mark as read');
     } catch {
-      // Rollback
       notifications = prev;
-      unreadCount = prevCount;
     }
   }
 
   async function markAllAsRead(): Promise<void> {
     const prev = notifications.map((n) => ({ ...n }));
-    const prevCount = unreadCount;
 
     // Optimistic update
     notifications = notifications.map((n) => ({ ...n, read: true }));
-    unreadCount = 0;
 
     try {
       const res = await fetch('/api/notifications/read', {
@@ -71,9 +70,7 @@ export function createNotificationStore(
       });
       if (!res.ok) throw new Error('Failed to mark all as read');
     } catch {
-      // Rollback
       notifications = prev;
-      unreadCount = prevCount;
     }
   }
 
@@ -83,7 +80,6 @@ export function createNotificationStore(
       if (!res.ok) return;
       const data = await res.json();
       notifications = data.notifications;
-      unreadCount = data.unreadCount;
     } catch {
       // Silently fail — stale data is better than no data
     }

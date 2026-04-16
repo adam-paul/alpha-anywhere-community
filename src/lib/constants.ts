@@ -5,9 +5,22 @@
  * for types defined in types.ts.
  */
 
-import type { EngagementCategory, GatingSource, Interest } from '$lib/types';
+import type { EngagementCategory, GatingSource, Interest, LinkablePlatform } from '$lib/types';
 
 export const TIMEBACK_DAILY_XP_REQUIRED = 120;
+
+// Linkable external platforms for the profile Linked Accounts section.
+// `available: false` renders as a greyed-out "Coming soon" placeholder.
+// Order here is the display order on the profile page.
+export const LINKABLE_PLATFORMS: ReadonlyArray<{
+  id: LinkablePlatform;
+  label: string;
+  available: boolean;
+}> = [
+  { id: 'roblox', label: 'Roblox', available: true },
+  { id: 'minecraft', label: 'Minecraft', available: false },
+  { id: 'factorio', label: 'Factorio', available: false }
+];
 
 export const GATING_UNIT_LABELS: Record<GatingSource, string> = {
   lwai: 'min',

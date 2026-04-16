@@ -163,7 +163,7 @@ export function createDbClient(db: D1Database) {
           timeback_id: row.timeback_id as string,
           email: row.email as string,
           display_name: row.display_name as string,
-          role: (row.role as 'student' | 'admin') ?? 'student',
+          role: row.role as 'student' | 'admin',
           created_at: row.created_at as string,
           updated_at: row.updated_at as string,
           gating_source: (row.gating_source as 'lwai' | 'timeback' | null) ?? null,
@@ -950,22 +950,6 @@ export function createDbClient(db: D1Database) {
           .bind(userId, limit)
           .all<NotificationWithActor>();
         return results;
-      },
-
-      /**
-       * Get count of unread notifications for a user.
-       */
-      async getUnreadCount(userId: string): Promise<number> {
-        const result = await db
-          .prepare(
-            `
-						SELECT COUNT(*) as count FROM notifications
-						WHERE recipient_id = ? AND read_at IS NULL
-					`
-          )
-          .bind(userId)
-          .first<{ count: number }>();
-        return result?.count ?? 0;
       },
 
       /**
