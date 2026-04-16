@@ -7,16 +7,17 @@
   interface Props {
     game: Game;
     disabled?: boolean;
-    onLaunch?: (game: Game) => void;
+    onEnter?: (game: Game) => void;
     onEdit?: (game: Game) => void;
-    playerCount?: number; // Will come from real-time presence later
+    /** Lobby-membership count from presence. Undefined = hide the footer. */
+    playerCount?: number;
   }
 
-  let { game, disabled = false, onLaunch, onEdit, playerCount }: Props = $props();
+  let { game, disabled = false, onEnter, onEdit, playerCount }: Props = $props();
 
   function handleClick() {
     if (disabled) return;
-    onLaunch?.(game);
+    onEnter?.(game);
   }
 </script>
 

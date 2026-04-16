@@ -14,6 +14,8 @@
 export interface ConnectionMeta {
   userId: string;
   displayName: string;
+  /** Game lobby the user is currently viewing, or null if not in any lobby. */
+  currentLobby: string | null;
 }
 
 /** Base shape for all channel messages. */
@@ -40,8 +42,34 @@ export interface PresenceSnapshotRequest {
 /** Snapshot of currently connected users, sent in response to a snapshot request. */
 export interface PresenceSnapshotMessage {
   type: 'presence:snapshot';
-  users: Array<{ userId: string; displayName: string }>;
+  users: Array<{ userId: string; displayName: string; currentLobby: string | null }>;
   timestamp: number;
+}
+
+/** Client announces they've entered a game lobby. Stored on connection attachment. */
+export interface LobbyEnterRequest {
+  type: 'lobby:enter';
+  lobbyId: string;
+}
+
+/** Client announces they've left their current lobby. */
+export interface LobbyLeaveRequest {
+  type: 'lobby:leave';
+}
+
+/** Broadcast when any user's lobby state changes (enter, leave, or disconnect). */
+export interface LobbyStateBroadcast {
+  type: 'lobby:state';
+  userId: string;
+  lobbyId: string | null;
+  timestamp: number;
+}
+
+/** Ephemeral chat message broadcast on a per-lobby channel. */
+export interface LobbyChatBroadcast extends ClientMessage {
+  type: 'lobby:chat';
+  content: string;
+  senderDisplayName: string;
 }
 
 /** Chat message relayed by the DO (typed for client-side validation). */
@@ -83,7 +111,11 @@ export interface VoiceLeftBroadcast extends ClientMessage {
 }
 
 /** Messages sent by clients to the DO. */
-export type ClientRequest = PresenceSnapshotRequest | ClientMessage;
+export type ClientRequest =
+  | PresenceSnapshotRequest
+  | LobbyEnterRequest
+  | LobbyLeaveRequest
+  | ClientMessage;
 
 /** Messages that can arrive on the WebSocket (from DO to client). */
 export type ChannelMessage =
@@ -93,7 +125,9 @@ export type ChannelMessage =
   | NotificationPush
   | ChatUnreadSignal
   | VoiceJoinedBroadcast
-  | VoiceLeftBroadcast;
+  | VoiceLeftBroadcast
+  | LobbyStateBroadcast
+  | LobbyChatBroadcast;
 
 // =============================================================================
 // LWAI Gating Protocol

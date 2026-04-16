@@ -18,6 +18,12 @@ export function createVoiceStore(): VoiceStore {
 
   // LiveKit internals (not exposed)
   let room: import('livekit-client').Room | null = null;
+  let pageLeaveHandler: (() => void) | null = null;
+  // Monotonic deadline (epoch ms). If Date.now() < suppressDisconnectUntil
+  // when pagehide fires, we skip the auto-disconnect. Used to cover the brief
+  // window around a Roblox deep-link launch, which fires pagehide even though
+  // the tab isn't actually closing.
+  let suppressDisconnectUntil = 0;
 
   // Derived
   const isConnected = $derived(state.status === 'connected');
@@ -58,7 +64,12 @@ export function createVoiceStore(): VoiceStore {
       // Dynamic import to avoid SSR
       const { Room, RoomEvent } = await import('livekit-client');
 
-      const r = new Room();
+      // Disable the SDK's built-in pagehide auto-disconnect and install our
+      // own below. We need the same "tab close / quit / refresh" coverage the
+      // default gives us, but with a suppression window so a Roblox deep-link
+      // (window.location.href = roblox://...) — which also fires pagehide
+      // while the tab stays alive — doesn't get misread as a close.
+      const r = new Room({ disconnectOnPageLeave: false });
 
       // Participant events — Map reassignment for Svelte reactivity
       r.on(RoomEvent.ParticipantConnected, (p) => {
@@ -129,6 +140,16 @@ export function createVoiceStore(): VoiceStore {
 
       room = r;
 
+      // Install our own pagehide handler for browser close / quit / refresh.
+      // Skipped inside a deep-link launch window so Roblox hand-off doesn't
+      // drop voice. Best-effort: if the tab dies before the signal flushes,
+      // LiveKit's server-side participant timeout (~30s) still cleans up.
+      pageLeaveHandler = () => {
+        if (Date.now() < suppressDisconnectUntil) return;
+        r.disconnect();
+      };
+      window.addEventListener('pagehide', pageLeaveHandler);
+
       // Populate existing remote participants
       const initial = new Map<string, VoiceParticipant>();
       for (const p of r.remoteParticipants.values()) {
@@ -152,11 +173,19 @@ export function createVoiceStore(): VoiceStore {
   }
 
   function leaveRoom(): void {
+    if (pageLeaveHandler) {
+      window.removeEventListener('pagehide', pageLeaveHandler);
+      pageLeaveHandler = null;
+    }
     room?.disconnect();
     room = null;
     participants = new Map();
     isMuted = false;
     state = { status: 'disconnected' };
+  }
+
+  function suppressAutoDisconnect(ms: number): void {
+    suppressDisconnectUntil = Date.now() + ms;
   }
 
   function toggleMute(): void {
@@ -189,7 +218,8 @@ export function createVoiceStore(): VoiceStore {
     },
     joinRoom,
     leaveRoom,
-    toggleMute
+    toggleMute,
+    suppressAutoDisconnect
   };
 
   setContext(VOICE_CONTEXT_KEY, store);

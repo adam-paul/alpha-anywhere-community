@@ -1,5 +1,10 @@
 import { DurableObject } from 'cloudflare:workers';
-import type { ConnectionMeta, ClientRequest, PresenceSnapshotMessage } from '@alpha/shared/types';
+import type {
+  ClientRequest,
+  ConnectionMeta,
+  LobbyEnterRequest,
+  PresenceSnapshotMessage
+} from '@alpha/shared/types';
 
 export class RealtimeChannel extends DurableObject {
   constructor(ctx: DurableObjectState, env: unknown) {
@@ -22,7 +27,7 @@ export class RealtimeChannel extends DurableObject {
     const pair = new WebSocketPair();
     const [client, server] = Object.values(pair);
 
-    const meta: ConnectionMeta = { userId, displayName };
+    const meta: ConnectionMeta = { userId, displayName, currentLobby: null };
     this.ctx.acceptWebSocket(server);
     server.serializeAttachment(meta);
 
@@ -59,7 +64,11 @@ export class RealtimeChannel extends DurableObject {
         if (existing === ws) continue;
         const existingMeta: ConnectionMeta | null = existing.deserializeAttachment();
         if (existingMeta) {
-          users.push({ userId: existingMeta.userId, displayName: existingMeta.displayName });
+          users.push({
+            userId: existingMeta.userId,
+            displayName: existingMeta.displayName,
+            currentLobby: existingMeta.currentLobby ?? null
+          });
         }
       }
       ws.send(
@@ -69,6 +78,36 @@ export class RealtimeChannel extends DurableObject {
           timestamp: Date.now()
         } satisfies PresenceSnapshotMessage)
       );
+      return;
+    }
+
+    // Lobby membership state lives on the connection's attachment and is
+    // broadcast so other clients can derive per-game tile counts. We cast below
+    // because `ClientMessage.type` is a wide `string` union member, which
+    // defeats TS narrowing on literal `type` checks; the runtime guard holds.
+    if (parsed.type === 'lobby:enter') {
+      const req = parsed as LobbyEnterRequest;
+      const currentMeta: ConnectionMeta = ws.deserializeAttachment();
+      const nextMeta: ConnectionMeta = { ...currentMeta, currentLobby: req.lobbyId };
+      ws.serializeAttachment(nextMeta);
+      this.broadcast({
+        type: 'lobby:state',
+        userId: currentMeta.userId,
+        lobbyId: req.lobbyId,
+        timestamp: Date.now()
+      });
+      return;
+    }
+    if (parsed.type === 'lobby:leave') {
+      const currentMeta: ConnectionMeta = ws.deserializeAttachment();
+      const nextMeta: ConnectionMeta = { ...currentMeta, currentLobby: null };
+      ws.serializeAttachment(nextMeta);
+      this.broadcast({
+        type: 'lobby:state',
+        userId: currentMeta.userId,
+        lobbyId: null,
+        timestamp: Date.now()
+      });
       return;
     }
 

@@ -197,10 +197,8 @@ export interface ArcadeState {
   theme: Theme;
   readonly games: Game[];
   readonly filteredGames: Game[];
-  readonly presenceCounts: PresenceCounts;
   readonly robloxLinked: boolean;
   setGames: (games: Game[]) => void;
-  setPresenceCounts: (counts: PresenceCounts) => void;
   setRobloxLinked: (linked: boolean) => void;
 }
 
@@ -365,17 +363,33 @@ export interface RobloxUserLookupResult {
   robloxAvatarUrl: string;
 }
 
-// Presence counts per game slug
-export type PresenceCounts = Record<string, number>;
-
+// Per-user KV record written on "Enter Game" click. Key: `presence:user:{userId}`.
+// Used by the game-presence endpoint to look up who has recently launched a game
+// and reconcile their Roblox-side presence.
 export interface PresenceRecord {
   gameId: string;
   robloxUserId: string;
 }
 
-export interface PresenceApiResponse {
-  counts: PresenceCounts;
-  currentUserGameId: string | null;
+/** Response from GET /api/arcade/game-presence?gameId=X — scoped to a single game. */
+export interface GamePresenceResponse {
+  inGameCount: number;
+  currentUserInGame: boolean;
+}
+
+/**
+ * Ephemeral lobby chat message held in component state. Not persisted to D1.
+ * No messageId needed — messages have no server-side identity.
+ */
+export interface LobbyMessage {
+  senderId: string;
+  senderDisplayName: string;
+  content: string;
+  timestamp: number;
+  /** Local-only send state while POST /api/lobby/[gameId]/message is in flight. */
+  status?: 'pending' | 'sent';
+  /** Transient local ID for $state reactivity during optimistic sends. */
+  localId: string;
 }
 
 // Roblox API response shapes (external API typing)
@@ -408,12 +422,16 @@ export interface RobloxPresenceResponse {
 export interface PresenceUser {
   userId: string;
   displayName: string;
+  /** Game lobby the user is currently viewing, or null. Updated by lobby:state broadcasts. */
+  currentLobby: string | null;
 }
 
 export interface PresenceStore {
   readonly onlineUsers: ReadonlyMap<string, PresenceUser>;
   readonly onlineCount: number;
   isOnline(userId: string): boolean;
+  /** Send lobby:enter or lobby:leave on the presence socket. null = leave. */
+  setCurrentLobby(lobbyId: string | null): void;
 }
 
 // Realtime (client-side only — shared protocol types re-exported above)
@@ -462,4 +480,10 @@ export interface VoiceStore {
   joinRoom(roomName: string): Promise<void>;
   leaveRoom(): void;
   toggleMute(): void;
+  /**
+   * Arm a window (in ms) during which pagehide will NOT auto-disconnect voice.
+   * Used around a Roblox deep-link launch so the OS hand-off isn't misread
+   * as a tab close.
+   */
+  suppressAutoDisconnect(ms: number): void;
 }

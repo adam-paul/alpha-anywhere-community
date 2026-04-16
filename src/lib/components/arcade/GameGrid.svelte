@@ -6,11 +6,13 @@
 
   interface Props {
     disabled?: boolean;
-    onLaunch: (game: Game) => void;
+    onEnter: (game: Game) => void;
     onEdit?: (game: Game) => void;
+    /** Lobby-membership counts derived from presence:global; keyed by game id. */
+    lobbyCounts: Record<string, number>;
   }
 
-  let { disabled = false, onLaunch, onEdit }: Props = $props();
+  let { disabled = false, onEnter, onEdit, lobbyCounts }: Props = $props();
 
   const arcade = getArcadeStore();
 
@@ -22,9 +24,9 @@
     <GameCard
       {game}
       {disabled}
-      {onLaunch}
+      {onEnter}
       {onEdit}
-      playerCount={arcade.presenceCounts[game.id] || undefined}
+      playerCount={lobbyCounts[game.id] || undefined}
     />
   {/each}
 

@@ -14,6 +14,7 @@ export type IconName =
   | 'unlock'
   | 'map'
   | 'chevron-right'
+  | 'chevron-left'
   | 'x'
   | 'edit'
   | 'plus'

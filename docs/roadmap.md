@@ -260,6 +260,10 @@ Two seed scripts exist (`seed-games.ts`, `seed-users.ts`) with duplicated utilit
 
 Timeback SSO is the only production auth path. If the community ever needs users outside the Timeback ecosystem (parents, mentors, alumni), additional OAuth providers or an invite-code flow would be needed.
 
+#### Lobby Presence Broadcast Scaling
+
+Lobby tile counts are derived from `currentLobby` state carried in each connection's `presence:global` attachment, with `lobby:state` broadcasts fanning out to every connected client on every enter/leave. Traffic is O(N) per event where N is total concurrent online users — trivial at current scale (hundreds). If N grows into the many-thousands and lobby-hopping is frequent, every user receives every lobby-change event including ones they don't care about. Fix options: (a) clients subscribe to a scoped `lobby:counts` stream instead of raw state, (b) DO only broadcasts `lobby:state` to clients that have registered interest. Not a current risk; documented here so the coupling shape is captured.
+
 ---
 
 ## Loose Ends

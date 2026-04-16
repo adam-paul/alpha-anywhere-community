@@ -3,7 +3,7 @@ import { createDbClient } from '$lib/server/db/client';
 import type { PresenceRecord } from '$lib/types';
 import type { RequestHandler } from './$types';
 
-const LAUNCH_TTL = 300; // 5 minutes
+const LAUNCH_TTL = 300; // 5 minutes — the window for Roblox Presence API reconciliation
 
 export const POST: RequestHandler = async ({ request, locals, platform }) => {
   if (!locals.user) error(401, 'Not authenticated');
