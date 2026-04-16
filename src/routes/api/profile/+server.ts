@@ -7,9 +7,8 @@
 import { json, error } from '@sveltejs/kit';
 import { createDbClient } from '$lib/server/db/client';
 import { moderateAndPersist } from '$lib/server/evals';
+import type { ProfileField } from '$lib/types';
 import type { RequestHandler } from './$types';
-
-type ProfileField = 'bio' | 'location';
 
 export const PATCH: RequestHandler = async ({ request, locals, platform }) => {
   // Must be authenticated

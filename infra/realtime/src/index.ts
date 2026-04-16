@@ -1,14 +1,6 @@
+import type { Env, SessionUser } from './types';
+
 export { RealtimeChannel } from './channel';
-
-interface Env {
-  CHANNEL: DurableObjectNamespace;
-  SESSION_SECRET: string;
-}
-
-interface SessionUser {
-  id: string;
-  displayName: string;
-}
 
 const COOKIE_NAME = 'alpha_session';
 

@@ -122,6 +122,9 @@ export type FriendshipStatus =
 // Profile edit state
 export type EditMode = 'view' | 'editing' | 'saving';
 
+// Free-text profile fields that go through moderation before persist.
+export type ProfileField = 'bio' | 'location';
+
 // Friend list items (used by profile page for friends, mutual friends, pending requests)
 export interface FriendSummary {
   id: string;

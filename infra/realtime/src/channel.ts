@@ -1,13 +1,9 @@
 import { DurableObject } from 'cloudflare:workers';
-import type {
-  ClientRequest,
-  ConnectionMeta,
-  LobbyEnterRequest,
-  PresenceSnapshotMessage
-} from '@alpha/shared/types';
+import type { ClientRequest, ConnectionMeta, PresenceSnapshotMessage } from '@alpha/shared/types';
+import type { Env } from './types';
 
-export class RealtimeChannel extends DurableObject {
-  constructor(ctx: DurableObjectState, env: unknown) {
+export class RealtimeChannel extends DurableObject<Env> {
+  constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
     this.ctx.setWebSocketAutoResponse(new WebSocketRequestResponsePair('ping', 'pong'));
   }
@@ -82,18 +78,15 @@ export class RealtimeChannel extends DurableObject {
     }
 
     // Lobby membership state lives on the connection's attachment and is
-    // broadcast so other clients can derive per-game tile counts. We cast below
-    // because `ClientMessage.type` is a wide `string` union member, which
-    // defeats TS narrowing on literal `type` checks; the runtime guard holds.
+    // broadcast so other clients can derive per-game tile counts.
     if (parsed.type === 'lobby:enter') {
-      const req = parsed as LobbyEnterRequest;
       const currentMeta: ConnectionMeta = ws.deserializeAttachment();
-      const nextMeta: ConnectionMeta = { ...currentMeta, currentLobby: req.lobbyId };
+      const nextMeta: ConnectionMeta = { ...currentMeta, currentLobby: parsed.lobbyId };
       ws.serializeAttachment(nextMeta);
       this.broadcast({
         type: 'lobby:state',
         userId: currentMeta.userId,
-        lobbyId: req.lobbyId,
+        lobbyId: parsed.lobbyId,
         timestamp: Date.now()
       });
       return;

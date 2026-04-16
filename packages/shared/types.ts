@@ -18,7 +18,12 @@ export interface ConnectionMeta {
   currentLobby: string | null;
 }
 
-/** Base shape for all channel messages. */
+/**
+ * Structural base for all channel messages. Kept as an abstract shape — must
+ * NEVER appear directly in a discriminated union, because its wide `type:
+ * string` would defeat narrowing for every literal-typed variant sharing the
+ * union. Concrete variants override `type` with a specific literal.
+ */
 export interface BaseMessage {
   type: string;
   timestamp: number;
@@ -29,7 +34,11 @@ export type SystemMessage =
   | { type: 'system:join'; userId: string; displayName: string; timestamp: number }
   | { type: 'system:leave'; userId: string; displayName: string; timestamp: number };
 
-/** Application messages sent by clients (relayed by DO with senderId stamped). */
+/**
+ * Shared shape for application messages that the DO relays — gives them
+ * `senderId` + `timestamp` via `BaseMessage`. Same caveat as `BaseMessage`:
+ * extend it for concrete variants; do not use it directly as a union member.
+ */
 export interface ClientMessage extends BaseMessage {
   senderId: string;
 }
@@ -110,12 +119,21 @@ export interface VoiceLeftBroadcast extends ClientMessage {
   userId: string;
 }
 
-/** Messages sent by clients to the DO. */
+/**
+ * Messages sent by clients to the DO. Every variant has a literal `type`
+ * field so discriminated narrowing works cleanly. Clients send these WITHOUT
+ * `senderId`/`timestamp`; the DO stamps those on before broadcasting.
+ */
 export type ClientRequest =
   | PresenceSnapshotRequest
   | LobbyEnterRequest
   | LobbyLeaveRequest
-  | ClientMessage;
+  | ChatBroadcast
+  | ChatUnreadSignal
+  | NotificationPush
+  | VoiceJoinedBroadcast
+  | VoiceLeftBroadcast
+  | LobbyChatBroadcast;
 
 /** Messages that can arrive on the WebSocket (from DO to client). */
 export type ChannelMessage =
