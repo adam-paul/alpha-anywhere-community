@@ -1,8 +1,11 @@
+import {
+  COOKIE_NAME,
+  extractCookieFromHeader,
+  parseSignedCookieValue
+} from '@alpha/shared/session';
 import type { Env, SessionUser } from './types';
 
 export { RealtimeChannel } from './channel';
-
-const COOKIE_NAME = 'alpha_session';
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -37,42 +40,7 @@ export default {
 };
 
 async function getUserFromCookie(request: Request, secret: string): Promise<SessionUser | null> {
-  const cookieHeader = request.headers.get('cookie');
-  if (!cookieHeader) return null;
-
-  const cookies = cookieHeader.split(';').map((c) => c.trim());
-  const sessionCookie = cookies.find((c) => c.startsWith(`${COOKIE_NAME}=`));
-  if (!sessionCookie) return null;
-
-  const value = sessionCookie.substring(COOKIE_NAME.length + 1);
-  return verifySession(value, secret);
-}
-
-async function verifySession(value: string, secret: string): Promise<SessionUser | null> {
-  try {
-    const [dataB64, signature] = value.split('.');
-    if (!dataB64 || !signature) return null;
-
-    const data = atob(dataB64);
-    const expectedSig = await sign(data, secret);
-    if (signature !== expectedSig) return null;
-
-    const parsed = JSON.parse(data);
-    return { id: parsed.id, displayName: parsed.displayName };
-  } catch {
-    return null;
-  }
-}
-
-async function sign(data: string, secret: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const key = await crypto.subtle.importKey(
-    'raw',
-    encoder.encode(secret),
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign']
-  );
-  const sig = await crypto.subtle.sign('HMAC', key, encoder.encode(data));
-  return btoa(String.fromCharCode(...new Uint8Array(sig)));
+  const value = extractCookieFromHeader(request.headers.get('cookie'), COOKIE_NAME);
+  if (!value) return null;
+  return parseSignedCookieValue<SessionUser>(value, secret);
 }

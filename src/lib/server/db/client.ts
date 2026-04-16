@@ -145,7 +145,7 @@ export function createDbClient(db: D1Database) {
 						SELECT
 							u.id, u.timeback_id, u.email, u.display_name, u.role,
 							u.gating_source, u.gating_source_probed_at, u.created_at, u.updated_at,
-							p.bio, p.location, p.avatar_url, p.cover_url, p.interests,
+							p.bio, p.location, p.avatar_url, p.avatar_source, p.cover_url, p.interests,
 							p.roblox_user_id, p.roblox_username, p.roblox_avatar_url
 						FROM users u
 						LEFT JOIN profiles p ON u.id = p.user_id
@@ -173,6 +173,7 @@ export function createDbClient(db: D1Database) {
             bio: row.bio as string | null,
             location: row.location as string | null,
             avatar_url: row.avatar_url as string | null,
+            avatar_source: (row.avatar_source as DbProfile['avatar_source']) ?? null,
             cover_url: row.cover_url as string | null,
             interests: row.interests as string | null,
             roblox_user_id: row.roblox_user_id as string | null,
@@ -233,7 +234,14 @@ export function createDbClient(db: D1Database) {
         return result;
       },
 
-      /** Link a Roblox account to a profile. */
+      /**
+       * Link a Roblox account. Always caches the Roblox headshot URL
+       * (powers the Linked-Roblox strip regardless of active avatar).
+       * Only promotes it to the active avatar when the student has no
+       * avatar yet — otherwise we'd silently clobber an AI-gen or
+       * uploaded choice. SQLite evaluates SET expressions against the
+       * pre-update row, so the CASE/COALESCE checks read old values.
+       */
       async linkRoblox(userId: string, input: LinkRobloxInput): Promise<DbProfile> {
         const result = await db
           .prepare(
@@ -241,18 +249,30 @@ export function createDbClient(db: D1Database) {
               roblox_user_id = ?,
               roblox_username = ?,
               roblox_avatar_url = ?,
+              avatar_url = COALESCE(avatar_url, ?),
+              avatar_source = CASE WHEN avatar_url IS NULL THEN 'roblox' ELSE avatar_source END,
               updated_at = datetime('now')
             WHERE user_id = ?
             RETURNING *`
           )
-          .bind(input.roblox_user_id, input.roblox_username, input.roblox_avatar_url, userId)
+          .bind(
+            input.roblox_user_id,
+            input.roblox_username,
+            input.roblox_avatar_url,
+            input.roblox_avatar_url,
+            userId
+          )
           .first<DbProfile>();
 
         if (!result) throw new Error('Profile not found');
         return result;
       },
 
-      /** Unlink a Roblox account from a profile. */
+      /**
+       * Unlink a Roblox account. Clears the Roblox identity and cached
+       * headshot. Drops the active avatar only if it was the Roblox one;
+       * AI/custom choices survive an unlink.
+       */
       async unlinkRoblox(userId: string): Promise<DbProfile> {
         const result = await db
           .prepare(
@@ -260,6 +280,8 @@ export function createDbClient(db: D1Database) {
               roblox_user_id = NULL,
               roblox_username = NULL,
               roblox_avatar_url = NULL,
+              avatar_url = CASE WHEN avatar_source = 'roblox' THEN NULL ELSE avatar_url END,
+              avatar_source = CASE WHEN avatar_source = 'roblox' THEN NULL ELSE avatar_source END,
               updated_at = datetime('now')
             WHERE user_id = ?
             RETURNING *`
@@ -777,19 +799,6 @@ export function createDbClient(db: D1Database) {
        */
       async findById(id: string): Promise<DbGame | null> {
         return db.prepare('SELECT * FROM games WHERE id = ?').bind(id).first<DbGame>();
-      },
-
-      /**
-       * Get games by engagement category.
-       */
-      async findByCategory(category: DbGame['engagement_category']): Promise<DbGame[]> {
-        const { results } = await db
-          .prepare(
-            'SELECT * FROM games WHERE is_active = 1 AND engagement_category = ? ORDER BY title'
-          )
-          .bind(category)
-          .all<DbGame>();
-        return results;
       },
 
       /**

@@ -10,6 +10,9 @@ export interface NavItem {
 // User types
 export type UserRole = 'student' | 'admin';
 
+// Avatar source — mirrors the CHECK constraint on profiles.avatar_source.
+export type AvatarSource = 'roblox' | 'ai' | 'custom';
+
 // Game types
 export type GameType = 'roblox' | 'minecraft' | 'web' | 'iframe';
 

@@ -24,9 +24,14 @@
 
   let { data, children }: Props = $props();
 
-  // Create user store with session from server (sets context for child components)
+  // Create user store with session from server (sets context for child components).
+  // The $effect keeps the store in sync with subsequent layout reloads
+  // (e.g., after invalidateAll() following a Roblox link/unlink).
   // svelte-ignore state_referenced_locally
-  createUserStore(data.user);
+  const userStore = createUserStore(data.user);
+  $effect(() => {
+    userStore.setUser(data.user);
+  });
 
   // Create app-wide presence — always create stores so components never crash,
   // but only connect WebSocket when authenticated

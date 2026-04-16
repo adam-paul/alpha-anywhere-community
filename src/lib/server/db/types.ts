@@ -5,6 +5,7 @@
  */
 
 import type {
+  AvatarSource,
   EngagementCategory,
   GameType,
   GatingSource,
@@ -41,11 +42,12 @@ export interface DbProfile {
   bio: string | null;
   location: string | null;
   avatar_url: string | null;
+  avatar_source: AvatarSource | null;
   cover_url: string | null;
   interests: string | null; // JSON array string
   roblox_user_id: string | null;
   roblox_username: string | null;
-  roblox_avatar_url: string | null;
+  roblox_avatar_url: string | null; // Cache of the Thumbnails API response for the strip.
   updated_at: string;
 }
 

@@ -34,13 +34,14 @@ export const handle: Handle = async ({ event, resolve }) => {
         email: cookieUser.email,
         display_name: cookieUser.displayName
       });
-      await db.profiles.upsert(dbUser.id, {});
+      const dbProfile = await db.profiles.upsert(dbUser.id, {});
       const enrichedUser = {
         id: dbUser.id,
         timebackId: dbUser.timeback_id,
         email: dbUser.email,
         displayName: dbUser.display_name,
-        role: dbUser.role
+        role: dbUser.role,
+        avatarUrl: dbProfile.avatar_url ?? undefined
       };
       event.locals.user = enrichedUser;
 

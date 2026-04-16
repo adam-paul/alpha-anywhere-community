@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { invalidateAll } from '$app/navigation';
   import { Button, Input, Modal } from '$lib/components/ui';
   import type { RobloxLinkStatus, RobloxUserLookupResult } from '$lib/types';
 
@@ -75,6 +76,10 @@
         const err = await res.json();
         throw new Error(err.message || 'Linking failed');
       }
+
+      // Refresh layout data so the sidebar avatar (and any other consumer
+      // of user.avatarUrl) picks up the newly-linked Roblox headshot.
+      await invalidateAll();
 
       onlinked();
       onclose();
