@@ -52,9 +52,19 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ gameId: game.id })
-      }).catch(() => {
-        // Non-critical — presence just won't track this session
+      }).catch(() => {});
+
+      // Optimistic count bump — gives immediate visual feedback on the
+      // game card while waiting for the server poll to confirm.
+      arcade.setPresenceCounts({
+        ...arcade.presenceCounts,
+        [game.id]: (arcade.presenceCounts[game.id] ?? 0) + 1
       });
+
+      // Check presence 5s after click — gives Roblox time to register the
+      // session, then triggers voice auto-join without waiting for the full
+      // poll cycle.
+      setTimeout(poll, 5000);
     }
 
     let options: LaunchOptions;
@@ -101,9 +111,6 @@
     if (!result.success) {
       console.error('Failed to launch game:', result.error);
     }
-    // Voice room entry is deferred to the presence poll below, which waits
-    // for Roblox to confirm the student is actually in-game. Joining here
-    // would risk an immediate disconnect before the game finishes loading.
   }
 
   // Dev tools bindings
@@ -137,39 +144,39 @@
     gating.setDevOverride(override);
   }
 
-  // Presence polling — fetch counts every 15s while arcade is visible.
-  // Also the single source of truth for per-game voice lobbies: voice
-  // only joins once Roblox confirms the student is in-game, and leaves
-  // as soon as presence drops.
+  // Presence polling — fetch counts + drive per-game voice lobbies.
+  // Hoisted so handleLaunch can trigger an immediate check after a click.
+  let pollActive = false;
+
+  async function poll() {
+    if (!pollActive) return;
+    try {
+      const res = await fetch('/api/arcade/presence');
+      if (res.ok && pollActive) {
+        const { counts, currentUserGameId } = (await res.json()) as PresenceApiResponse;
+        arcade.setPresenceCounts(counts);
+
+        if (currentUserGameId) {
+          const wantedRoom = `game:${currentUserGameId}`;
+          if (voice.roomName !== wantedRoom) voice.joinRoom(wantedRoom);
+        } else if (voice.roomName?.startsWith('game:')) {
+          voice.leaveRoom();
+        }
+      }
+    } catch {
+      // Silently ignore polling failures
+    }
+  }
+
   $effect(() => {
     if (gating.showWorkWall) return;
 
-    let active = true;
-
-    async function poll() {
-      try {
-        const res = await fetch('/api/arcade/presence');
-        if (res.ok && active) {
-          const { counts, currentUserGameId } = (await res.json()) as PresenceApiResponse;
-          arcade.setPresenceCounts(counts);
-
-          if (currentUserGameId) {
-            const wantedRoom = `game:${currentUserGameId}`;
-            if (voice.roomName !== wantedRoom) voice.joinRoom(wantedRoom);
-          } else if (voice.roomName?.startsWith('game:')) {
-            voice.leaveRoom();
-          }
-        }
-      } catch {
-        // Silently ignore polling failures
-      }
-    }
-
+    pollActive = true;
     poll();
-    const interval = setInterval(poll, 15_000);
+    const interval = setInterval(poll, 10_000);
 
     return () => {
-      active = false;
+      pollActive = false;
       clearInterval(interval);
     };
   });
