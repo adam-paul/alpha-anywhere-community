@@ -12,6 +12,7 @@ import { error } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import { createEvaluator } from '@alpha/evals';
 import type { Evaluator, ModerationDecision, ModerationSource } from '@alpha/evals/types';
+import { signHex } from '@alpha/shared/session';
 import type { DbClient } from './db/client';
 import type { PersistedDetectedBy } from './db/types';
 
@@ -25,22 +26,20 @@ export function getEvaluator(): Evaluator {
 }
 
 /**
- * HMAC-SHA256(user_id, SESSION_SECRET), hex. Used to log user attribution on
- * generation_events without storing raw user IDs (COPPA).
+ * HMAC-SHA256(user_id, EVALS_HASH_SECRET), hex. Used to pseudonymize user
+ * attribution on generation_events without storing raw user IDs (COPPA).
+ *
+ * Persisted in `generation_events.user_id_hash`. The secret is deliberately
+ * separate from SESSION_SECRET so that rotating cookie signing (a routine
+ * security hygiene action) doesn't orphan every historical evals row.
+ * Changing EVALS_HASH_SECRET or the shared `signHex` algorithm makes old
+ * rows uncorrelatable with new events for the same user — treat as a
+ * deliberate "new evals epoch" decision, not rotation.
  */
 export async function hashUserId(userId: string): Promise<string> {
-  const secret = env.SESSION_SECRET;
-  if (!secret) error(503, 'SESSION_SECRET not configured');
-
-  const key = await crypto.subtle.importKey(
-    'raw',
-    new TextEncoder().encode(secret),
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign']
-  );
-  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(userId));
-  return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, '0')).join('');
+  const secret = env.EVALS_HASH_SECRET;
+  if (!secret) error(503, 'EVALS_HASH_SECRET not configured');
+  return signHex(userId, secret);
 }
 
 /**

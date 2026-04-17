@@ -13,8 +13,12 @@ const encoder = new TextEncoder();
 /** Name of the session cookie on `.alpha-community.school`. */
 export const COOKIE_NAME = 'alpha_session';
 
-/** Sign `data` with HMAC-SHA256 and return the signature as base64. */
-export async function sign(data: string, secret: string): Promise<string> {
+/**
+ * Compute HMAC-SHA256 of `data` with `secret` and return the raw signature
+ * bytes. Internal primitive shared by every keyed-hash caller — base64 for
+ * cookie signing (`sign`), hex for DB identifiers (`signHex`).
+ */
+async function hmacSha256(data: string, secret: string): Promise<Uint8Array> {
   const key = await crypto.subtle.importKey(
     'raw',
     encoder.encode(secret),
@@ -23,7 +27,26 @@ export async function sign(data: string, secret: string): Promise<string> {
     ['sign']
   );
   const signature = await crypto.subtle.sign('HMAC', key, encoder.encode(data));
-  return btoa(String.fromCharCode(...new Uint8Array(signature)));
+  return new Uint8Array(signature);
+}
+
+/** Sign `data` with HMAC-SHA256 and return the signature as base64. */
+export async function sign(data: string, secret: string): Promise<string> {
+  const bytes = await hmacSha256(data, secret);
+  return btoa(String.fromCharCode(...bytes));
+}
+
+/**
+ * Sign `data` with HMAC-SHA256 and return the signature as lowercase hex.
+ *
+ * Value-stability note: changing the algorithm or the secret makes every
+ * previously-computed hash uncorrelatable. Callers that persist these in the
+ * DB (e.g. `generation_events.user_id_hash`) rely on the output staying
+ * stable across deploys.
+ */
+export async function signHex(data: string, secret: string): Promise<string> {
+  const bytes = await hmacSha256(data, secret);
+  return [...bytes].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
 /** Verify a base64 HMAC-SHA256 signature against `data`. */

@@ -135,6 +135,7 @@ These should be flagged to DevOps as known gaps.
 | `AWS_COGNITO_CLIENT_SECRET`  | Critical       |
 | `TIMEBACK_API_CLIENT_SECRET` | Critical       |
 | `SESSION_SECRET`             | Critical       |
+| `EVALS_HASH_SECRET`          | Critical       |
 | `GAME_CREDENTIALS_KEY`       | Critical       |
 | `LIVEKIT_API_SECRET`         | Critical       |
 | `AWS_COGNITO_CLIENT_ID`      | High           |
