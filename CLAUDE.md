@@ -80,6 +80,16 @@ Admin features are inline — they appear within existing pages (e.g., game CRUD
 
 ## Key Conventions
 
+### Repo Structure
+
+The monorepo splits along a single axis: **importable vs deployable**.
+
+- `packages/` — libraries consumed via workspace imports (`@alpha/*`). No deploy config, no runtime of their own. Current: `@alpha/shared`, `@alpha/evals`.
+- `infra/` — standalone deployables, each with its own deploy manifest (`wrangler.toml`, `sst.config.ts`, etc.) targeting a specific platform. Current: `realtime` (Cloudflare Worker), `lwai-proxy` (AWS Lambda via SST).
+- Repo root — the SvelteKit app itself (the product).
+
+A new `infra/` entry is justified **only** when the workload can't run inside the main SvelteKit app's runtime or shouldn't share its deploy lifecycle (different cloud, persistent connections, independent schedule). Admin-style views (e.g., an evals dashboard) belong inline in the SvelteKit app as `/admin/*` routes, not as separate deployables.
+
 ### File Naming
 
 - Components: `PascalCase.svelte`

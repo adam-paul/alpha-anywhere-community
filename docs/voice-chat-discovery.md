@@ -4,7 +4,7 @@ Discovery doc for real-time voice chat in Alpha Anywhere Community. Captures dec
 
 **Status:** Discovery complete, pre-implementation  
 **Date:** April 2026  
-**Related:** [Alpha Voice spec in brainlift](./alpha-anywhere-community-brainlift.md), [Notion: Voice Pods project](https://www.notion.so/2f52901d7908803eb675cbf4d6c05a10)
+**Related:** [Notion: Voice Pods project](https://www.notion.so/2f52901d7908803eb675cbf4d6c05a10)
 
 ---
 
@@ -249,6 +249,10 @@ This aligns with the Notion April priorities: "Voice/Video pods (Modular/reusabl
 4. **Push-to-talk vs open mic** — Open mic with noise suppression is simpler UX. Push-to-talk is safer for younger kids (no accidental broadcasts of household noise). Could be a per-student setting.
 5. **Moderation agent STT provider** — Deepgram (fast, cheap), AssemblyAI (accurate), Whisper (self-hostable). Need to evaluate latency and cost for real-time use.
 6. **Voice UI design** — Floating overlay? Inline in the arcade? Sidebar panel? Needs design mockups.
+7. **Speaker-identification UI** — Persistent "who is currently speaking" widget so students recognize teammates by voice before knowing them IRL. Current implementation shows participant count only. Trade-off: useful for squad-formation, but extra UI surface and potential privacy consideration (speaking activity is itself signal).
+8. **Lightweight "panic button" moderation** — One-click local mute of an offender for the reporting student + timestamp flag on the session for staff review. Complementary to (not replacement for) the STT agent — ships without requiring STT infra, and covers cases the agent misses. Open: does the flag trigger audio retention for that window, or is it metadata-only?
+9. **Audio recording & retention** — Currently undecided. Recording enables staff review of flagged moments but creates biometric-PII obligations under COPPA 2025 (voiceprints are explicitly in scope). Options: (a) no recording, moderation is STT-only in-flight; (b) short rolling buffer flushed only on flag; (c) full-session recording. Needs legal review; default to (a) absent a clear reason otherwise.
+10. **Parent-control granularity for voice** — Single `voice_chat_enabled` toggle, or sub-toggles (public rooms vs friend calls vs game-server voice)? Sub-toggles let parents allow squad voice for coordination while blocking drop-in public rooms. Higher UX cost in the parent dashboard.
 
 ---
 
