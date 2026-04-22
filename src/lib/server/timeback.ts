@@ -151,7 +151,7 @@ export function getTimeback() {
             timebackId: tbId,
             email,
             displayName: user.name ?? email.split('@')[0] ?? 'User',
-            role: 'student'
+            role: 'admin'
           };
 
           const cookieHeader = await createSessionCookieHeader(session, env.AUTH_CALLBACK_URL);

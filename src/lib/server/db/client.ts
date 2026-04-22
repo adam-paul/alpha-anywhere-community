@@ -96,12 +96,14 @@ export function createDbClient(db: D1Database) {
           return result;
         }
 
-        // Create new user
+        // Create new user.
+        // Role defaults to 'admin' while no real students are onboarded —
+        // flip to 'student' once student onboarding begins.
         const result = await db
           .prepare(
             `
-						INSERT INTO users (timeback_id, email, display_name)
-						VALUES (?, ?, ?)
+						INSERT INTO users (timeback_id, email, display_name, role)
+						VALUES (?, ?, ?, 'admin')
 						RETURNING *
 					`
           )
