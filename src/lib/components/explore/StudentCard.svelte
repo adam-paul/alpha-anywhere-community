@@ -3,6 +3,7 @@
   import { Card, Avatar, Badge } from '$lib/components/ui';
   import InterestBadge from '$lib/components/InterestBadge.svelte';
   import { getPresenceStore } from '$lib/stores/presence.svelte';
+  import { getUserStore } from '$lib/stores/user.svelte';
 
   interface Props {
     student: Student;
@@ -12,6 +13,7 @@
   let { student, disabled = false }: Props = $props();
 
   const presence = getPresenceStore();
+  const userStore = getUserStore();
 
   // Show max 4 interests, with overflow indicator
   const displayInterests = $derived(student.interests.slice(0, 4));
@@ -21,6 +23,7 @@
   const hasLocation = $derived(student.location && student.location !== 'Location not set');
   const hasBio = $derived(student.bio && student.bio.trim().length > 0);
   const hasInterests = $derived(student.interests.length > 0);
+  const isSelf = $derived(userStore.user?.id === student.id);
 </script>
 
 <a href="/profile/{student.id}" class="student-card-link" class:disabled>
@@ -39,7 +42,9 @@
           {#if hasLocation}
             <span class="student-location">{student.location}</span>
           {:else}
-            <span class="student-location empty">Add location</span>
+            <span class="student-location empty"
+              >{isSelf ? 'Add location' : 'Location not set'}</span
+            >
           {/if}
         </div>
       </div>
@@ -64,7 +69,7 @@
             background="transparent"
             borderColor="var(--color-border)"
           >
-            + Add interests
+            {isSelf ? '+ Add interests' : 'No interests yet'}
           </Badge>
         {/if}
       </div>

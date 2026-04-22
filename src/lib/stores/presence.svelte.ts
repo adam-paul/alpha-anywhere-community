@@ -13,6 +13,9 @@ const PRESENCE_CONTEXT_KEY = 'presence';
 
 export function createPresenceStore(realtime: RealtimeStore): PresenceStore {
   let onlineUsers = $state(new Map<string, PresenceUser>());
+  // Desired lobby for this connection. Stored reactively so we can re-announce
+  // on connect/reconnect — the DO's attachment resets on every new WebSocket.
+  let desiredLobby = $state<string | null>(null);
 
   const onlineCount = $derived(onlineUsers.size);
 
@@ -21,6 +24,17 @@ export function createPresenceStore(realtime: RealtimeStore): PresenceStore {
   $effect(() => {
     if (realtime.isConnected) {
       realtime.send({ type: 'presence:snapshot-request' });
+    }
+  });
+
+  // Announce desired lobby state whenever the socket is open. Re-fires on
+  // reconnect (fresh attachment) and whenever desiredLobby changes.
+  $effect(() => {
+    if (!realtime.isConnected) return;
+    if (desiredLobby !== null) {
+      realtime.send({ type: 'lobby:enter', lobbyId: desiredLobby });
+    } else {
+      realtime.send({ type: 'lobby:leave' });
     }
   });
 
@@ -61,15 +75,12 @@ export function createPresenceStore(realtime: RealtimeStore): PresenceStore {
   }
 
   // Announce this connection's current game-lobby state on the presence socket.
-  // Pass a lobbyId to enter; pass null to leave. The DO updates this connection's
-  // attachment and broadcasts lobby:state to all other clients so they can derive
-  // per-game tile counts without opening any new channels.
+  // Pass a lobbyId to enter; pass null to leave. Stored as reactive state so
+  // the effect above sends the message as soon as the socket is open (and
+  // re-sends on reconnect). The DO broadcasts lobby:state to other clients so
+  // they can derive per-game tile counts without opening any new channels.
   function setCurrentLobby(lobbyId: string | null): void {
-    if (lobbyId === null) {
-      realtime.send({ type: 'lobby:leave' });
-    } else {
-      realtime.send({ type: 'lobby:enter', lobbyId });
-    }
+    desiredLobby = lobbyId;
   }
 
   const store: PresenceStore = {
