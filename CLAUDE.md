@@ -220,21 +220,6 @@ See `/check-ui` skill for the full audit checklist.
 
 ---
 
-## Commands
-
-```bash
-bun install                # Install dependencies
-bun run dev                # Start dev server (http://localhost:5174)
-bun run dev:cf             # Build + Cloudflare Pages local dev (http://localhost:6173)
-bun run dev:realtime       # Start realtime WebSocket Worker locally (ws://localhost:8787)
-bun run build              # Production build
-bun run preview            # Preview production build
-bun run db:migrate         # Apply pending D1 migrations (local)
-bun run db:migrate:remote  # Apply pending D1 migrations (remote)
-```
-
----
-
 ## Known Gotchas
 
 ### Cloudflare account_id
@@ -268,9 +253,3 @@ Server-side env vars use `$env/dynamic/private`, client-side use `$env/dynamic/p
 ### Impersonation (Dev/Preview Only)
 
 `GET /api/admin/impersonate?userId=<id>` mints a session cookie for any D1 user. Requires `ALLOW_IMPERSONATION=true` in `.env` (local) or Pages secrets (preview). Never set in production — route returns 404 when unset. Use with seed users (`bun run scripts/seed-users.ts`) to test multi-user flows (chat, friends, presence) from a second browser or incognito window.
-
----
-
-## Documentation
-
-- `docs/figma/` — Design mockups (PNG exports)
