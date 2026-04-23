@@ -23,10 +23,11 @@
     onchange?.();
   }
 
-  const themes: { value: Theme; label: string }[] = [
+  const themes: { value: Theme; label: string; disabled?: boolean }[] = [
+    { value: 'playcademy', label: 'Playcademy' },
     { value: 'cel-shaded', label: 'Cel Shaded Pro' },
-    { value: 'pixel', label: 'Pixel Art (coming soon)' },
-    { value: 'roblox-3d', label: 'Roblox 3D (coming soon)' }
+    { value: 'pixel', label: 'Pixel Art (coming soon)', disabled: true },
+    { value: 'roblox-3d', label: 'Roblox 3D (coming soon)', disabled: true }
   ];
 
   let isOpen = $state(true);
@@ -67,7 +68,7 @@
         <label class="control-label" for="theme-select">Theme</label>
         <select id="theme-select" bind:value={theme} class="select-input">
           {#each themes as t (t.value)}
-            <option value={t.value} disabled={t.value !== 'cel-shaded'}>
+            <option value={t.value} disabled={t.disabled}>
               {t.label}
             </option>
           {/each}

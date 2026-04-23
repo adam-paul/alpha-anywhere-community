@@ -82,6 +82,13 @@
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
   --transition-slow: 350ms ease;
+
+  /* Themeable surface + component behaviors — defaults preserve cel-shaded. */
+  --surface-backdrop-filter: none;
+  --card-radius: var(--radius-zero);
+  --card-hover-shadow: 4px 4px 0 var(--color-border);
+  --card-active-shadow: 2px 2px 0 var(--color-border);
+  --button-hover-shadow: 2px 2px 0 var(--color-border);
 }
 
 /* Reset and base styles */

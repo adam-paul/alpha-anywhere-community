@@ -2,6 +2,7 @@
   import { onDestroy, onMount } from 'svelte';
   import '../lib/styles/tokens.css';
   import '../lib/styles/themes/cel-shaded.css';
+  import '../lib/styles/themes/playcademy.css';
   import AppShell from '$lib/components/layout/AppShell.svelte';
   import { createUserStore } from '$lib/stores/user.svelte';
   import { createRealtimeStore } from '$lib/stores/realtime.svelte';
@@ -64,7 +65,7 @@
   });
 </script>
 
-<div class="app-root" data-theme="cel-shaded">
+<div class="app-root" data-theme="playcademy">
   <AppShell friends={data.friends}>
     {@render children()}
   </AppShell>
