@@ -39,7 +39,7 @@
     justify-content: center;
     border-radius: 50%;
     border: var(--border-width) solid var(--color-border);
-    background: var(--color-surface);
+    background: var(--color-fill);
     overflow: visible;
     flex-shrink: 0;
   }

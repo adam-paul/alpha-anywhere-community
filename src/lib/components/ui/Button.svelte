@@ -59,7 +59,7 @@
 
   .btn:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 2px 2px 0 var(--color-border);
+    box-shadow: var(--button-hover-shadow);
   }
 
   .btn:active:not(:disabled) {

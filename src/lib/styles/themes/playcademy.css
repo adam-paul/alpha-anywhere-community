@@ -1,0 +1,68 @@
+/* Playcademy Theme
+ * Dark-first glassmorphism — mirrors apps/landing/src/app.css tokens.
+ * Fredoka (display) + Nunito (body), lavender/amber accents on ink bg.
+ */
+
+[data-theme='playcademy'] {
+  /* Typography */
+  --font-display: 'Fredoka', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+
+  /* Palette — landing's @theme values */
+  --color-bg: #2d2640; /* ink */
+  --color-surface: rgba(20, 15, 30, 0.55); /* glass */
+  --color-border: rgba(255, 255, 255, 0.12);
+  --color-text: #ffffff;
+  --color-text-muted: rgba(255, 255, 255, 0.7);
+  --color-primary: #9b6dff; /* lavender */
+  --color-primary-hover: #b88fff;
+  --color-primary-alpha: rgba(155, 109, 255, 0.2);
+  --color-accent: #ffb830; /* amber */
+  --color-positive: #2dd4a8; /* mint */
+  --color-error: #ff6b9d; /* coral */
+  --color-on-primary: #ffffff;
+  --color-overlay: rgba(20, 15, 30, 0.8);
+  --color-backdrop: rgba(0, 0, 0, 0.6);
+  --color-locked-overlay: rgba(0, 0, 0, 0.7);
+  --color-progress-track: rgba(255, 255, 255, 0.1);
+  --color-progress-incomplete: #ffb830;
+
+  /* Engagement categories — remapped to landing palette */
+  --color-side-by-side: #2dd4a8;
+  --color-town-square: #9b6dff;
+  --color-ice-breaker: #38bdf8;
+  --color-trust-builder: #ffb830;
+  --color-rivalry: #ff6b9d;
+  --color-side-by-side-bg: rgba(45, 212, 168, 0.15);
+  --color-town-square-bg: rgba(155, 109, 255, 0.15);
+  --color-ice-breaker-bg: rgba(56, 189, 248, 0.15);
+  --color-trust-builder-bg: rgba(255, 184, 48, 0.15);
+  --color-rivalry-bg: rgba(255, 107, 157, 0.15);
+
+  /* Geometry — rounded, thin-bordered */
+  --radius-sm: 8px;
+  --radius-md: 12px; /* landing's console radius */
+  --radius-lg: 20px; /* landing's glass-panel radius */
+  --border-width: 1px;
+
+  /* Glass surfaces */
+  --surface-backdrop-filter: blur(28px) saturate(1.4);
+
+  /* Solid fill for atomic pieces (avatars, rings) — glass doesn't work for small opaque elements */
+  --color-fill: #352c4f;
+
+  /* Softer shadows replace cel-shaded's offset blocks */
+  --card-radius: var(--radius-lg);
+  --card-hover-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  --card-active-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --button-hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+
+  /* Subtler scale on interaction */
+  --hover-scale: 1;
+  --active-scale: 0.99;
+
+  /* Landing's console ease */
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-base: 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}

@@ -42,7 +42,7 @@ export type GatingMode = 'daily' | 'weekly';
 
 export type GatingSource = 'lwai' | 'timeback';
 
-export type Theme = 'cel-shaded' | 'pixel' | 'roblox-3d';
+export type Theme = 'playcademy' | 'cel-shaded' | 'pixel' | 'roblox-3d';
 
 // Core interfaces
 export interface Game {
@@ -213,7 +213,6 @@ export type ViewMode = 'grid' | 'map';
 
 export interface ArcadeState {
   activeFilter: EngagementFilter;
-  theme: Theme;
   readonly games: Game[];
   readonly filteredGames: Game[];
   readonly robloxLinked: boolean;

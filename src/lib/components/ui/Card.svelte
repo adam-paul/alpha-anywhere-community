@@ -40,8 +40,9 @@
 <style>
   .card {
     background: var(--color-surface);
+    backdrop-filter: var(--surface-backdrop-filter);
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius-zero);
+    border-radius: var(--card-radius);
     overflow: hidden;
   }
 
@@ -56,12 +57,12 @@
 
   .card.interactive:hover:not(.disabled) {
     transform: translateY(-2px) scale(var(--hover-scale, 1.02));
-    box-shadow: 4px 4px 0 var(--color-border);
+    box-shadow: var(--card-hover-shadow);
   }
 
   .card.interactive:active:not(.disabled) {
     transform: scale(var(--active-scale, 0.98));
-    box-shadow: 2px 2px 0 var(--color-border);
+    box-shadow: var(--card-active-shadow);
   }
 
   .card.interactive:focus-visible {

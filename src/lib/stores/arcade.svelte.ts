@@ -1,11 +1,10 @@
 import { getContext, setContext } from 'svelte';
-import type { ArcadeState, CreateArcadeStoreOptions, EngagementFilter, Theme } from '$lib/types';
+import type { ArcadeState, CreateArcadeStoreOptions, EngagementFilter } from '$lib/types';
 
 const ARCADE_CONTEXT_KEY = 'arcade';
 
 export function createArcadeStore(options: CreateArcadeStoreOptions = {}) {
   let activeFilter = $state<EngagementFilter>('all');
-  let theme = $state<Theme>('cel-shaded');
   let games = $state(options.games ?? []);
   let robloxLinked = $state(options.robloxLinked ?? false);
 
@@ -19,13 +18,6 @@ export function createArcadeStore(options: CreateArcadeStoreOptions = {}) {
     },
     set activeFilter(value) {
       activeFilter = value;
-    },
-
-    get theme() {
-      return theme;
-    },
-    set theme(value) {
-      theme = value;
     },
 
     get games() {

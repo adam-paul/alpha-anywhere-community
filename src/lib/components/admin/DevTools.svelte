@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Select } from '$lib/components/ui';
+  import { themeStore } from '$lib/stores/theme.svelte';
   import type { Theme } from '$lib/types';
 
   interface Props {
@@ -6,7 +8,6 @@
     progressCurrent: number;
     progressRequired: number;
     unitLabel: string;
-    theme: Theme;
     onchange?: () => void;
   }
 
@@ -15,7 +16,6 @@
     progressCurrent = $bindable(),
     progressRequired,
     unitLabel,
-    theme = $bindable(),
     onchange
   }: Props = $props();
 
@@ -23,10 +23,11 @@
     onchange?.();
   }
 
-  const themes: { value: Theme; label: string }[] = [
+  const themes: { value: Theme; label: string; disabled?: boolean }[] = [
+    { value: 'playcademy', label: 'Playcademy' },
     { value: 'cel-shaded', label: 'Cel Shaded Pro' },
-    { value: 'pixel', label: 'Pixel Art (coming soon)' },
-    { value: 'roblox-3d', label: 'Roblox 3D (coming soon)' }
+    { value: 'pixel', label: 'Pixel Art (coming soon)', disabled: true },
+    { value: 'roblox-3d', label: 'Roblox 3D (coming soon)', disabled: true }
   ];
 
   let isOpen = $state(true);
@@ -65,13 +66,7 @@
 
       <div class="control-group">
         <label class="control-label" for="theme-select">Theme</label>
-        <select id="theme-select" bind:value={theme} class="select-input">
-          {#each themes as t (t.value)}
-            <option value={t.value} disabled={t.value !== 'cel-shaded'}>
-              {t.label}
-            </option>
-          {/each}
-        </select>
+        <Select id="theme-select" options={themes} bind:value={themeStore.theme} />
       </div>
     </div>
   {/if}
@@ -148,17 +143,6 @@
   .range-input {
     width: 100%;
     margin-top: var(--space-2);
-    cursor: pointer;
-  }
-
-  .select-input {
-    width: 100%;
-    margin-top: var(--space-2);
-    padding: var(--space-2);
-    border: 2px solid var(--color-border);
-    background: var(--color-bg);
-    font-family: inherit;
-    font-size: inherit;
     cursor: pointer;
   }
 </style>

@@ -2,7 +2,9 @@
   import { onDestroy, onMount } from 'svelte';
   import '../lib/styles/tokens.css';
   import '../lib/styles/themes/cel-shaded.css';
+  import '../lib/styles/themes/playcademy.css';
   import AppShell from '$lib/components/layout/AppShell.svelte';
+  import { themeStore } from '$lib/stores/theme.svelte';
   import { createUserStore } from '$lib/stores/user.svelte';
   import { createRealtimeStore } from '$lib/stores/realtime.svelte';
   import { createPresenceStore } from '$lib/stores/presence.svelte';
@@ -62,9 +64,17 @@
       document.cookie = `tz=${tz};path=/;SameSite=Lax`;
     }
   });
+
+  // Body is the single source of truth for data-theme. Nesting data-theme on an
+  // inner element causes cascade drift: inherited properties (color, font) bake
+  // in the outer theme's values, and tokens the inner theme doesn't override
+  // leak through from the outer theme via the ancestor walk.
+  $effect(() => {
+    document.body.dataset.theme = themeStore.theme;
+  });
 </script>
 
-<div class="app-root" data-theme="cel-shaded">
+<div class="app-root">
   <AppShell friends={data.friends}>
     {@render children()}
   </AppShell>

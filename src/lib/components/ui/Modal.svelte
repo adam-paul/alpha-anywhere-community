@@ -56,6 +56,7 @@
     width: 100%;
     max-height: 80vh;
     background: var(--color-surface);
+    backdrop-filter: var(--surface-backdrop-filter);
     border: var(--border-width) solid var(--color-border);
     display: flex;
     flex-direction: column;
