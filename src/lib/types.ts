@@ -213,7 +213,6 @@ export type ViewMode = 'grid' | 'map';
 
 export interface ArcadeState {
   activeFilter: EngagementFilter;
-  theme: Theme;
   readonly games: Game[];
   readonly filteredGames: Game[];
   readonly robloxLinked: boolean;

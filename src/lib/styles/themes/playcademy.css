@@ -48,6 +48,9 @@
   /* Glass surfaces */
   --surface-backdrop-filter: blur(28px) saturate(1.4);
 
+  /* Solid fill for atomic pieces (avatars, rings) — glass doesn't work for small opaque elements */
+  --color-fill: #352c4f;
+
   /* Softer shadows replace cel-shaded's offset blocks */
   --card-radius: var(--radius-lg);
   --card-hover-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);

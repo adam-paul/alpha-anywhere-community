@@ -66,10 +66,10 @@ eval_runs ←── eval_case_results (harness metrics + per-case breakdown)
 
 ### Not Yet Built
 
-| Feature         | Status      | Notes                                                                                              |
-| --------------- | ----------- | -------------------------------------------------------------------------------------------------- |
-| Student Map     | Placeholder | UI exists, shows "Coming soon"                                                                     |
-| Parent Controls | Not started | No ToS, no per-child toggles — COPPA 2025 amendments hard deadline is **2026-04-22** (3 days away) |
+| Feature         | Status      | Notes                                                                      |
+| --------------- | ----------- | -------------------------------------------------------------------------- |
+| Student Map     | Placeholder | UI exists, shows "Coming soon"                                             |
+| Parent Controls | Not started | No ToS, no per-child toggles — needed for COPPA 2025 amendments compliance |
 
 ---
 
@@ -204,7 +204,7 @@ Dual-provider content moderation (Gemini 2.0 Flash + OpenAI omni-moderation-late
 
 ## Compliance & Operations
 
-COPPA 2025 amendments have a hard compliance deadline of **2026-04-22**. Full analysis in `docs/coppa-research-2026-04.md`; DevOps-facing security audit in `docs/security-audit-2026-04.md`.
+COPPA 2025 amendments apply to this platform. Full analysis in `docs/coppa-research-2026-04.md`; DevOps-facing security audit in `docs/security-audit-2026-04.md`.
 
 ### Near-term ops
 

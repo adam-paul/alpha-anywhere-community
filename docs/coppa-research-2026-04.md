@@ -2,8 +2,6 @@
 
 _Research compiled 2026-04-16._
 
-Before diving in: a timing note. The 2025 COPPA amendments have a hard compliance deadline of **April 22, 2026** — six days from today. Whatever path we pick, moving soon matters.
-
 ---
 
 ## 1. What COPPA Is
@@ -42,7 +40,7 @@ The Rule applies whenever one of these is true:
 
 ---
 
-## 2. The 2025 Amendments (compliance deadline: **2026-04-22**)
+## 2. The 2025 Amendments
 
 Significant additions beyond the 1999/2013 baseline:
 
@@ -120,7 +118,7 @@ Each third party receiving PI is a separate disclosure under § 312.4(d) post-20
 ### 3.8 Admin / moderation
 
 - **Impersonation route** (`/api/admin/impersonate`) — powerful. Confirm `ALLOW_IMPERSONATION` is **off in production**. If ever needed in production for support, requires audit logging of every use + user/parent disclosure that admins can assume identity.
-- **Moderation evals** — we already HMAC user IDs and set 90-day content expiry in `generation_events`. **But the 90-day expiry is configured in schema, and the cron to enforce deletion is TODO.** A schema default does not delete rows — only a scheduled job does. Fix this before 2026-04-22.
+- **Moderation evals** — we already HMAC user IDs and set 90-day content expiry in `generation_events`. **But the 90-day expiry is configured in schema, and the cron to enforce deletion is TODO.** A schema default does not delete rows — only a scheduled job does. Fix this.
 - **`moderation_events.flagged_content`** also expires after 90 days in schema only; same cron gap.
 
 ### 3.9 Cookies / persistent identifiers
@@ -154,7 +152,7 @@ Things that will bite as the platform scales, none of which are problems today b
 
 ---
 
-## 5. Immediate Gap List (today's codebase vs. 2026-04-22 deadline)
+## 5. Immediate Gap List
 
 Ranked by risk, fix-order suggestion:
 

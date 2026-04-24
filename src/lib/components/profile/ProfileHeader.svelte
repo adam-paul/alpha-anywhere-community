@@ -137,9 +137,10 @@
   }
 
   .avatar-wrapper {
+    display: flex;
     flex-shrink: 0;
     padding: var(--space-1);
-    background: var(--color-surface);
+    background: var(--color-fill);
     border-radius: 50%;
     border: var(--border-width) solid var(--color-border);
   }

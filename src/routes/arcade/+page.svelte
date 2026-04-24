@@ -141,7 +141,6 @@
   <DevTools
     bind:isLocked={devIsLocked}
     bind:progressCurrent={devProgressCurrent}
-    bind:theme={arcade.theme}
     progressRequired={gating.serverData.progressRequired}
     {unitLabel}
     onchange={syncDevTools}

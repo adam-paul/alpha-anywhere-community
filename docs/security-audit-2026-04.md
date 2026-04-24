@@ -17,7 +17,7 @@ Post-transfer updates:
 - Cloudflare Pages deploy hooks pointing at the old repo
 - Any CI referencing the repo path
 
-### 2. Vendor & Tool Inventory (due April 17)
+### 2. Vendor & Tool Inventory
 
 | Vendor                                                   | Used For                                                    | Stores/Processes PII?                                                                          | Whose PII?                            | DPA Signed?       |
 | -------------------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------- | ----------------- |
@@ -78,7 +78,7 @@ Roblox is lower tier — we only send/receive public gaming identity data, not s
 
 ---
 
-## COPPA/CCPA/FERPA Compliance Gaps (for April 22 assessment)
+## COPPA/CCPA/FERPA Compliance Gaps
 
 Since this is a student platform for homeschool kids (likely minors), COPPA applies directly.
 
@@ -151,7 +151,7 @@ All secrets stored in `.env` (gitignored) for local dev. Production secrets mana
 
 ## Recommended Next Steps
 
-1. **This week**: Ask DevOps whether the AWS-for-PII requirement is a hard mandate or if Cloudflare with a signed DPA qualifies
-2. **By April 17**: Submit vendor inventory (fill in DPA status)
-3. **By April 17**: Start GitHub repo transfer to `superbuilders` org
-4. **Flag for April 22**: COPPA compliance gaps (no parental consent flow, no data retention policy, no audit logging)
+1. Ask DevOps whether the AWS-for-PII requirement is a hard mandate or if Cloudflare with a signed DPA qualifies
+2. Submit vendor inventory (fill in DPA status)
+3. Start GitHub repo transfer to `superbuilders` org
+4. Flag COPPA compliance gaps (no parental consent flow, no data retention policy, no audit logging)

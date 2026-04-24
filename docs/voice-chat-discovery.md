@@ -218,7 +218,7 @@ This is a first-class pattern in LiveKit's Agents framework, not a hack.
 
 ## COPPA Considerations
 
-The [amended COPPA rule](https://www.ftc.gov/business-guidance/resources/complying-coppa-frequently-asked-questions) (full compliance deadline: April 2026) explicitly includes **voiceprints as biometric identifiers**.
+The [amended COPPA rule](https://www.ftc.gov/business-guidance/resources/complying-coppa-frequently-asked-questions) explicitly includes **voiceprints as biometric identifiers**.
 
 - No voice SDK handles COPPA for you — compliance is the operator's responsibility.
 - Self-hosting LiveKit is the strongest posture: full control over where audio data transits and whether it's stored.

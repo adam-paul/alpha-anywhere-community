@@ -89,6 +89,9 @@
   --card-hover-shadow: 4px 4px 0 var(--color-border);
   --card-active-shadow: 2px 2px 0 var(--color-border);
   --button-hover-shadow: 2px 2px 0 var(--color-border);
+
+  /* Opaque atomic fill (avatars, rings) — distinct from --color-surface which may be translucent in some themes. */
+  --color-fill: var(--color-surface);
 }
 
 /* Reset and base styles */
@@ -122,6 +125,7 @@ h6 {
 
 button {
   font-family: inherit;
+  color: inherit;
   cursor: pointer;
 }
 
