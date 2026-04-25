@@ -8,15 +8,15 @@
     "infra/realtime"
   ],
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260422.1",
+    "@cloudflare/workers-types": "^4.20260424.1",
     "@sveltejs/adapter-cloudflare": "^7.2.8",
-    "@sveltejs/kit": "^2.57.1",
+    "@sveltejs/kit": "^2.58.0",
     "@sveltejs/vite-plugin-svelte": "^5.1.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.3",
     "prettier-plugin-svelte": "^3.5.1",
-    "svelte": "^5.55.4",
+    "svelte": "^5.55.5",
     "svelte-check": "^4.4.6",
     "typescript": "^5.9.3",
     "vite": "^6.4.2"
@@ -48,9 +48,9 @@
   "type": "module",
   "dependencies": {
     "@timeback/edubridge": "^0.2.2",
-    "@timeback/sdk": "^0.2.3",
-    "livekit-client": "^2.18.4",
+    "@timeback/sdk": "^0.2.5",
+    "livekit-client": "^2.18.6",
     "livekit-server-sdk": "^2.15.1",
-    "wrangler": "^4.84.1"
+    "wrangler": "^4.85.0"
   }
 }
