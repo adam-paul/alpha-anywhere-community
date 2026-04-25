@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Select } from '$lib/components/ui';
-  import { themeStore } from '$lib/stores/theme.svelte';
-  import type { Theme } from '$lib/types';
+  import { THEMES } from '$lib/constants';
+  import { getThemeStore } from '$lib/stores/theme.svelte';
 
   interface Props {
     isLocked: boolean;
@@ -19,16 +19,16 @@
     onchange
   }: Props = $props();
 
+  const themeStore = getThemeStore();
+
+  const themeOptions = Object.entries(THEMES).map(([slug, meta]) => ({
+    value: slug,
+    label: meta.label
+  }));
+
   function handleChange() {
     onchange?.();
   }
-
-  const themes: { value: Theme; label: string; disabled?: boolean }[] = [
-    { value: 'playcademy', label: 'Playcademy' },
-    { value: 'cel-shaded', label: 'Cel Shaded Pro' },
-    { value: 'pixel', label: 'Pixel Art (coming soon)', disabled: true },
-    { value: 'roblox-3d', label: 'Roblox 3D (coming soon)', disabled: true }
-  ];
 
   let isOpen = $state(true);
 </script>
@@ -66,7 +66,7 @@
 
       <div class="control-group">
         <label class="control-label" for="theme-select">Theme</label>
-        <Select id="theme-select" options={themes} bind:value={themeStore.theme} />
+        <Select id="theme-select" options={themeOptions} bind:value={themeStore.theme} />
       </div>
     </div>
   {/if}

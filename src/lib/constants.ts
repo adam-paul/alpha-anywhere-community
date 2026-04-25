@@ -5,7 +5,13 @@
  * for types defined in types.ts.
  */
 
-import type { EngagementCategory, GatingSource, Interest, LinkablePlatform } from '$lib/types';
+import type {
+  EngagementCategory,
+  GatingSource,
+  Interest,
+  LinkablePlatform,
+  Theme
+} from '$lib/types';
 
 export const TIMEBACK_DAILY_XP_REQUIRED = 120;
 
@@ -26,6 +32,15 @@ export const GATING_UNIT_LABELS: Record<GatingSource, string> = {
   lwai: 'min',
   timeback: 'XP'
 };
+
+// Theme metadata. The Record keying forces TypeScript to error if a theme is
+// added to the union without a corresponding metadata entry here (drift guard).
+export const THEMES: Record<Theme, { label: string }> = {
+  playcademy: { label: 'Playcademy' },
+  'cel-shaded': { label: 'Cel Shaded Pro' }
+};
+
+export const DEFAULT_THEME: Theme = 'playcademy';
 
 // Engagement category metadata
 export const ENGAGEMENT_CATEGORIES: Record<

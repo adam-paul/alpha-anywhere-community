@@ -1,13 +1,14 @@
 /**
  * Root layout server load
  *
- * Loads app-wide state: user session, friends, notifications, and the
- * conversations list. Chat state (including unread counts) lives at layout
+ * Loads app-wide state: user session, friends, notifications, conversations,
+ * and the active theme. Chat state (including unread counts) lives at layout
  * level so the sidebar badge and the chat page share one source of truth.
  */
 
 import { createDbClient } from '$lib/server/db/client';
-import type { ChatParticipant, Conversation, Notification } from '$lib/types';
+import { DEFAULT_THEME, THEMES } from '$lib/constants';
+import type { ChatParticipant, Conversation, Notification, Theme } from '$lib/types';
 import type { NotificationWithActor } from '$lib/server/db/types';
 import type { LayoutServerLoad } from './$types';
 
@@ -24,10 +25,16 @@ function toNotification(row: NotificationWithActor): Notification {
   };
 }
 
-export const load: LayoutServerLoad = async ({ locals, platform }) => {
+export const load: LayoutServerLoad = async ({ locals, platform, cookies }) => {
   let friends: ChatParticipant[] = [];
   let notifications: Notification[] = [];
   let conversations: Conversation[] = [];
+
+  // Resolve theme from cookie. Validate against the manifest — cookies are
+  // user-controlled, unknown values fall back to the default.
+  const cookieTheme = cookies.get('theme');
+  const theme: Theme =
+    cookieTheme && Object.hasOwn(THEMES, cookieTheme) ? (cookieTheme as Theme) : DEFAULT_THEME;
 
   if (locals.user && platform?.env?.DB) {
     const db = createDbClient(platform.env.DB);
@@ -72,6 +79,7 @@ export const load: LayoutServerLoad = async ({ locals, platform }) => {
     user: locals.user,
     friends,
     notifications,
-    conversations
+    conversations,
+    theme
   };
 };

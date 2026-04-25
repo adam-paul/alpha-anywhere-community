@@ -4,14 +4,14 @@
   import '../lib/styles/themes/cel-shaded.css';
   import '../lib/styles/themes/playcademy.css';
   import AppShell from '$lib/components/layout/AppShell.svelte';
-  import { themeStore } from '$lib/stores/theme.svelte';
+  import { createThemeStore } from '$lib/stores/theme.svelte';
   import { createUserStore } from '$lib/stores/user.svelte';
   import { createRealtimeStore } from '$lib/stores/realtime.svelte';
   import { createPresenceStore } from '$lib/stores/presence.svelte';
   import { createNotificationStore } from '$lib/stores/notifications.svelte';
   import { createVoiceStore } from '$lib/stores/voice.svelte';
   import { createChatStore } from '$lib/stores/chat.svelte';
-  import type { ChatParticipant, Conversation, Notification } from '$lib/types';
+  import type { ChatParticipant, Conversation, Notification, Theme } from '$lib/types';
 
   interface Props {
     data: {
@@ -19,11 +19,15 @@
       friends: ChatParticipant[];
       notifications: Notification[];
       conversations: Conversation[];
+      theme: Theme;
     };
     children: import('svelte').Snippet;
   }
 
   let { data, children }: Props = $props();
+
+  // svelte-ignore state_referenced_locally
+  const themeStore = createThemeStore(data.theme);
 
   // Create user store with session from server (sets context for child components).
   // The $effect keeps the store in sync with subsequent layout reloads
@@ -64,17 +68,9 @@
       document.cookie = `tz=${tz};path=/;SameSite=Lax`;
     }
   });
-
-  // Body is the single source of truth for data-theme. Nesting data-theme on an
-  // inner element causes cascade drift: inherited properties (color, font) bake
-  // in the outer theme's values, and tokens the inner theme doesn't override
-  // leak through from the outer theme via the ancestor walk.
-  $effect(() => {
-    document.body.dataset.theme = themeStore.theme;
-  });
 </script>
 
-<div class="app-root">
+<div class="app-root" data-theme={themeStore.theme}>
   <AppShell friends={data.friends}>
     {@render children()}
   </AppShell>
@@ -84,5 +80,9 @@
   .app-root {
     height: 100vh;
     overflow: hidden;
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    background-color: var(--color-bg);
   }
 </style>
