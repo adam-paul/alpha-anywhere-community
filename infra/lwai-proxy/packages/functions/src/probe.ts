@@ -12,15 +12,7 @@
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
 import { Resource } from 'sst';
 import { createAthenaClient, executeAthenaQuery, sanitizeEmail } from './athena';
-
-interface ProbeResponse {
-  email: string;
-  exists: boolean;
-}
-
-interface ErrorResponse {
-  error: string;
-}
+import type { ErrorResponse, ProbeResponse } from './types';
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   // Validate API key

@@ -44,6 +44,10 @@ export type GatingSource = 'lwai' | 'timeback';
 
 export type Theme = 'playcademy' | 'cel-shaded';
 
+export interface ThemeStore {
+  theme: Theme;
+}
+
 // Core interfaces
 export interface Game {
   id: string;

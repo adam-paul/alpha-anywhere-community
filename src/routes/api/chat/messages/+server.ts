@@ -25,25 +25,14 @@ export const GET: RequestHandler = async ({ locals, platform, url }) => {
   const dbMessages = await db.messages.getForConversation(conversationId, limit, before);
 
   // Reverse to chronological order (DB returns newest first)
-  const messages = dbMessages
-    .reverse()
-    .map(
-      (m: {
-        id: string;
-        conversation_id: string;
-        sender_id: string;
-        content: string;
-        image_url: string | null;
-        created_at: string;
-      }) => ({
-        id: m.id,
-        conversationId: m.conversation_id,
-        senderId: m.sender_id,
-        content: m.content,
-        imageUrl: m.image_url,
-        timestamp: m.created_at
-      })
-    );
+  const messages = dbMessages.reverse().map((m) => ({
+    id: m.id,
+    conversationId: m.conversation_id,
+    senderId: m.sender_id,
+    content: m.content,
+    imageUrl: m.image_url,
+    timestamp: m.created_at
+  }));
 
   return json({ messages });
 };

@@ -1,6 +1,6 @@
 import { getContext, setContext } from 'svelte';
 import { browser } from '$app/environment';
-import type { Theme } from '$lib/types';
+import type { Theme, ThemeStore } from '$lib/types';
 
 // App-wide theme store. Factory + context pattern (matches arcade/user/chat stores).
 // Initial value comes from +layout.server.ts (server-resolved cookie).
@@ -9,10 +9,6 @@ import type { Theme } from '$lib/types';
 const THEME_CONTEXT_KEY = 'theme';
 const COOKIE_NAME = 'theme';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
-
-export interface ThemeStore {
-  theme: Theme;
-}
 
 export function createThemeStore(initial: Theme): ThemeStore {
   let theme = $state<Theme>(initial);

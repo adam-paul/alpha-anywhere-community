@@ -1,14 +1,10 @@
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
 import { Resource } from 'sst';
 import { createAthenaClient, executeAthenaQuery, sanitizeEmail } from './athena';
+import type { GatingResponse } from '@alpha/shared/types';
+import type { ErrorResponse } from './types';
 
 const WEEKLY_THRESHOLD = parseInt(process.env.WEEKLY_THRESHOLD ?? '300', 10);
-
-import type { GatingResponse } from '@alpha/shared/types';
-
-interface ErrorResponse {
-  error: string;
-}
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   // Validate API key
