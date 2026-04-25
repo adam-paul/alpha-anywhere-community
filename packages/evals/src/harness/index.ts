@@ -9,7 +9,6 @@ export {
   validateCorpus,
   corpusHash,
   type CorpusCase,
-  type CorpusSet,
   type CorpusDifficulty
 } from './corpus';
 

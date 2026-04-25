@@ -28,10 +28,10 @@ import {
   runEval,
   type SingleCaseResult
 } from '@alpha/evals/harness';
-import type { MetricsByCategory } from '@alpha/evals/types';
+import type { CorpusSet, MetricsByCategory } from '@alpha/evals/types';
 
 interface Args {
-  set: 'optimize' | 'holdout';
+  set: CorpusSet;
   parallel: number;
   verbose: boolean;
   save: boolean;

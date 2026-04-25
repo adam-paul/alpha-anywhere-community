@@ -13,6 +13,7 @@ import type {
   UserRole
 } from '$lib/types';
 import type {
+  CorpusSet,
   DetectedBy,
   FlaggedCategory,
   ModerationSeverity,
@@ -278,7 +279,7 @@ export interface CreateGenerationEventInput {
 export interface DbEvalRun {
   id: string;
   created_at: string;
-  corpus_set: 'optimize' | 'holdout';
+  corpus_set: CorpusSet;
   corpus_size: number;
   corpus_hash: string;
   composite_score: number;

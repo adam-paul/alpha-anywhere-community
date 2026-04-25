@@ -187,3 +187,10 @@ export interface ConstraintCheckResult {
   passed: boolean;
   violations: string[];
 }
+
+// =============================================================================
+// Eval harness corpus
+// =============================================================================
+
+/** Which corpus partition an eval run targets. Mirrors the CHECK on eval_runs.corpus_set. */
+export type CorpusSet = 'optimize' | 'holdout';

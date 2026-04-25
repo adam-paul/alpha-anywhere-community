@@ -20,7 +20,6 @@ import {
   type ModerationSubcategory
 } from '../types';
 
-export type CorpusSet = 'optimize' | 'holdout';
 export type CorpusDifficulty = 'easy' | 'medium' | 'hard';
 
 export interface CorpusCase {
