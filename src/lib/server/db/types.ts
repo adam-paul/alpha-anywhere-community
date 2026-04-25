@@ -7,6 +7,7 @@
 import type {
   AvatarSource,
   EngagementCategory,
+  FriendshipDbStatus,
   GameType,
   GatingSource,
   NotificationType,
@@ -56,7 +57,7 @@ export interface DbFriendship {
   id: string;
   requester_id: string;
   addressee_id: string;
-  status: 'pending' | 'accepted' | 'blocked';
+  status: FriendshipDbStatus;
   created_at: string;
   updated_at: string;
 }

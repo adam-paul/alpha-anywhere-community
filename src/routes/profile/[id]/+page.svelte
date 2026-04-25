@@ -198,7 +198,7 @@
 <ProfileHeader
   {student}
   userId={data.user.id}
-  friendshipStatus={data.friendshipStatus}
+  friendshipState={data.friendshipState}
   isEditing={editMode !== 'view'}
   onEdit={startEditing}
   onFriendAction={handleFriendAction}

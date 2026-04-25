@@ -1,12 +1,12 @@
 <script lang="ts">
   import { Avatar, Button, Icon } from '$lib/components/ui';
   import { getPresenceStore } from '$lib/stores/presence.svelte';
-  import type { FriendshipStatus, ProfileStudent } from '$lib/types';
+  import type { FriendshipState, ProfileStudent } from '$lib/types';
 
   interface Props {
     student: ProfileStudent;
     userId: string;
-    friendshipStatus: FriendshipStatus;
+    friendshipState: FriendshipState;
     isEditing?: boolean;
     onEdit?: () => void;
     onFriendAction?: (action: 'request' | 'accept' | 'remove', friendshipId?: string) => void;
@@ -15,7 +15,7 @@
   let {
     student,
     userId,
-    friendshipStatus,
+    friendshipState,
     isEditing = false,
     onEdit,
     onFriendAction
@@ -47,46 +47,46 @@
           <span class="handle">@{student.handle}</span>
         </div>
         <div class="actions">
-          {#if friendshipStatus.kind === 'self'}
+          {#if friendshipState.kind === 'self'}
             {#if !isEditing}
               <Button variant="secondary" size="sm" onclick={onEdit}>Edit Profile</Button>
             {/if}
-          {:else if friendshipStatus.kind === 'none'}
+          {:else if friendshipState.kind === 'none'}
             <Button variant="primary" size="sm" onclick={() => onFriendAction?.('request')}>
               Add Friend
             </Button>
-          {:else if friendshipStatus.kind === 'pending-sent'}
+          {:else if friendshipState.kind === 'pending-sent'}
             <div class="pending-sent-wrap">
               <Button
                 variant="secondary"
                 size="sm"
-                onclick={() => onFriendAction?.('remove', friendshipStatus.friendshipId)}
+                onclick={() => onFriendAction?.('remove', friendshipState.friendshipId)}
               >
                 {#snippet sizeFrom()}Request Sent{/snippet}
                 <span class="pending-label">Request Sent</span>
                 <span class="cancel-label"><Icon name="x" size={14} /> Cancel</span>
               </Button>
             </div>
-          {:else if friendshipStatus.kind === 'pending-received'}
+          {:else if friendshipState.kind === 'pending-received'}
             <Button
               variant="primary"
               size="sm"
-              onclick={() => onFriendAction?.('accept', friendshipStatus.friendshipId)}
+              onclick={() => onFriendAction?.('accept', friendshipState.friendshipId)}
             >
               Accept
             </Button>
             <Button
               variant="secondary"
               size="sm"
-              onclick={() => onFriendAction?.('remove', friendshipStatus.friendshipId)}
+              onclick={() => onFriendAction?.('remove', friendshipState.friendshipId)}
             >
               Decline
             </Button>
-          {:else if friendshipStatus.kind === 'friends'}
+          {:else if friendshipState.kind === 'friends'}
             <Button
               variant="secondary"
               size="sm"
-              onclick={() => onFriendAction?.('remove', friendshipStatus.friendshipId)}
+              onclick={() => onFriendAction?.('remove', friendshipState.friendshipId)}
             >
               Unfriend
             </Button>

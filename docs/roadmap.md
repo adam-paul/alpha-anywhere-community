@@ -191,6 +191,7 @@ Dual-provider content moderation (Gemini 2.0 Flash + OpenAI omni-moderation-late
 - **Report flow** — Students report messages/users. `reports` table with status tracking.
 - **Content expiry cron** — `content_expires_at` columns exist on both audit tables for COPPA; scheduled Worker to delete expired `input_text` / `flagged_content` is pending.
 - **Autoresearch loop (Plan C)** — agent-driven prompt iteration via git commit/reset; gated on a few manual harness runs first.
+  - _Prep:_ current `eval_runs` write is raw-SQL with `triggered_by` hardcoded; the agent path is the second writer and needs a shared, typed write path first.
 
 ---
 

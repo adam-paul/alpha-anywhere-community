@@ -8,7 +8,7 @@
 import { error, redirect } from '@sveltejs/kit';
 import { createDbClient } from '$lib/server/db/client';
 import type {
-  FriendshipStatus,
+  FriendshipState,
   FriendSummary,
   LinkedAccountsData,
   PendingFriendRequest
@@ -45,7 +45,7 @@ export const load: PageServerLoad = async ({ params, locals, platform }) => {
   const viewerId = locals.user?.id;
 
   // Load friendship data
-  let friendshipStatus: FriendshipStatus = isOwnProfile ? { kind: 'self' } : { kind: 'none' };
+  let friendshipState: FriendshipState = isOwnProfile ? { kind: 'self' } : { kind: 'none' };
   let friends: FriendSummary[] = [];
   let mutualFriends: FriendSummary[] = [];
   let pendingRequests: PendingFriendRequest[] = [];
@@ -85,9 +85,9 @@ export const load: PageServerLoad = async ({ params, locals, platform }) => {
     const row = await db.friendships.getStatus(viewerId, dbUser.id);
     if (row) {
       if (row.status === 'accepted') {
-        friendshipStatus = { kind: 'friends', friendshipId: row.id };
+        friendshipState = { kind: 'friends', friendshipId: row.id };
       } else if (row.status === 'pending') {
-        friendshipStatus =
+        friendshipState =
           row.requester_id === viewerId
             ? { kind: 'pending-sent', friendshipId: row.id }
             : { kind: 'pending-received', friendshipId: row.id };
@@ -136,7 +136,7 @@ export const load: PageServerLoad = async ({ params, locals, platform }) => {
           interests: []
         },
     isOwnProfile,
-    friendshipStatus,
+    friendshipState,
     friends,
     mutualFriends,
     pendingRequests,

@@ -131,8 +131,12 @@ export interface ProfileStudent {
   joinedDate: string;
 }
 
-// Friendship status for profile button state
-export type FriendshipStatus =
+// Friendship row state — mirrors the CHECK constraint on friendships.status.
+export type FriendshipDbStatus = 'pending' | 'accepted' | 'blocked';
+
+// Viewer-relative friendship state used by the profile UI. Computed from a
+// friendships row + the viewer's id; 'self' and 'none' have no DB analog.
+export type FriendshipState =
   | { kind: 'none' }
   | { kind: 'pending-sent'; friendshipId: string }
   | { kind: 'pending-received'; friendshipId: string }
