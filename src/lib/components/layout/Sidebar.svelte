@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
-  import { Icon, Avatar } from '$lib/components/ui';
+  import { Icon, Avatar, CountBadge } from '$lib/components/ui';
   import { SignInButton } from '@timeback/sdk/svelte';
   import { getUserStore } from '$lib/stores/user.svelte';
   import { getPresenceStore } from '$lib/stores/presence.svelte';
@@ -49,7 +49,9 @@
         <Icon name={item.icon} size={20} />
         <span class="nav-label">{item.label}</span>
         {#if item.href === '/chat' && chat && chat.chatUnreadCount > 0}
-          <span class="nav-badge">{chat.chatUnreadCount}</span>
+          <span class="nav-badge-position">
+            <CountBadge count={chat.chatUnreadCount} />
+          </span>
         {/if}
       </a>
     {/each}
@@ -141,19 +143,8 @@
     font-size: var(--font-size-sm);
   }
 
-  .nav-badge {
+  .nav-badge-position {
     margin-left: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 18px;
-    height: 18px;
-    padding: 0 5px;
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-    color: white;
-    background: var(--color-error);
-    border-radius: var(--radius-md);
   }
 
   .online-friends {

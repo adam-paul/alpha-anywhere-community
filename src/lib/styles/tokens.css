@@ -83,6 +83,9 @@
   --transition-base: 250ms ease;
   --transition-slow: 350ms ease;
 
+  /* Animations */
+  --animation-pulse: pulse 2s ease-in-out infinite;
+
   /* Themeable surface + component behaviors — defaults preserve cel-shaded. */
   --surface-backdrop-filter: none;
   --card-radius: var(--radius-zero);
@@ -128,4 +131,14 @@ button {
 img {
   max-width: 100%;
   height: auto;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }

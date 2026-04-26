@@ -205,12 +205,11 @@
     height: 8px;
     border-radius: 50%;
     background: var(--color-side-by-side);
-    animation: pulse 2s ease-in-out infinite;
+    animation: var(--animation-pulse);
   }
 
   .presence-indicator.loading {
     background: var(--color-text-muted);
-    animation: pulse 1s ease-in-out infinite;
   }
 
   .presence-text {
@@ -229,15 +228,5 @@
     font-size: var(--font-size-xs);
     color: var(--color-text-muted);
     line-height: 1.4;
-  }
-
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
   }
 </style>

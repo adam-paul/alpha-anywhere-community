@@ -73,17 +73,7 @@
 
   .speaking-dot.active {
     background: var(--color-positive);
-    animation: pulse 1.5s infinite;
-  }
-
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
+    animation: var(--animation-pulse);
   }
 
   .room-name {

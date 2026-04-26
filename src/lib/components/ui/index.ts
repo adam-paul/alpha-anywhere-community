@@ -3,6 +3,7 @@ export { default as AvatarStack } from './AvatarStack.svelte';
 export { default as Badge } from './Badge.svelte';
 export { default as Button } from './Button.svelte';
 export { default as Card } from './Card.svelte';
+export { default as CountBadge } from './CountBadge.svelte';
 export { default as Icon } from './Icon.svelte';
 export { default as IconButton } from './IconButton.svelte';
 export { default as Input } from './Input.svelte';

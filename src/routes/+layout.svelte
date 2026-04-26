@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
-  import '../lib/styles/tokens.css';
-  import '../lib/styles/themes/cel-shaded.css';
-  import '../lib/styles/themes/playcademy.css';
+  import '$lib/styles/tokens.css';
+  import '$lib/styles/themes/cel-shaded.css';
+  import '$lib/styles/themes/playcademy.css';
   import AppShell from '$lib/components/layout/AppShell.svelte';
   import { createThemeStore } from '$lib/stores/theme.svelte';
   import { createUserStore } from '$lib/stores/user.svelte';
