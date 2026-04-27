@@ -91,7 +91,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: white;
+    color: var(--color-on-primary);
     background: var(--color-text);
     z-index: 2;
   }

@@ -510,7 +510,7 @@
   .error-banner {
     padding: var(--space-3);
     background: var(--color-error);
-    color: white;
+    color: var(--color-on-primary);
     font-size: var(--font-size-sm);
     font-weight: 600;
     border-radius: var(--radius-zero);

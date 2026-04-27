@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button } from '$lib/components/ui';
+  import { Button, Placeholder } from '$lib/components/ui';
   import { getNotificationStore } from '$lib/stores/notifications.svelte';
   import NotificationItem from './NotificationItem.svelte';
 
@@ -18,7 +18,7 @@
     {#each store.notifications as notification (notification.id)}
       <NotificationItem {notification} />
     {:else}
-      <p class="tray-empty">No notifications yet</p>
+      <Placeholder size="sm" title="No notifications yet" />
     {/each}
   </div>
 </div>
@@ -57,12 +57,5 @@
   .tray-list {
     overflow-y: auto;
     flex: 1;
-  }
-
-  .tray-empty {
-    padding: var(--space-8) var(--space-4);
-    text-align: center;
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
   }
 </style>
