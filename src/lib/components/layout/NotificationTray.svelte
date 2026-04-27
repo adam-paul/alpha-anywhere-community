@@ -34,6 +34,7 @@
     display: flex;
     flex-direction: column;
     background: var(--color-surface);
+    backdrop-filter: var(--surface-backdrop-filter);
     border: var(--border-width) solid var(--color-border);
     border-radius: var(--radius-sm);
     overflow: hidden;
