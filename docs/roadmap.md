@@ -1,6 +1,6 @@
 # Alpha Anywhere Community: Roadmap
 
-**Last updated:** 2026-04-19
+**Last updated:** 2026-04-29
 
 ---
 
@@ -151,11 +151,13 @@ Platform-wide notification system replacing the ad-hoc friend request badge.
 
 ### Tier 3: Game Extensibility
 
-#### Minecraft & Beyond
+#### Minecraft
 
-- Evaluate Minecraft server hosting (Bedrock vs Java, Realms vs self-hosted)
-- `minecraft://` protocol handler support (already stubbed in game launcher)
-- Determine if work-wall gating applies per-game or globally
+Standalone Paper test server on a dedicated DigitalOcean droplet (Java + Paper, self-hosted). Decision rationale, operational runbook, and project integration sketch in `docs/minecraft.md`.
+
+**Decided:** Java Edition over Bedrock; self-hosted over Realms or Minecraft Education; Paper distribution for plugin ecosystem; separate droplet from LiveKit; GeyserMC + Floodgate later for Bedrock client cross-platform (iPad / Chromebook / mobile / console).
+
+**Pending:** Per-group server provisioning (likely `itzg/minecraft-server` containers), whitelist sync from D1 gated by LWAI/Timeback (RCON path), inline admin tooling on arcade page, plugin baseline (CoreProtect / LuckPerms / GriefPrevention), `minecraft://` protocol handler wiring (already stubbed in game launcher), and per-game vs global work-wall gating decision.
 
 ---
 
@@ -256,6 +258,7 @@ Voiceprints are now explicitly PI under the 2025 rule, and real-time peer voice 
 | **Voice chat**       | Self-hosted LiveKit on DO                                   | Open source, $0 per-minute, full data sovereignty for COPPA, Agents for moderation                                                                                             |
 | **Voice TLS**        | Caddy reverse proxy                                         | Auto Let's Encrypt, WebSocket upgrade support, simpler than nginx for this use case                                                                                            |
 | **Voice rooms**      | One room at a time per user                                 | Safety: no side-channel cliques within game servers. Simplifies client state                                                                                                   |
+| **Minecraft**        | Self-hosted Paper on DO (separate droplet)                  | Java + Paper for plugin ecosystem; separate droplet from LiveKit for resource/blast-radius isolation; full setup in `docs/minecraft.md`                                        |
 
 ---
 
@@ -318,5 +321,4 @@ Small items that don't belong to a tier but need attention eventually.
 
 1. **Profile stats:** What metrics to show on student profile pages? Options from LWAI: total levels mastered, active minutes, accuracy rate, streak days.
 2. **Roblox private servers:** API access model? Pre-provisioned vs on-demand? Cost per server?
-3. **Minecraft feasibility:** Bedrock vs Java? Realms vs self-hosted?
-4. **Avatar generation:** Which image model? Cost?
+3. **Avatar generation:** Which image model? Cost?
