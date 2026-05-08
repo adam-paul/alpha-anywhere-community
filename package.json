@@ -40,7 +40,8 @@
     "db:seed:clear": "bun run scripts/seed-games.ts --clear",
     "db:seed:remote:clear": "bun run scripts/seed-games.ts --remote --clear",
     "realtime:deploy": "cd infra/realtime && bunx wrangler deploy",
-    "eval:moderation": "bun run scripts/eval-moderation.ts"
+    "eval:moderation": "bun run scripts/eval-moderation.ts",
+    "wf:pull": "bun run scripts/wf-pull.ts"
   },
   "lint-staged": {
     "*.{js,ts,svelte,css,md,json}": "prettier --write"
