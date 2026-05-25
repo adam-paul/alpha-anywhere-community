@@ -36,6 +36,7 @@ Base URL: `https://workflowy.com/api/v1`. All requests need `Authorization: Bear
 3. **`parent_id` shortcuts auto-create system nodes lazily.** First write to `parent_id:"inbox"` materializes a real "Inbox" node at the root.
 4. **Shared docs are invisible to API keys.** API only sees nodes the key holder owns. Docs shared _to_ you appear as ghost roots in `parent_id=None` listings but return `not_found` on direct fetch. To work with a shared doc, duplicate it into your own home first.
 5. **Export rate limit is strict.** `/nodes-export` is 1 request per minute. Cache the result in-memory if making multiple operations in one session.
+6. **Create prepends by default (`position:"top"`), despite the recipe below claiming "bottom".** Creating siblings in sequence therefore yields _reverse_ order. Pass `"position":"bottom"` explicitly to append in creation order. (Verified: Workflowy then assigns increasing priorities 100, 200, 300…; the `?parent_id=` listing returns children unsorted, so sort by `priority` to see true display order.)
 
 ## Node shape
 
@@ -87,7 +88,7 @@ curl -sS -X POST \
   https://workflowy.com/api/v1/nodes
 ```
 
-`position` accepts `"top"` or `"bottom"` (default `"bottom"`).
+`position` accepts `"top"` or `"bottom"`. The effective default is `"top"` (prepend) — pass `"bottom"` explicitly to append in creation order (see gotcha 6).
 
 ### Update name and/or note
 
